@@ -13,8 +13,10 @@ DONE Fix paths in Fit::Parse#footnote and directory structure for RubyGems and
 DONE A command line script to process HTML files, e.g. fit.rb in.html out.html
 DONE Adopt public/protected/private visibility modifiers to Ruby code.
 DONE Condense NOT_BREAKING_SPACE in Fit::Parse.
-DONE How to express Unicode character sequences in Ruby? -- You can't. For
-     characters such as \u00nn, there is an hex equivalent of \xnn.
+DONE How to express Unicode character sequences in Ruby? -- For
+     characters such as \u00nn, there is an hex equivalent of
+     \xnn. More specifically, \u4321 is a UTF-16BE encoding, so you
+     would need to know the equivalent UTF-8 encoding, e.g., \xe4\x8c\xa1.
 DONE Fix spec/parse.html on Fat::ParseFixture.
 DONE Fix Eg::WebPageExample example -- 12, 8, 0, 3 exactly as the Java version.
 DONE How Fit::PrimitiveFixture should check values? -- For now, it all works.
