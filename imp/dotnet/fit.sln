@@ -1,11 +1,13 @@
 Microsoft Visual Studio Solution File, Format Version 7.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fit", "Source\fit\fit.csproj", "{60ECCC4C-B716-4B3C-9D68-404528D3FD41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fit", "src\fit\fit.csproj", "{60ECCC4C-B716-4B3C-9D68-404528D3FD41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eg", "Source\eg\eg.csproj", "{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "runFile", "src\fit\runFile.csproj", "{795BAA23-9316-4D21-B3DB-3B855E2AD315}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "runFile", "Source\fit\runFile.csproj", "{795BAA23-9316-4D21-B3DB-3B855E2AD315}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "runWiki", "src\fit\runWiki.csproj", "{0B0592FF-471D-4EEB-B399-E6F7FD902839}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "runWiki", "Source\fit\runWiki.csproj", "{0B0592FF-471D-4EEB-B399-E6F7FD902839}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eg", "src\eg\eg.csproj", "{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRunner", "http://localhost/webrunner/WebRunner.csproj", "{EB8FA69C-EE38-4647-8074-683CA547C9D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -19,10 +21,6 @@ Global
 		{60ECCC4C-B716-4B3C-9D68-404528D3FD41}.Debug.Build.0 = Debug|.NET
 		{60ECCC4C-B716-4B3C-9D68-404528D3FD41}.Release.ActiveCfg = Release|.NET
 		{60ECCC4C-B716-4B3C-9D68-404528D3FD41}.Release.Build.0 = Release|.NET
-		{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}.Debug.ActiveCfg = Debug|.NET
-		{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}.Debug.Build.0 = Debug|.NET
-		{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}.Release.ActiveCfg = Release|.NET
-		{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}.Release.Build.0 = Release|.NET
 		{795BAA23-9316-4D21-B3DB-3B855E2AD315}.Debug.ActiveCfg = Debug|.NET
 		{795BAA23-9316-4D21-B3DB-3B855E2AD315}.Debug.Build.0 = Debug|.NET
 		{795BAA23-9316-4D21-B3DB-3B855E2AD315}.Release.ActiveCfg = Release|.NET
@@ -31,6 +29,14 @@ Global
 		{0B0592FF-471D-4EEB-B399-E6F7FD902839}.Debug.Build.0 = Debug|.NET
 		{0B0592FF-471D-4EEB-B399-E6F7FD902839}.Release.ActiveCfg = Release|.NET
 		{0B0592FF-471D-4EEB-B399-E6F7FD902839}.Release.Build.0 = Release|.NET
+		{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}.Debug.ActiveCfg = Debug|.NET
+		{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}.Debug.Build.0 = Debug|.NET
+		{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}.Release.ActiveCfg = Release|.NET
+		{3160AB8A-078B-4EBD-82AD-95DF4D6244A9}.Release.Build.0 = Release|.NET
+		{EB8FA69C-EE38-4647-8074-683CA547C9D6}.Debug.ActiveCfg = Debug|.NET
+		{EB8FA69C-EE38-4647-8074-683CA547C9D6}.Debug.Build.0 = Debug|.NET
+		{EB8FA69C-EE38-4647-8074-683CA547C9D6}.Release.ActiveCfg = Release|.NET
+		{EB8FA69C-EE38-4647-8074-683CA547C9D6}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
