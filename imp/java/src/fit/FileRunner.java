@@ -13,11 +13,11 @@ public class FileRunner {
     public Fixture fixture = new Fixture();
     public PrintWriter output;
 
-    public static void main (String argv[]) {
+    public static void main(String argv[]) {
         new FileRunner().run(argv);
     }
 
-    public void run (String argv[]) {
+    public void run(String argv[]) {
         args(argv);
         process();
         exit();
@@ -25,8 +25,13 @@ public class FileRunner {
 
     public void process() {
         try {
-            tables = new Parse(input);
-            fixture.doTables(tables);
+            if (input.indexOf("<wiki>") >= 0) {
+                tables = new Parse(input, new String[]{"wiki", "table", "tr", "td"});
+                fixture.doTables(tables.parts);
+            } else {
+                tables = new Parse(input, new String[]{"table", "tr", "td"});
+                fixture.doTables(tables);
+            }
         } catch (Exception e) {
             exception(e);
         }
@@ -53,7 +58,7 @@ public class FileRunner {
     }
 
     protected String read(File input) throws IOException {
-        char chars[] = new char[(int)(input.length())];
+        char chars[] = new char[(int) (input.length())];
         FileReader in = new FileReader(input);
         in.read(chars);
         in.close();
@@ -61,7 +66,7 @@ public class FileRunner {
     }
 
     protected void exception(Exception e) {
-        tables = new Parse("body","Unable to parse input. Input ignored.", null, null);
+        tables = new Parse("body", "Unable to parse input. Input ignored.", null, null);
         fixture.exception(tables, e);
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Fit for Java" default="test" basedir=".">
+<project name="Fit for Java" default="all" basedir=".">
 	<description>fit - Framework for integrated test (Java implementation)</description>
 	
 	<property name="source.dir" value="src" />
@@ -30,7 +30,20 @@
 			<formatter type="brief" usefile="false" />
 		</junit>
 	</target>
-	
+    
+    <target name="smoke" depends="build, output_dir" description="Smoke test project">
+        <java classname="fit.FileRunner" classpath="${build.dir}" fork="true" failonerror="true"  >
+            <arg value="../../examples/MusicExample.html"/>
+            <arg value="${output.dir}/smoke-MusicExample.html"/>
+        </java>
+        <java classname="fit.WikiRunner" classpath="${build.dir}" fork="true" failonerror="true"  >
+            <arg value="../../examples/MusicExample.html"/>
+            <arg value="${output.dir}/smoke-wiki-MusicExample.html"/>
+        </java>
+    </target>
+
+    <target name="all" depends="clean, test, smoke"/>
+
 	<target name="clean" description="Delete generated files" >
 		<delete dir="${build.dir}" />
 		<delete dir="${output.dir}" />
