@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+  <!--JBuilder Library Definition File-->
+  <fullname>ant</fullname>
+  <class>
+    <path>[../apache-ant-1.6.2/lib/ant-antlr.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-apache-bcel.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-apache-bsf.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-apache-log4j.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-apache-oro.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-apache-regexp.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-apache-resolver.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-commons-logging.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-commons-net.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-icontract.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-jai.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-javamail.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-jdepend.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-jmf.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-jsch.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-junit.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-launcher.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-netrexx.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-nodeps.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-starteam.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-stylebook.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-swing.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-trax.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-vaj.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-weblogic.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-xalan1.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant-xslp.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/ant.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/xercesImpl.jar]</path>
+    <path>[../apache-ant-1.6.2/lib/xml-apis.jar]</path>
+  </class>
+  <lastmodsaved>1106285794444</lastmodsaved>
+</library>
