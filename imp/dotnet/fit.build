@@ -9,7 +9,7 @@
 	<property name="build.dir" value="build" />
 	<property name="bin.dir" value="${build.dir}" />
 	<property name="tools.dir" value="tools" />
-	<property name="report.dir" value="report" />
+	<property name="report.dir" value="output" />
 	<property name="fit_dll.path" value="${bin.dir}\fit.dll" />
 	<property name="nunit.path" value="${tools.dir}\nunit\nunitconsole.exe" />
 	<property name="framework_test.class" value="fit.FrameworkTest" />
@@ -91,9 +91,12 @@
 	</target>
 	
 	<target name="clean" description="Deletes all build files">
-		<!-- Hack to avoid failure if dir not there -->
+		<!-- Hack to avoid failure if dirs not there -->
 		<mkdir dir="${build.dir}" failonerror="false" />
+		<mkdir dir="${report.dir}" failonerror="false" />
+		
 		<delete dir="${build.dir}" />
+		<delete dir="${report.dir}" />
 		<delete>
 			<fileset>
 				<includes name="**/bin/**/*" />

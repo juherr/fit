@@ -1,0 +1,3 @@
+@echo off
+echo Building fit-dotnet with nant...
+tools\nant\nant %*

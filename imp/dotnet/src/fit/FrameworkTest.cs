@@ -231,7 +231,7 @@ namespace fit {
         }
 
         protected void run(string file, int right, int wrong, int ignores, int exceptions) {
-            string input = read("../Documents/"+file+".html");
+            string input = read("../../examples/"+file+".html");
             Fixture fixture = new Fixture();
             Parse tables;
             if (input.IndexOf("<wiki>") >= 0) {

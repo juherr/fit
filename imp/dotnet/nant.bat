@@ -1,3 +1,0 @@
-@echo off
-echo Building .NET Fit with nant...
-tools\nant\nant %*

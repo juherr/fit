@@ -12,15 +12,15 @@
 This is our most realistic example short of the SampleApplications. See the MusicExampleObjectModel to understand all of the objects in play here.
 <p><hr>
 <p><strong>Browsing Music</strong>
-<p>The music browser starts up looking at the whole library of songs. We specify the library (an advanced feature) so that we know what we are talking about in this document. 
+<p>The music browser starts up looking at the whole library of songs. We specify the library (an advanced feature) so that we know what we are talking about in this document.
 <p><table BORDER CELLSPACING=0 CELLPADDING=3>
 <tr><td ColSpan=3> fit.ActionFixture </td></tr>
 <tr><td> start </td><td> eg.music.Browser </td><td>&nbsp;</td></tr>
-<tr><td> enter </td><td> library </td><td> Source/eg/music/Music.txt </td></tr>
+<tr><td> enter </td><td> library </td><td> src/eg/music/Music.txt </td></tr>
 <tr><td> check </td><td> total songs </td><td> 37 </td></tr>
 </table>
 <p><em>This is a the file that library reads. It is tab separated text. Try downloading it and looking at it with a spreadsheet. <a href="Release/Source/eg/music/Music.txt">http:Release/Source/eg/music/Music.txt</a></em>
-<p>We can pick songs and see details of our selection as we go. 
+<p>We can pick songs and see details of our selection as we go.
 <p><table BORDER CELLSPACING=0 CELLPADDING=3>
 <tr><td ColSpan=3> fit.ActionFixture </td></tr>
 <tr><td> enter </td><td> select </td><td> 1 </td></tr>
@@ -31,7 +31,7 @@ This is our most realistic example short of the SampleApplications. See the Musi
 <tr><td> check </td><td> artist </td><td> Weather Report </td></tr>
 <tr><td> check </td><td> album </td><td> Mysterious Traveller </td></tr>
 <tr><td> check </td><td> year </td><td> 1974 </td></tr>
-<tr><td> check </td><td> time </td><td> 3.70 </td></tr> 
+<tr><td> check </td><td> time </td><td> 3.70 </td></tr>
 <tr><td> check </td><td> track </td><td> 2 of 7 </td></tr>
 </table>
 <p><em>ActionFixture interprets the words in the first column. The actions operate on fields and buttons on the </em>Browser<em> screen we started in the first table. The Browser (or what ever other Fixtures we start) interprets the names in the second column. Each name maps to a method of the Browser. The third column provides data that are pass as arguments to Browser methods or compared with Browser method results. See MusicExampleWithErrors to see how errors are reported.</em>
