@@ -141,6 +141,7 @@ public class Fixture {
 
     public void wrong (Parse cell) {
         cell.addToTag(" bgcolor=\"" + red + "\"");
+		cell.body = escape(cell.text());
         counts.wrong++;
     }
 
@@ -154,15 +155,20 @@ public class Fixture {
         counts.ignores++;
     }
 
+	public void error (Parse cell, String message) {
+		cell.body = escape(cell.text());
+		cell.addToBody("<hr><pre><font size=-2>" + message + "</font></pre>");
+		cell.addToTag(" bgcolor=\"" + yellow + "\"");
+		counts.exceptions++;
+	}
+
     public void exception (Parse cell, Throwable exception) {
         while(exception.getClass().equals(InvocationTargetException.class)) {
             exception = ((InvocationTargetException)exception).getTargetException();
         }
         final StringWriter buf = new StringWriter();
         exception.printStackTrace(new PrintWriter(buf));
-        cell.addToBody("<hr><pre><font size=-2>" + (buf.toString()) + "</font></pre>");
-        cell.addToTag(" bgcolor=\"" + yellow + "\"");
-        counts.exceptions++;
+        error(cell, buf.toString());
     }
 
     // Utility //////////////////////////////////
@@ -172,11 +178,11 @@ public class Fixture {
     }
 
     public static String label (String string) {
-        return " <font size=-1 color=#c08080><i>" + string + "</i></font>";
+        return " <font size=-1 color=\"#c08080\"><i>" + string + "</i></font>";
     }
 
     public static String gray (String string) {
-        return " <font color=#808080>" + string + "</font>";
+        return " <font color=\"#808080\">" + string + "</font>";
     }
 
     public static String escape (String string) {
