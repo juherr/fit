@@ -43,10 +43,10 @@ public class RowFixtureTest {
         ArrayList expected = new ArrayList();
         expected.Add(new Parse("tr","",new Parse("td","1",null,null),null));
         fixture.match(expected, computed,0);
-        Assertion.AssertEquals("right", 1, fixture.counts.right);
-        Assertion.AssertEquals("exceptions", 0, fixture.counts.exceptions);
-        Assertion.AssertEquals("missing", 0, fixture.missing.Count);
-        Assertion.AssertEquals("surplus", 0, fixture.surplus.Count);
+        Assert.AreEqual(1, fixture.counts.right, "right");
+        Assert.AreEqual(0, fixture.counts.exceptions, "exceptions");
+        Assert.AreEqual(0, fixture.missing.Count, "missing");
+        Assert.AreEqual(0, fixture.surplus.Count, "surplus");
     }
 
     private class TestRowFixture : RowFixture {
