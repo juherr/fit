@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of CeeFIT.
+
+  CeeFIT is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  CeeFIT is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with CeeFIT; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+  (c)2005 Woldrich, Inc.  http://www.woldrich.com
+-->
+<project name="Build CeeFit" default="help" basedir=".">
+	<property name="default.boost.dir" value="boost_1_32_0"/>
+	
+	<!-- import properties from environment variables -->
+	<property environment="env"/>
+	
+	<!-- bring in user defined build.properties file (see build.properties.example for ideas) -->
+	<property file="build.properties"/>
+	
+	<!-- Bring in the ant-contrib tasks -->
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<fileset dir="lib/ant-contrib/lib" casesensitive="false">
+				<include name="**/*.jar"/>
+				<include name="**/*.zip"/>
+			</fileset>
+		</classpath>
+	</taskdef>
+	
+	<!-- Bring in the cpptasks -->
+	<taskdef resource="cpptasks.tasks">
+		<classpath>
+			<fileset dir="lib/cpptasks-1.0b3" casesensitive="false">
+				<include name="**/*.jar"/>
+				<include name="**/*.zip"/>
+			</fileset>
+		</classpath>
+	</taskdef>
+	
+	<!-- Bring in the types for the cpptasks -->
+	<typedef resource="cpptasks.types">
+		<classpath>
+			<fileset dir="lib/cpptasks-1.0b3" casesensitive="false">
+				<include name="**/*.jar"/>
+				<include name="**/*.zip"/>
+			</fileset>
+		</classpath>
+	</typedef>
+	
+	<!-- Help -->
+	<target name="help">
+		<echo message="Build CeeFIT"/>
+		<echo message="  Description:"/>
+		<echo message="      Build the lib files and test program(s) that make up CeeFIT"/>
+		<echo message="  Targets:"/>
+		<echo message="      clean             = Delete all intermediate targets and binaries"/>
+		<echo message="      build             = Build all code"/>
+		<echo message="      test              = Run the fitspec program on the Fit Specification files"/>
+		<echo message="      all               = Build all code and run the fitspec program on the Fit Specification files"/>
+	</target>
+
+	<!-- Target for cleaning all build directories and temporary files created during build -->
+	<target name="clean">
+		<delete failonerror="false" dir="Debug"/>
+		<delete failonerror="false" dir="Release"/>
+	</target>
+	
+	<!-- have a build.properties file in the same folder as build.xml if you need to override the default project settings -->
+	<property file="build.properties"/>
+	
+	<target name="build-init">
+		<if>
+			<not>
+				<isset property="which.compiler"/>
+			</not>
+			<then>
+				<property name="which.compiler" value="g++"/>
+			</then>
+		</if>
+		<if>
+			<not>
+				<isset property="which.linker"/>
+			</not>
+			<then>
+				<property name="which.linker" value="${which.compiler}"/>
+			</then>
+		</if>
+		<if>
+			<not>
+				<isset property="debug.mode"/>
+			</not>
+			<then>
+				<property name="debug.mode" value="true"/>
+			</then>
+			<else/>
+		</if>
+		<if>
+			<not>
+				<isset property="incremental.compile"/>
+			</not>
+			<then>
+				<property name="incremental.compile" value="${debug.mode}"/>
+			</then>
+		</if>
+		<if>
+			<not>
+				<isset property="intel.target"/>
+			</not>
+			<then>
+				<property name="intel.target" value="true"/>
+			</then>
+		</if>
+		<if>
+			<or>
+				<equals arg1="${which.compiler}" arg2="gcc"/>
+				<equals arg1="${which.compiler}" arg2="g++"/>
+				<equals arg1="${which.compiler}" arg2="c++"/>
+			</or>
+			<then>
+				<property name="using.gcc" value="true"/>
+				<if>
+					<equals arg1="${intel.target}" arg2="true"/>
+					<then>
+						<property name="using.gcc.on.intel" value="true"/>
+					</then>
+				</if>
+			</then>
+		</if>
+		<if>
+			<equals arg1="${which.compiler}" arg2="msvc"/>
+			<then>
+				<property name="using.msvc" value="true"/>
+			</then>
+		</if>
+		<if>
+			<os family="windows"/>
+			<then>
+				<property name="os.define" value="_WIN32"/>
+				<property name="os.is.windows" value="true"/>
+				<if>
+					<or>
+						<equals arg1="${which.compiler}" arg2="gcc"/>
+						<equals arg1="${which.compiler}" arg2="g++"/>
+						<equals arg1="${which.compiler}" arg2="c++"/>
+					</or>
+					<then>
+						<property name="using.gcc.on.windows" value="true"/>
+					</then>
+					<else>
+						<property name="using.msvc.on.windows" value="true"/>
+					</else>
+				</if>
+			</then>
+		</if>
+		<if>
+			<equals arg1="${debug.mode}" arg2="true"/>
+			<then>
+				<property name="debug.mode.define" value="_DEBUG"/>
+				<property name="output.dir" value="Debug"/>
+				<property name="optimize.parm" value="none"/>
+				<if>
+					<or>
+						<equals arg1="${which.compiler}" arg2="gcc"/>
+						<equals arg1="${which.compiler}" arg2="g++"/>
+						<equals arg1="${which.compiler}" arg2="c++"/>
+					</or>
+					<then>
+						<property name="boost.debug.flag" value="d"/>
+						<property name="stdcpplib.dir" location="${env.GCC_HOME}/lib/debug"/>
+					</then>
+				</if>
+				<if>
+					<equals arg1="${which.linker}" arg2="msvc"/>
+					<then>
+						<property name="using.msvc.linker" value="true"/>
+						<property name="msvc.linker.stdlib" value="msvcrtd"/>
+					</then>
+				</if>
+			</then>
+			<else>
+				<property name="debug.mode.define" value="NDEBUG"/>
+				<property name="output.dir" value="Release"/>
+				<property name="optimize.parm" value="extreme"/>
+				<if>
+					<or>
+						<equals arg1="${which.compiler}" arg2="gcc"/>
+						<equals arg1="${which.compiler}" arg2="g++"/>
+						<equals arg1="${which.compiler}" arg2="c++"/>
+					</or>
+					<then>
+						<property name="boost.debug.flag" value=""/>
+						<property name="stdcpplib.dir" location="${env.GCC_HOME}/lib"/>
+					</then>
+				</if>
+				<if>
+					<equals arg1="${which.linker}" arg2="msvc"/>
+					<then>
+						<property name="using.msvc.linker" value="true"/>
+						<property name="msvc.linker.stdlib" value="msvcrt"/>
+					</then>
+				</if>
+			</else>
+		</if>
+		<if>
+			<isset property="external.boost.lib.home"/>
+			<then>
+				<property name="boost.folder" value="${external.boost.lib.home}"/>
+			</then>
+			<else>
+				<property name="boost.folder" value="lib/${default.boost.dir}"/>
+			</else>
+		</if>
+		<mkdir dir="${output.dir}"/>
+	</target>
+
+	<target name="build" depends="build-init">
+		<echo message="Selected compiler = ${which.compiler}.  Selected linker = ${which.linker}"/>
+		<cc debug="${debug.mode}" exceptions="true" failonerror="true" incremental="${incremental.compile}" multithreaded="true" name="${which.compiler}" newenvironment="false"
+		       optimize="${optimize.parm}" runtime="static" outtype="static" rebuild="false" relentless="false" rtti="true" subsystem="console">
+
+			<compiler id="default.compiler.args">
+				<compilerarg location="mid" value="-Winline" if="using.gcc"/>
+				<compilerarg location="mid" value="-std=gnu++98" if="using.gcc"/>
+				<!-- <compilerarg location="mid" value="-fshort-wchar" if="using.gcc"/>-->
+				<compilerarg location="mid" value="-frepo" if="using.gcc"/>
+				<compilerarg location="mid" value="-fkeep-static-consts" if="using.gcc"/>
+				<compilerarg location="mid" value="-fkeep-inline-functions" if="using.gcc"/>
+				<compilerarg location="mid" value="-fconst-strings" if="using.gcc"/>
+				<compilerarg location="mid" value="-ftemplate-depth-255" if="using.gcc"/>
+				<compilerarg location="mid" value="-ffast-math" if="using.gcc"/>
+				<compilerarg location="mid" value="-mms-bitfields" if="using.gcc"/>
+				<compilerarg location="mid" value="-march=i586" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-malign-stringops" if="using.gcc"/>
+				<compilerarg location="mid" value="-mfancy-math-387" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-mhard-float" if="using.gcc"/>
+				<compilerarg location="mid" value="-mfp-ret-in-387" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-m32" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-mno-mmx" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-mno-3dnow" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-mno-sse" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-mno-sse2" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-mno-sse3" if="using.gcc.on.intel"/>
+				<compilerarg location="mid" value="-minline-all-stringops" unless="is.debug.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-fimplicit-inline-templates" if="using.gcc"/>
+				<compilerarg location="mid" value="-fimplicit-templates" if="using.gcc"/>
+				<compilerarg location="mid" value="-fdefault-inline" if="using.gcc"/>
+				<compilerarg location="mid" value="-fimplement-inlines" if="using.gcc"/>
+				<compilerarg location="mid" value="-felide-constructors" if="using.gcc"/>
+				<compilerarg location="mid" value="-fenforce-eh-specs" if="using.gcc"/>
+				<compilerarg location="mid" value="-ffor-scope" if="using.gcc"/>
+				<compilerarg location="mid" value="-Wnon-virtual-dtor" if="using.gcc"/>
+			</compiler>
+		</cc>
+		
+		<cc debug="${debug.mode}" exceptions="true" failonerror="true" incremental="${incremental.compile}" multithreaded="true" name="${which.compiler}" newenvironment="false" 
+		       optimize="${optimize.parm}" objdir="${output.dir}" outfile="${output.dir}/ceefit" outputfileproperty="ceefit.lib.file" runtime="static" outtype="static" rebuild="false" relentless="false" 
+		       rtti="true" subsystem="console">
+			
+			<defineset define="${os.define},${debug.mode.define},_MBCS,_LIB">
+				<define name="_GLIBCXX_USE_WCHAR_T" value="true" if="using.gcc"/>
+				<define name="_GLIBCPP_USE_WCHAR_T" value="true" if="using.gcc"/>
+				<define name="_GLIBCPP_HAVE_WCTYPE_H" value="true" if="using.gcc"/>
+				<define name="CEEFIT_EXTERNAL_BOOST" value="true" if="external.boost.lib.home"/>
+			</defineset>
+			<includepath>
+				<path>
+					<pathelement location="src"/>
+					<pathelement location="${boost.folder}"/>
+				</path>
+			</includepath>
+			<compiler inherit="true" name="${which.compiler}" extends="default.compiler.args">
+				<fileset dir="src/ceefit" casesensitive="false">
+					<include name="**/*.cpp"/>
+				</fileset>
+				<fileset dir="src/tools" casesensitive="false">
+					<include name="**/*.cpp"/>
+				</fileset>
+			</compiler>
+		</cc>
+		
+		<cc debug="${debug.mode}" exceptions="true" failonerror="true" incremental="${incremental.compile}" multithreaded="true" name="${which.compiler}" newenvironment="false" 
+		       optimize="${optimize.parm}" objdir="${output.dir}" outfile="${output.dir}/fat" outputfileproperty="fat.lib.file" runtime="static" outtype="static" rebuild="false" relentless="false" 
+		       rtti="true" subsystem="console">
+			
+			<defineset>
+				<define name="${os.define}"/>
+				<define name="${debug.mode.define}"/>
+				<define name="_MBCS"/>
+				<define name="_LIB"/>
+			</defineset>
+			<includepath>
+				<path>
+					<pathelement location="src"/>
+				</path>
+			</includepath>
+			<!-- Precompile the core project's headers -->
+			<compiler inherit="true" name="${which.compiler}" extends="default.compiler.args">
+				<fileset dir="src/fat" casesensitive="false">
+					<include name="**/*.cpp"/>
+				</fileset>
+			</compiler>
+		</cc>
+		
+		<cc debug="${debug.mode}" exceptions="true" failonerror="true" incremental="${incremental.compile}" multithreaded="true" name="${which.compiler}" newenvironment="false"
+		       optimize="${optimize.parm}" objdir="${output.dir}" outfile="${output.dir}/fitspec" outputfileproperty="fitspec.exe.file" runtime="static" outtype="executable" rebuild="false" 
+		       relentless="false" rtti="true" subsystem="console">
+		       
+			<defineset define="${os.define},${debug.mode.define},_MBCS"/>
+			<includepath>
+				<path>
+					<pathelement location="src"/>
+				</path>
+			</includepath>
+			<compiler inherit="true" name="${which.compiler}" extends="default.compiler.args">
+				<fileset dir="src/fitspec" casesensitive="false">
+					<include name="**/*.cpp"/>
+				</fileset>
+			</compiler>
+
+			<linker inherit="true" incremental="false" debug="${debug.mode}" name="${which.linker}" map="false" rebuild="false">
+				<libset dir="${output.dir}" libs="fat" type="static" casesensitive="false"/>
+				<libset dir="${output.dir}" libs="ceefit" type="static" casesensitive="false"/>
+				<!-- <syslibset libs="kernel32,user32,gdi32,winspool,comdlg32,advapi32,shell32,ole32,oleaut32,uuid,odbc32,odbccp32" type="static" casesensitive="false" if="os.is.windows"/> -->
+			</linker>
+		</cc>
+	</target>
+
+      <target name="test" depends="build">
+              <exec executable="${fitspec.exe.file}" dir=".">
+                      <arg value="-CeeFIT"/>
+                      <arg value="../../spec/index.html"/>
+                      <arg value="output/index.html"/>
+              </exec>
+      </target>
+	
+      <target name="all" depends="build,test">
+      </target>
+	
+</project>
