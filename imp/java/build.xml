@@ -7,6 +7,7 @@
 	<property name="source.dir" value="src" />
 	<property name="spec.dir" value="${root.dir}/spec" />
 	<property name="examples.dir" value="${root.dir}/examples" />
+	<property name="doc.dir" value="doc" />
 	<property name="junit.jar" value="tools/ant/lib/junit.jar" />
 	<property name="license.file" value="license.txt" />
 
@@ -84,6 +85,7 @@
     	<copy todir="${release.dir}">
     		<fileset dir="${source.dir}" includes="${license.file}" />
     		<fileset dir="${jar.dir}" />
+    		<fileset dir="${doc.dir}" />
     		<fileset dir="${output.dir}">
     			<include name="spec/**" />
     			<include name="examples/**" />
@@ -100,6 +102,8 @@
 				<exclude name="imp/java/${output.dir}/**" />
 			</fileset>
 		</copy>
+		
+		<zip destfile="${output.dir}/fit-java.zip" basedir="${release.dir}" />
     </target>
 
 </project>
