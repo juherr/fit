@@ -165,7 +165,7 @@ public class Fixture {
 
 	public void error (Parse cell, String message) {
 		cell.body = escape(cell.text());
-		cell.addToBody("<hr><pre><font size=-2>" + escape(message) + "</font></pre>");
+		cell.addToBody("<hr><pre>" + escape(message) + "</pre>");
 		cell.addToTag(" bgcolor=\"" + yellow + "\"");
 		counts.exceptions++;
 	}
