@@ -139,6 +139,7 @@ public class Parse {
         else if (from.equals("gt")) return ">";
         else if (from.equals("amp")) return "&";
         else if (from.equals("nbsp")) return " ";
+        else if (from.equals("quot")) return "\"";
         else return null;
     }
 
