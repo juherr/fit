@@ -10,9 +10,19 @@ Longer term:
 * Integration with FitNesse
 * Integration with Fitster
 
+Changes in CVS:
+Produced by Jim Shore.
+* Display the assemblies searched when a fixture can't be found.  Credit to Jim Shore.
+* Clarified exception when ColumnFixture looks for a non-existant field.  Credit to Jim Shore.
+* Fixed parsing error that prevented extended characters from being parsed.  Credit to Jim Shore.
+* Updated parsing to conform to 20 July Fit Specification, including improved handling of line breaks and whitespace.  Credit to Jim Shore.
+* Fixed array errors that prevented arrays from being compared properly.  Credit to Jim Shore.
+
+(Note: Jim Shore was named Jim Little prior to Aug 2003.)
+
 Changes in fit-b030825cs:
 Produced by Jim Little.
-* Brought back up to level of (Java) fit-b030425j.  Credit to Jim Little with contributions by Mars Tanumihardja.
+* Brought up to level of (Java) fit-b030425j.  Credit to Jim Little with contributions by Mars Tanumihardja.
 * Clarified exception when programmer forgets to extend Fixture class.  Credit to Jim Little.
 
 Changes in fit-b021023cs:

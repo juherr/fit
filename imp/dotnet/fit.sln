@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eg", "src\eg\eg.csproj", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRunner", "http://localhost/webrunner/WebRunner.csproj", "{EB8FA69C-EE38-4647-8074-683CA547C9D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fat", "src\fat\fat.csproj", "{24A47375-0265-4309-ACC7-F7EBE062EECC}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -37,6 +39,10 @@ Global
 		{EB8FA69C-EE38-4647-8074-683CA547C9D6}.Debug.Build.0 = Debug|.NET
 		{EB8FA69C-EE38-4647-8074-683CA547C9D6}.Release.ActiveCfg = Release|.NET
 		{EB8FA69C-EE38-4647-8074-683CA547C9D6}.Release.Build.0 = Release|.NET
+		{24A47375-0265-4309-ACC7-F7EBE062EECC}.Debug.ActiveCfg = Debug|.NET
+		{24A47375-0265-4309-ACC7-F7EBE062EECC}.Debug.Build.0 = Debug|.NET
+		{24A47375-0265-4309-ACC7-F7EBE062EECC}.Release.ActiveCfg = Release|.NET
+		{24A47375-0265-4309-ACC7-F7EBE062EECC}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

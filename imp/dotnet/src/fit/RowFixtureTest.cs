@@ -6,7 +6,9 @@ using System.Collections;
 using System;
 
 namespace fit {
-public class RowFixtureTest : TestCase {
+
+[TestFixture]
+public class RowFixtureTest {
 
     class BusinessObject {
         private string[] strs;
@@ -18,9 +20,7 @@ public class RowFixtureTest : TestCase {
         public string[] getStrings() {return strs;}
     }
 
-    public RowFixtureTest (string name) : base(name) {
-    }
-
+	[Test]
     public void testMatch() {
 
         /*
@@ -43,10 +43,10 @@ public class RowFixtureTest : TestCase {
         ArrayList expected = new ArrayList();
         expected.Add(new Parse("tr","",new Parse("td","1",null,null),null));
         fixture.match(expected, computed,0);
-        AssertEquals("right", 1, fixture.counts.right);
-        AssertEquals("exceptions", 0, fixture.counts.exceptions);
-        AssertEquals("missing", 0, fixture.missing.Count);
-        AssertEquals("surplus", 0, fixture.surplus.Count);
+        Assertion.AssertEquals("right", 1, fixture.counts.right);
+        Assertion.AssertEquals("exceptions", 0, fixture.counts.exceptions);
+        Assertion.AssertEquals("missing", 0, fixture.missing.Count);
+        Assertion.AssertEquals("surplus", 0, fixture.surplus.Count);
     }
 
     private class TestRowFixture : RowFixture {

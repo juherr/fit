@@ -1,5 +1,5 @@
 FIT for .NET
-by Jim Little and Ward Cunningham
+by Jim Shore and Ward Cunningham
 based on FIT for Java
 by Ward Cunningham
 
@@ -7,12 +7,12 @@ by Ward Cunningham
 
 Quick Start:
 
-Open a Visual Studio command prompt, change to the 'dotnet'
-directory of the Fit distribution, and type 'nant'.  Fit will
+Open a Visual Studio command prompt, change to the 'imp\dotnet'
+directory of the Fit distribution, and type 'build'.  Fit will
 build and run tests.  You should see it say "build successful."
 
 There is a VS.NET solution file that includes the source code
-and examples.  It's in the 'dotnet' directory.
+and examples.  It's in the same 'dotnet' directory.
 
 For more information about FIT, please see the FIT Wiki:
 fit.c2.com
@@ -46,8 +46,8 @@ to spearhead the C# version.
 
 -------------
 
-Jim Little
+Jim Shore
 Portland, OR
 19 Oct 2002
 
-(updated, 25 Aug 2003)
+(updated, 21 July 2004)

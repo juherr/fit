@@ -223,7 +223,7 @@ namespace fit {
                 ComparableArrayList that = (ComparableArrayList)comparator;
                 if (this.Count != that.Count) return false;
                 for (int i = 0; i < this.Count; i++) {
-                    if (this[i] != that[i]) return false;
+                    if (!(this[i].Equals(that[i]))) return false;
                 }
                 return true;
             }

@@ -106,7 +106,9 @@ namespace fit {
         }
 
         protected virtual TypeAdapter bindField (string name) {
-            return TypeAdapter.on(this, getTargetClass().GetField(name));
+			FieldInfo field = getTargetClass().GetField(name);
+			if (field == null) throw new MissingFieldException(getTargetClass().FullName, name);
+            return TypeAdapter.on(this, field);
         }
 
         public virtual Type getTargetClass() {

@@ -3,9 +3,11 @@
 
 using System;
 using System.IO;
+using System.Text;
 
 namespace fit {
     public class FileRunner {
+		private const int WINDOWS_STANDARD_ENCODING = 1252;
 
         public string input;
         public Parse tables;
@@ -55,7 +57,7 @@ namespace fit {
             fixture.summary["fixture path"] = fixturePath;
             try {
                 input = read(inFile);
-                output = new StreamWriter(outFile);
+                output = new StreamWriter(outFile, false, Encoding.GetEncoding(WINDOWS_STANDARD_ENCODING));
             } 
             catch (IOException e) {
                 Console.Error.WriteLine(e.Message);
@@ -70,7 +72,7 @@ namespace fit {
         }
 
         protected virtual string read(string input) {
-            StreamReader reader = new StreamReader(input);
+            StreamReader reader = new StreamReader(input, Encoding.GetEncoding(WINDOWS_STANDARD_ENCODING));
             try {
                 return reader.ReadToEnd();
             }

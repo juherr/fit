@@ -88,12 +88,16 @@ namespace fit {
 
         public virtual Fixture loadFixture(string className) {
             try {
+				string assemblyList = "";
+				string delimiter = "";
                 foreach (string assemblyName in assemblies) {
                     Assembly assembly = Assembly.LoadFrom(assemblyName);
                     Fixture fixture = (Fixture)assembly.CreateInstance(className);
                     if (fixture != null) return fixture;
+					assemblyList += delimiter + assembly.CodeBase;
+					delimiter = ", ";
                 }
-                throw new ApplicationException("Fixture '" + className + "' could not be found in assemblies");
+                throw new ApplicationException("Fixture '" + className + "' could not be found in assemblies.  Assemblies searched: " + assemblyList);
             }
             catch (InvalidCastException e) {
                 throw new ApplicationException("Couldn't cast " + className + " to Fixture.  Did you remember to extend Fixture?", e);
@@ -186,25 +190,18 @@ namespace fit {
             return " <font color=#808080>" + text + "</font>";
         }
 
-        public static string escape (string text) {
-            return escape(escape(text, '&', "&amp;"), '<', "&lt;");
-        }
 
-        public static string escape (string text, char from, string to) {
-            int i=-1;
-            while ((i = text.IndexOf(from, i+1)) >= 0) {
-                if (i == 0) {
-                    text = to + text.Substring(1);
-                } 
-                else if (i == text.Length) {
-                    text = text.Substring(0, i) + to;
-                } 
-                else {
-                    text = text.Substring(0, i) + to + text.Substring(i+1);
-                }
-            }
-            return text;
-        }
+		public static String escape (String s) 
+		{
+			s = s.Replace("&", "&amp;");
+			s = s.Replace("<", "&lt;");
+			s = s.Replace("  ", " &nbsp;");
+			s = s.Replace("\r\n", "<br />");
+			s = s.Replace("\n\r", "<br />");
+			s = s.Replace("\r", "<br />");
+			s = s.Replace("\n", "<br />");
+			return s;
+		}
 
         public static string camel (string name) {
             string[] tokens = name.Split(' ');

@@ -2,12 +2,11 @@
 // Released under the terms of the GNU General Public License version 2 or later.
 
 using System.IO;
+using System.Text.RegularExpressions;
 using System;
 
 namespace fit {
-
     public class Parse {
-
         public string leader;
         public string tag;
         public string body;
@@ -96,41 +95,82 @@ namespace fit {
             return at(i,j).parts.at(k);
         }
 
-        public virtual string text() {
-            return unescape(unformat(body)).Trim();
-        }
+		public String text() 
+		{
+			return htmlToText(body);
+		}
+    
+		public static String htmlToText(String s)
+		{
+			s = normalizeLineBreaks(s); 
+			s = removeNonBreakTags(s);
+			s = condenseWhitespace(s);
+			s = unescape(s);
+			return s;
+		}
 
-        public static string unformat(string s) {
-            int i=0, j;
-            while ((i=s.IndexOf('<',i))>=0) {
-                if ((j=s.IndexOf('>',i+1))>0) {
-                    s = Substring(s,0,i) + s.Substring(j+1);
-                } else break;
-            }
-            return s;
-        }
+		private static String removeNonBreakTags(String s) 
+		{
+			int i=0, j;
+			while ((i=s.IndexOf('<',i))>=0) 
+			{
+				if ((j=s.IndexOf('>',i+1))>0) 
+				{
+					if (Substring(s, i, j+1) != "<br />") 
+					{
+						s = Substring(s, 0,i) + s.Substring(j+1);
+					} 
+					else i++;
+				} 
+				else break;
+			}
+			return s;
+		}
 
-        public static string unescape(string s) {
-            int i=-1, j;
-            while ((i=s.IndexOf('&',i+1))>=0) {
-                if ((j=s.IndexOf(';',i+1))>0) {
-                    string from = Substring(s, i+1, j).ToLower();
-                    string to = null;
-                    if ((to=replacement(from)) != null) {
-                        s = Substring(s,0,i) + to + s.Substring(j+1);
-                    }
-                }
-            }
-            return s;
-        }
+		public static String unescape(String s) 
+		{
+			s = s.Replace("<br />", "\n");
+			s = unescapeEntities(s);
+			s = unescapeSmartQuotes(s);
+			return s;
+		}
 
-        public static string replacement(string from) {
-            if (from == "lt") return "<";
-            else if (from == "gt") return ">";
-            else if (from == "amp") return "&";
-            else if (from == "nbsp") return " ";
-            else return null;
-        }
+		private static String unescapeSmartQuotes(String s) 
+		{
+			s = s.Replace('\u201c', '"');
+			s = s.Replace('\u201d', '"');
+			s = s.Replace('\u2018', '\'');
+			s = s.Replace('\u2019', '\''); 
+			return s;
+		}
+
+		private static String unescapeEntities(String s) 
+		{
+			s = s.Replace("&lt;", "<");
+			s = s.Replace("&gt;", ">");
+			s = s.Replace("&nbsp;", " ");
+			s = s.Replace("&quot;", "\"");
+			s = s.Replace("&amp;", "&");
+			return s;
+		}
+
+		private static String normalizeLineBreaks(String s) 
+		{
+			s = Regex.Replace(s, "<\\s*br\\s*/?\\s*>", "<br />");
+			s = Regex.Replace(s, "<\\s*/\\s*p\\s*>\\s*<\\s*p\\s*>", "<br />");
+			return s;
+		}
+	
+		public static String condenseWhitespace(String s) 
+		{
+			char NON_BREAKING_SPACE = (char)160;
+    	
+			s = Regex.Replace(s, "\\s+", " ", RegexOptions.ECMAScript);
+			s = s.Replace(NON_BREAKING_SPACE, ' ');
+			s = Regex.Replace(s, "&nbsp;", " ");
+			s = s.Trim();
+			return s;    	
+		}
 
         public virtual void addToTag(string text) {
             int last = tag.Length - 1;

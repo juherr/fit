@@ -7,10 +7,11 @@ using System.Reflection;
 using System.IO;
 
 namespace fit {
-    public class FrameworkTest : TestCase {
-        public FrameworkTest(string name) : base(name) {
-        }
+  
+  [TestFixture]
+    public class FrameworkTest : Assertion {
 
+    [Test]
         public void TestParsing() {
             Parse p = new Parse("leader<Table foo=2>body</table>trailer", new string[] {"table"});
             AssertEquals("leader", p.leader);
@@ -19,21 +20,27 @@ namespace fit {
             AssertEquals("trailer", p.trailer);
         }
 
-        public void testRecursing() {
+    [Test]
+    public void testRecursing() 
+    {
             Parse p = new Parse("leader<table><TR><Td>body</tD></TR></table>trailer");
             AssertEquals(null, p.body);
             AssertEquals(null, p.parts.body);
             AssertEquals("body", p.parts.parts.body);
         }
 
-        public void testIterating() {
+    [Test]
+    public void testIterating() 
+    {
             Parse p = new Parse("leader<table><tr><td>one</td><td>two</td><td>three</td></tr></table>trailer");
             AssertEquals("one", p.parts.parts.body);
             AssertEquals("two", p.parts.parts.more.body);
             AssertEquals("three", p.parts.parts.more.more.body);
         }
 
-        public void testIndexing() {
+    [Test]
+    public void testIndexing() 
+    {
             Parse p = new Parse("leader<table><tr><td>one</td><td>two</td><td>three</td></tr><tr><td>four</td></tr></table>trailer");
             AssertEquals("one", p.at(0,0,0).body);
             AssertEquals("two", p.at(0,0,1).body);
@@ -49,45 +56,7 @@ namespace fit {
             AssertEquals("one", p.leaf().body);
             AssertEquals("four", p.parts.last().leaf().body);
         }
-
-        public void testParseException() {
-            try {
-                Parse p = new Parse("leader<table><tr><th>one</th><th>two</th><th>three</th></tr><tr><td>four</td></tr></table>trailer");
-            } 
-            catch (ApplicationException e) {
-                //				AssertEquals(17, e.getErrorOffset());
-                AssertEquals("Can't find tag: td", e.Message);
-                return;
-            }
-            Fail("exptected exception not thrown");
-        }
-
-        public void testText() {
-            string[] tags ={"td"};
-            Parse p = new Parse("<td>a&lt;b</td>", tags);
-            AssertEquals("a&lt;b", p.body);
-            AssertEquals("a<b", p.text());
-            p = new Parse("<td>\ta&gt;b&nbsp;&amp;&nbsp;b>c &&&nbsp;</td>", tags);
-            AssertEquals("a>b & b>c &&", p.text());
-            p = new Parse("<td>\ta&gt;b&nbsp;&amp;&nbsp;b>c &&nbsp;</td>", tags);
-            AssertEquals("a>b & b>c &", p.text());
-            p = new Parse("<TD><P><FONT FACE=\"Arial\" SIZE=2>GroupTestFixture</FONT></TD>", tags);
-            AssertEquals("GroupTestFixture",p.text());
-        }
-
-        public void testUnescape () {
-            AssertEquals("a<b", Parse.unescape("a&lt;b"));
-            AssertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
-            AssertEquals("&amp;&amp;", Parse.unescape("&amp;amp;&amp;amp;"));
-            AssertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
-        }
-
-        public void testUnformat () {
-            AssertEquals("ab",Parse.unformat("<font size=+1>a</font>b"));
-            AssertEquals("ab",Parse.unformat("a<font size=+1>b</font>"));
-            AssertEquals("a<b",Parse.unformat("a<b"));
-        }
-
+    
         public void TestTypeAdapter() {
             TypeAdapterTarget target = new TypeAdapterTarget();
             TypeAdapter adapter = TypeAdapter.on(target, typeof(int));
@@ -142,7 +111,7 @@ namespace fit {
                 return 2 * pi;
             }
         }
-		
+    
         public void testTypeAdapter () {
             TestFixture f = new TestFixture ();
             TypeAdapter a = TypeAdapter.on(f, f.GetType().GetField("sampleInt"));
@@ -160,17 +129,17 @@ namespace fit {
             a = TypeAdapter.on(f, f.GetType().GetField("sampleFloat"));
             a.set(a.parse("6.02e23"));
             AssertEquals(6.02e23, f.sampleFloat, 1e17);
-            //			a = TypeAdapter.on(f, f.GetType().GetField("sampleArray"));
-            //			a.set(a.parse("1,2,3"));
-            //			AssertEquals(1, f.sampleArray[0]);
-            //			AssertEquals(2, f.sampleArray[1]);
-            //			AssertEquals(3, f.sampleArray[2]);
-            //			AssertEquals("1,2,3", f.sampleArray.ToString());
-            //			AssertEquals(new int[] {1, 2, 3}, f.sampleArray);
-            //			a = TypeAdapter.on(f, f.GetType().GetField("sampleDate"));
-            //			DateTime date = new DateTime(1949,4,26);
-            //			a.set(a.parse(DateFormat.getDateInstance().format(date)));
-            //			AssertEquals(date, f.sampleDate);
+            //      a = TypeAdapter.on(f, f.GetType().GetField("sampleArray"));
+            //      a.set(a.parse("1,2,3"));
+            //      AssertEquals(1, f.sampleArray[0]);
+            //      AssertEquals(2, f.sampleArray[1]);
+            //      AssertEquals(3, f.sampleArray[2]);
+            //      AssertEquals("1,2,3", f.sampleArray.ToString());
+            //      AssertEquals(new int[] {1, 2, 3}, f.sampleArray);
+            //      a = TypeAdapter.on(f, f.GetType().GetField("sampleDate"));
+            //      DateTime date = new DateTime(1949,4,26);
+            //      a.set(a.parse(DateFormat.getDateInstance().format(date)));
+            //      AssertEquals(date, f.sampleDate);
             a = TypeAdapter.on(f, f.GetType().GetField("sampleByte"));
             a.set(a.parse("123"));
             AssertEquals((byte)123, f.sampleByte);
@@ -180,7 +149,7 @@ namespace fit {
         }
 
         class TestFixture : ColumnFixture {
-		  // used in testTypeAdapter
+      // used in testTypeAdapter
             public byte sampleByte = 0;
             public short sampleShort =0;
             public int sampleInt = 0;
@@ -225,14 +194,16 @@ namespace fit {
         }
 
         public void testRuns() {
-            run("arithmetic", 37, 10, 0, 2);
-            run("CalculatorExample", 75, 9, 0, 0);
-            run("MusicExample", 95, 0, 0, 0);
+            run("arithmetic.html", 37, 10, 0, 2);
+            run("CalculatorExample.html", 75, 9, 0, 0);
+//            run("MusicExample.html", 95, 0, 0, 0);
         }
 
         protected void run(string file, int right, int wrong, int ignores, int exceptions) {
-            string input = read("../../examples/"+file+".html");
+			string root = findRoot(file);
+            string input = readExample(root + file);
             Fixture fixture = new Fixture();
+			Fixture.assemblyDirs = new string[] {".", @"..\..\..\eg\bin\Debug"};
             Parse tables;
             if (input.IndexOf("<wiki>") >= 0) {
                 tables = new Parse(input, new String[]{"wiki", "table", "tr", "td"});
@@ -243,7 +214,7 @@ namespace fit {
             }
             StringWriter output = new StringWriter();
             tables.print(output);
-            output.Close();
+			output.Close();
 
             AssertEquals(file+" right", right, fixture.counts.right);
             AssertEquals(file+" wrong", wrong, fixture.counts.wrong);
@@ -251,8 +222,14 @@ namespace fit {
             AssertEquals(file+" exceptions", exceptions, fixture.counts.exceptions);
         }
 
-        protected String read(string filename) {
-            StreamReader input = new StreamReader(filename);
+		protected String findRoot(string file) {
+			string root = "../../../examples/";
+			if (!File.Exists(root + file)) root = "../../../../../../examples/";
+			return root;
+		}
+
+        protected String readExample(string path) {
+			StreamReader input = new StreamReader(path);
             string result = input.ReadToEnd();
             input.Close();
             return result;
