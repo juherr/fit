@@ -1,9 +1,53 @@
 require 'rake/testtask'
 
-desc "Default task is to run Fit unit tests."
+desc "Default task is to run FIT unit tests."
 task :default => :test
 
+desc "Run FIT unit tests."
 Rake::TestTask.new do |t|
   t.test_files = FileList['test/all_tests.rb']
   t.verbose = true
+end
+
+$:.unshift File.join(File.dirname(__FILE__), 'lib')
+
+require 'fit/file_runner'
+
+module Fit
+  class FileRunner
+    def run args
+      process_args args
+      process
+    end
+  end
+end
+
+require 'rake/clean'
+CLOBBER.include("../../examples/Report_*.html")
+
+test1 = { :name => 'CalculatorExample.html',
+         :right => 75, :wrong => 9, :ignores => 0, :exceptions => 0 }
+         
+test2 = { :name => 'MusicExample.html',
+          :right => 95, :wrong => 0, :ignores => 0, :exceptions => 0 }
+          
+test3 = { :name => 'arithmetic.html',
+          :right => 39, :wrong => 8, :ignores => 0, :exceptions => 2 }
+
+desc "Run FIT acceptance tests"
+task :fit
+
+[test1, test2, test3].each do |test|
+  task :fit do
+    runner = Fit::FileRunner.new
+    runner.run ["../../examples/#{test[:name]}", "../../examples/Report_#{test[:name]}"]
+    result = runner.fixture.counts
+    [:right, :wrong, :ignores, :exceptions].each do |symbol|
+      count = result.method(symbol).call
+      expected = test[symbol]
+      unless count == expected
+        raise Exception.new("#{test[:name]}: #{expected} #{symbol} expected, found #{count} instead.")
+      end
+    end
+  end
 end
