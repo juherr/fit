@@ -6,8 +6,6 @@
 	objectVersion = 39;
 	objects = {
 		014CEA440018CDF011CA2923 = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -21,8 +19,6 @@
 			name = Development;
 		};
 		014CEA450018CDF011CA2923 = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -82,8 +78,6 @@
 		};
 		0867D691FE84028FC02AAC07 = {
 			children = (
-				19E91CB20528DC4300A80108,
-				19E91CA20528DC0B00A80108,
 				08FB77AEFE84172EC02AAC07,
 				32C88DFF0371C24200C91783,
 				089C1665FE841158C02AAC07,
@@ -108,18 +102,16 @@
 			sourceTree = "<group>";
 		};
 		0867D69BFE84028FC02AAC07 = {
-			expectedFileType = wrapper.framework;
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = Foundation.framework;
 			path = /System/Library/Frameworks/Foundation.framework;
 			refType = 0;
 			sourceTree = "<absolute>";
 		};
 		0867D6A5FE840307C02AAC07 = {
-			expectedFileType = wrapper.framework;
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = AppKit.framework;
 			path = /System/Library/Frameworks/AppKit.framework;
 			refType = 0;
@@ -144,9 +136,9 @@
 			sourceTree = "<group>";
 		};
 		089C1667FE841158C02AAC07 = {
-			expectedFileType = text.plist.strings;
 			fileEncoding = 10;
 			isa = PBXFileReference;
+			lastKnownFileType = text.plist.strings;
 			name = English;
 			path = English.lproj/InfoPlist.strings;
 			refType = 4;
@@ -161,9 +153,9 @@
 			sourceTree = "<group>";
 		};
 		08FB77B4FE84181DC02AAC07 = {
-			expectedFileType = sourcecode.c.c;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
 			name = main.c;
 			path = src/main.c;
 			refType = 4;
@@ -189,9 +181,8 @@
 			sourceTree = "<group>";
 		};
 		1058C7B1FEA5585E11CA2CBB = {
-			expectedFileType = wrapper.framework;
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = Cocoa.framework;
 			path = /System/Library/Frameworks/Cocoa.framework;
 			refType = 0;
@@ -218,243 +209,242 @@
 //193
 //194
 		190A4E5505238FA600A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = FileRunner.m;
 			path = src/fit/FileRunner.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190A4E580523904700A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = FileRunner.h;
 			path = src/fit/FileRunner.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190A4E6E0523CA2900A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = PrimitiveFixture.h;
 			path = src/fit/PrimitiveFixture.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190A4E6F0523CA2900A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = PrimitiveFixture.m;
 			path = src/fit/PrimitiveFixture.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190A4E740523CC5300A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = EGArithmeticFixture.h;
 			path = src/eg/EGArithmeticFixture.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190A4E750523CC5300A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = EGArithmeticFixture.m;
 			path = src/eg/EGArithmeticFixture.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190A4E810523F20E00A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = FITSummary.h;
 			path = src/fit/FITSummary.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190A4E820523F20E00A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = FITSummary.m;
 			path = src/fit/FITSummary.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190D698F051AA34900A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			name = FitX_Prefix.h;
-			path = src/FitX_Prefix.h;
+			lastKnownFileType = sourcecode.c.h;
+			name = Fit_Prefix.h;
+			path = src/Fit_Prefix.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190D6991051AA6D500A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = FrameworkTest.h;
 			path = src/fit/FrameworkTest.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190D6992051AA6D500A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = FrameworkTest.m;
 			path = src/fit/FrameworkTest.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190D6995051AA7F400A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = Parse.h;
 			path = src/fit/Parse.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		190D6996051AA7F400A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = Parse.m;
 			path = src/fit/Parse.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19814EF2052BBD5700A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = EGCalculator.h;
 			path = src/eg/EGCalculator.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19814EF3052BBD5700A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = EGCalculator.m;
 			path = src/eg/EGCalculator.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		198F4BCA0544A8F900A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = EGMusicRealtime.h;
 			path = src/eg/music/EGMusicRealtime.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		198F4BCB0544A8F900A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = EGMusicRealtime.m;
 			path = src/eg/music/EGMusicRealtime.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		199F07A1051A9F4100A80108 = {
-			expectedFileType = wrapper.framework;
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = ObjcUnit.framework;
 			path = /Users/stevennewton/Library/Frameworks/ObjcUnit.framework;
 			refType = 0;
 			sourceTree = "<absolute>";
 		};
 		199F07AB051A9F9D00A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = test_main.m;
 			path = src/test_main.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		199F07AD051A9FFB00A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = AllTests.h;
 			path = src/AllTests.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		199F07AE051A9FFB00A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = AllTests.m;
 			path = src/AllTests.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19A8EBD0053DEE0C00A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = EGMusicDisplay.h;
 			path = src/eg/music/EGMusicDisplay.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19A8EBD1053DEE0C00A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = EGMusicDisplay.m;
 			path = src/eg/music/EGMusicDisplay.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19A8EBD6053DEE4000A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = RowFixture.h;
 			path = src/fit/RowFixture.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19A8EBD7053DEE4000A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = RowFixture.m;
 			path = src/fit/RowFixture.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19A8EBDE053DF0AF00A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = MusicLibrary.h;
 			path = src/eg/music/MusicLibrary.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19A8EBDF053DF0AF00A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = MusicLibrary.m;
 			path = src/eg/music/MusicLibrary.m;
 			refType = 4;
@@ -481,7 +471,7 @@
 				CPLUSPLUS = "/usr/bin/g++-3.3";
 				FRAMEWORK_SEARCH_PATHS = /Users/stevennewton/Library/Frameworks;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/FitX_Prefix.h;
+				GCC_PREFIX_HEADER = src/Fit_Prefix.h;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				OTHER_CFLAGS = "";
@@ -802,7 +792,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		19B65289054B448E003FAD43 = {
-			expectedFileType = "compiled.mach-o.executable";
+			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = "All Tests";
@@ -827,7 +817,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/FitX_Prefix.h;
+				GCC_PREFIX_HEADER = src/Fit_Prefix.h;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -1048,14 +1038,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		19B652AD054B45C2003FAD43 = {
-			expectedFileType = text.plist;
 			isa = PBXFileReference;
+			lastKnownFileType = text.plist;
 			path = "Info-FitX__Upgraded_.plist";
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19B652AE054B45C2003FAD43 = {
-			expectedFileType = wrapper.framework;
+			explicitFileType = wrapper.framework;
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = Fitx.framework;
@@ -1063,36 +1053,36 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		19C099D605200C2100A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = TypeAdapter.h;
 			path = src/fit/TypeAdapter.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19C099D705200C2100A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = TypeAdapter.m;
 			path = src/fit/TypeAdapter.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19C099DC052099CB00A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = Fixture.h;
 			path = src/fit/Fixture.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19C099DD052099CB00A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = Fixture.m;
 			path = src/fit/Fixture.m;
 			refType = 4;
@@ -1147,223 +1137,64 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		19E91CA20528DC0B00A80108 = {
-			children = (
-				19E91CA40528DC0B00A80108,
-				19E91CA50528DC0B00A80108,
-				19E91CA60528DC0B00A80108,
-				19E91CA70528DC0B00A80108,
-				19E91CA80528DC0B00A80108,
-				19E91CA90528DC0B00A80108,
-				19E91CAA0528DC0B00A80108,
-				19E91CAB0528DC0B00A80108,
-				19E91CAC0528DC0B00A80108,
-				19E91CAD0528DC0B00A80108,
-				19E91CAE0528DC0B00A80108,
-				19E91CAF0528DC0B00A80108,
-				19E91CB00528DC0B00A80108,
-				19E91CB10528DC0B00A80108,
-			);
-			isa = PBXGroup;
-			path = Documents;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CA40528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = AllCombinations.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CA50528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = AllFiles.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CA60528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = AllPairs.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CA70528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = arithmetic.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CA80528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = BinaryChop.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CA90528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = CalculatorExample.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CAA0528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = ExampleTests.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CAB0528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = FitAcceptanceTests.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CAC0528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = FitSpecification.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CAD0528DC0B00A80108 = {
-			expectedFileType = image.gif;
-			isa = PBXFileReference;
-			path = logo.gif;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CAE0528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = MusicExample.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CAF0528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = MusicExampleWithErrors.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CB00528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = NetworkExample.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CB10528DC0B00A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = WebPageExample.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CB20528DC4300A80108 = {
-			children = (
-				19E91CB50528DC4300A80108,
-				19E91CB60528DE2600A80108,
-			);
-			isa = PBXGroup;
-			path = Reports;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
-		19E91CB50528DC4300A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = CalculatorExample.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		19E91CB60528DE2600A80108 = {
-			expectedFileType = text.html;
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			path = arithmetic.html;
-			refType = 4;
-			sourceTree = "<group>";
-		};
 		19E91CC5052940B700A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = ColumnFixture.h;
 			path = src/fit/ColumnFixture.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19E91CC6052940B700A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = ColumnFixture.m;
 			path = src/fit/ColumnFixture.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19E91CCB0529412600A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = EGArithmeticColumnFixture.h;
 			path = src/eg/EGArithmeticColumnFixture.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19E91CCC0529412600A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = EGArithmeticColumnFixture.m;
 			path = src/eg/EGArithmeticColumnFixture.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19E91CD80529635B00A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = fit.h;
 			path = src/fit/fit.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19EB149D053C7E1B00A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = FITActionFixture.h;
 			path = src/fit/FITActionFixture.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19EB149E053C7E1B00A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = FITActionFixture.m;
 			path = src/fit/FITActionFixture.m;
 			refType = 4;
@@ -1386,18 +1217,18 @@
 			sourceTree = "<group>";
 		};
 		19EB14A7053CA5E000A80108 = {
-			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			name = EGMusicBrowser.h;
 			path = src/eg/music/EGMusicBrowser.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		19EB14A8053CA5E000A80108 = {
-			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			name = EGMusicBrowser.m;
 			path = src/eg/music/EGMusicBrowser.m;
 			refType = 4;
@@ -1417,7 +1248,7 @@
 				CPLUSPLUS = "/usr/bing++-3.3";
 				FRAMEWORK_SEARCH_PATHS = /Users/stevennewton/Library/Frameworks;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/FitX_Prefix.h;
+				GCC_PREFIX_HEADER = src/Fit_Prefix.h;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				OTHER_CFLAGS = "";
@@ -1705,7 +1536,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		19F98F58054B472600CF6A23 = {
-			expectedFileType = "compiled.mach-o.executable";
+			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = FileRunner;
