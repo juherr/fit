@@ -1,0 +1,10 @@
+<div class="sidebar">
+<ul class="cm">
+<li><a href="/antfit">Home</a></li>
+<li><a href="/antfit/docs/quickstart.html">Quick Start</a></li>
+<li>Download <a href="/antfit/antfit.jar">Binary</a> or <a href="/antfit/antfit-src.tar.gz">Source</a></li>
+<li><a href="/antfit/examples">Examples</a></li>
+<li><a href="/cgi-bin/cvsweb.cgi/fit/">Browse CVS</a></li>
+<li><a href="/antfit/docs">Documentation</a></li>
+</ul>
+</div>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>AntFit</title>
+<link href="/antfit/antfit.css" rel="stylesheet" type="text/css"/>
+<link href="/antfit/antifit.css" rel="alternate stylesheet" type="text/css" title="Inverse Colors"/>
+</head>
+<body>
+<h1>AntFit</h1>
+<div id="main">
+<cite class="popolvuh">
+<abbr title="Bless, To make proper"><img src="../bless.png" clear="none" alt="Bless, To make proper" height="32" width="32"/></abbr>
+This is the first account, the first narrative. There was neither man,
+nor animal, birds, fishes, crabs, trees, stones, caves, ravines, grasses,
+nor forests; there was only the sky.<p>--The Popol Vuh, sacred book of
+the Quiche Maya.
+</cite>
+<p>In learning a new programming language, toolkit, or library, some
+people write "Hello, World".  One I knew would write a hex dump utility.
+I calculate Mayan dates. Probably my very first real programming effort
+involved taking a Mayan date calculator written in FORTRAN and re-creating
+it in C. Since then I've rewritten it many times, and used the basic code
+as the core for implementing a prototype to learn new things, including
+web CGIs, servlets, Mozilla XPCOM, Web Services, and more. It was 
+the natural choice for my foray into FIT.</p>
+
+The Mayans knew about 0 and counted in base 20.  This page really can't do
+justice to the Mayan date system.  Read 
+<a href="http://webexhibits.org/calendars/calendar-mayan.html
+">more about Mayan calendar systems</a>.
+
+<p>Unless otherwise noted, expected values are those generated with the
+<a href="http://www.mayabelize.ca/maya/longcountgenerator.shtml">Maya Long
+Count Date Generator</a></p>
+
+If you are interested in duplicating these results in your own code, you'll
+want to get a good reference on basic date conversions.  Start by generating
+Julian day from a Gregorian calendar date.  Use the Julian day to generate
+the Mayan dates.  Probably the best technical reference on the web is at
+<a href="http://www.mayacalendar.com/mayacalendar/menu.html">Maya World Studies Center<a/>.
+
+<h2>Here is the input document</h2>
+<!--#include virtual="input/MayanCalendar.html"-->
+
+<h2>A clean run should result in the following</h2>
+<!--#include virtual="output/MayanCalendar.html"-->
+<!--#include virtual="/antfit/footer.ssi"-->
+</div>
+<!-- sidebar goes here -->
+<!--#include virtual="/antfit/sidebar.ssi"-->
+</body>
+</html>

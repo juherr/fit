@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>AntFit Specification</title>
+<link rel="stylesheet" href="/antfit/antfit.css" type="text/css"/>
+<link href="../antifit.css" rel="alternate stylesheet" type="text/css" title="Inverse Colors"/>
+</head>
+<body>
+<h1>AntFit</h1>
+<div id="main">
+<hr>
+Fit task for Ant.  Requested on the FIT wiki <a href="http://fit.c2.com/wiki.cgi?MakingRunners">MakingRunners</a> page.
+
+<h2>Overview</h2>
+
+
+This is an external task for Ant that will invoke the FIT engine on the
+test input file.
+
+<h2>Scenarios</h2>
+
+<h3>Context</h3>
+In a development effort consisting largely of Java where the chosen tool for
+the project's build is Apache Ant.
+
+<h3>Intent</h3>
+The integration with Ant allows the acceptance tests to be run as part of the
+overall build.  In projects where a build and deploy is complex and requires
+integration with application servers or other complexities, having the power
+of Ant to handle the steps and run the tests together is an important
+benefit.
+
+<h3>Description</h3>
+The basic runner iterates over a FileSet of test documents in the specified
+input directory, and leaves the results in an output directory.
+
+<h2>Tests</h2>
+
+<ol>
+  <li>The task loads the fixture html documents from a specified location.</li>
+  <li>The runner executes each fixture.</li>
+  <li>The result html files are written to the specified output directory.</li>
+</ol>
+
+<h2>Not Gonna Do It</h2>
+
+Things this tools will not address. TBD.
+
+<h2>The Big Picture</h2>
+
+<h2>The Nitty-Gritty</h2>
+
+For now, see <a href="quickstart.html">the quickstart.</a>
+
+<h2>Open Issues</h2>
+
+<ul>
+  <li>We might be inclined to offer an option to only run those tests
+  where the input is newer than the corresponding output.</li>
+
+  <li>There are ways to set up the ant dependencies to only run the
+  tests if there has been a change that required any recompilation.
+  The examples page will eventually cover that.</li>
+
+  <li>Perhaps Ant could build an index.html page linking to all the
+  sub-documents and write that into the output directory?  Have to watch
+  for name collisions if index.html is already one of the names.</li>
+</ul>
+
+<h2>Notes To Specific Audiences</h2>
+
+<ul>
+  <li>
+    <h3>Technical Notes</h3>
+        The choice to subclass WikiRunner rather than the basic FileRunner was
+	deliberate.  In playing with various documents it became clear that
+        having the ability to segregate fixture content from non-fixture
+	content was a desirable feature.  If anyone has a different story,
+        this choice could be made configurable.
+  </li>
+  <li>Testing Notes</li>
+  <li>Maintenance Notes</li>
+</ul>
+
+<h2>Change Log</h2>
+
+<!--#include virtual="../footer.ssi"-->
+</div>
+<!-- sidebar goes here -->
+<!--#include virtual="/antfit/sidebar.ssi"-->
+</body>
+</html>

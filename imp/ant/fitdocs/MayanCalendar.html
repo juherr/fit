@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Mayan Calendar</title>
+<link type="text/csss" rel="stylesheet" href="top.css">
+</head>
+<body>
+<h1>Mayan Calendar</h1>
+Unless otherwise noted, expected values are those generated with the <a href="http://www.mayabelize.ca/maya/longcountgenerator.shtml">Maya Long Count Date Generator</a>
+<hr>
+<h2>This version demonstrates a solution with a ColumnFixture</h2>
+<wiki>
+<table cellpadding="3" cellspacing="0" border="1"
+ style="text-align: left;">
+    <tr>
+      <td colspan="5" style="vertical-align: top;">com.cmdev.maya.MayaFixture</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">gregorianDate</td>
+      <td style="vertical-align: top;">correlationConstant</td>
+      <td style="vertical-align: top;">round()</td>
+      <td style="vertical-align: top;">longCount()</td>
+      <td style="vertical-align: top;">julian()</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">June 30, 1964</td>
+      <td style="vertical-align: top;">584283</td>
+      <td style="vertical-align: top;">4 Ix 17 Zotz</td>
+      <td style="vertical-align: top;">12 . 17 . 10 . 14 . 14</td>
+      <td style="vertical-align: top;">2438577</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">June 30, 1964</td>
+      <td style="vertical-align: top;">584285</td>
+      <td style="vertical-align: top;">2 Eb 15 Zotz</td>
+      <td style="vertical-align: top;">12 . 17 . 10 . 14 . 12</td>
+      <td style="vertical-align: top;">2438577</td>
+    </tr>
+    <tr>
+      <td>December 21, 2012</td>
+      <td>584283</td>
+      <td>4 Ahau 3 Kankin</td>
+      <td>13 . 0 . 0 . 0 . 0</td>
+      <td>2456283</td>
+    </tr>
+</table>
+<p/>
+<table cellpadding="3" cellspacing="0" border="1"
+ style="text-align: left;">
+    <tr>
+      <td colspan="5" style="vertical-align: top;">com.cmdev.maya.MayaFixture</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">julianDate</td>
+      <td style="vertical-align: top;">correlationConstant</td>
+      <td style="vertical-align: top;">round()</td>
+      <td style="vertical-align: top;">longCount()</td>
+      <td style="vertical-align: top;">gregorian()</td>
+   </tr> 
+    <tr>
+      <td style="vertical-align: top;">2369916</td>
+      <td style="vertical-align: top;">584283</td>
+      <td style="vertical-align: top;">9 Ben 16 Uo</td>
+      <td style="vertical-align: top;">12 . 8 . 0 . 1 . 13</td>
+      <td style="vertical-align: top;">July 4, 1776</td>
+    </tr>
+    <tr>
+      <td>2299161</td>
+      <td>584283</td>
+      <td>13 Etznab 11 Tzec</td>
+      <td>11 . 18 . 3 . 9 . 18</td>
+      <td>October 15, 1582</td>
+    </tr>
+</table>
+<br>
+<h2>This next version uses an ActionFixture</h2>
+<table cellpadding="3" cellspacing="0" border="1">
+<tr><td colspan="3">fit.ActionFixture</td></tr>
+
+<tr>
+<td>start</td><td>com.cmdev.maya.MayaActionFixture</td><td></td>
+</tr>
+<tr>
+<td>enter</td><td>gregorianDate</td><td>June 30, 1964</td>
+</tr>
+<tr>
+<td>enter</td><td>correlationConstant</td><td>584283</td>
+</tr>
+<tr>
+<td>press</td><td>calculateMayan</td><td></td>
+</tr>
+<tr>
+<td>check</td><td>calendarRound</td><td>4 Ix 17 Zotz</td>
+</tr>
+<tr>
+<td>check</td><td>longCount</td><td>12 . 17 . 10 . 14 . 14</td>
+</tr>
+<tr>
+<td>check</td><td>julianDate</td><td>2438577</td>
+</tr>
+<tr>
+<td>enter</td><td>correlationConstant</td><td>584285</td>
+</tr>
+<tr>
+<td>press</td><td>calculateMayan</td><td></td>
+</tr>
+<tr>
+<td>check</td><td>calendarRound</td><td>2 Eb 15 Zotz</td>
+</tr>
+<tr>
+<td>check</td><td>longCount</td><td>12 . 17 . 10 . 14 . 12</td>
+</tr>
+<tr>
+<td>check</td><td>julianDate</td><td>2438577</td>
+</tr>
+
+<tr>
+<td>enter</td><td>gregorianDate</td><td>December 21, 2012</td>
+</tr>
+<tr>
+<td>enter</td><td>correlationConstant</td><td>584283</td>
+</tr>
+<tr>
+<td>press</td><td>calculateMayan</td><td></td>
+</tr>
+<tr>
+<td>check</td><td>calendarRound</td><td>4 Ahau 3 Kankin</td>
+</tr>
+<tr>
+<td>check</td><td>longCount</td><td>13 . 0 . 0 . 0 . 0</td>
+</tr>
+<tr>
+<td>check</td><td>julianDate</td><td>2456283</td>
+</tr>
+</table>
+
+</table>
+<br>
+<table border="1" cellspacing="0" cellpadding="3">
+<tr>
+<td colspan="2">fit.Summary</td>
+</tr>
+</table>
+</wiki>
+
+<hr>
+</body>
+</html>

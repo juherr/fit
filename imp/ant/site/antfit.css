@@ -1,0 +1,24 @@
+body {
+  color: #006600; background: #ECE9D8;
+  font-family: tahoma, verdana, sans-serif;
+}
+
+ul.cm {
+  list-style-image: url(http://www.cookiehome.com/favicon.ico);
+}
+
+div#sidebar {
+  position: absolute; top: 3em; left: 0; width: 23%;
+  background: transparent; padding: 0; margin: 1em; border-width: 0;
+}
+
+
+div#main {
+  position: absolute; top: 3em; left: 25%; width: auto;
+  margin: 1em; padding: 1em 1.5em;
+}
+
+div#footer {
+  text-align: center;
+  margin: 1em; padding: 1em 1.5em;
+}

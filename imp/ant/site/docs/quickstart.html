@@ -1,0 +1,34 @@
+<html>
+<head>
+<link href="../antfit.css" rel="stylesheet" type="text/css"/>
+<link href="../antifit.css" rel="alternate stylesheet" type="text/css" title="Inverse Colors"/>
+<title>AntFit Getting Started</title>
+</head>
+<body>
+<h1>AntFit Getting Started</h1>
+<div id="main">
+A <a href="http://fit.c2.com">fit</a> task for <a href="http://ant.apache.org">Ant</a>
+<p>
+<ol>
+    <li>Copy antfit.jar to your $ANT_HOME/lib directory.</li>
+    <li>Add a taskdef to your build.xml: <pre>&lt;taskdef name="fit" classname="com.cmdev.fit.ant.FitTask"&gt;</pre></li>
+    <li>Add a target and call the fit task.
+    <pre>
+        &lt;target name="runfit" depends="compile"&gt;
+            &lt;fit destdir="${fit.results.dir}"&gt;
+                &lt;fileset dir="${fit.in.dir}"&gt;
+                    &lt;include name="*.html"/&gt;
+                &lt;/fileset&gt;
+            &lt;/fit&gt;
+	&lt;/target&gt;
+    </pre></li>
+    <li>Examine the results files in ${fit.results.dir}</li>
+</ol>
+
+</p>
+<!--#include virtual="../footer.ssi"-->
+</div>
+<!-- sidebar goes here -->
+<!--#include virtual="../sidebar.ssi"-->
+</body>
+</html>
