@@ -1,0 +1,29 @@
+To do:
+* Array support
+* Upgrade to latest version of NUnit
+* Fit Acceptance Tests support
+* More polished release package
+*** Strong-named fit.dll
+*** separate directories for runners
+
+Longer term:
+* Integration with FitNesse
+* Integration with Fitster
+
+Changes in fit-b030825cs:
+Produced by Jim Little.
+* Brought back up to level of (Java) fit-b030425j.  Credit to Jim Little with contributions by Mars Tanumihardja.
+* Clarified exception when programmer forgets to extend Fixture class.  Credit to Jim Little.
+
+Changes in fit-b021023cs:
+Produced by Jim Little.
+* Improved fixture dir documentation.  Credit to Jim Little.
+
+Changes in fit-b021009cs:
+Produced by Jim Little.
+* Added fixture path for assemblies.  Credit to Jim Little.
+* Added parsing of Date objects.  Credit to Jim Little.
+
+Changes in fit-b021003cs:
+Produced by Ward Cunningham and Jim Little.
+* Initial port from Java.  Credit to Ward Cunningham and Jim Little.
