@@ -23,6 +23,14 @@ public class AnnotationFixture extends ColumnFixture {
 	public String OverwriteTableTag;
 	public String OverwriteEndTableTag;
 	public String AddToTableTag;
+	
+	public String AddCellFollowing;
+	public String RemoveFollowingCell;
+	
+	public String AddRowFollowing;
+	public String RemoveFollowingRow;
+	
+	public String AddTableFollowing;
 
 	public String ResultingHTML() throws Exception {
 		Parse table = new Parse(OriginalHTML);
@@ -44,7 +52,28 @@ public class AnnotationFixture extends ColumnFixture {
 		if (OverwriteEndTableTag != null) table.end = OverwriteEndTableTag;
 		if (AddToTableTag != null) table.addToTag(stripDelimiters(AddToTableTag));
 
+		if (AddCellFollowing != null) addParse(cell, AddCellFollowing, new String[] {"td"});
+		if (RemoveFollowingCell != null) removeParse(cell);
+				
+		if (AddRowFollowing != null) addParse(row, AddRowFollowing, new String[] {"tr", "td"});
+		if (RemoveFollowingRow != null) removeParse(row);
+		
+		if (AddTableFollowing != null) addParse(table, AddTableFollowing, new String[] {"table", "tr", "td"});
+
 		return GenerateOutput(table);        
+	}
+
+    private void addParse(Parse parse, String newString, String[] tags) throws ParseException {
+        Parse newParse = new Parse(newString, tags);
+        newParse.more = parse.more;
+        newParse.trailer = parse.trailer;
+        parse.more = newParse;
+        parse.trailer = null;
+    }
+
+	private void removeParse(Parse parse) {
+		parse.trailer = parse.more.trailer;
+		parse.more = parse.more.more;
 	}
 	
 	private String stripDelimiters(String s) {
