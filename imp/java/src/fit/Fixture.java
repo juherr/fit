@@ -63,19 +63,23 @@ public class Fixture {
         summary.put("run date", new Date());
         summary.put("run elapsed time", new RunTime());
         while (tables != null) {
-            Parse heading = tables.at(0,0,0);
-            if (heading != null) {
+            Parse fixtureName = fixtureName(tables);
+            if (fixtureName != null) {
                 try {
-                    Fixture fixture = loadFixture(heading.text());
+                    Fixture fixture = loadFixture(fixtureName.text());
                     fixture.counts = counts;
                     fixture.summary = summary;
                     fixture.doTable(tables);
                 } catch (Exception e) {
-                    exception (heading, e);
+                    exception (fixtureName, e);
                 }
             }
             tables = tables.more;
         }
+    }
+    
+    public Parse fixtureName(Parse tables) {
+		return tables.at(0,0,0);
     }
 
 	public Fixture loadFixture(String fixtureName)

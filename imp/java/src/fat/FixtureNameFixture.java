@@ -2,66 +2,17 @@ package fat;
 
 import java.text.ParseException;
 import fit.*;
-import java.util.regex.*;
 
 public class FixtureNameFixture extends ColumnFixture {
 	public String Table;
 	
 	public String FixtureName() throws Exception {
 		Parse tableParse = GenerateTableParse(Table);
-//		Fixture fixture = Fixture.
+		Fixture fixture = new Fixture();
 		
-//		return loadFixture(GenerateTableParse(Table).text()).toString();
-		return dumpTables(GenerateTableParse(Table));
-	}
-
-
-	//***************
-
-	private String dumpTables(Parse table) {
-		String result = "";
-		String separator = "";
-		while (table != null) {
-			result += separator;
-			result += dumpRows(table.parts);
-			separator = "\n----\n";
-			table = table.more;
-		}
+		String result = fixtureName(tableParse).text();
+		if (result.equals("")) return "(missing)";
 		return result;
-	}
-	
-	private String dumpRows(Parse row) {
-		String result = "";
-		String separator = "";
-		while (row != null) {
-			result += separator;
-			result += dumpCells(row.parts);
-			separator = "\n";
-			row = row.more;
-		}
-		return result;
-	}
-	
-	private String dumpCells(Parse cell) {
-		String result = "";
-		String separator = "";
-		while (cell != null) {
-			result += separator;
-			result += "[" + cell.text() + "]";
-			separator = " ";
-			cell = cell.more;
-		}
-		return result;
-	}
-	//***************
-	
-	
-	public String ValidFixture() {
-		return "not implemented";
-	}
-	
-	public String Error() {
-		return "not implemented";
 	}
 	
 	private Parse GenerateTableParse(String table) throws ParseException {
@@ -72,11 +23,11 @@ public class FixtureNameFixture extends ColumnFixture {
 	private Parse GenerateRowParses(String[] rows, int rowIndex) {
 		if (rowIndex >= rows.length) return null;
 		
-		Matcher matcher = Pattern.compile("\\[(.*?)\\]").matcher(rows[rowIndex]);
-		matcher.matches();
-		String[] cells = new String[matcher.groupCount()];
-		for (int i = 0; i < matcher.groupCount(); i++) {
-			cells[i] = matcher.group(i + 1);
+		String[] cells = rows[rowIndex].split("\\]\\s*\\[");
+		if (cells.length != 0) {
+			cells[0] = cells[0].substring(1); // strip beginning '['
+			int lastCell = cells.length - 1;
+			cells[lastCell] = cells[lastCell].replaceAll("\\]$", "");  // strip ending ']' 
 		}
 		
 		return new Parse("tr", null, GenerateCellParses(cells, 0), GenerateRowParses(rows, rowIndex+1));
@@ -88,3 +39,7 @@ public class FixtureNameFixture extends ColumnFixture {
 		return new Parse("td", cells[cellIndex], null, GenerateCellParses(cells, cellIndex + 1));
 	}
 }
+
+
+
+
