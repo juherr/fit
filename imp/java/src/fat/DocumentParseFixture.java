@@ -4,16 +4,16 @@ import fit.*;
 import java.text.*;
 import java.io.*;
 
-public class ParseFixture extends ColumnFixture {
-	public String Html;
+public class DocumentParseFixture extends ColumnFixture {
+	public String HTML;
 	public String Note;  // non-functional
 	
 	public String Output() throws ParseException {
-		return GenerateOutput(new Parse(Html));
+		return GenerateOutput(new Parse(HTML));
 	}
 
-	public String Parse() throws ParseException {
-		return dumpTables(new Parse(Html));		
+	public String Structure() throws ParseException {
+		return dumpTables(new Parse(HTML));		
 	}
 	
 	private String GenerateOutput(Parse parse) {
@@ -51,7 +51,7 @@ public class ParseFixture extends ColumnFixture {
 		String separator = "";
 		while (cell != null) {
 			result += separator;
-			result += "[" + cell.text() + "]";
+			result += "[" + cell.body + "]";
 			separator = " ";
 			cell = cell.more;
 		}

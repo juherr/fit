@@ -140,7 +140,7 @@ public class Parse {
 
 	private static String normalizeLineBreaks(String s) {
 		s = s.replaceAll("<\\s*br\\s*/?\\s*>", "<br />");
-		s = s.replaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p\\s*>", "<br />");
+		s = s.replaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p.*?>", "<br />");
 		return s;
 	}
 	

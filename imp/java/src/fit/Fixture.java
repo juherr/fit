@@ -84,7 +84,15 @@ public class Fixture {
 
 	public Fixture loadFixture(String fixtureName)
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		return (Fixture)(Class.forName(fixtureName).newInstance());
+		try {
+			return (Fixture)(Class.forName(fixtureName).newInstance());
+		}
+		catch (ClassNotFoundException e) {
+			throw new RuntimeException("The fixture \"" + fixtureName + "\" was not found.", e);
+		}
+		catch (ClassCastException e) {
+			throw new RuntimeException("\"" + fixtureName + "\" was found, but it's not a fixture.", e);
+		}
 	}
 
     public void doTable(Parse table) {
@@ -176,7 +184,6 @@ public class Fixture {
     	string = string.replaceAll("<", "&lt;");
     	string = string.replaceAll("  ", " &nbsp;");
 		string = string.replaceAll("\r\n", "<br />");
-		string = string.replaceAll("\n\r", "<br />");
 		string = string.replaceAll("\r", "<br />");
 		string = string.replaceAll("\n", "<br />");
     	return string;

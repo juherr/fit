@@ -8,7 +8,6 @@ public class FixtureNameFixture extends ColumnFixture {
 	
 	public String FixtureName() throws Exception {
 		Parse tableParse = GenerateTableParse(Table);
-		Fixture fixture = new Fixture();
 		
 		String result = fixtureName(tableParse).text();
 		if (result.equals("")) return "(missing)";

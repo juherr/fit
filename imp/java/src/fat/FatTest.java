@@ -53,6 +53,7 @@ public class FatTest extends TestCase {
 
     public void testAcceptanceTestsPass() throws IOException {
         String testName = "old.html";
+//        testName = "fixtures.html";
 
         FileRunner runner = new FileRunner();
         String outputFileName = "output/test/junit-" + testName;
