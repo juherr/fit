@@ -134,12 +134,7 @@ public class Fixture {
 
     public void wrong (Parse cell, String actual) {
         wrong(cell);
-        
-        cell.body = "<table>"
-        	+ "<tr><td>" + delimit(escape(cell.text())) + "</td><td>" + label("expected") + "</td></tr>"
-        	+ "<tr><td colspan='2'><hr /></td></tr>"
-        	+ "<tr><td>" + delimit(escape(actual)) + "</td><td>" + label("actual") + "</td></tr>"
-        	+ "</table>";
+        cell.addToBody(label("expected") + "<hr>" + escape(actual) + label("actual"));
     }
 
     public void ignore (Parse cell) {
@@ -164,12 +159,8 @@ public class Fixture {
         return counts.toString();
     }
 
-	public static String delimit (String string) {
-		return label("|") + string + label("|"); 
-	}
-
     public static String label (String string) {
-        return "<font size=-1 color=#400000><i>" + string + "</i></font>";
+        return " <font size=-1 color=#c08080><i>" + string + "</i></font>";
     }
 
     public static String gray (String string) {
