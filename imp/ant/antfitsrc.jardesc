@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="/home/sen/src/antfit/antfit.jar"/>
+    <options overwrite="false" compress="true" exportErrors="true"
+        exportWarnings="true" saveDescription="true"
+        descriptionLocation="/fit/antfitsrc.jardesc"
+        useSourceFolders="true" buildIfNeeded="true"/>
+    <selectedElements exportClassFiles="false" exportJavaFiles="true">
+        <file path="/fit/.classpath"/>
+        <folder path="/fit/lib"/>
+        <file path="/fit/.project"/>
+        <file path="/fit/build.xml"/>
+        <javaElement handleIdentifier="=fit/src"/>
+        <folder path="/fit/fitdocs"/>
+        <file path="/fit/.cvsignore"/>
+    </selectedElements>
+</jardesc>

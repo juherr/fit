@@ -1,0 +1,100 @@
+<project name="fittest" default="runfit">
+
+    <property name="build.compiler" value="jikes"/>
+    <property name="build.compiler.emacs" value="true"/>
+
+    <!-- import environment variables -->
+    <property environment="myenv."/>
+    <property name="builddir" value="${basedir}/build"/>
+    <property name="distdir" value="${basedir}/dist"/>
+    <property name="srcdir" value="${basedir}/src"/>
+    <property name="fit.in.dir" value="${basedir}/fitdocs"/>
+    <property name="fit.results.dir" value="${builddir}/tests"/>
+    <property name="jars" value="lib"/>
+
+    <!-- project classpath -->
+    <path id="class.path">
+        <pathelement location="${builddir}/classes"/>
+    </path>
+    <path id="lib.path">
+        <pathelement path="${java.class.path}"/>
+        <fileset dir="${jars}">
+            <include name="*.jar"/>
+        </fileset>    
+    </path>
+
+    <path id="all.path">
+        <path refid="class.path"/>
+        <path refid="lib.path"/>
+    </path>
+    
+    <target name="compile">
+    	<mkdir dir="${builddir}/classes"/>
+        <javac srcdir="${srcdir}"
+               destdir="${builddir}/classes"
+               debug="off"
+               deprecation="foo"
+               depend="on"
+               classpathref="lib.path"/>
+    </target>
+    
+    <target name="test" depends="compile">
+    	<mkdir dir="${fit.results.dir}"/>
+    	<java classname="fit.FileRunner" classpathref="all.path">
+    	    <arg value="${fit.in.dir}/snewton.html"/>
+    	    <arg value="${fit.results.dir}/snewton-out.html"/>
+    	</java>
+    </target>
+
+    <target name="jar" depends="compile" description="create jar">
+        <mkdir dir="${distdir}"/>
+        <jar jarfile="${distdir}/antfit.jar" basedir="${builddir}/classes">
+        	<include name="com/cmdev/fit/ant/**"/>
+        </jar>
+    </target>
+
+    <target name="clean">
+        <delete dir="${builddir}"/>
+        <delete dir="${distdir}"/>
+        <delete>
+            <fileset dir="${basedir}">
+                <include name="jikes*"/>
+                <include name="**/*.bak"/>
+            </fileset>
+        </delete>
+    </target>
+    
+    <target name="runfit"
+	depends="compile,fitsetup,fitfork,fitnowiki,fitdefaults"/>
+
+    <target name="fitsetup">
+    	<mkdir dir="${fit.results.dir}"/>
+	<taskdef name="fit" classname="com.cmdev.fit.ant.FitTask"
+		classpathref="all.path"/>
+    </target>
+
+    <target name="fitfork">
+        <fit fork="yes" destdir="${fit.results.dir}" classpathref="lib.path">
+        	<fileset dir="${fit.in.dir}">
+        		<include name="*.html"/>
+        	</fileset>
+        </fit>
+    </target>
+
+    <target name="fitnowiki">
+        <fit useWiki="no" destdir="${fit.results.dir}" classpathref="lib.path">
+        	<fileset dir="${fit.in.dir}">
+        		<include name="*.html"/>
+        	</fileset>
+        </fit>
+    </target>
+
+    <target name="fitdefaults">
+        <fit destdir="${fit.results.dir}" classpathref="lib.path">
+        	<fileset dir="${fit.in.dir}">
+        		<include name="*.html"/>
+        	</fileset>
+        </fit>
+    </target>
+
+</project>
