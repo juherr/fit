@@ -87,6 +87,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AssemblyInfo.cs"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ColumnFixture.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

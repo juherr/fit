@@ -1,22 +1,11 @@
-To do:
-* Array support
-* Upgrade to latest version of NUnit
-* Fit Acceptance Tests support
-* More polished release package
-*** Strong-named fit.dll
-*** separate directories for runners
-
-Longer term:
-* Integration with FitNesse
-* Integration with Fitster
-
-Changes in fit-b040725cs:
+Changes in 1.0 RC1:
 Produced by Jim Shore.
 * Display the assemblies searched when a fixture can't be found.  Credit to Jim Shore.
 * Clarified exception when ColumnFixture looks for a non-existant field.  Credit to Jim Shore.
 * Fixed parsing error that prevented extended characters from being parsed.  Credit to Jim Shore.
 * Updated parsing to conform to 20 July Fit Specification, including improved handling of line breaks and whitespace.  Credit to Jim Shore.
 * Fixed array errors that prevented arrays from being compared properly.  Credit to Jim Shore.
+* Signed fit.dll with strong-named key to try to eliminate fixture loading problems.  Credit to Jim Shore.
 
 (Note: Jim Shore was named Jim Little prior to Aug 2003.)
 
@@ -37,3 +26,25 @@ Produced by Jim Little.
 Changes in fit-b021003cs:
 Produced by Ward Cunningham and Jim Little.
 * Initial port from Java.  Credit to Ward Cunningham and Jim Little.
+
+
+
+Differences in the C# version of FIT:
+
+* Type parsing is done automatically.  There's no need to
+create a "parse" method in your fixture.  In fact, that's not
+supported.  If a type is mentioned in your fixture, make sure
+it implements these three methods:
+  - string ToString()
+  - void Parse(string)
+  - bool Equals(object)
+All of the basic C# types implement those methods.  The
+ScientificDouble class that comes with FIT has been augmented
+to implement those methods.
+
+* In order to load fixtures, C# has to know the location of
+the fixture assembly.  The test runners have an extra
+"fixture path" parameter that you can use to specify which
+directory your fixture assembly is in.  This path is configured
+to support common C# assembly paths by default.  See the
+command-line help for more information.

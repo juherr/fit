@@ -223,7 +223,7 @@ namespace fit {
         }
 
 		protected String findRoot(string file) {
-			string root = "../../../examples/";
+			string root = "../../../../examples/";
 			if (!File.Exists(root + file)) root = "../../../../../../examples/";
 			return root;
 		}

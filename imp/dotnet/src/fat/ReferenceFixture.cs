@@ -12,7 +12,7 @@ namespace fat
 		public string Result()
 		{
 			string inputFileName = "../../spec/" + Location;
-			string outputFileName = "output/" + Location;
+			string outputFileName = "output/spec/" + Location;
 			try 
 			{
 				FileRunner runner = new FileRunner();
