@@ -37,6 +37,4 @@ public class ReferenceFixture extends ColumnFixture {
 			return "file not found: " + fileDescription;
 		}
 	}
-	
-
 }

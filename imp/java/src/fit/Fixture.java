@@ -66,7 +66,7 @@ public class Fixture {
             Parse heading = tables.at(0,0,0);
             if (heading != null) {
                 try {
-                    Fixture fixture = (Fixture)(Class.forName(heading.text()).newInstance());
+                    Fixture fixture = loadFixture(heading.text());
                     fixture.counts = counts;
                     fixture.summary = summary;
                     fixture.doTable(tables);
@@ -77,6 +77,11 @@ public class Fixture {
             tables = tables.more;
         }
     }
+
+	public Fixture loadFixture(String fixtureName)
+		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		return (Fixture)(Class.forName(fixtureName).newInstance());
+	}
 
     public void doTable(Parse table) {
         doRows(table.parts.more);
@@ -129,7 +134,12 @@ public class Fixture {
 
     public void wrong (Parse cell, String actual) {
         wrong(cell);
-        cell.addToBody(label("expected") + "<hr>" + escape(actual) + label("actual"));
+        
+        cell.body = "<table>"
+        	+ "<tr><td>" + delimit(escape(cell.text())) + "</td><td>" + label("expected") + "</td></tr>"
+        	+ "<tr><td colspan='2'><hr /></td></tr>"
+        	+ "<tr><td>" + delimit(escape(actual)) + "</td><td>" + label("actual") + "</td></tr>"
+        	+ "</table>";
     }
 
     public void ignore (Parse cell) {
@@ -154,8 +164,12 @@ public class Fixture {
         return counts.toString();
     }
 
+	public static String delimit (String string) {
+		return label("|") + string + label("|"); 
+	}
+
     public static String label (String string) {
-        return " <font size=-1 color=#c08080><i>" + string + "</i></font>";
+        return "<font size=-1 color=#400000><i>" + string + "</i></font>";
     }
 
     public static String gray (String string) {
@@ -163,21 +177,14 @@ public class Fixture {
     }
 
     public static String escape (String string) {
-        return escape(escape(string, '&', "&amp;"), '<', "&lt;");
-    }
-
-    public static String escape (String string, char from, String to) {
-        int i=-1;
-        while ((i = string.indexOf(from, i+1)) >= 0) {
-            if (i == 0) {
-                string = to + string.substring(1);
-            } else if (i == string.length()) {
-                string = string.substring(0, i) + to;
-            } else {
-                string = string.substring(0, i) + to + string.substring(i+1);
-            }
-        }
-        return string;
+    	string = string.replaceAll("&", "&amp;");
+    	string = string.replaceAll("<", "&lt;");
+    	string = string.replaceAll("  ", " &nbsp;");
+		string = string.replaceAll("\r\n", "<br />");
+		string = string.replaceAll("\n\r", "<br />");
+		string = string.replaceAll("\r", "<br />");
+		string = string.replaceAll("\n", "<br />");
+    	return string;
     }
 
     public static String camel (String name) {

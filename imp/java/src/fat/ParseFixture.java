@@ -8,16 +8,31 @@ import java.io.*;
 public class ParseFixture extends ColumnFixture {
 	public String Html;
 	public String TableCell;
-	public String Text;
+	public String Entity;
+	public String Note;  // unused
 	
 	private Parse GenerateParse() throws ParseException {
-		if (Html != null && TableCell != null) {
-			throw new RuntimeException("Use 'Html' column OR 'TableCell' column, but not both.");
+		int inputColumns = 0;
+		String html = null;
+		if (Html != null) {
+			inputColumns++;
+			html = Html;
+		}
+		if (TableCell != null) {
+			inputColumns++;
+			html = "<table><tr>" + TableCell + "</tr></table>";
+		}
+		if (Entity != null) {
+			inputColumns++;
+			html = "<table><tr><td>" + Entity + "</td></tr></table>";
 		}
 		
-		if (Html != null) return new Parse(Html);
-		else if (TableCell != null) return new Parse("<table><tr>" + TableCell + "</tr></table>");
-		else throw new RuntimeException("Need 'Html' column or 'TableCell' column.");
+		if (inputColumns != 1) {
+			throw new RuntimeException("Exactly ONE of the following columns is needed: 'Html', 'TableCell', or 'Entity'");
+		}
+
+		html = html.replaceAll("\\\\u00a0", "\u00a0");
+		return new Parse(html);
 	}
 	
 	public String Output() throws ParseException {
@@ -30,16 +45,10 @@ public class ParseFixture extends ColumnFixture {
 		return result.toString();
 	}
 	
-	public String CellOutput() {
-		Parse cell = new Parse("td", "", null, null);
-		cell.addToBody(Text);
-		return GenerateOutput(cell);
-	}
-	
 	public String Parse() throws ParseException {
 		return dumpTables(GenerateParse());		
 	}
-	
+		
 	private String dumpTables(Parse table) {
 		String result = "";
 		String separator = "";
@@ -69,11 +78,17 @@ public class ParseFixture extends ColumnFixture {
 		String separator = "";
 		while (cell != null) {
 			result += separator;
-			result += "[" + cell.text() + "]";
+			result += "[" + escapeAscii(cell.text()) + "]";
 			separator = " ";
 			cell = cell.more;
 		}
 		return result;
 	}
 
+	private String escapeAscii(String text) {
+		text = text.replaceAll("\\x0a", "\\\\n");
+		text = text.replaceAll("\\x0d", "\\\\r");
+		text = text.replaceAll("\\xa0", "\\\\u00a0");
+		return text;
+	}
 }

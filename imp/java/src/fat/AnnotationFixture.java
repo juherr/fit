@@ -6,18 +6,19 @@ import java.io.*;
 public class AnnotationFixture extends ColumnFixture {
 	public String Type;
 	public String Text;
+	public String OriginalCell = "Text";
 	
 	public String Output() {
-		Parse parse = new Parse("td", "Text", null, null);
+		Parse parse = new Parse("td", OriginalCell, null, null);
 		Fixture hack = new Fixture();
 		
 		if (Type.equals("none")) {
 			// do nothing
 		}
-		else if (Type.equals("pass")) {
+		else if (Type.equals("right")) {
 			hack.right(parse);
 		}
-		else if (Type.equals("fail")) {
+		else if (Type.equals("wrong")) {
 			hack.wrong(parse, Text);
 		}
 		else if (Type.equals("error")) {
@@ -36,12 +37,10 @@ public class AnnotationFixture extends ColumnFixture {
 		return GenerateOutput(parse); 
 	}
 	
-
-	// note: copied from ParseFixture	
+	// code smell note: copied from ParseFixture	
 	private String GenerateOutput(Parse parse) {
 		StringWriter result = new StringWriter();
 		parse.print(new PrintWriter(result));
-		return result.toString();
+		return result.toString().trim();
 	}
-
 }

@@ -90,59 +90,69 @@ public class Parse {
     }
 
     public String text() {
-        return condenseWhitespace(unescape(unformat(body)));
+    	return htmlToText(body);
+    }
+    
+    public static String htmlToText(String s)
+    {
+		s = normalizeLineBreaks(s); 
+    	s = removeNonBreakTags(s);
+		s = condenseWhitespace(s);
+		s = unescape(s);
+    	return s;
     }
 
-    public static String unformat(String s) {
+    private static String removeNonBreakTags(String s) {
         int i=0, j;
         while ((i=s.indexOf('<',i))>=0) {
             if ((j=s.indexOf('>',i+1))>0) {
-                s = s.substring(0,i) + s.substring(j+1);
+                if (!(s.substring(i, j+1).equals("<br />"))) {
+                	s = s.substring(0,i) + s.substring(j+1);
+                } else i++;
             } else break;
         }
         return s;
     }
 
     public static String unescape(String s) {
-        int i=-1, j;
-        while ((i=s.indexOf('&',i+1))>=0) {
-            if ((j=s.indexOf(';',i+1))>0) {
-                String from = s.substring(i+1, j).toLowerCase();
-                String to = null;
-                if ((to=replacement(from)) != null) {
-                    s = s.substring(0,i) + to + s.substring(j+1);
-                }
-            }
-        }
+    	s = s.replaceAll("<br />", "\n");
+		s = unescapeEntities(s);
+		s = unescapeSmartQuotes(s);
         return s;
     }
 
+	private static String unescapeSmartQuotes(String s) {
+		s = s.replace('\u201c', '"');
+		s = s.replace('\u201d', '"');
+		s = s.replace('\u2018', '\'');
+		s = s.replace('\u2019', '\''); 
+		return s;
+	}
+
+	private static String unescapeEntities(String s) {
+		s = s.replaceAll("&lt;", "<");
+		s = s.replaceAll("&gt;", ">");
+		s = s.replaceAll("&nbsp;", " ");
+		s = s.replaceAll("&quot;", "\"");
+		s = s.replaceAll("&amp;", "&");
+		return s;
+	}
+
+	private static String normalizeLineBreaks(String s) {
+		s = s.replaceAll("<\\s*br\\s*/?\\s*>", "<br />");
+		s = s.replaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p\\s*>", "<br />");
+		return s;
+	}
+	
     public static String condenseWhitespace(String s) {
-        s = s.replace((char) 160, ' '); // 'no break space' character, some browsers seem to copy spaces into these
-        s = s.replace('\n', ' ');
-        s = s.replace('\r', ' ');
-        s = s.replace('\t', ' ');
-        s = replace(s, "  ", " ");
-        return s.trim();
+    	final char NON_BREAKING_SPACE = (char)160;
+    	
+    	s = s.replaceAll("\\s+", " ");
+		s = s.replace(NON_BREAKING_SPACE, ' ');
+		s = s.replaceAll("&nbsp;", " ");
+		s = s.trim();
+    	return s;    	
     }
-
-    private static String replace(String s, String from, String to) {
-        int i;
-        while ((i=s.indexOf(from))>=0){
-            s = s.substring(0,i) + to + s.substring(i+from.length());
-        }
-        return s;
-    }
-
-    public static String replacement(String from) {
-        if (from.equals("lt")) return "<";
-        else if (from.equals("gt")) return ">";
-        else if (from.equals("amp")) return "&";
-        else if (from.equals("nbsp")) return " ";
-        else if (from.equals("quot")) return "\"";
-        else return null;
-    }
-
 
     public void addToTag(String text) {
         int last = tag.length()-1;
@@ -152,7 +162,6 @@ public class Parse {
     public void addToBody(String text) {
         body = body + text;
     }
-
 
     public void print(PrintWriter out) {
         out.print(leader);
