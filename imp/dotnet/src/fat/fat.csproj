@@ -69,7 +69,7 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
                 <Reference
@@ -87,7 +87,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "OutputFixture.cs"
+                    RelPath = "HtmlToTextFixture.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -98,6 +98,11 @@
                 />
                 <File
                     RelPath = "ReferenceFixture.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TextToHtmlFixture.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

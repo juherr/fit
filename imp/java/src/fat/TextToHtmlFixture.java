@@ -3,17 +3,15 @@ package fat;
 import fit.*;
 import java.io.*;
 
-public class OutputFixture extends ColumnFixture {
+public class TextToHtmlFixture extends ColumnFixture {
 	public String Text;
 
-	public String CellOutput() {
-		Parse cell = new Parse("td", "", null, null);
-		cell.leader = "";
-		cell.body = Fixture.escape(unescape(Text));
-		return GenerateOutput(cell);
+	public String HTML() {
+		Text = unescapeAscii(Text);
+		return Fixture.escape(Text);
 	}
 
-	private String unescape(String text) {
+	private String unescapeAscii(String text) {
 		text = text.replaceAll("\\\\n", "\n");
 		text = text.replaceAll("\\\\r", "\r");
 		return text;
