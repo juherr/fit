@@ -1,23 +1,21 @@
 <?xml version="1.0"?>
 <project name="fit" basedir="." default="all">
-	<description>fit - Framework for integrated test</description>
+	<description>fit - Framework for integrated test (.NET implementation)</description>
 
 	<property name="root.dir" value="../.." />	
 	<property name="doc.dir" value="${root.dir}\examples" />
 	<property name="source.dir" value="src" />
 	<property name="lib.dir" value="lib" />
 	<property name="build.dir" value="build" />
-	<property name="bin.dir" value="${build.dir}" />
 	<property name="tools.dir" value="tools" />
 	<property name="report.dir" value="output" />
-	<property name="fit_dll.path" value="${bin.dir}\fit.dll" />
+	<property name="fit_dll.path" value="${build.dir}\fit.dll" />
 	<property name="nunit.path" value="${tools.dir}\nunit\nunitconsole.exe" />
 	<property name="framework_test.class" value="fit.FrameworkTest" />
 	<property name="row_fixture_test.class" value="fit.RowFixtureTest" />
 	
 	<target name="build_dir">
 		<mkdir dir="${build.dir}" />
-		<mkdir dir="${bin.dir}" />
 	</target>
 	
 	<target name="report_dir">
@@ -38,7 +36,7 @@
 	</target>
 	
 	<target name="compile_eg" depends="build_dir, compile_fit">
-		<csc target="library" output="${bin.dir}\eg.dll" debug="true">
+		<csc target="library" output="${build.dir}\eg.dll" debug="true">
 			<sources basedir="${source.dir}\eg">
 				<includes name="**\*.cs" />
 			</sources>
@@ -50,7 +48,7 @@
 	</target>
 	
 	<target name="compile_runFile" depends="build_dir, compile_fit">
-		<csc target="exe" output="${bin.dir}\runFile.exe" debug="true">
+		<csc target="exe" output="${build.dir}\runFile.exe" debug="true">
 			<sources basedir="${source.dir}\fit">
 				<includes name="FileRunnerExe.cs" />
 			</sources>
@@ -62,7 +60,7 @@
 	</target>
 	
 	<target name="compile_runWiki" depends="build_dir, compile_fit">
-		<csc target="exe" output="${bin.dir}\runWiki.exe" debug="true">
+		<csc target="exe" output="${build.dir}\runWiki.exe" debug="true">
 			<sources basedir="${source.dir}\fit">
 				<includes name="WikiRunner.cs" />
 			</sources>

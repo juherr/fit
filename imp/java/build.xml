@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<project name="Fit for Java" default="test" basedir=".">
+	<description>fit - Framework for integrated test (Java implementation)</description>
+	
+	<property name="source.dir" value="src" />
+	<property name="build.dir" value="build" />
+	<property name="output.dir" value="output" />
+	<property name="junit.jar" value="tools\ant\lib\junit.jar" />
+	
+	<target name="build_dir">
+		<mkdir dir="${build.dir}" />
+	</target>
+	
+	<target name="output_dir">
+		<mkdir dir="${output.dir}" />
+	</target>
+	
+	<target name="build" depends="build_dir" description="Build project">
+		<javac srcdir="${source.dir}" destdir="${build.dir}" classpath="${junit.jar}" />
+	</target>
+	
+	<target name="test" depends="build, output_dir" description="Test project">
+		<junit haltonfailure="true">
+			<classpath path="${build.dir}" />
+			<test name="fit.FrameworkTest" />
+			<test name="fit.RowFixtureTest" />
+			<formatter type="brief" usefile="false" />
+		</junit>
+	</target>
+	
+	<target name="clean" description="Delete generated files" >
+		<delete dir="${build.dir}" />
+		<delete dir="${output.dir}" />
+	</target>
+</project>

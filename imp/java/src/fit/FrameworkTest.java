@@ -180,7 +180,7 @@ public class FrameworkTest extends TestCase {
 
     protected void run(String file, int right, int wrong, int ignores, int exceptions) throws Exception {
 
-        String input = read(new File("Documents/"+file+".html"));
+        String input = read(new File("../../examples/"+file+".html"));
         Fixture fixture = new Fixture();
         Parse tables;
         if (input.indexOf("<wiki>") >= 0) {
@@ -190,7 +190,7 @@ public class FrameworkTest extends TestCase {
             tables = new Parse(input, new String[]{"table", "tr", "td"});
             fixture.doTables(tables);
         }
-        PrintWriter output = new PrintWriter(new BufferedWriter(new FileWriter("Reports/"+file+".html")));
+        PrintWriter output = new PrintWriter(new BufferedWriter(new FileWriter("output/"+file+".html")));
         tables.print(output);
         output.close();
         assertEquals(file+" right", right, fixture.counts.right);
