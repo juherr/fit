@@ -139,7 +139,8 @@ module Fit
           classname = basename_parts.join('::')
         end
         file_basename = basename.split(/([A-Z][^A-Z]+)/).delete_if {|e| e.empty?}.collect {|e| e.downcase!}.join('_')
-        file_name = File::dirname(file_path) + '/' + file_basename
+        file_dirname = File::dirname(file_path)
+        file_name = (file_dirname == '.' ? '' : file_dirname + '/') + file_basename
         begin
           require file_name
         rescue LoadError => e
@@ -147,9 +148,13 @@ module Fit
           # puts e.backtrace
           raise "Couldn't find file #{file_name} or error in file #{file_name}"
         end
-        klass_name =  File::dirname(file_path).split(%r{/}).collect {
-          |e| e.index(/[A-Z]/).nil? ? e.capitalize : e
-        }.join('::') + "::#{classname}"
+        if file_dirname == '.'
+          klass_name = classname
+        else
+          klass_name =  File::dirname(file_path).split(%r{/}).collect { |e|
+            e.index(/[A-Z]/).nil? ? e.capitalize : e
+          }.join('::') + "::#{classname}"
+        end
         klass = find_constant klass_name
       end
       raise "Couldn't find class #{klass_name}" unless klass
