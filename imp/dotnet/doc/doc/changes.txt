@@ -1,5 +1,9 @@
-Changes in 1.0 RC1:
-Produced by Jim Shore.
+Changes in Fit-DotNet 1.0:
+No changes: identical to RC1.  Released 18 Nov 2004.
+
+
+Changes in Fit-DotNet 1.0 RC1:
+Produced by Jim Shore.  Released 31 Aug 2004.
 * Display the assemblies searched when a fixture can't be found.  Credit to Jim Shore.
 * Clarified exception when ColumnFixture looks for a non-existant field.  Credit to Jim Shore.
 * Fixed parsing error that prevented extended characters from being parsed.  Credit to Jim Shore.
@@ -9,19 +13,23 @@ Produced by Jim Shore.
 
 (Note: Jim Shore was named Jim Little prior to Aug 2003.)
 
+
 Changes in fit-b030825cs:
 Produced by Jim Little.
 * Brought up to level of (Java) fit-b030425j.  Credit to Jim Little with contributions by Mars Tanumihardja.
 * Clarified exception when programmer forgets to extend Fixture class.  Credit to Jim Little.
 
+
 Changes in fit-b021023cs:
 Produced by Jim Little.
 * Improved fixture dir documentation.  Credit to Jim Little.
+
 
 Changes in fit-b021009cs:
 Produced by Jim Little.
 * Added fixture path for assemblies.  Credit to Jim Little.
 * Added parsing of Date objects.  Credit to Jim Little.
+
 
 Changes in fit-b021003cs:
 Produced by Ward Cunningham and Jim Little.
@@ -29,7 +37,7 @@ Produced by Ward Cunningham and Jim Little.
 
 
 
-Differences in the C# version of FIT:
+Differences from the Java version of FIT:
 
 * Type parsing is done automatically.  There's no need to
 create a "parse" method in your fixture.  In fact, that's not

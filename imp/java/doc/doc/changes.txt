@@ -1,3 +1,7 @@
+Changes in Fit-Java 1.0:
+No changes: identical to RC1.  Released 18 Nov 2004.
+
+
 Changes in Fit-Java 1.0 RC1:
 Produced by Jim Shore and Ward Cunningham.  Released 31 Aug 2004.
     * Improved whitespace handling.  Credit to Jim Shore.
@@ -5,6 +9,7 @@ Produced by Jim Shore and Ward Cunningham.  Released 31 Aug 2004.
     * Java line feed characters are turned into HTML <br /> tags (and vice-versa).  Credit to Jim Shore.
     * WikiRunner is deprecated in favor of a smarter FileRunner.  Credit to Ward Cunningham.
     * Created parse specification and associated fat fixtures.  Credit to Jim Shore.
+
 
 Changes in Fit-Java b030915j
 Produced by Ward Cunningham and Jim Shore.  Released 15 Sept 2003.
