@@ -14,7 +14,8 @@ xmlns="http://www.w3.org/TR/REC-html40">
  name="PersonName"/>
 <!--[if gte mso 9]><xml>
  <w:WordDocument>
-  <w:View>Print</w:View>
+  <w:View>Normal</w:View>
+  <w:GrammarState>Clean</w:GrammarState>
   <w:Compatibility>
    <w:ApplyBreakingRules/>
    <w:UseFELayout/>
@@ -31,13 +32,6 @@ st1\:*{behavior:url(#ieooui) }
 <!--
  /* Font Definitions */
  @font-face
-	{font-family:Wingdings;
-	panose-1:5 0 0 0 0 0 0 0 0 0;
-	mso-font-charset:2;
-	mso-generic-font-family:auto;
-	mso-font-pitch:variable;
-	mso-font-signature:0 268435456 0 0 -2147483648 0;}
-@font-face
 	{font-family:SimSun;
 	panose-1:2 1 6 0 3 1 1 1 1 1;
 	mso-font-alt:\5B8B\4F53;
@@ -72,6 +66,19 @@ h1
 	font-size:16.0pt;
 	font-family:Arial;
 	font-weight:bold;}
+h2
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-weight:bold;
+	font-style:italic;}
 a:link, span.MsoHyperlink
 	{color:blue;
 	text-decoration:underline;
@@ -87,6 +94,9 @@ p
 	font-size:12.0pt;
 	font-family:"Times New Roman";
 	mso-fareast-font-family:SimSun;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
 @page Section1
 	{size:8.5in 11.0in;
 	margin:1.0in 1.25in 1.0in 1.25in;
@@ -110,6 +120,38 @@ div.Section1
 	font-family:Symbol;
 	mso-fareast-font-family:SimSun;
 	mso-bidi-font-family:"Times New Roman";}
+@list l0:level2
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level3
+	{mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level4
+	{mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level5
+	{mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level6
+	{mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level7
+	{mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level8
+	{mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level9
+	{mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
 @list l1
 	{mso-list-id:1094016409;
 	mso-list-type:hybrid;
@@ -124,6 +166,38 @@ div.Section1
 	font-family:Symbol;
 	mso-fareast-font-family:SimSun;
 	mso-bidi-font-family:"Times New Roman";}
+@list l1:level2
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level3
+	{mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level4
+	{mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level5
+	{mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level6
+	{mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level7
+	{mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level8
+	{mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level9
+	{mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
 ol
 	{margin-bottom:0in;}
 ul
@@ -167,14 +241,15 @@ table.MsoTableGrid
 
 <div class=Section1>
 
-<h1>Fit Spe<st1:PersonName>c</st1:PersonName>ifi<st1:PersonName>c</st1:PersonName>ation</h1>
+<h1>Fit Spe<st1:PersonName>c</st1:PersonName>ifi<st1:PersonName>c</st1:PersonName>ation,
+v1.CVS</h1>
 
 <p>&nbsp;</p>
 
 <p>Fit is a tool for improving <st1:PersonName>c</st1:PersonName>ommuni<st1:PersonName>c</st1:PersonName>ation
 between <st1:PersonName>c</st1:PersonName>ustomers, programmers, and
 testers.&nbsp; It allows the <st1:PersonName>c</st1:PersonName>ustomer to des<st1:PersonName>c</st1:PersonName>ribe
-his requirements in a way that <st1:PersonName>c</st1:PersonName>an be <st1:PersonName>c</st1:PersonName>he<st1:PersonName>c</st1:PersonName>ked
+his or her requirements in a way that <st1:PersonName>c</st1:PersonName>an be <st1:PersonName>c</st1:PersonName>he<st1:PersonName>c</st1:PersonName>ked
 against the a<st1:PersonName>c</st1:PersonName>tual program.</p>
 
 <p>&nbsp;</p>
@@ -211,11 +286,29 @@ in the table below are <st1:PersonName>c</st1:PersonName>olored green, then you
 <st1:PersonName>c</st1:PersonName>an be <st1:PersonName>c</st1:PersonName>onfident
 that your <st1:PersonName>c</st1:PersonName>opy of Fit meets this spe<st1:PersonName>c</st1:PersonName>ifi<st1:PersonName>c</st1:PersonName>ation.</p>
 
-<div style='border:none;border-bottom:solid windowtext 1.0pt;padding:0in 0in 1.0pt 0in'>
+<p><o:p>&nbsp;</o:p></p>
 
-<p style='tab-stops:407.25pt'>&nbsp;<span style='mso-tab-count:1'>                                                                                                                                       </span></p>
+<p>Using Fit to test itself, as we do here, leads to <st1:PersonName>c</st1:PersonName>ir<st1:PersonName>c</st1:PersonName>ular
+logi<st1:PersonName>c</st1:PersonName> that <st1:PersonName>c</st1:PersonName>an
+be unraveled more easily by the <st1:PersonName>c</st1:PersonName>omputer than
+by humans.<span style='mso-spacerun:yes'>  </span>To avoid a heada<st1:PersonName>c</st1:PersonName>he,
+ignore the fa<st1:PersonName>c</st1:PersonName>t that this do<st1:PersonName>c</st1:PersonName>ument
+is written in HTML or that the tables use Fit fixtures.<span
+style='mso-spacerun:yes'>  </span>Instead, just think of it as a regular do<st1:PersonName>c</st1:PersonName>ument--one
+that happens to be <st1:PersonName>c</st1:PersonName>olored green and red.</p>
 
-</div>
+<p><o:p>&nbsp;</o:p></p>
+
+<p>Fun<st1:PersonName>c</st1:PersonName>tional <st1:PersonName>c</st1:PersonName>hanges
+to <span class=GramE>Fit</span> that are new in this version of the spe<st1:PersonName>c</st1:PersonName>
+are <span style='background:yellow;mso-highlight:yellow'>highlighted yellow</span>.<span
+style='mso-spacerun:yes'>  </span>Layout, formatting, and other non-fun<st1:PersonName>c</st1:PersonName>tional
+<st1:PersonName>c</st1:PersonName>hanges to the spe<st1:PersonName>c</st1:PersonName>ifi<st1:PersonName>c</st1:PersonName>ation
+are not highlighted.</p>
+
+<p><o:p>&nbsp;</o:p></p>
+
+<h2>Details</h2>
 
 <p>&nbsp;</p>
 
@@ -267,7 +360,7 @@ that your <st1:PersonName>c</st1:PersonName>opy of Fit meets this spe<st1:Person
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p>Parse and output HTML do<st1:PersonName>c</st1:PersonName>uments</p>
+  <p>Parse and <st1:PersonName>c</st1:PersonName>onvert HTML do<st1:PersonName>c</st1:PersonName>uments</p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -404,40 +497,89 @@ here:</p>
 
 <p><o:p>&nbsp;</o:p></p>
 
-<p>Changes:</p>
+<h2>Change History<o:p></o:p></h2>
 
 <p><o:p>&nbsp;</o:p></p>
 
-<p>Version 1.1</p>
+<p>Changes in CVS:</p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span dir=LTR>Added support for </span><st1:PersonName>c</st1:PersonName>lass
-attribute in MS Word &lt;p&gt; tag parsing</p>
+</span></span></span><![endif]><span dir=LTR><b>HTML to text: Added</b> support
+for </span><st1:PersonName>c</st1:PersonName>lass attribute in MS Word
+&lt;p&gt; tag parsing</p>
 
-<p><o:p>&nbsp;</o:p></p>
-
-<p><o:p>&nbsp;</o:p></p>
-
-<p>Version 1.0</p>
-
-<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo1;
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span dir=LTR>Initial version</span></p>
+</span></span></span><![endif]><span dir=LTR><b>HTML to text: Clarified </b>handling
+of leading and trailing line breaks</span></p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo2;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span dir=LTR><b>Text to HTML: Changed </b>handling
+of “ba</span><st1:PersonName>c</st1:PersonName>kwards line feed”</p>
 
 <p><o:p>&nbsp;</o:p></p>
 
-<p><o:p>&nbsp;</o:p></p>
+<p>Changes in version 1.0:</p>
 
-<p><o:p>&nbsp;</o:p></p>
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span dir=LTR><b>Initial version </b>of the spe</span><st1:PersonName>c</st1:PersonName></p>
 
-<p><o:p>&nbsp;</o:p></p>
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span dir=LTR><b>HTML to text: Changed </b>&amp;nbsp;
+entity to </span><st1:PersonName>c</st1:PersonName>ombine with other leading
+and trailing whitespa<st1:PersonName>c</st1:PersonName>e</p>
 
-<p><o:p>&nbsp;</o:p></p>
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span dir=LTR><b>HTML to text: Changed </b>non-breaking
+spa</span><st1:PersonName>c</st1:PersonName>e <st1:PersonName>c</st1:PersonName>hara<st1:PersonName>c</st1:PersonName>ter
+to <i>not</i> <st1:PersonName>c</st1:PersonName>ombine with other internal
+whitespa<st1:PersonName>c</st1:PersonName>e</p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span dir=LTR><b>HTML to text: Added </b></span><st1:PersonName>c</st1:PersonName>onversion
+of &lt;br&gt; and &lt;p&gt; tags to line-feed <st1:PersonName>c</st1:PersonName>hara<st1:PersonName>c</st1:PersonName>ters</p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span dir=LTR><b>HTML to text: Added </b></span><st1:PersonName>c</st1:PersonName>onversion
+of “smart quotes” to regular quotes</p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span dir=LTR><b>Text to HTML: Added </b></span><st1:PersonName>c</st1:PersonName>onversion
+of line-feed <st1:PersonName>c</st1:PersonName>hara<st1:PersonName>c</st1:PersonName>ters
+to &lt;br&gt; tags</p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span dir=LTR><b>Text to HTML: Added </b></span><st1:PersonName>c</st1:PersonName>onversion
+of adjoining spa<st1:PersonName>c</st1:PersonName>es to &amp;nbsp; entities</p>
 
 <p><o:p>&nbsp;</o:p></p>
 
