@@ -2,6 +2,14 @@ package fit;
 
 // Copyright (c) 2002 Cunningham & Cunningham, Inc.
 // Released under the terms of the GNU General Public License version 2 or later.
+//
+// For an alteration two methods from FitNesse's
+// fit.Fixture (getArgsForTable(),getArgs()):
+//   Copyright (C) 2003,2004 by Object Mentor, Inc. All rights reserved.
+//
+// For some alterations (doTables()),
+// and additions (interpretTables(), interpretFollowingTables()):
+//   Copyright (c) 2004 Rick Mugridge, University of Auckland, NZ
 
 import java.io.*;
 import java.util.*;
@@ -12,28 +20,7 @@ public class Fixture {
 
     public Map summary = new HashMap();
     public Counts counts = new Counts();
-
-    public class Counts {
-        public int right = 0;
-        public int wrong = 0;
-        public int ignores = 0;
-        public int exceptions = 0;
-
-        public String toString() {
-            return
-                right + " right, " +
-                wrong + " wrong, " +
-                ignores + " ignored, " +
-                exceptions + " exceptions";
-        }
-
-        public void tally(Counts source) {
-            right += source.right;
-            wrong += source.wrong;
-            ignores += source.ignores;
-            exceptions += source.exceptions;
-        }
-    }
+    protected String[] args;
 
     public class RunTime {
         long start = System.currentTimeMillis();
@@ -59,40 +46,93 @@ public class Fixture {
 
     // Traversal //////////////////////////
 
+	/* Altered by Rick Mugridge to dispatch on the first Fixture */
     public void doTables(Parse tables) {
         summary.put("run date", new Date());
         summary.put("run elapsed time", new RunTime());
+        if (tables != null) {
+        	Parse fixtureName = fixtureName(tables);
+            if (fixtureName != null) {
+                try {
+                    Fixture fixture = getLinkedFixtureWithArgs(tables);
+                    fixture.interpretTables(tables);
+                } catch (Exception e) {
+                    exception (fixtureName, e);
+                    interpretFollowingTables(tables);
+                }
+            }
+        }
+    }
+
+    /* Added by Rick Mugridge to allow a dispatch into DoFixture */
+    protected void interpretTables(Parse tables) {
+  		try { // Don't create the first fixture again, because creation may do something important.
+  			getArgsForTable(tables); // get them again for the new fixture object
+  			doTable(tables);
+  		} catch (Exception ex) {
+  			exception(fixtureName(tables), ex);
+  			return;
+  		}
+  		interpretFollowingTables(tables);
+  	}
+
+    /* Added by Rick Mugridge */
+    private void interpretFollowingTables(Parse tables) {
+        //listener.tableFinished(tables);
+            tables = tables.more;
         while (tables != null) {
             Parse fixtureName = fixtureName(tables);
             if (fixtureName != null) {
                 try {
-                    Fixture fixture = loadFixture(fixtureName.text());
-                    fixture.counts = counts;
-                    fixture.summary = summary;
+                    Fixture fixture = getLinkedFixtureWithArgs(tables);
                     fixture.doTable(tables);
-                } catch (Exception e) {
-                    exception (fixtureName, e);
-                }
-            }
+                } catch (Throwable e) {
+                    exception(fixtureName, e);
+		        }
+		    }
+            //listener.tableFinished(tables);
             tables = tables.more;
         }
     }
-    
-    public Parse fixtureName(Parse tables) {
-		return tables.at(0,0,0);
-    }
+
+    /* Added from FitNesse*/
+	protected Fixture getLinkedFixtureWithArgs(Parse tables) throws Exception {
+		Parse header = tables.at(0, 0, 0);
+        Fixture fixture = loadFixture(header.text());
+		fixture.counts = counts;
+		fixture.summary = summary;
+		fixture.getArgsForTable(tables);
+		return fixture;
+	}
+	
+	public Parse fixtureName(Parse tables) {
+		return tables.at(0, 0, 0);
+	}
 
 	public Fixture loadFixture(String fixtureName)
-		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	throws InstantiationException, IllegalAccessException {
+		String notFound = "The fixture \"" + fixtureName + "\" was not found.";
 		try {
 			return (Fixture)(Class.forName(fixtureName).newInstance());
-		}
-		catch (ClassNotFoundException e) {
-			throw new RuntimeException("The fixture \"" + fixtureName + "\" was not found.", e);
 		}
 		catch (ClassCastException e) {
 			throw new RuntimeException("\"" + fixtureName + "\" was found, but it's not a fixture.", e);
 		}
+		catch (ClassNotFoundException e) {
+			throw new RuntimeException(notFound, e);
+		}
+		catch (NoClassDefFoundError e) {
+			throw new RuntimeException(notFound, e);
+		}
+	}
+
+	/* Added by Rick Mugridge, from FitNesse */
+	protected void getArgsForTable(Parse table) {
+	    ArrayList argumentList = new ArrayList();
+	    Parse parameters = table.parts.parts.more;
+	    for (; parameters != null; parameters = parameters.more)
+	        argumentList.add(parameters.text());
+	    args = (String[]) argumentList.toArray(new String[0]);
 	}
 
     public void doTable(Parse table) {
@@ -202,6 +242,8 @@ public class Fixture {
     public static String camel (String name) {
         StringBuffer b = new StringBuffer(name.length());
         StringTokenizer t = new StringTokenizer(name);
+        if (!t.hasMoreTokens())
+            return name;
         b.append(t.nextToken());
         while (t.hasMoreTokens()) {
             String token = t.nextToken();
@@ -250,4 +292,10 @@ public class Fixture {
             }
         }
     }
+
+	/* Added by Rick, from FitNesse */
+    public String[] getArgs() {
+        return args;
+    }
+
 }
