@@ -2,9 +2,9 @@
 <project name="fit" basedir="." default="all">
 	<description>fit - Framework for integrated test</description>
 
-	<property name="root.dir" value=".." />	
-	<property name="doc.dir" value="${root.dir}\Documents" />
-	<property name="source.dir" value="Source" />
+	<property name="root.dir" value="../.." />	
+	<property name="doc.dir" value="${root.dir}\examples" />
+	<property name="source.dir" value="src" />
 	<property name="lib.dir" value="lib" />
 	<property name="build.dir" value="build" />
 	<property name="bin.dir" value="${build.dir}" />
