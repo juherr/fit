@@ -10,7 +10,7 @@ Longer term:
 * Integration with FitNesse
 * Integration with Fitster
 
-Changes in CVS:
+Changes in fit-b040725cs:
 Produced by Jim Shore.
 * Display the assemblies searched when a fixture can't be found.  Credit to Jim Shore.
 * Clarified exception when ColumnFixture looks for a non-existant field.  Credit to Jim Shore.
