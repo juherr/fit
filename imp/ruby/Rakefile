@@ -13,41 +13,89 @@ $:.unshift File.join(File.dirname(__FILE__), 'lib')
 
 require 'fit/file_runner'
 
-module Fit
-  class FileRunner
+module Rake
+
+  class FitReportRunner < Fit::FileRunner
     def run args
       process_args args
       process
     end
   end
+
 end
 
 require 'rake/clean'
 CLOBBER.include("../../examples/Report_*.html")
 
-test1 = { :name => 'CalculatorExample.html',
-         :right => 75, :wrong => 9, :ignores => 0, :exceptions => 0 }
-         
-test2 = { :name => 'MusicExample.html',
-          :right => 95, :wrong => 0, :ignores => 0, :exceptions => 0 }
-          
-test3 = { :name => 'arithmetic.html',
-          :right => 39, :wrong => 8, :ignores => 0, :exceptions => 2 }
+acceptance_tests = []
+acceptance_tests << { :name => 'arithmetic',
+                      :right => 39, :wrong => 8, :ignores => 0, :exceptions => 2 }
+acceptance_tests << { :name => 'BinaryChop',
+                      :right => 95, :wrong => 0, :ignores => 0, :exceptions => 0 }
+acceptance_tests << { :name => 'CalculatorExample',
+                      :right => 75, :wrong => 9, :ignores => 0, :exceptions => 0 }
+acceptance_tests << { :name => 'MusicExample',
+                      :right => 95, :wrong => 0, :ignores => 0, :exceptions => 0 }
+acceptance_tests << { :name => 'MusicExampleWithErrors',
+                      :right => 54, :wrong => 10, :ignores => 0, :exceptions => 0 }
+acceptance_tests << { :name => 'NetworkExample',
+                      :right => 5, :wrong => 0, :ignores => 0, :exceptions => 0 }
+# 'SimpleExample', 5, 0, 0, 0
+
+desc "Run FIT acceptance tests with HTML reports"
+task :fit_report
+
+acceptance_tests.each do |test|
+  task :fit_report do
+    runner = Rake::FitReportRunner.new
+    runner.run ["../../examples/#{test[:name]}.html", "../../examples/Report_#{test[:name]}.html"]
+    result = runner.fixture.counts
+    verify test, result
+  end
+end
 
 desc "Run FIT acceptance tests"
 task :fit
 
-[test1, test2, test3].each do |test|
+module Rake
+
+  class FitRunner < Fit::FileRunner
+    def run args
+      process_args args
+      process
+    end
+    def process_args args
+      input_name = File.expand_path args[0]
+      input_file = File.open input_name
+      @input = input_file.read
+      input_file.close
+      @output = OutputStream.new
+    end
+  end
+  
+  # A dummy output stream to avoid creating output files
+  class OutputStream < String
+    def print text; end
+    def close; end
+  end
+
+end
+
+acceptance_tests.each do |test|
   task :fit do
-    runner = Fit::FileRunner.new
-    runner.run ["../../examples/#{test[:name]}", "../../examples/Report_#{test[:name]}"]
+    runner = Rake::FitRunner.new
+    runner.run ["../../examples/#{test[:name]}.html"]
     result = runner.fixture.counts
-    [:right, :wrong, :ignores, :exceptions].each do |symbol|
-      count = result.method(symbol).call
-      expected = test[symbol]
-      unless count == expected
-        raise Exception.new("#{test[:name]}: #{expected} #{symbol} expected, found #{count} instead.")
-      end
+    verify test, result
+  end
+end
+
+def verify test, result
+  [:right, :wrong, :ignores, :exceptions].each do |symbol|
+    count = result.method(symbol).call
+    expected = test[symbol]
+    unless count == expected
+      raise Exception.new("#{test[:name]}: #{expected} #{symbol} expected, found #{count} instead.")
     end
   end
 end
