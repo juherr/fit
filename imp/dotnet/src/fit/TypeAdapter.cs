@@ -12,12 +12,9 @@ namespace fit {
         public MethodInfo method;
         public Type type;
 
-        private TypeAdapter() {
-        }
-
         //
         //
-        //		// Factory //////////////////////////////////
+        //    // Factory //////////////////////////////////
         //
         public static TypeAdapter on(Fixture target, Type type) {
             TypeAdapter adapter = new TypeAdapter();
@@ -48,7 +45,7 @@ namespace fit {
         public virtual void set(object value) {
             field.SetValue(target, value);
         }
-		
+    
         public virtual object parse(string s) {
             return parse(s, type);
         }
@@ -91,57 +88,57 @@ namespace fit {
             }
             return true;
         }
-		
-        //		// Subclasses ///////////////////////////////
+    
+        //    // Subclasses ///////////////////////////////
         //
-        //		class ArrayAdapter 
-        //		{
-        //			Type componentType;
-        //			TypeAdapter componentAdapter;
+        //    class ArrayAdapter 
+        //    {
+        //      Type componentType;
+        //      TypeAdapter componentAdapter;
         //
-        //			void init(Fixture target, Type type) 
-        //			{
-        //				super.init(target, type);
-        //				componentType = type.getComponentType();
-        //				componentAdapter = on(target, componentType);
-        //			}
+        //      void init(Fixture target, Type type) 
+        //      {
+        //        super.init(target, type);
+        //        componentType = type.getComponentType();
+        //        componentAdapter = on(target, componentType);
+        //      }
         //
-        //		public object parse(string s) 
-        //		{
-        //			StringTokenizer t = new StringTokenizer(s, ",");
-        //			object array = Array.newInstance(componentType, t.countTokens());
-        //			for (int i=0; t.hasMoreTokens(); i++) 
-        //			{
-        //				Array.set(array, i, componentAdapter.parse(t.nextToken()));
-        //			}
-        //			return array;
-        //		}
+        //    public object parse(string s) 
+        //    {
+        //      StringTokenizer t = new StringTokenizer(s, ",");
+        //      object array = Array.newInstance(componentType, t.countTokens());
+        //      for (int i=0; t.hasMoreTokens(); i++) 
+        //      {
+        //        Array.set(array, i, componentAdapter.parse(t.nextToken()));
+        //      }
+        //      return array;
+        //    }
         //
-        //		public string toString(object o) 
-        //		{
-        //			int length = Array.getLength(o);
-        //			StringBuffer b = new StringBuffer(5*length);
-        //			for (int i=0; i<length; i++) 
-        //			{
-        //				b.append(componentAdapter.toString(Array.get(o, i)));
-        //				if (i < (length-1)) 
-        //				{
-        //					b.append(',');
-        //				}
-        //			}
-        //			return b.toString();
-        //		}
+        //    public string toString(object o) 
+        //    {
+        //      int length = Array.getLength(o);
+        //      StringBuffer b = new StringBuffer(5*length);
+        //      for (int i=0; i<length; i++) 
+        //      {
+        //        b.append(componentAdapter.toString(Array.get(o, i)));
+        //        if (i < (length-1)) 
+        //        {
+        //          b.append(',');
+        //        }
+        //      }
+        //      return b.toString();
+        //    }
         //
-        //		public bool equals(object a, object b) 
-        //		{
-        //			int length = Array.getLength(a);
-        //			if (length != Array.getLength(b)) return false;
-        //			for (int i=0; i<length; i++) 
-        //			{
-        //				if (!componentAdapter.equals(Array.get(a,i), Array.get(b,i))) return false;
-        //			}
-        //			return true;
-        //		}
-        //	}
+        //    public bool equals(object a, object b) 
+        //    {
+        //      int length = Array.getLength(a);
+        //      if (length != Array.getLength(b)) return false;
+        //      for (int i=0; i<length; i++) 
+        //      {
+        //        if (!componentAdapter.equals(Array.get(a,i), Array.get(b,i))) return false;
+        //      }
+        //      return true;
+        //    }
+        //  }
     }
 }
