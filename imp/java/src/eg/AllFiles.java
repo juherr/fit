@@ -16,7 +16,7 @@ public class AllFiles extends Fixture {
             doRow(row, files);
         } else {
             ignore(cell);
-            cell.addToBody(gray(" no match"));
+            info(cell, " no match");
         }
     }
 
@@ -58,7 +58,7 @@ public class AllFiles extends Fixture {
     protected void run(File path, Fixture fixture, Parse cells) {
         if (pushAndCheck(path)) {
             ignore(cells);
-            cells.addToBody(gray("recursive"));
+            info(cells, "recursive");
             return;
         }
         try {
@@ -72,7 +72,7 @@ public class AllFiles extends Fixture {
                 fixture.doTables(tables);
             }
 
-            cells.more.addToBody(gray(fixture.counts.toString()));
+            info(cells.more, fixture.counts.toString());
             if (fixture.counts.wrong == 0 && fixture.counts.exceptions == 0) {
                 right(cells.more);
             } else {
@@ -124,7 +124,7 @@ public class AllFiles extends Fixture {
     }
 
     Parse td (String text, Parse more) {
-        return new Parse("td", gray(text), null, more);
+        return new Parse("td", info(text), null, more);
     }
 
     class WildCard implements FilenameFilter {

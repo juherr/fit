@@ -37,7 +37,7 @@ public class Summary extends Fixture {
     }
 
     protected Parse td(String body, Parse more) {
-        return new Parse ("td", gray(body), null, more);
+        return new Parse ("td", info(body), null, more);
     }
 
     protected void mark(Parse row) {

@@ -16,7 +16,7 @@ public class StandardAnnotationFixture extends ColumnFixture {
 		if (Annotation.equals("right")) testbed.right(parse);
 		if (Annotation.equals("wrong")) testbed.wrong(parse, Text);
 		if (Annotation.equals("error")) testbed.error(parse, Text);
-		if (Annotation.equals("info")) parse.body = Fixture.gray(Text); 
+		if (Annotation.equals("info")) testbed.info(parse, Text); 
 		if (Annotation.equals("ignore")) testbed.ignore(parse);
 				
 		return GenerateOutput(parse); 
@@ -26,7 +26,6 @@ public class StandardAnnotationFixture extends ColumnFixture {
 		try {
 			if (column == 4) {
 				cell.body = RenderedOutput();
-				right(cell);
 			}
 			else {
 				super.doCell(cell, column);

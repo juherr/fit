@@ -194,7 +194,7 @@ abstract public class RowFixture extends ColumnFixture {
             } else {
                 try {
                     a.target = row;
-                    next.body = gray(escape(a.toString(a.get())));
+                    info(next, a.toString(a.get()));
                 } catch (Exception e) {
                     exception(next, e);
                 }

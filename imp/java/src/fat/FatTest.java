@@ -3,11 +3,9 @@
 
 package fat;
 
-import java.io.IOException;
 import java.text.ParseException;
 
 import junit.framework.TestCase;
-import fit.FileRunner;
 import fit.Fixture;
 import fit.Parse;
 

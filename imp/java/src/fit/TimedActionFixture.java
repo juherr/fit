@@ -33,7 +33,7 @@ public class TimedActionFixture extends ActionFixture {
     }
 
     public Parse td (String body) {
-        return new Parse("td", gray(body), null, null);
+        return new Parse("td", info(body), null, null);
     }
 
 }

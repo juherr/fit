@@ -150,6 +150,14 @@ public class Fixture {
         cell.addToBody(label("expected") + "<hr>" + escape(actual) + label("actual"));
     }
 
+	public void info (Parse cell, String message) {
+		cell.addToBody(info(message));
+	}
+
+	public String info (String message) {
+		return " <font color=\"#808080\">" + escape(message) + "</font>";
+	}
+
     public void ignore (Parse cell) {
         cell.addToTag(" bgcolor=\"" + gray + "\"");
         counts.ignores++;
@@ -157,7 +165,7 @@ public class Fixture {
 
 	public void error (Parse cell, String message) {
 		cell.body = escape(cell.text());
-		cell.addToBody("<hr><pre><font size=-2>" + message + "</font></pre>");
+		cell.addToBody("<hr><pre><font size=-2>" + escape(message) + "</font></pre>");
 		cell.addToTag(" bgcolor=\"" + yellow + "\"");
 		counts.exceptions++;
 	}
@@ -179,10 +187,6 @@ public class Fixture {
 
     public static String label (String string) {
         return " <font size=-1 color=\"#c08080\"><i>" + string + "</i></font>";
-    }
-
-    public static String gray (String string) {
-        return " <font color=\"#808080\">" + string + "</font>";
     }
 
     public static String escape (String string) {
@@ -218,9 +222,9 @@ public class Fixture {
         String text = cell.text();
         if (text.equals("")) {
             try {
-                cell.addToBody(gray(a.toString(a.get())));
+                info(cell, a.toString(a.get()));
             } catch (Exception e) {
-                cell.addToBody(gray("error"));
+                info(cell, "error");
             }
         } else if (a == null) {
             ignore(cell);
@@ -246,5 +250,4 @@ public class Fixture {
             }
         }
     }
-
 }
