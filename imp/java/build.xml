@@ -22,8 +22,11 @@
 	<target name="test" depends="build, output_dir" description="Test project">
 		<junit haltonfailure="true">
 			<classpath path="${build.dir}" />
-			<test name="fit.FrameworkTest" />
-			<test name="fit.RowFixtureTest" />
+            <batchtest fork="no">
+                <fileset dir="src">
+                  <include name="**/*Test.java"/>
+                </fileset>
+              </batchtest>
 			<formatter type="brief" usefile="false" />
 		</junit>
 	</target>

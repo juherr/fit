@@ -90,7 +90,7 @@ public class Parse {
     }
 
     public String text() {
-        return unescape(unformat(body)).trim();
+        return condenseWhitespace(unescape(unformat(body)));
     }
 
     public static String unformat(String s) {
@@ -113,6 +113,23 @@ public class Parse {
                     s = s.substring(0,i) + to + s.substring(j+1);
                 }
             }
+        }
+        return s;
+    }
+
+    public static String condenseWhitespace(String s) {
+        s = s.replace((char) 160, ' '); // 'no break space' character, some browsers seem to copy spaces into these
+        s = s.replace('\n', ' ');
+        s = s.replace('\r', ' ');
+        s = s.replace('\t', ' ');
+        s = replace(s, "  ", " ");
+        return s.trim();
+    }
+
+    private static String replace(String s, String from, String to) {
+        int i;
+        while ((i=s.indexOf(from))>=0){
+            s = s.substring(0,i) + to + s.substring(i+from.length());
         }
         return s;
     }
@@ -171,5 +188,4 @@ public class Parse {
             }
         }
     }
-
 }

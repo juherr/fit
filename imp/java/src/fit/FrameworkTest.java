@@ -80,6 +80,15 @@ public class FrameworkTest extends TestCase {
         assertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
     }
 
+    public void testWhitespaceIsCondensed() {
+        assertEquals("a b", Parse.condenseWhitespace(" a  b  "));
+        assertEquals("a b", Parse.condenseWhitespace(" a  \n\tb  "));
+        assertEquals("", Parse.condenseWhitespace(" "));
+        assertEquals("", Parse.condenseWhitespace("  "));
+        assertEquals("", Parse.condenseWhitespace("   "));
+        assertEquals("", Parse.condenseWhitespace(new String(new char[]{(char) 160})));
+    }
+
     public void testUnformat () {
         assertEquals("ab",Parse.unformat("<font size=+1>a</font>b"));
         assertEquals("ab",Parse.unformat("a<font size=+1>b</font>"));

@@ -7,6 +7,10 @@ import junit.framework.TestCase;
 import fit.*;
 
 import java.text.ParseException;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class FatTest extends TestCase {
 
@@ -48,5 +52,17 @@ public class FatTest extends TestCase {
         assertEquals("yellow", fixture.color(yellow));
     }
 
+    public void testAcceptanceTestsPass() throws IOException {
+        String testName = "FitSpecification.html";
 
+        FileRunner runner = new FileRunner();
+        String outputFileName = "output/junit-" + testName;
+        runner.args(new String[]{"../../spec/" + testName, outputFileName});
+        runner.process();
+        runner.output.close();
+
+        assertEquals("should have no exceptions (" + outputFileName + ")", 0, runner.fixture.counts.exceptions);
+        assertEquals("should have no wrong (" + outputFileName + ")", 0, runner.fixture.counts.wrong);
+        assertEquals("should have no ignores (" + outputFileName + ")", 0, runner.fixture.counts.ignores);
+    }
 }
