@@ -7,7 +7,8 @@ import java.io.*;
 public class ReferenceFixture extends ColumnFixture {
 	public String Description;
 	public String Location;
-	
+	public String Note;
+
 	public String Result() {
 		String inputFileName = "../../spec/" + Location;
 		String outputFileName = "output/spec/" + Location;
@@ -16,7 +17,7 @@ public class ReferenceFixture extends ColumnFixture {
 			runner.args(new String[]{inputFileName, outputFileName});
 			runner.process();
 			runner.output.close();
-			
+
 			Counts counts = runner.fixture.counts;
 			if ((counts.exceptions == 0) && (counts.wrong == 0)) {
 				return "pass";

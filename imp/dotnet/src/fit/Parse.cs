@@ -199,7 +199,7 @@ namespace fit {
 		private static String normalizeLineBreaks(String s) 
 		{
 			s = Regex.Replace(s, "<\\s*br\\s*/?\\s*>", "<br />");
-			s = Regex.Replace(s, "<\\s*/\\s*p\\s*>\\s*<\\s*p.*?>", "<br />");
+			s = Regex.Replace(s, "<\\s*/\\s*p\\s*>\\s*<\\s*p( .*?)?>", "<br />");
 			return s;
 		}
 	

@@ -129,10 +129,10 @@ public class Parse {
     public String text() {
     	return htmlToText(body);
     }
-    
+
     public static String htmlToText(String s)
     {
-		s = normalizeLineBreaks(s); 
+		s = normalizeLineBreaks(s);
     	s = removeNonBreakTags(s);
 		s = condenseWhitespace(s);
 		s = unescape(s);
@@ -162,7 +162,7 @@ public class Parse {
 		s = s.replace('\u201c', '"');
 		s = s.replace('\u201d', '"');
 		s = s.replace('\u2018', '\'');
-		s = s.replace('\u2019', '\''); 
+		s = s.replace('\u2019', '\'');
 		return s;
 	}
 
@@ -177,18 +177,18 @@ public class Parse {
 
 	private static String normalizeLineBreaks(String s) {
 		s = s.replaceAll("<\\s*br\\s*/?\\s*>", "<br />");
-		s = s.replaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p.*?>", "<br />");
+		s = s.replaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p( .*?)?>", "<br />");
 		return s;
 	}
-	
+
     public static String condenseWhitespace(String s) {
     	final char NON_BREAKING_SPACE = (char)160;
-    	
+
     	s = s.replaceAll("\\s+", " ");
 		s = s.replace(NON_BREAKING_SPACE, ' ');
 		s = s.replaceAll("&nbsp;", " ");
 		s = s.trim();
-    	return s;    	
+    	return s;
     }
 
     public void addToTag(String text) {
