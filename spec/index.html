@@ -84,6 +84,9 @@ p
 span.SpellE
 	{mso-style-name:"";
 	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
 @page Section1
 	{size:8.5in 11.0in;
 	margin:1.0in 1.25in 1.0in 1.25in;
@@ -136,8 +139,8 @@ table.MsoTableGrid
 <p>&nbsp;</p>
 
 <p>Fit is a tool for improving <st1:PersonName>c</st1:PersonName>ommuni<st1:PersonName>c</st1:PersonName>ation
-between <st1:PersonName>c</st1:PersonName>ustomers, programmers, and testers.&nbsp;
-It allows the <st1:PersonName>c</st1:PersonName>ustomer to des<st1:PersonName>c</st1:PersonName>ribe
+between <st1:PersonName>c</st1:PersonName>ustomers, programmers, and
+testers.&nbsp; It allows the <st1:PersonName>c</st1:PersonName>ustomer to des<st1:PersonName>c</st1:PersonName>ribe
 his requirements in a way that <st1:PersonName>c</st1:PersonName>an be <st1:PersonName>c</st1:PersonName>he<st1:PersonName>c</st1:PersonName>ked
 against the a<st1:PersonName>c</st1:PersonName>tual program.</p>
 
@@ -154,8 +157,8 @@ see if the software works the way the tables say it should.</p>
 
 <p>&nbsp;</p>
 
-<p>Fit uses small programs, <st1:PersonName>c</st1:PersonName>alled &quot;fixtures,&quot;
-to <st1:PersonName>c</st1:PersonName>onne<st1:PersonName>c</st1:PersonName>t
+<p>Fit uses small programs, <st1:PersonName>c</st1:PersonName>alled
+&quot;fixtures,&quot; to <st1:PersonName>c</st1:PersonName>onne<st1:PersonName>c</st1:PersonName>t
 tables to software.&nbsp; Programmers on the development team are responsible
 for <st1:PersonName>c</st1:PersonName>reating those fixtures.&nbsp; Customers
 are responsible for <st1:PersonName>c</st1:PersonName>reating the tables.&nbsp;
@@ -169,11 +172,33 @@ great software.</p>
 <p>This do<st1:PersonName>c</st1:PersonName>ument, and the do<st1:PersonName>c</st1:PersonName>uments
 it referen<st1:PersonName>c</st1:PersonName>es, des<st1:PersonName>c</st1:PersonName>ribes
 Fit using spe<st1:PersonName>c</st1:PersonName>ifi<st1:PersonName>c</st1:PersonName>ation
-by example.&nbsp; It is, itself, an example of how to use Fit.</p>
+by example.&nbsp; It is, itself, an example of how to use Fit.<span
+style='mso-spacerun:yes'>  </span>If all the “pass” <st1:PersonName>c</st1:PersonName>ells
+in the table below are <st1:PersonName>c</st1:PersonName>olored green, then you
+<st1:PersonName>c</st1:PersonName>an be <st1:PersonName>c</st1:PersonName>onfident
+that your <st1:PersonName>c</st1:PersonName>opy of Fit meets this spe<st1:PersonName>c</st1:PersonName>ifi<st1:PersonName>c</st1:PersonName>ation.</p>
+
+<p><o:p>&nbsp;</o:p></p>
+
+<p><span style='background:yellow;mso-highlight:yellow'>This is a “straw man”
+draft.<span style='mso-spacerun:yes'>  </span>It proposes some things that the
+offi</span><st1:PersonName><span style='background:yellow;mso-highlight:yellow'>c</span></st1:PersonName><span
+style='background:yellow;mso-highlight:yellow'>ial version of Fit doesn’t
+support.<span style='mso-spacerun:yes'>  </span>Those proposals are highlighted
+in yellow like this paragraph.<span style='mso-spacerun:yes'>  </span>All aspe</span><st1:PersonName><span
+ style='background:yellow;mso-highlight:yellow'>c</span></st1:PersonName><span
+style='background:yellow;mso-highlight:yellow'>ts of the spe</span><st1:PersonName><span
+ style='background:yellow;mso-highlight:yellow'>c</span></st1:PersonName><span
+style='background:yellow;mso-highlight:yellow'>ifi</span><st1:PersonName><span
+ style='background:yellow;mso-highlight:yellow'>c</span></st1:PersonName><span
+style='background:yellow;mso-highlight:yellow'>ation are open for modifi</span><st1:PersonName><span
+ style='background:yellow;mso-highlight:yellow'>c</span></st1:PersonName><span
+style='background:yellow;mso-highlight:yellow'>ation; the highlighted proposals
+most of all.</span></p>
 
 <div style='border:none;border-bottom:solid windowtext 1.0pt;padding:0in 0in 1.0pt 0in'>
 
-<p>&nbsp;</p>
+<p style='tab-stops:407.25pt'>&nbsp;<span style='mso-tab-count:1'>                                                                                                                                       </span></p>
 
 </div>
 
@@ -290,6 +315,83 @@ by example.&nbsp; It is, itself, an example of how to use Fit.</p>
 does ea<st1:PersonName>c</st1:PersonName>h of these things.&nbsp; </p>
 
 <div style='border:none;border-bottom:solid windowtext 1.0pt;padding:0in 0in 1.0pt 0in'>
+
+<p><o:p>&nbsp;</o:p></p>
+
+<p>Fit is available for many programming languages.<span
+style='mso-spacerun:yes'>  </span><span class=GramE>This se</span><st1:PersonName><span
+ class=GramE>c</span></st1:PersonName><span class=GramE>tions</span> above apply
+to all implementations of Fit.<span style='mso-spacerun:yes'>  </span>Extensions
+spe<st1:PersonName>c</st1:PersonName>ifi<st1:PersonName>c</st1:PersonName> to this
+implementation of Fit are des<st1:PersonName>c</st1:PersonName>ribed here:</p>
+
+<p><o:p>&nbsp;</o:p></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
+ mso-yfti-tbllook:480;mso-padding-alt:0in 5.4pt 0in 5.4pt;mso-border-insideh:
+ .5pt solid windowtext;mso-border-insidev:.5pt solid windowtext'>
+ <tr style='mso-yfti-irow:0'>
+  <td valign=top style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p><span class=SpellE><span style='color:silver'>fat.Referen</span></span><st1:PersonName><span
+   class=SpellE><span style='color:silver'>c</span></span></st1:PersonName><span
+  class=SpellE><span style='color:silver'>eFixture</span></span><span
+  style='color:silver'><o:p></o:p></span></p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p><o:p>&nbsp;</o:p></p>
+  </td>
+  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
+  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p><b>Des</b><st1:PersonName><b>c</b></st1:PersonName><b>ription</b><o:p></o:p></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
+  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p><b>Lo</b><st1:PersonName><b>c</b></st1:PersonName><b>ation</b><o:p></o:p></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
+  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p><b>Result()</b><o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;mso-yfti-lastrow:yes'>
+  <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
+  mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p>Implementation-spe<st1:PersonName>c</st1:PersonName>ifi<st1:PersonName>c</st1:PersonName>
+  extensions<o:p></o:p></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
+  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p><a href="extensions.html">extensions.html</a><o:p></o:p></p>
+  </td>
+  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
+  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p>pass<o:p></o:p></p>
+  </td>
+ </tr>
+</table>
+
+<p><o:p>&nbsp;</o:p></p>
 
 <p>&nbsp;</p>
 
