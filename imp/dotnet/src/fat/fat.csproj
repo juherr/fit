@@ -82,7 +82,17 @@
         <Files>
             <Include>
                 <File
+                    RelPath = "AnnotationFixture.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DocumentParseFixture.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -92,12 +102,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ParseFixture.cs"
+                    RelPath = "ReferenceFixture.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ReferenceFixture.cs"
+                    RelPath = "StandardAnnotationFixture.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TableParseFixture.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

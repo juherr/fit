@@ -8,6 +8,7 @@ namespace fat
 	{
 		public string Description;
 		public string Location;
+		public string Note;
 
 		public string Result()
 		{

@@ -50,8 +50,9 @@ namespace fit {
 			
             int startTag = ProtectedIndexOf(lc, "<"+target, 0, target);
             int endTag = ProtectedIndexOf(lc, ">", startTag, target) + 1;
-            int startEnd = ProtectedIndexOf(lc, "</"+target, endTag, target);
-            int endEnd = ProtectedIndexOf(lc, ">", startEnd, target) + 1;
+//			int startEnd = ProtectedIndexOf(lc, "</"+target, endTag, target);
+			int startEnd = findMatchingEndTag(lc, endTag, tags[level], offset);
+			int endEnd = ProtectedIndexOf(lc, ">", startEnd, target) + 1;
             int startMore = lc.IndexOf("<"+target, endEnd);
 
             leader = Substring(text, 0,startTag);
@@ -60,16 +61,57 @@ namespace fit {
             end = Substring(text, startEnd,endEnd);
             trailer = text.Substring(endEnd);
 
-            if (level+1 < tags.Length) {
-                parts = new Parse (body, tags, level+1, offset+endTag);
-                body = null;
-            }
+			if (level+1 < tags.Length) {
+				parts = new Parse (body, tags, level+1, offset+endTag);
+				body = null;
+			}
+			else { // Check for nested table
+				int index = body.IndexOf("<" + tags[0]);
+				if (index >= 0) 
+				{
+					parts = new Parse(body, tags, 0, offset + endTag);
+					body = "";
+				}
+			}
 
             if (startMore>=0) {
                 more = new Parse (trailer, tags, level, offset+endEnd);
                 trailer = null;
             }
         }
+
+		/* Added by Rick Mugridge, Feb 2005 */
+		protected static int findMatchingEndTag(String lc, int matchFromHere, String tag, int offset) 
+		{
+			int fromHere = matchFromHere;
+			int count = 1;
+			int startEnd = 0;
+			while (count > 0) 
+			{
+				int embeddedTag = lc.IndexOf("<" + tag, fromHere);
+				int embeddedTagEnd = lc.IndexOf("</" + tag, fromHere);
+				// Which one is closer?
+				if (embeddedTag < 0 && embeddedTagEnd < 0)
+					throw new ApplicationException("Can't find tag: " + tag);
+				if (embeddedTag < 0)
+					embeddedTag = int.MaxValue;
+				if (embeddedTagEnd < 0)
+					embeddedTagEnd = int.MaxValue;
+				if (embeddedTag < embeddedTagEnd) 
+				{
+					count++;
+					startEnd = embeddedTag;
+					fromHere = lc.IndexOf(">", embeddedTag) + 1;
+				}
+				else if (embeddedTagEnd < embeddedTag) 
+				{
+					count--;
+					startEnd = embeddedTagEnd;
+					fromHere = lc.IndexOf(">", embeddedTagEnd) + 1;
+				}
+			}
+			return startEnd;
+		}
 
         public virtual int size() {
             return more==null ? 1 : more.size()+1;
@@ -157,7 +199,7 @@ namespace fit {
 		private static String normalizeLineBreaks(String s) 
 		{
 			s = Regex.Replace(s, "<\\s*br\\s*/?\\s*>", "<br />");
-			s = Regex.Replace(s, "<\\s*/\\s*p\\s*>\\s*<\\s*p\\s*>", "<br />");
+			s = Regex.Replace(s, "<\\s*/\\s*p\\s*>\\s*<\\s*p.*?>", "<br />");
 			return s;
 		}
 	

@@ -37,7 +37,7 @@ namespace fit {
         }
 
         protected virtual Parse td(string body, Parse more) {
-            return new Parse ("td", gray(body), null, more);
+            return new Parse ("td", info(body), null, more);
         }
 
         protected virtual void mark(Parse row) {

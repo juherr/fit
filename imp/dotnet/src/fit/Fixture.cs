@@ -1,5 +1,13 @@
 // Copyright (c) 2002 Cunningham & Cunningham, Inc.
 // Released under the terms of the GNU General Public License version 2 or later.
+//
+// For an alteration two methods from FitNesse's
+// fit.Fixture (getArgsForTable(),getArgs()):
+//   Copyright (C) 2003,2004 by Object Mentor, Inc. All rights reserved.
+//
+// For some alterations (doTables()),
+// and additions (interpretTables(), interpretFollowingTables()):
+//   Copyright (c) 2004 Rick Mugridge, University of Auckland, NZ
 
 using System;
 using System.Collections;
@@ -19,28 +27,7 @@ namespace fit {
 
         public Hashtable summary = new Hashtable();
         public Counts counts = new Counts();
-
-        public class Counts {
-            public int right = 0;
-            public int wrong = 0;
-            public int ignores = 0;
-            public int exceptions = 0;
-
-            public override string ToString() {
-                return
-                    right + " right, " +
-                    wrong + " wrong, " +
-                    ignores + " ignored, " +
-                    exceptions + " exceptions";
-            }
-
-            public virtual void tally(Counts source) {
-                right += source.right;
-                wrong += source.wrong;
-                ignores += source.ignores;
-                exceptions += source.exceptions;
-            }
-        }
+		protected String[] args;
 
         public class RunTime {
             DateTime start = DateTime.Now;
@@ -66,25 +53,81 @@ namespace fit {
 
         // Traversal //////////////////////////
 
-        public virtual void doTables(Parse tables) {
-            summary["run date"] = DateTime.Now;
-            summary["run elapsed time"] = new RunTime();
+		/* Altered by Rick Mugridge to dispatch on the first Fixture */
+		public void doTables(Parse tables) 
+		{
+			summary["run date"] = DateTime.Now;
+			summary["run elapsed time"] = new RunTime();
+			if (tables != null) 
+			{
+				Parse fixtureName = FixtureName(tables);
+				if (fixtureName != null) 
+				{
+					try 
+					{
+						Fixture fixture = getLinkedFixtureWithArgs(tables);
+						fixture.interpretTables(tables);
+					} 
+					catch (Exception e) 
+					{
+						exception (fixtureName, e);
+						interpretFollowingTables(tables);
+					}
+				}
+			}
+		}
+
+		/* Added by Rick Mugridge to allow a dispatch into DoFixture */
+		protected void interpretTables(Parse tables) 
+		{
+			try 
+			{ // Don't create the first fixture again, because creation may do something important.
+				getArgsForTable(tables); // get them again for the new fixture object
+				doTable(tables);
+			} 
+			catch (Exception ex) 
+			{
+				exception(FixtureName(tables), ex);
+				return;
+			}
+			interpretFollowingTables(tables);
+		}
+
+		/* Added by Rick Mugridge */
+		private void interpretFollowingTables(Parse tables) 
+		{
+			//listener.tableFinished(tables);
+			tables = tables.more;
             while (tables != null) {
-                Parse heading = tables.at(0,0,0);
-                if (heading != null) {
+                Parse fixtureName = FixtureName(tables);
+                if (fixtureName != null) {
                     try {
-                        Fixture fixture = loadFixture(heading.text());
-                        fixture.counts = counts;
-                        fixture.summary = summary;
+                        Fixture fixture = getLinkedFixtureWithArgs(tables);
                         fixture.doTable(tables);
                     } 
                     catch (Exception e) {
-                        exception (heading, e);
+                        exception (fixtureName, e);
                     }
                 }
                 tables = tables.more;
             }
         }
+
+		/* Added from FitNesse*/
+		protected Fixture getLinkedFixtureWithArgs(Parse tables) 
+		{
+			Parse header = tables.at(0, 0, 0);
+			Fixture fixture = loadFixture(header.text());
+			fixture.counts = counts;
+			fixture.summary = summary;
+			fixture.getArgsForTable(tables);
+			return fixture;
+		}
+	
+		public Parse FixtureName(Parse tables) 
+		{
+			return tables.at(0, 0, 0);
+		}
 
         public virtual Fixture loadFixture(string className) {
             try {
@@ -97,7 +140,7 @@ namespace fit {
 					assemblyList += delimiter + assembly.CodeBase;
 					delimiter = ", ";
                 }
-                throw new ApplicationException("Fixture '" + className + "' could not be found in assemblies.  Assemblies searched: " + assemblyList);
+                throw new ApplicationException("Fixture '" + className + "' could not be found.  Assemblies searched: " + assemblyList);
             }
             catch (InvalidCastException e) {
                 throw new ApplicationException("Couldn't cast " + className + " to Fixture.  Did you remember to extend Fixture?", e);
@@ -118,6 +161,16 @@ namespace fit {
                 return result;
             }
         }
+
+		/* Added by Rick Mugridge, from FitNesse */
+		protected void getArgsForTable(Parse table) 
+		{
+			ArrayList argumentList = new ArrayList();
+			Parse parameters = table.parts.parts.more;
+			for (; parameters != null; parameters = parameters.more)
+				argumentList.Add(parameters.text());
+			args = (String[]) argumentList.ToArray(typeof(String));
+		}
 
         public virtual void doTable(Parse table) {
             doRows(table.parts.more);
@@ -154,13 +207,18 @@ namespace fit {
 
         // Annotation ///////////////////////////////
 
+		public static String green = "#cfffcf";
+		public static String red = "#ffcfcf";
+		public static String yellow = "#ffffcf";
+
         public virtual void right (Parse cell) {
-            cell.addToTag(" bgcolor=\"#cfffcf\"");
+            cell.addToTag(" bgcolor=\"" + green + "\"");
             counts.right++;
         }
 
         public virtual void wrong (Parse cell) {
-            cell.addToTag(" bgcolor=\"#ffcfcf\"");
+            cell.addToTag(" bgcolor=\"" + red + "\"");
+			cell.body = escape(cell.text());
             counts.wrong++;
         }
 
@@ -169,27 +227,38 @@ namespace fit {
             cell.addToBody(label("expected") + "<hr>" + escape(actual) + label("actual"));
         }
 
+		public void info (Parse cell, String message) 
+		{
+			cell.addToBody(info(message));
+		}
+
+		public String info (String message) 
+		{
+			return " <font color=\"#808080\">" + escape(message) + "</font>";
+		}
+
         public virtual void ignore (Parse cell) {
             cell.addToTag(" bgcolor=\"#efefef\"");
             counts.ignores++;
         }
 
+		public void error (Parse cell, String message) 
+		{
+			cell.body = escape(cell.text());
+			cell.addToBody("<hr><pre>" + escape(message) + "</pre>");
+			cell.addToTag(" bgcolor=\"" + yellow + "\"");
+			counts.exceptions++;
+		}
+
         public virtual void exception(Parse cell, Exception exception) {
-            cell.addToBody("<hr><font size=-2><pre>" + exception + "</pre></font>");
-            cell.addToTag(" bgcolor=\"#ffffcf\"");
-            counts.exceptions++;
+            error(cell, exception.ToString());
         }
 
         // Utility //////////////////////////////////
 
         public static string label (string text) {
-            return " <font size=-1 color=#c08080><i>" + text + "</i></font>";
+            return " <font size=-1 color=\"#c08080\"><i>" + text + "</i></font>";
         }
-
-        public static string gray (string text) {
-            return " <font color=#808080>" + text + "</font>";
-        }
-
 
 		public static String escape (String s) 
 		{
@@ -197,7 +266,6 @@ namespace fit {
 			s = s.Replace("<", "&lt;");
 			s = s.Replace("  ", " &nbsp;");
 			s = s.Replace("\r\n", "<br />");
-			s = s.Replace("\n\r", "<br />");
 			s = s.Replace("\r", "<br />");
 			s = s.Replace("\n", "<br />");
 			return s;
@@ -205,6 +273,8 @@ namespace fit {
 
         public static string camel (string name) {
             string[] tokens = name.Split(' ');
+			if (tokens.Length == 1) return name;
+
             string result = "";
             foreach (string token in tokens) {
                 result += token.Substring(0, 1).ToUpper();		// replace spaces with camelCase
@@ -216,12 +286,12 @@ namespace fit {
         public virtual void check(Parse cell, TypeAdapter a) {
             string text = cell.text();
             if (text == "") {
-                try {
-                    cell.addToBody(gray(a.get().ToString()));
-                } 
-                catch (Exception) {
-                    cell.addToBody(gray("error"));
-                }
+				try {
+					info(cell, a.get().ToString());
+				} 
+				catch (Exception) {
+					info(cell, "error");
+				}
             }
             else if (a == null) {
                 ignore(cell);
@@ -253,5 +323,11 @@ namespace fit {
                 }
             }
         }
+
+		/* Added by Rick, from FitNesse */
+		public String[] getArgs() 
+		{
+			return args;
+		}
     }
 }

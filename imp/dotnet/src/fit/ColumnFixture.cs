@@ -100,14 +100,16 @@ namespace fit {
         }
 
         protected virtual TypeAdapter bindMethod (string name) {
-            MethodInfo method = getTargetClass().GetMethod(name, new Type[] {});
-            if (method == null) throw new MissingMethodException(getTargetClass().FullName, name);
+			String camelName = camel(name);
+            MethodInfo method = getTargetClass().GetMethod(camelName, new Type[] {});
+            if (method == null) throw new MissingMethodException(getTargetClass().FullName, camelName);
             return TypeAdapter.on(this, method);
         }
 
         protected virtual TypeAdapter bindField (string name) {
-			FieldInfo field = getTargetClass().GetField(name);
-			if (field == null) throw new MissingFieldException(getTargetClass().FullName, name);
+			String camelName = camel(name);
+			FieldInfo field = getTargetClass().GetField(camelName);
+			if (field == null) throw new MissingFieldException(getTargetClass().FullName, camelName);
             return TypeAdapter.on(this, field);
         }
 

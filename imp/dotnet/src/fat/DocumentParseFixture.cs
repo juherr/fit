@@ -4,19 +4,19 @@ using fit;
 
 namespace fat
 {
-	public class ParseFixture : ColumnFixture
+	public class DocumentParseFixture : ColumnFixture
 	{
-		public string Html;
+		public string HTML;
 		public string Note;
 	
 		public String Output() 
 		{
-			return GenerateOutput(new Parse(Html));
+			return GenerateOutput(new Parse(HTML));
 		}
 
-		public String Parse() 
+		public String Structure() 
 		{
-			return dumpTables(new Parse(Html));
+			return dumpTables(new Parse(HTML));
 		}
 				
 		private String GenerateOutput(Parse parse) 
@@ -61,7 +61,7 @@ namespace fat
 			while (cell != null) 
 			{
 				result += separator;
-				result += "[" + cell.text() + "]";
+				result += "[" + cell.body + "]";
 				separator = " ";
 				cell = cell.more;
 			}

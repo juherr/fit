@@ -201,7 +201,7 @@ namespace fit {
                 else {
                     try {
                         a.target = row;
-                        next.body = gray(escape(a.get().ToString()));
+						info(next, a.get().ToString());
                     } 
                     catch (Exception e) {
                         exception(next, e);
