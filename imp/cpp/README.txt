@@ -410,6 +410,29 @@ int __cdecl main(int argc, char** argv)
 
 <html>
 <body>
+<p>This exercises the MULTIPLY fixture using the C++ class name</p>
+<table width="100%" border="1">
+  <tr> 
+    <td colspan="3">MULTIPLY</td>
+  </tr>
+  <tr> 
+    <td>x</td>
+    <td>y</td>
+    <td>multiply()</td>
+  </tr>
+  <tr> 
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr> 
+    <td>800</td>
+    <td>2</td>
+    <td>1600</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>This exercises the MULTIPLY fixture using the Java alias.</p>
 <table width="100%" border="1">
   <tr> 
     <td colspan="3">fitexample.Multiply</td>
@@ -445,6 +468,7 @@ int __cdecl main(int argc, char** argv)
     <td>8</td>
   </tr>
 </table>
+<p>&nbsp;</p>
 </body>
 </html>
 
