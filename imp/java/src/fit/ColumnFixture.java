@@ -3,8 +3,6 @@ package fit;
 // Copyright (c) 2002 Cunningham & Cunningham, Inc.
 // Released under the terms of the GNU General Public License version 2 or later.
 
-import java.lang.reflect.*;
-
 public class ColumnFixture extends Fixture {
 
     protected TypeAdapter columnBindings[];

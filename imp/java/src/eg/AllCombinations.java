@@ -5,7 +5,6 @@ package eg;
 
 import fit.*;
 import java.util.*;
-import java.io.*;
 
 public class AllCombinations extends AllFiles {
 

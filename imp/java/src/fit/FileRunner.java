@@ -14,10 +14,16 @@ public class FileRunner {
     public PrintWriter output;
 
     public static void main(String argv[]) {
-        new FileRunner().run(argv);
+    	try {
+    		new FileRunner().run(argv);
+		} 
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+			System.exit(-1);
+		}
     }
 
-    public void run(String argv[]) {
+    public void run(String argv[]) throws IOException {
         args(argv);
         process();
         exit();
@@ -38,7 +44,7 @@ public class FileRunner {
         tables.print(output);
     }
 
-    public void args(String[] argv) {
+    public void args(String[] argv) throws IOException {
         if (argv.length != 2) {
             System.err.println("usage: java fit.FileRunner input-file output-file");
             System.exit(-1);
@@ -48,13 +54,8 @@ public class FileRunner {
         fixture.summary.put("input file", in.getAbsolutePath());
         fixture.summary.put("input update", new Date(in.lastModified()));
         fixture.summary.put("output file", out.getAbsolutePath());
-        try {
-            input = read(in);
-            output = new PrintWriter(new BufferedWriter(new FileWriter(out)));
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            System.exit(-1);
-        }
+        input = read(in);
+        output = new PrintWriter(new BufferedWriter(new FileWriter(out)));
     }
 
     protected String read(File input) throws IOException {

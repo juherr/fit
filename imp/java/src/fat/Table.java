@@ -10,9 +10,9 @@ public class Table extends Fixture {
     public static Parse table;
 
     public void doRows(Parse rows) {
-        this.table = new Parse ("table", null, copy(rows), null);
+        Table.table = new Parse ("table", null, copy(rows), null);
         // evaluate the rest of the table like a runner
-        (new Fixture()).doTables(this.table);
+        (new Fixture()).doTables(Table.table);
     }
 
     static Parse copy(Parse tree) {

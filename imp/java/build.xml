@@ -41,11 +41,18 @@
             <arg value="${output.dir}/smoke-wiki-MusicExample.html"/>
         </java>
     </target>
-
-    <target name="all" depends="clean, test, smoke"/>
+    
+    <target name="spec" depends="build, output_dir" description="Test specification">
+    	<java classname="fit.FileRunner" classpath="${build.dir}" fork="true" failonerror="true" >
+    		<arg value="../../spec/index.html"/>
+    		<arg value="${output.dir}/index.html"/>
+    	</java>
+    </target>
 
 	<target name="clean" description="Delete generated files" >
 		<delete dir="${build.dir}" />
 		<delete dir="${output.dir}" />
 	</target>
+
+    <target name="all" depends="clean, test, smoke" description="Do everything"/>
 </project>

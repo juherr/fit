@@ -3,14 +3,13 @@
 
 package fat;
 
-import junit.framework.TestCase;
-import fit.*;
-
-import java.text.ParseException;
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.text.ParseException;
+
+import junit.framework.TestCase;
+import fit.FileRunner;
+import fit.Fixture;
+import fit.Parse;
 
 public class FatTest extends TestCase {
 

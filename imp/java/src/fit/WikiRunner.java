@@ -8,6 +8,6 @@ public class WikiRunner extends FileRunner {
 
     public static void main (String argv[]) {
         System.err.println("WikiRunner is deprecated: use FileRunner");
-        new WikiRunner().run(argv);
+        FileRunner.main(argv);
     }
 }

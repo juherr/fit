@@ -5,7 +5,6 @@ package eg;
 
 import fit.*;
 import java.io.*;
-import java.util.*;
 
 public class ExampleTests extends ColumnFixture {
 

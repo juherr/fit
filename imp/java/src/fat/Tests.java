@@ -6,7 +6,6 @@ package fat;
 import fit.*;
 
 import java.net.URL;
-import java.util.*;
 import java.io.*;
 
 public class Tests extends Fixture {

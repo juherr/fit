@@ -15,8 +15,8 @@ public class Page extends RowFixture {
     // actions //////////////////////////////////
 
     public void location(String url) throws Exception {
-        this.url = new URL(url);
-        this.text = get(this.url);
+        Page.url = new URL(url);
+        Page.text = get(Page.url);
     }
 
     public String title() throws Exception {
@@ -75,7 +75,7 @@ public class Page extends RowFixture {
     // utilities ////////////////////////////////
 
     private String get(URL url) throws IOException {
-        this.url = url;
+        Page.url = url;
         InputStream stream =  (InputStream) url.getContent();
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         StringBuffer buffer = new StringBuffer(10000);
