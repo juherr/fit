@@ -7,3 +7,4 @@ fitspec.plg
 build.properties
 Release
 simple.plg
+Makefile.win
