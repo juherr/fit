@@ -10,23 +10,23 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <meta name=Generator content="Microsoft Word 10">
 <meta name=Originator content="Microsoft Word 10">
 <link rel=File-List href="parse_files/filelist.xml">
-<title>Fit Specification</title>
+<title>Fit Specification - Parse</title>
 <o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
  name="PersonName"/>
 <!--[if gte mso 9]><xml>
  <o:DocumentProperties>
   <o:Author>Jim Little</o:Author>
   <o:LastAuthor>Jim Little</o:LastAuthor>
-  <o:Revision>179</o:Revision>
-  <o:TotalTime>1455</o:TotalTime>
-  <o:Created>2004-07-19T18:44:00Z</o:Created>
-  <o:LastSaved>2005-03-26T02:47:00Z</o:LastSaved>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>1483</o:TotalTime>
+  <o:Created>2005-03-31T00:34:00Z</o:Created>
+  <o:LastSaved>2005-03-31T00:34:00Z</o:LastSaved>
   <o:Pages>1</o:Pages>
-  <o:Words>1461</o:Words>
-  <o:Characters>8328</o:Characters>
-  <o:Lines>69</o:Lines>
-  <o:Paragraphs>19</o:Paragraphs>
-  <o:CharactersWithSpaces>9770</o:CharactersWithSpaces>
+  <o:Words>1331</o:Words>
+  <o:Characters>8459</o:Characters>
+  <o:Lines>704</o:Lines>
+  <o:Paragraphs>543</o:Paragraphs>
+  <o:CharactersWithSpaces>9247</o:CharactersWithSpaces>
   <o:Version>10.6626</o:Version>
  </o:DocumentProperties>
 </xml><![endif]--><!--[if gte mso 9]><xml>
@@ -317,7 +317,7 @@ table.MsoTableGrid
 	font-family:"Times New Roman";}
 </style>
 <![endif]--><!--[if gte mso 9]><xml>
- <o:shapedefaults v:ext="edit" spidmax="4098"/>
+ <o:shapedefaults v:ext="edit" spidmax="5122"/>
 </xml><![endif]--><!--[if gte mso 9]><xml>
  <o:shapelayout v:ext="edit">
   <o:idmap v:ext="edit" data="1"/>
@@ -349,10 +349,9 @@ class=MsoHyperlink><span style='mso-no-proof:yes'><a href="#_Toc92532385">HTML
 Document Parsing<span style='color:windowtext;display:none;mso-hide:screen;
 text-decoration:none;text-underline:none'><span style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
 style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
-text-underline:none'><span style='mso-element:field-begin'></span> PAGEREF
-_Toc92532385 \h </span><span style='color:windowtext;text-decoration:none;
-text-underline:none'><span style='display:none;mso-hide:screen'><span
-style='mso-element:field-separator'></span></span></span><![endif]--><span
+text-underline:none'><span style='mso-element:field-begin'></span> PAGEREF _Toc92532385
+\h </span><span style='color:windowtext;text-decoration:none;text-underline:
+none'><span style='display:none;mso-hide:screen'><span style='mso-element:field-separator'></span></span></span><![endif]--><span
 style='color:windowtext;display:none;mso-hide:screen;text-decoration:none;
 text-underline:none'>1<!--[if gte mso 9]><xml>
  <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000D0000005F0054006F006300390032003500330032003300380035000000</w:data>
@@ -1104,8 +1103,8 @@ line-break'>
 
 <p><o:p>&nbsp;</o:p></p>
 
-<p>Tables that are missing “table,” “<span class=SpellE>tr</span>,” or “td” tags
-generate an error.</p>
+<p>Tables that are missing “table,” “<span class=SpellE>tr</span>,” or “td”
+tags generate an error.</p>
 
 <p><span style='mso-spacerun:yes'> </span></p>
 
@@ -1318,14 +1317,15 @@ class=SpellE>tr</span>,” and “td” tags also generate an error.</span></p>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='color:silver'>&lt;table&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span>&lt;<span
-  class=SpellE>tr</span>&gt;&lt;td&gt;1&lt;/td&gt;&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'>&lt;table&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'><span style='mso-spacerun:yes'>  </span>&lt;<span
+  class=SpellE>tr</span>&gt;&lt;td&gt;1&lt;/td&gt;&lt;/<span class=SpellE>tr</span>&gt;</span><span
+  style='color:silver'><o:p></o:p></span></p>
   <p><b style='mso-bidi-font-weight:normal'><span style='mso-spacerun:yes'> 
   </span>&lt;table&gt;<o:p></o:p></b></p>
-  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span>&lt;<span
+  <p><span style='color:gray'><span style='mso-spacerun:yes'>  </span>&lt;<span
   class=SpellE>tr</span>&gt;&lt;td&gt;2&lt;/td&gt;&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'>&lt;/table&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'>&lt;/table&gt;</span><span style='color:silver'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -1338,14 +1338,16 @@ class=SpellE>tr</span>,” and “td” tags also generate an error.</span></p>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='color:silver'>&lt;table&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span>&lt;<span
-  class=SpellE>tr</span>&gt;&lt;td&gt;1&lt;/td&gt;&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'>&lt;table&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'><span style='mso-spacerun:yes'> </span><span
+  style='mso-spacerun:yes'> </span>&lt;<span class=SpellE>tr</span>&gt;&lt;td&gt;1&lt;/td&gt;&lt;/<span
+  class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
   <p><b style='mso-bidi-font-weight:normal'><span style='mso-spacerun:yes'> 
   </span>&lt;<span class=SpellE>tr</span>&gt;<o:p></o:p></b></p>
-  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span>&lt;<span
-  class=SpellE>tr</span>&gt;&lt;td&gt;2&lt;/td&gt;&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'>&lt;/table&gt;<o:p></o:p></span></p>
+  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span></span><span
+  style='color:gray'>&lt;<span class=SpellE>tr</span>&gt;&lt;td&gt;2&lt;/td&gt;&lt;/<span
+  class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'>&lt;/table&gt;</span><span style='color:silver'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -1358,11 +1360,12 @@ class=SpellE>tr</span>,” and “td” tags also generate an error.</span></p>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='color:silver'>&lt;table&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span>&lt;<span
-  class=SpellE>tr</span>&gt;&lt;td&gt;1&lt;/td&gt;</span><b style='mso-bidi-font-weight:
-  normal'>&lt;td&gt;</b><span style='color:silver'>&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'>&lt;/table&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'>&lt;table&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'><span style='mso-spacerun:yes'>  </span>&lt;<span
+  class=SpellE>tr</span>&gt;&lt;td&gt;1&lt;/td&gt;<b style='mso-bidi-font-weight:
+  normal'>&lt;</b></span><b style='mso-bidi-font-weight:normal'>td&gt;</b><span
+  style='color:gray'>&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'>&lt;/table&gt;</span><span style='color:silver'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -1376,7 +1379,7 @@ class=SpellE>tr</span>,” and “td” tags also generate an error.</span></p>
 <p><o:p>&nbsp;</o:p></p>
 
 <p>However, ex<st1:PersonName>c</st1:PersonName>ess <st1:PersonName>c</st1:PersonName>losing
-tags don’t generate an error.<o:p></o:p></p>
+tags don’t generate an error.</p>
 
 <p><o:p>&nbsp;</o:p></p>
 
@@ -1402,30 +1405,32 @@ tags don’t generate an error.<o:p></o:p></p>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><b>HTML</b><o:p></o:p></p>
+  <p><b>HTML</b></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><b>Stru</b><st1:PersonName><b>c</b></st1:PersonName><b>ture()</b><o:p></o:p></p>
+  <p><b>Stru</b><st1:PersonName><b>c</b></st1:PersonName><b>ture()</b></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:2;mso-yfti-lastrow:yes'>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='color:silver'>&lt;table&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span>&lt;<span
-  class=SpellE>tr</span>&gt;&lt;td&gt;1&lt;/td&gt;</span><b style='mso-bidi-font-weight:
-  normal'><span style='color:black'>&lt;/td&gt;</span></b><span
-  style='color:silver'>&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span>&lt;<span
-  class=SpellE>tr</span>&gt;&lt;td&gt;2&lt;/td&gt;&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'>&lt;table&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'><span style='mso-spacerun:yes'>  </span>&lt;<span
+  class=SpellE>tr</span>&gt;&lt;td&gt;1</span><b style='mso-bidi-font-weight:
+  normal'>&lt;/td&gt;<span style='color:black'>&lt;/td</span><span
+  style='color:gray'>&gt;</span></b><span style='color:gray'>&lt;/<span
+  class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'><span style='mso-spacerun:yes'>  </span>&lt;<span
+  class=SpellE>tr</span>&gt;&lt;td&gt;2&lt;/td&gt;</span><b style='mso-bidi-font-weight:
+  normal'>&lt;/<span class=SpellE>tr</span>&gt;<o:p></o:p></b></p>
   <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span></span><b
   style='mso-bidi-font-weight:normal'><span style='color:black'>&lt;/<span
-  class=SpellE>tr</span>&gt;<o:p></o:p></span></b></p>
-  <p><span style='color:silver'>&lt;/table&gt;<o:p></o:p></span></p>
+  class=SpellE>tr</span>&gt;</span><span style='color:gray'><o:p></o:p></span></b></p>
+  <p><b style='mso-bidi-font-weight:normal'>&lt;/table&gt;<o:p></o:p></b></p>
   <p><b style='mso-bidi-font-weight:normal'><span style='color:black'>&lt;/table&gt;<o:p></o:p></span></b></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
@@ -1433,7 +1438,7 @@ tags don’t generate an error.<o:p></o:p></p>
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
   <p>[1]</p>
-  <p>[2]<o:p></o:p></p>
+  <p>[2]</p>
   </td>
  </tr>
 </table>
@@ -1479,12 +1484,13 @@ tags don’t generate an error.<o:p></o:p></p>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='color:silver'>&lt;table&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'><span style='mso-spacerun:yes'>  </span>&lt;<span
-  class=SpellE>tr</span>&gt;</span><b style='mso-bidi-font-weight:normal'>&lt;<span
-  class=SpellE>badTag</span>...</b><span style='color:silver'>&lt;td&gt;1&lt;/td&gt;&lt;/<span
+  <p><span style='color:gray'>&lt;table&gt;<o:p></o:p></span></p>
+  <p><span style='color:gray'><span style='mso-spacerun:yes'>  </span>&lt;<span
+  class=SpellE>tr</span>&gt;<b style='mso-bidi-font-weight:normal'>&lt;</b></span><span
+  class=SpellE><b style='mso-bidi-font-weight:normal'>badTag</b></span><b
+  style='mso-bidi-font-weight:normal'>...</b><span style='color:gray'>&lt;td&gt;1&lt;/td&gt;&lt;/<span
   class=SpellE>tr</span>&gt;<o:p></o:p></span></p>
-  <p><span style='color:silver'>&lt;/table&gt;</span></p>
+  <p><span style='color:gray'>&lt;/table&gt;</span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -2200,7 +2206,7 @@ is <st1:PersonName>c</st1:PersonName>onverted into a normal spa<st1:PersonName>c
 
 <p><o:p>&nbsp;</o:p></p>
 
-<p>Extended <st1:PersonName>c</st1:PersonName>hara<st1:PersonName>c</st1:PersonName>ters
+<p>Non-ASCII <st1:PersonName>c</st1:PersonName>hara<st1:PersonName>c</st1:PersonName>ters
 are preserved as-is.</p>
 
 <p><o:p>&nbsp;</o:p></p>
@@ -2802,8 +2808,8 @@ class=SpellE>e</span>” se<st1:PersonName>c</st1:PersonName>tion, below.</p>
 
 <p>Tags other than line-break tags are ignored.<span style='mso-spacerun:yes'> 
 </span>Leading and trailing <span class=SpellE>whitespa</span><st1:PersonName><span
- class=SpellE>c</span></st1:PersonName><span class=SpellE>e</span> on either
-side of an ignored tag is removed.</p>
+ class=SpellE>c</span></st1:PersonName><span class=SpellE>e</span> on either side
+of an ignored tag is removed.</p>
 
 <p><o:p>&nbsp;</o:p></p>
 
@@ -2957,7 +2963,8 @@ line-break tags are ignored.</p>
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p>1<span style='mso-spacerun:yes'>    </span>2</p>
+  <p>1<span style='mso-spacerun:yes'>   </span><span
+  style='mso-spacerun:yes'> </span>2</p>
   </td>
  </tr>
 </table>
