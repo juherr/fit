@@ -215,7 +215,7 @@ namespace CEEFIT
   {
     STRING temp(s);
 
-    temp = temp.ReplaceAll("<br />", "\n");
+    temp = temp.SimplePatternReplaceAll("<br />", "\n");
 		temp = UnescapeEntities(temp);
 		temp = UnescapeSmartQuotes(temp);
 
@@ -238,21 +238,46 @@ namespace CEEFIT
   {
     STRING temp(s);
 
-		temp = temp.ReplaceAll("&lt;", "<");
-		temp = temp.ReplaceAll("&gt;", ">");
-		temp = temp.ReplaceAll("&nbsp;", " ");
-		temp = temp.ReplaceAll("&quot;", "\"");
-		temp = temp.ReplaceAll("&amp;", "&");
+		temp = temp.SimplePatternReplaceAll("&lt;", "<");
+		temp = temp.SimplePatternReplaceAll("&gt;", ">");
+		temp = temp.SimplePatternReplaceAll("&nbsp;", " ");
+		temp = temp.SimplePatternReplaceAll("&quot;", "\"");
+		temp = temp.SimplePatternReplaceAll("&amp;", "&");
 
 		return temp;
 	}
+
+  static const char* RegexStringPattern = "[ \t\n\x0B\f\r]";
 
 	STRING ceefit_call_spec PARSE::NormalizeLineBreaks(const STRING& s)
   {
     STRING temp(s);
 
-		temp = temp.ReplaceAll("<\\s*br\\s*/?\\s*>", "<br />");
-		temp = temp.ReplaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p\\s*>", "<br />");
+    DYNARRAY<STRING> brPatternArray;
+    brPatternArray.Add("<");
+    brPatternArray.Add(STRING(RegexStringPattern) + "*");
+    brPatternArray.Add("br");
+    brPatternArray.Add(STRING(RegexStringPattern) + "*");
+    brPatternArray.Add("/?");
+    brPatternArray.Add(STRING(RegexStringPattern) + "*");
+    brPatternArray.Add(">");
+    temp = temp.ArrayRegexPatternReplaceAll(brPatternArray, "<br />");   // was temp = temp.ReplaceAll("<\\s*br\\s*/?\\s*>", "<br />");
+		
+    DYNARRAY<STRING> pPatternArray;
+    pPatternArray.Add("<");
+    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add("/");
+    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add("p");
+    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add(">");
+    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add("<");
+    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add("p");
+    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add(">");
+		temp = temp.ArrayRegexPatternReplaceAll(pPatternArray, "<br />");  // was temp = temp.ReplaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p\\s*>", "<br />");
 
 		return temp;
 	}
@@ -263,8 +288,11 @@ namespace CEEFIT
 
     STRING temp(s);
 
-    temp = temp.ReplaceAll("[ \t\n\x0B\f\r]+", " ");
-	  temp = temp.ReplaceAll("&nbsp;", " ");
+    DYNARRAY<STRING> spacePatternArray;
+    spacePatternArray.Add(STRING(RegexStringPattern) + "+");
+    temp = temp.ArrayRegexPatternReplaceAll(spacePatternArray, " ");  // temp = temp.ReplaceAll("[ \t\n\x0B\f\r]+", " ");
+    
+    temp = temp.SimplePatternReplaceAll("&nbsp;", " ");
 	  temp = temp.Replace(NON_BREAKING_SPACE, L' ');
 	  temp = temp.Trim();
 

@@ -82,14 +82,23 @@ template<class T, class TESTCALLCLASS> class FITTEST : public FITTESTBASE
     virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
     {
       FITFIELD<T>* retVal = new FITFIELD<T>();
-      bool testSuccess = true;
       const char* fileName = NULL;
       int lineNum = 0;
 
       try
       {
         retVal->SetName(CEEFIT::STRING("<") + this->GetName() + "() return value>");
-        (*retVal) = TESTCALLCLASS::CallFitTest(aFixture, testSuccess, fileName, lineNum);
+        (*retVal) = TESTCALLCLASS::CallFitTest(aFixture);
+      }
+      catch(CEEFIT::FAILURE* failure)
+      {
+        delete retVal;
+        throw failure;
+      }
+      catch(CEEFIT::EXCEPTION* exception)
+      {
+        delete retVal;
+        throw exception;
       }
       catch(...)
       {

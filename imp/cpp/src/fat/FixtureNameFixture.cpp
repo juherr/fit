@@ -35,8 +35,9 @@ namespace CEEFAT
     public:
       fit_var(STRING, Table);
 
+/*
     private:  
-	    STRING DumpCells(PTR<PARSE>& cell) 
+      STRING DumpCells(PTR<PARSE>& cell) 
       {
 		    PTR<PARSE> temp(cell);
         STRING result;
@@ -143,13 +144,17 @@ namespace CEEFAT
 	    }
     
     public:
+*/
       fit_test(FixtureName, STRING)
       {
+/*
 		    PTR<PARSE> tableParse(GenerateTableParse(Table));
 
         STRING retVal = DumpTables(tableParse);
 		    
         return retVal;
+*/
+		    return("not implemented");
       }
 
 	    fit_test(ValidFixture, STRING) 

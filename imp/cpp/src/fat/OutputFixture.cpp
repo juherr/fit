@@ -40,8 +40,8 @@ namespace CEEFAT
       {
         STRING temp(text); 
 
-		    temp = temp.ReplaceAll("\\\\n", "\n");
-		    temp = temp.ReplaceAll("\\\\r", "\r");
+		    temp = temp.SimplePatternReplaceAll("\\\\n", "\n");
+		    temp = temp.SimplePatternReplaceAll("\\\\r", "\r");
 
 		    return temp;
 	    }

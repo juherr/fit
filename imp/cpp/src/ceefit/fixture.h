@@ -29,6 +29,7 @@ namespace CEEFIT
 {
   class PARSE;
   class EXCEPTION;
+  class FAILURE;
 
   class FIXTURE
   {
@@ -122,6 +123,7 @@ namespace CEEFIT
       virtual void ceefit_call_spec Wrong(PTR<PARSE>& cell, const STRING& actual);
       virtual void ceefit_call_spec Ignore(PTR<PARSE>& cell);
       virtual void ceefit_call_spec Exception(PTR<PARSE>& cell, EXCEPTION* exception);
+      virtual void ceefit_call_spec Failure(PTR<PARSE>& cell, FAILURE* exception);
 
       // Utility //////////////////////////////////
 

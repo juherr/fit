@@ -134,6 +134,23 @@ namespace CEEFIT
       CLASSNOTFOUNDEXCEPTION(const CLASSNOTFOUNDEXCEPTION&);                /**< Not implemented.  Do not call. */
   };
 
+  /**
+   * <p>Thrown when a FIXTURE class if an operation would divide by zero</p>
+   */
+  class DIVIDEBYZEROEXCEPTION : public EXCEPTION
+  {
+    public:
+      ceefit_init_spec DIVIDEBYZEROEXCEPTION(void);
+      ceefit_init_spec DIVIDEBYZEROEXCEPTION(const STRING& aString);
+      ceefit_init_spec DIVIDEBYZEROEXCEPTION(const wchar_t* aString);
+      virtual ceefit_init_spec ~DIVIDEBYZEROEXCEPTION(void);
+      virtual const STRING& ceefit_call_spec GetExceptionTypeName(void);
+
+    private:
+      DIVIDEBYZEROEXCEPTION& operator=(const DIVIDEBYZEROEXCEPTION&);     /**< Not implemented.  Do not call. */
+      DIVIDEBYZEROEXCEPTION(const DIVIDEBYZEROEXCEPTION&);                /**< Not implemented.  Do not call. */
+  };
+
 };
 
 #endif // __TOOLS_EXCEPTION_H__

@@ -37,6 +37,15 @@ namespace CEEFAT
 
     fit_test(divide, int)
     {
+      if(y == 0)
+      {
+        STRING message;
+        message += x;
+        message += "/";
+        message += y;
+
+        throw new DIVIDEBYZEROEXCEPTION(message);
+      }
       return x/y;
     }
 

@@ -81,7 +81,7 @@
             }                                                                                                                     \
         };                                                                                                                        \
                                                                                                                                   \
-      public:                                                                                                                     
+      public:
                                                                                                                                   
                                                                                                                                   
 # define end_fit_fixture(fixtureName)                                                                                             \
@@ -131,23 +131,16 @@
                                                                                                                                   
                                                                                                                                   
 # define fit_test(testName, returnType)                                                                                           \
-    friend returnType ceefit_call_spec testName(bool& __fit_test_succeeds__,                                                      \
-                                                const char*& __fit_file_name__,                                                   \
-                                                int& __fit_line_number__);                                                        \
+    friend returnType ceefit_call_spec testName(void);                                                                            \
                                                                                                                                   \
     private:                                                                                                                      \
       friend class PROVIDETESTCALLER_##testName;                                                                                  \
       class PROVIDETESTCALLER_##testName                                                                                          \
       {                                                                                                                           \
         public:                                                                                                                   \
-          static inline returnType CallFitTest(::CEEFIT::FIXTURE* fixture,                                                        \
-                                          bool& __fit_test_succeeds__,                                                            \
-                                          const char*& __fit_file_name__,                                                         \
-                                          int& __fit_line_number__)                                                               \
+          static inline returnType CallFitTest(::CEEFIT::FIXTURE* fixture)                                                        \
           {                                                                                                                       \
-            return(PROVIDEFIXTUREOBJECTCASTER::GetFixtureSubclass(fixture)->testName(__fit_test_succeeds__,                       \
-                                                                                     __fit_file_name__,                           \
-                                                                                    __fit_line_number__));                        \
+            return(PROVIDEFIXTUREOBJECTCASTER::GetFixtureSubclass(fixture)->testName());                                          \
           }                                                                                                                       \
       };                                                                                                                          \
       friend class ::FITTEST< returnType, PROVIDETESTCALLER_##testName >;                                                         \
@@ -167,42 +160,26 @@
       ::CEEFIT::SETTESTNAME<PROVIDETESTNAME_##testName> testName##_SetCeeFITTestName;                                             \
                                                                                                                                   \
     public:                                                                                                                       \
-      inline returnType ceefit_call_spec testName(bool& __fit_test_succeeds__,                                                    \
-                                                  const char*& __fit_file_name__,                                                 \
-                                                  int& __fit_line_number__)                                                       
+      inline returnType ceefit_call_spec testName()
                                                                                                                                   
                                                                                                                                   
 # ifndef _DEBUG                                                                                                                   
 #   define fit_assert(booleanExpr)                                                                                                \
-      if(!(__fit_test_succeeds__ = (booleanExpr)))                                                                                \
-      {                                                                                                                           \
-        return L"\0";                                                                                                             \
-      }                                                                                                                           \
-      else                                                                                                                        \
-        __fit_test_succeeds__ = __fit_test_succeeds__                                                                             
+      if(!(booleanExpr))                                                                                                          \
+        throw new FITASSERTIONFAILED("\0", 0)
 # else                                                                                                                            
 #   define fit_assert(booleanExpr)                                                                                                \
-      if(!(__fit_test_succeeds__ = (booleanExpr)))                                                                                \
-      {                                                                                                                           \
-        __fit_file_name__ = __FILE__;                                                                                             \
-        __fit_line_number__ = __LINE__;                                                                                           \
-        return L"\0";                                                                                                             \
-      }                                                                                                                           \
-      else                                                                                                                        \
-        __fit_test_succeeds__ = __fit_test_succeeds__                                                                             
+      if(!(booleanExpr))                                                                                                          \
+        throw new FITASSERTIONFAILED(__FILE__, __LINE__)
 #endif                                                                                                                            
                                                                                                                                   
                                                                                                                                   
 # ifndef _DEBUG                                                                                                                   
 #   define fit_fail()                                                                                                             \
-      __fit_test_succeeds__ = false;                                                                                              \
-      return L"\0"                                                                                                                
+      throw new FITFAILED("\0", 0)
 # else                                                                                                                            
 #   define fit_fail()                                                                                                             \
-      __fit_test_succeeds__ = false;                                                                                              \
-      __fit_file_name__ = __FILE__;                                                                                               \
-      __fit_line_number__ = __LINE__;                                                                                             \
-      return L"\0"                                                                                                                
+      throw new FITFAILED(__FILE__, __LINE__)
 # endif                                                                                                                           
                                                                                                                                   
 # define declare_fit_module(moduleName)                                                                                           \

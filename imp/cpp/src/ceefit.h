@@ -83,6 +83,7 @@
 #include "tools/misc.h"
 #include "tools/string.h"
 #include "tools/exception.h"
+#include "tools/failure.h"
 #include "tools/dynarray.h"
 #include "tools/stringdata.h"
 #include "tools/slink.h"

@@ -483,6 +483,18 @@ namespace CEEFIT
     CountsObj->exceptions++;
   }
 
+  void ceefit_call_spec FIXTURE::Failure(PTR<PARSE>& cell, FAILURE* f)
+  {
+    STRING message;
+
+    message = STRING("A failure occurred:  ") + (f != NULL ? f->GetReason() : "<unknown reason>");
+    wprintf(L"%s\n", message.GetBuffer());
+
+    cell->AddToBody(STRING("<hr><pre><font size=-2>") + message + "</font></pre>");
+    cell->AddToTag(STRING(" bgcolor=\"") + yellow + "\"");
+    CountsObj->exceptions++;
+  }
+
   // Utility //////////////////////////////////
 
   STRING ceefit_call_spec FIXTURE::Counts()
@@ -504,13 +516,13 @@ namespace CEEFIT
   {
     STRING temp(string);
 
-    temp = temp.ReplaceAll("&", "&amp;");
-    temp = temp.ReplaceAll("<", "&lt;");
-    temp = temp.ReplaceAll("  ", " &nbsp;");
-		temp = temp.ReplaceAll("\r\n", "<br />");
-		temp = temp.ReplaceAll("\n\r", "<br />");
-		temp = temp.ReplaceAll("\r", "<br />");
-		temp = temp.ReplaceAll("\n", "<br />");
+    temp = temp.SimplePatternReplaceAll("&", "&amp;");
+    temp = temp.SimplePatternReplaceAll("<", "&lt;");
+    temp = temp.SimplePatternReplaceAll("  ", " &nbsp;");
+		temp = temp.SimplePatternReplaceAll("\r\n", "<br />");
+		temp = temp.SimplePatternReplaceAll("\n\r", "<br />");
+		temp = temp.SimplePatternReplaceAll("\r", "<br />");
+		temp = temp.SimplePatternReplaceAll("\n", "<br />");
 
     return temp;
   }
@@ -570,6 +582,12 @@ namespace CEEFIT
 
           cell->AddToBody(Gray(aTemp));
         }
+        catch(FAILURE* failure)
+        {
+          cell->AddToBody(Gray(failure->GetReason()));
+
+          delete failure;
+        }
         catch(EXCEPTION* e)
         {
           cell->AddToBody(Gray("error"));
@@ -592,6 +610,18 @@ namespace CEEFIT
           Wrong(cell, aTemp);
 
           delete aResult;
+        }
+        catch(FITFAILED* fitFailed)
+        {
+          Right(cell);
+
+          delete fitFailed;
+        }
+        catch(FITASSERTIONFAILED* fitAssertionFailed)
+        {
+          Right(cell);
+
+          delete fitAssertionFailed;
         }
         catch(EXCEPTION* e)
         {
@@ -664,7 +694,7 @@ namespace CEEFIT
           delete checkValueCell;
           checkValueCell = NULL;
 
-          EXCEPTION systemException("System generated exception");
+          EXCEPTION systemException("System generated exception or unknown user exception type");
 
           Exception(cell, &systemException);
         }

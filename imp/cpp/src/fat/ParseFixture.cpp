@@ -65,7 +65,7 @@ namespace CEEFAT
 			    throw new EXCEPTION(STRING("Exactly ONE of the following columns is needed: 'Html', 'TableCell', or 'Entity'"));
 		    }
 
-		    html = html.ReplaceAll(L"\\\\u00a0", L"\x00a0");
+		    html = html.SimplePatternReplaceAll(L"\\\\u00a0", L"\x00a0");
 		    return(VALUE<PARSE>(new PARSE(html)));
 	    }
 		  
@@ -123,9 +123,9 @@ namespace CEEFAT
       {
         STRING temp(text);
 
-		    temp = temp.ReplaceAll(L"\x0a", L"\\\\n");
-		    temp = temp.ReplaceAll(L"\x0d", L"\\\\r");
-		    temp = temp.ReplaceAll(L"\xa0", L"\\\\x00a0");
+		    temp = temp.SimplePatternReplaceAll(L"\x0a", L"\\\\n");
+		    temp = temp.SimplePatternReplaceAll(L"\x0d", L"\\\\r");
+		    temp = temp.SimplePatternReplaceAll(L"\xa0", L"\\\\x00a0");
 
 		    return temp;
 	    }

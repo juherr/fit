@@ -19,8 +19,6 @@
   (c)2005 Woldrich, Inc.  http://www.woldrich.com
 -->
 <project name="Build CeeFit" default="help" basedir=".">
-	<property name="default.boost.dir" value="boost_1_32_0"/>
-	
 	<!-- import properties from environment variables -->
 	<property environment="env"/>
 	
@@ -175,7 +173,6 @@
 						<equals arg1="${which.compiler}" arg2="c++"/>
 					</or>
 					<then>
-						<property name="boost.debug.flag" value="d"/>
 						<property name="stdcpplib.dir" location="${env.GCC_HOME}/lib/debug"/>
 					</then>
 				</if>
@@ -198,7 +195,6 @@
 						<equals arg1="${which.compiler}" arg2="c++"/>
 					</or>
 					<then>
-						<property name="boost.debug.flag" value=""/>
 						<property name="stdcpplib.dir" location="${env.GCC_HOME}/lib"/>
 					</then>
 				</if>
@@ -209,15 +205,6 @@
 						<property name="msvc.linker.stdlib" value="msvcrt"/>
 					</then>
 				</if>
-			</else>
-		</if>
-		<if>
-			<isset property="external.boost.lib.home"/>
-			<then>
-				<property name="boost.folder" value="${external.boost.lib.home}"/>
-			</then>
-			<else>
-				<property name="boost.folder" value="lib/${default.boost.dir}"/>
 			</else>
 		</if>
 		<mkdir dir="${output.dir}"/>
@@ -237,7 +224,9 @@
 				<compilerarg location="mid" value="-fkeep-inline-functions" if="using.gcc"/>
 				<compilerarg location="mid" value="-fconst-strings" if="using.gcc"/>
 				<compilerarg location="mid" value="-ftemplate-depth-255" if="using.gcc"/>
-				<compilerarg location="mid" value="-ffast-math" if="using.gcc"/>
+				<!-- <compilerarg location="mid" value="-ffast-math" if="using.gcc"/> -->
+				<compilerarg location="mid" value="-ftrapping-math" if="using.gcc"/>
+				<compilerarg location="mid" value="-ftrapv" if="using.gcc"/>
 				<compilerarg location="mid" value="-mms-bitfields" if="using.gcc"/>
 				<compilerarg location="mid" value="-march=i586" if="using.gcc.on.intel"/>
 				<compilerarg location="mid" value="-malign-stringops" if="using.gcc"/>
@@ -270,12 +259,10 @@
 				<define name="_GLIBCXX_USE_WCHAR_T" value="true" if="using.gcc"/>
 				<define name="_GLIBCPP_USE_WCHAR_T" value="true" if="using.gcc"/>
 				<define name="_GLIBCPP_HAVE_WCTYPE_H" value="true" if="using.gcc"/>
-				<define name="CEEFIT_EXTERNAL_BOOST" value="true" if="external.boost.lib.home"/>
 			</defineset>
 			<includepath>
 				<path>
 					<pathelement location="src"/>
-					<pathelement location="${boost.folder}"/>
 				</path>
 			</includepath>
 			<compiler inherit="true" name="${which.compiler}" extends="default.compiler.args">

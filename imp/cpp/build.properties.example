@@ -81,13 +81,3 @@ debug.mode=true
 intel.target=true
 
 
-########################
-# external.boost.lib.home : Are you linking to a program that already includes the Boost libraries?
-#   Set this to the full path to your boost library or leave this property commented if you are not linking in
-#   your own Boost libraries
-#
-#   See http://www.boost.org for more information.
-
-#external.boost.lib.home=/boost
-
-

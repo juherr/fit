@@ -202,4 +202,27 @@ namespace CEEFIT
 
     return(typeName);
   }
+
+  ceefit_init_spec DIVIDEBYZEROEXCEPTION::DIVIDEBYZEROEXCEPTION()
+  {
+  }
+
+  ceefit_init_spec DIVIDEBYZEROEXCEPTION::DIVIDEBYZEROEXCEPTION(const STRING& aString) : EXCEPTION(aString)
+  {
+  }
+
+  ceefit_init_spec DIVIDEBYZEROEXCEPTION::DIVIDEBYZEROEXCEPTION(const wchar_t* aString) : EXCEPTION(aString)
+  {
+  }
+
+  ceefit_init_spec DIVIDEBYZEROEXCEPTION::~DIVIDEBYZEROEXCEPTION()
+  {
+  }
+
+  const STRING& ceefit_call_spec DIVIDEBYZEROEXCEPTION::GetExceptionTypeName()
+  {
+    static STRING typeName(L"DIVIDEBYZEROEXCEPTION");
+
+    return(typeName);
+  }
 };

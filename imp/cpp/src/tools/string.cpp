@@ -24,6 +24,7 @@
 #include "ceefit.h"
 
 // Boost includes
+/*
 #define BOOST_REGEX_NO_LIB
 #define BOOST_REGEX_STATIC_LINK
 
@@ -64,6 +65,7 @@
 #include <boost/regex.hpp>
 #include <list>
 #include <string>
+*/
 
 namespace CEEFIT
 {
@@ -203,7 +205,7 @@ namespace CEEFIT
       Data.Array[0] = L'\0';
     }
 
-    int len = ::std::strlen(str);
+    int len = strlen(str);
     Data.Array.Reserve(len + 1);
 
     swprintf(&Data.Array[0], L"%S", str);
@@ -219,7 +221,7 @@ namespace CEEFIT
       Data.Array[0] = L'\0';
     }
 
-    int len = ::std::wcslen(str);
+    int len = wcslen(str);
     Data.Array.Reserve(len + 1);
 
     int i = 0;
@@ -233,8 +235,8 @@ namespace CEEFIT
 
   void ceefit_call_spec STRING::Append(const STRING& str)
   {
-    int len1 = ::std::wcslen(&Data.Array[0]);
-    int len2 = ::std::wcslen(&str.Data.Array[0]);
+    int len1 = wcslen(&Data.Array[0]);
+    int len2 = wcslen(&str.Data.Array[0]);
 
     int i = len1;
     int j = 0;
@@ -254,7 +256,7 @@ namespace CEEFIT
 
   int ceefit_call_spec STRING::Length() const
   {
-    return(::std::wcslen(&Data.Array[0]));
+    return(wcslen(&Data.Array[0]));
   }
 
   wchar_t ceefit_call_spec STRING::CharAt(int index) const
@@ -401,7 +403,7 @@ namespace CEEFIT
     while(i < length)
     {
       wchar_t& aDest = retVal.Data.Array[i];
-      aDest = ::std::towlower(this->CharAt(i++));
+      aDest = towlower(this->CharAt(i++));
     }
     retVal.Data.Array[i] = L'\0';
 
@@ -418,7 +420,7 @@ namespace CEEFIT
     while(i < length)
     {
       wchar_t& aDest = retVal.Data.Array[i];
-      aDest = ::std::towupper(this->CharAt(i++));
+      aDest = towupper(this->CharAt(i++));
     }
     retVal.Data.Array[i] = L'\0';
 
@@ -455,7 +457,7 @@ namespace CEEFIT
     int length = this->Length();
     int lastChar = length;
 
-    while(firstChar < length && ::std::iswspace(Data.Array[firstChar]))
+    while(firstChar < length && iswspace(Data.Array[firstChar]))
     {
       firstChar++;
     }
@@ -467,7 +469,7 @@ namespace CEEFIT
       {
         break;
       }
-      if(!::std::iswspace(Data.Array[lastChar]))
+      if(!iswspace(Data.Array[lastChar]))
       {
         break;
       }
@@ -476,6 +478,8 @@ namespace CEEFIT
 
     return(this->Substring(firstChar, lastChar+1));
   }
+
+/* Couldn't get Boost to link on gcc ...
 
   // based on the new_allocator class in the gcc std c++ sources
   template<typename _Tp> class ceefit_allocator : public std::allocator<_Tp>
@@ -616,6 +620,7 @@ namespace CEEFIT
   }
 
 # pragma optimize( "", on )
+ couldn't get Boost to link on gcc */
 
   STRING ceefit_call_spec STRING::Substring(int startChar, int endChar) const
   {
@@ -677,7 +682,7 @@ namespace CEEFIT
 
   bool ceefit_call_spec STRING::IsEqual(const STRING& aString) const
   {
-    return(!::std::wcscmp(this->GetBuffer(), aString.GetBuffer()));
+    return(!wcscmp(this->GetBuffer(), aString.GetBuffer()));
   }
 
   bool ceefit_call_spec STRING::IsEqual(const char* aString) const
@@ -814,4 +819,477 @@ namespace CEEFIT
 	  }
   }
 
+  STRING ceefit_call_spec STRING::SimplePatternReplaceAll(const STRING& patternStr, const STRING& replaceStr) const
+  {
+    STRING temp(*this);
+
+    while(true)
+    {
+      STRING work;
+
+      wchar_t* tempBuf = temp.GetBuffer();
+      wchar_t* aOccurrence = wcsstr(tempBuf, patternStr.GetBuffer());
+      if(aOccurrence == NULL)
+      {
+        break;
+      }
+
+      work.Append(temp.Substring(0, (int) (aOccurrence - tempBuf)));
+      work.Append(replaceStr);
+      work.Append(temp.Substring(((int) (aOccurrence - tempBuf)) + patternStr.Length()));
+      
+      temp = work;
+    }
+
+    return(temp);
+  }
+
+  static void AssertIsTrue(bool expression)
+  {
+    if(!expression)
+    {
+      throw new EXCEPTION("Internal CeeFIT Assertion failed");
+    }
+  }
+
+  static bool RegexMatchZeroOrMoreCharClass(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    matchEnd = curBuf;    // we always match on zero or more
+
+    while(*curBuf != L'\0')
+    {
+      const wchar_t* aPattern = patternBuf.GetBuffer();
+      aPattern++;  // skip the leading '['
+
+      while(*aPattern != L']')
+      {
+        if(*curBuf == L'\0') 
+        { 
+          return(true);             // don't fall off the end of the string by accident
+        }
+        AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
+
+        if(*aPattern == L'\\')
+        {
+          aPattern++;               // something's been escaped, skip to it ...
+          AssertIsTrue(*aPattern);  // don't fall off the end of the string by accident
+        }
+
+        if(*curBuf == *aPattern)
+        {
+          curBuf++;
+          matchEnd = curBuf;
+          break;
+        }
+
+        aPattern++;
+      }
+      if(*aPattern == L']')
+      {
+        return(true);
+      }
+    }
+    return(true);
+  }
+
+  static bool RegexMatchOneOrMoreCharClass(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    while(*curBuf != L'\0')
+    {
+      const wchar_t* aPattern = patternBuf.GetBuffer();
+      aPattern++;  // skip the leading '['
+
+      while(*aPattern != L']')
+      {
+        if(*curBuf == L'\0') 
+        { 
+          return(matchEnd != NULL); // don't fall off the end of the string by accident
+        }
+        AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
+
+        if(*aPattern == L'\\')
+        {
+          aPattern++;               // something's been escaped, skip to it ...
+          AssertIsTrue(*aPattern);  // don't fall off the end of the string by accident
+        }
+
+        if(*curBuf == *aPattern)
+        {
+          curBuf++;
+          matchEnd = curBuf;
+          break;
+        }
+
+        aPattern++;
+      }
+      if(*aPattern == L']')
+      {
+        return(matchEnd != NULL);
+      }
+    }
+    return(matchEnd != NULL);
+  }
+
+  static bool RegexMatchOneCharClass(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    const wchar_t* aPattern = patternBuf.GetBuffer();
+    aPattern++;  // skip the leading '['
+
+    while(*aPattern != L']')
+    {
+      if(*curBuf == L'\0') 
+      { 
+        return(matchEnd != NULL); // don't fall off the end of the string by accident
+      }
+      AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
+
+      if(*aPattern == L'\\')
+      {
+        aPattern++;               // something's been escaped, skip to it ...
+        AssertIsTrue(*aPattern);  // don't fall off the end of the string by accident
+      }
+
+      if(*curBuf == *aPattern)
+      {
+        curBuf++;
+        matchEnd = curBuf;
+        break;
+      }
+
+      aPattern++;
+    }
+    return(matchEnd != NULL);
+  }
+
+  static bool RegexMatchZeroOrMore(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    matchEnd = curBuf;    // we always match on zero or more
+
+    while(*curBuf != L'\0')
+    {
+      const wchar_t* aPattern = patternBuf.GetBuffer();
+      while(*aPattern != L'*')
+      {
+        if(*curBuf == L'\0') 
+        { 
+          return(true);             // don't fall off the end of the string by accident
+        }
+        AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
+
+        if(*aPattern == L'\\')
+        {
+          aPattern++;               // something's been escaped, skip to it ...
+          AssertIsTrue(*aPattern);  // don't fall off the end of the string by accident
+        }
+
+        if(*curBuf != *aPattern)
+        {
+          return(true);
+        }
+        curBuf++;
+        aPattern++;
+      }
+      matchEnd = curBuf;
+    }
+    return(true);
+  }
+
+  static bool RegexMatchOneOrMore(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    while(*curBuf != L'\0')
+    {
+      const wchar_t* aPattern = patternBuf.GetBuffer();
+      while(*aPattern != L'+')
+      {
+        if(*curBuf == L'\0') 
+        { 
+          return(matchEnd != NULL); // don't fall off the end of the string by accident
+        }
+
+        AssertIsTrue(*curBuf);      // don't fall off the end of the string by accident
+        AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
+
+        if(*aPattern == L'\\')
+        {
+          aPattern++;               // something's been escaped, skip to it ...
+          AssertIsTrue(*aPattern);  // don't fall off the end of the string by accident
+        }
+
+        if(*curBuf != *aPattern)
+        {
+          return(matchEnd != NULL);
+        }
+        curBuf++;
+        aPattern++;
+      }
+      matchEnd = curBuf;
+    }
+    return(matchEnd != NULL);
+  }
+
+  static bool RegexMatchOneOrNone(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    while(*curBuf != L'\0')
+    {
+      const wchar_t* aPattern = patternBuf.GetBuffer();
+      while(*aPattern != L'?')
+      {
+        if(*curBuf == L'\0') 
+        { 
+          return(matchEnd != NULL); // don't fall off the end of the string by accident
+        }
+
+        AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
+
+        if(*aPattern == L'\\')
+        {
+          aPattern++;               // something's been escaped, skip to it ...
+          AssertIsTrue(*aPattern);  // don't fall off the end of the string by accident
+        }
+
+        if(*curBuf != *aPattern)
+        {
+          return(matchEnd != NULL);
+        }
+        curBuf++;
+        aPattern++;
+      }
+      if(matchEnd != NULL)
+      {
+        // we matched more than one, matchEnd != NULL, we were only supposed to match one
+        matchEnd = NULL;
+        return(false);
+      }
+      matchEnd = curBuf;
+    }
+    return(matchEnd != NULL);
+  }
+
+  static bool RegexMatchOne(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    const wchar_t* aPattern = patternBuf.GetBuffer();
+    while(*aPattern != L'\0')
+    {
+      if(*curBuf == L'\0') 
+      { 
+        return(false);            // don't fall off the end of the string by accident
+      }
+      AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
+      if(*aPattern == L'\\')
+      {
+        aPattern++;               // something's been escaped, skip to it ...
+        AssertIsTrue(*aPattern);  // don't fall off the end of the string by accident
+      }
+
+      if(*curBuf != *aPattern)
+      {
+        return(false);
+      }
+      curBuf++;
+      aPattern++;
+    }
+    matchEnd = curBuf;
+    return(true);
+  }
+
+  static bool RegexMatchEndOfLine(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    if(*curBuf == L'\0')
+    {
+      matchEnd = curBuf;
+      return(true);
+    }
+    return(false);
+  }
+
+  static bool RegexPatternMatch(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
+  {
+    static STRING brace("[");
+    static STRING star("*");
+    static STRING questionMark("?");
+    static STRING plus("+");
+    static STRING dollarSign("$");
+
+    if(patternBuf.IsEqual(dollarSign))
+    {
+      return(RegexMatchEndOfLine(curBuf, patternBuf, matchEnd));
+    }
+    else if(patternBuf.StartsWith(brace))
+    {
+      if(patternBuf.EndsWith(star))
+      {
+        return(RegexMatchZeroOrMoreCharClass(curBuf, patternBuf, matchEnd));
+      }
+      else if(patternBuf.EndsWith(plus))
+      {
+        return(RegexMatchOneOrMoreCharClass(curBuf, patternBuf, matchEnd));
+      }
+      else 
+      {
+        return(RegexMatchOneCharClass(curBuf, patternBuf, matchEnd));
+      }
+    }
+    else
+    {
+      if(patternBuf.EndsWith(star))
+      {
+        return(RegexMatchZeroOrMore(curBuf, patternBuf, matchEnd));
+      }
+      else if(patternBuf.EndsWith(plus))
+      {
+        return(RegexMatchOneOrMore(curBuf, patternBuf, matchEnd));
+      }
+      else if(patternBuf.EndsWith(questionMark))
+      {
+        return(RegexMatchOneOrNone(curBuf, patternBuf, matchEnd));
+      }
+      else 
+      {
+        return(RegexMatchOne(curBuf, patternBuf, matchEnd));
+      }
+    }
+  }
+
+  STRING ceefit_call_spec STRING::ArrayRegexPatternReplaceAll(const DYNARRAY<STRING>& patternStrArray, const STRING& replaceStr) const
+  {
+    STRING temp(*this);
+    int startIndex = 0;
+
+  restart:
+    while(true)
+    {
+      wchar_t* curStartBuf = temp.GetBuffer() + startIndex;
+      wchar_t* curBuf = curStartBuf;
+      wchar_t* firstMatch = NULL;
+      while(true)
+      {
+        int i = -1;
+        while(true)
+        {
+          while(++i < patternStrArray.GetSize())
+          {
+            wchar_t* matchEnd = NULL;
+            if(RegexPatternMatch(curBuf, patternStrArray.Get(i), matchEnd))
+            {
+              if(firstMatch == NULL)
+              {
+                firstMatch = curBuf;
+                if(firstMatch > curStartBuf)
+                {
+                  curStartBuf = firstMatch;
+                }
+              }
+              curBuf = matchEnd;
+            }
+            else
+            {
+              break;
+            }
+          }
+
+          if(i == patternStrArray.GetSize() && firstMatch != NULL)
+          {
+            STRING work;
+
+            work.Append(temp.Substring(0, (int) (firstMatch - temp.GetBuffer())));
+            work.Append(replaceStr);
+            startIndex = work.Length();
+            work.Append(temp.Substring((int) (curBuf - temp.GetBuffer())));
+
+            temp = work;
+            goto restart;
+          }
+          else
+          {
+            if(*curStartBuf == L'\0')
+            {
+              return(temp);
+            }
+
+            curStartBuf++;
+            curBuf = curStartBuf;
+            break;
+          }
+        }
+
+        if(*curStartBuf == L'\0')
+        {
+          return(temp);
+        }
+      }
+    }
+  }
+
+  void ceefit_call_spec STRING::ArrayRegexPatternSplit(DYNARRAY<STRING>& out, const DYNARRAY<STRING>& patternStrArray) const
+  {
+    STRING temp(*this);
+
+  restart:
+    while(true)
+    {
+      wchar_t* curStartBuf = temp.GetBuffer();
+      wchar_t* curBuf = curStartBuf;
+      wchar_t* firstMatch = NULL;
+      while(true)
+      {
+        int i = -1;
+        while(true)
+        {
+          while(++i < patternStrArray.GetSize())
+          {
+            wchar_t* matchEnd = NULL;
+            if(RegexPatternMatch(curBuf, patternStrArray.Get(i), matchEnd))
+            {
+              if(firstMatch == NULL)
+              {
+                firstMatch = curBuf;
+                if(firstMatch > curStartBuf)
+                {
+                  curStartBuf = firstMatch;
+                }
+              }
+              curBuf = matchEnd;
+            }
+            else
+            {
+              break;
+            }
+          }
+
+          if(i == patternStrArray.GetSize() && firstMatch != NULL)
+          {
+            STRING work;
+
+            out.Add(temp.Substring(0, (int) (firstMatch - temp.GetBuffer())));
+            temp = temp.Substring((int) (curBuf - temp.GetBuffer()));
+            goto restart;
+          }
+          else
+          {
+            if(*curStartBuf == L'\0')
+            {
+              if(temp.Length() > 0)
+              {
+                out.Add(temp);
+              }
+              return;
+            }
+
+            curStartBuf++;
+            curBuf = curStartBuf;
+            break;
+          }
+        }
+
+        if(*curStartBuf == L'\0')
+        {
+          if(temp.Length() > 0)
+          {
+            out.Add(temp);
+          }
+          return;
+        }
+      }
+    }
+  }
 };

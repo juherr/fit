@@ -115,11 +115,19 @@ namespace CEEFIT
       STRING ceefit_call_spec Substring(int startChar) const;
       STRING ceefit_call_spec ToLowercase(void) const;
       STRING ceefit_call_spec ToUppercase(void) const;
-      STRING ceefit_call_spec ReplaceAll(const STRING& matchStr, const STRING& replaceStr);
       STRING ceefit_call_spec Replace(wchar_t matchChar, wchar_t replaceChar) const;
-      void ceefit_call_spec Split(DYNARRAY<STRING>& out, const STRING& matchStr) const;
-      bool ceefit_call_spec CapturingGroups(DYNARRAY<STRING>& out, const STRING& regexStr) const;
+
       STRING ceefit_call_spec Trim(void) const;
+
+// these calls used Boost to provide regular expressions, Boost wouldn't link on gcc so I had to take it out.      
+//      STRING ceefit_call_spec ReplaceAll(const STRING& matchStr, const STRING& replaceStr);
+//      void ceefit_call_spec Split(DYNARRAY<STRING>& out, const STRING& matchStr) const;
+      bool ceefit_call_spec CapturingGroups(DYNARRAY<STRING>& out, const STRING& regexStr) const;
+
+      // these methods provide regex-free replacements for the functionality that ReplaceAll, Split, and CapturingGroups provided
+      STRING ceefit_call_spec SimplePatternReplaceAll(const STRING& patternStr, const STRING& replaceStr) const;
+      STRING ceefit_call_spec ArrayRegexPatternReplaceAll(const DYNARRAY<STRING>& patternStr, const STRING& replaceStr) const;
+      void ceefit_call_spec ArrayRegexPatternSplit(DYNARRAY<STRING>& out, const DYNARRAY<STRING>& patternStrArray) const;
 
       bool ceefit_call_spec EndsWith(const STRING& aString) const;
       bool ceefit_call_spec StartsWith(const STRING& aString) const;
