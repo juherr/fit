@@ -103,7 +103,7 @@ public class FrameworkTest extends TestCase {
             tables = new Parse(input, new String[]{"table", "tr", "td"});
             fixture.doTables(tables);
         }
-        PrintWriter output = new PrintWriter(new BufferedWriter(new FileWriter("output/"+file+".html")));
+        PrintWriter output = new PrintWriter(new BufferedWriter(new FileWriter("output/test/"+file+".html")));
         tables.print(output);
         output.close();
         assertEquals(file+" right", right, fixture.counts.right);

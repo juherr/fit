@@ -55,7 +55,7 @@ public class FatTest extends TestCase {
         String testName = "FitSpecification.html";
 
         FileRunner runner = new FileRunner();
-        String outputFileName = "output/junit-" + testName;
+        String outputFileName = "output/test/junit-" + testName;
         runner.args(new String[]{"../../spec/" + testName, outputFileName});
         runner.process();
         runner.output.close();
