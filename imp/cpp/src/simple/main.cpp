@@ -41,8 +41,8 @@ CEEFITFREEFUNC ceefit_call_spec GetCeeFitFreeFunc()
 }
 
 // Latch onto the ExampleMultiply variable from multiply.cpp
-// If you can command your linker to force a linkage to multiply.o, then 
-// this statement is not-required.
+// If you can command your linker to force a linkage to multiply.obj or it
+// is linking it in automatically, then this statement is not-required.
 force_link_fit_module(ExampleMultiply);
 
 
