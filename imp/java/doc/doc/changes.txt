@@ -1,22 +1,30 @@
+Changes in Fit-Java 1.1:
+Produced by Jim Shore.  Released 7 April 2004.
+    * Updated for Fit Spec v1.1.  Contributed by Jim Shore.
+    * Changed ColumnFixture headers to allow multiple words.  Contributed by Rick Mugridge.
+    * Added fixture argument list support.  Contributed by Rick Mugridge from FitNesse source code.
+    * Added support for nested tables.  Contributed by Rick Mugridge.
+
+
 Changes in Fit-Java 1.0:
 No changes: identical to RC1.  Released 18 Nov 2004.
 
 
 Changes in Fit-Java 1.0 RC1:
 Produced by Jim Shore and Ward Cunningham.  Released 31 Aug 2004.
-    * Improved whitespace handling.  Credit to Jim Shore.
-    * Microsoft Word's "smart quotes" are turned into normal quotes.  Credit to Jim Shore.
-    * Java line feed characters are turned into HTML <br /> tags (and vice-versa).  Credit to Jim Shore.
-    * WikiRunner is deprecated in favor of a smarter FileRunner.  Credit to Ward Cunningham.
-    * Created parse specification and associated fat fixtures.  Credit to Jim Shore.
+    * Improved whitespace handling.  Contributed by Jim Shore.
+    * Microsoft Word's "smart quotes" are turned into normal quotes.  Contributed by Jim Shore.
+    * Java line feed characters are turned into HTML <br /> tags (and vice-versa).  Contributed by Jim Shore.
+    * WikiRunner is deprecated in favor of a smarter FileRunner.  Contributed by Ward Cunningham.
+    * Created parse specification and associated fat fixtures.  Contributed by Jim Shore.
 
 
 Changes in Fit-Java b030915j
 Produced by Ward Cunningham and Jim Shore.  Released 15 Sept 2003.
-    * Add statics for some color codes.  Credit to Jim Shore and Ward Cunningham.
-    * Add boolean support to PrimitiveFixture.  Credit to Jim Shore and Ward Cunningham.
-    * Add fat fixtures Table, Color, Equals, Divide, Money.  Credit to Jim Shore and Ward Cunningham.
-    * Add FitSpecification.html document.  Credit to Jim Shore and Ward Cunningham.
+    * Add statics for some color codes.  Contributed by Jim Shore and Ward Cunningham.
+    * Add boolean support to PrimitiveFixture.  Contributed by Jim Shore and Ward Cunningham.
+    * Add fat fixtures Table, Color, Equals, Divide, Money.  Contributed by Jim Shore and Ward Cunningham.
+    * Add FitSpecification.html document.  Contributed by Jim Shore and Ward Cunningham.
 
 
 Fit was created and the Java version implemented by Ward Cunningham.  The following

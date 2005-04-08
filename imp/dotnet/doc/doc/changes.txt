@@ -1,3 +1,11 @@
+Changes in Fit-Java 1.1:
+Produced by Jim Shore.  Released 7 April 2004.
+    * Updated for Fit Spec v1.1.  Contributed by Jim Shore.
+    * Changed ColumnFixture headers to allow multiple words.  Contributed by Rick Mugridge.
+    * Added fixture argument list support.  Contributed by Rick Mugridge from FitNesse source code.
+    * Added support for nested tables.  Contributed by Rick Mugridge.
+
+
 Changes in Fit-DotNet 1.0:
 No changes: identical to RC1.  Released 18 Nov 2004.
 
