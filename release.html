@@ -1,15 +1,62 @@
 <html>
-<head>How to Release Fit</head>
+<head><title>How to Release Fit</title></head>
 <body>
 
 
 
 <h1>How to Release Fit</h1>
 
-<ol>
-  <li>Update changes.txt</li>
-  <li>Update readme.html</li>
-  <li>Update .NET AssemblyInfo.cs version number</li>
+<ol type="I">
+  <li>Prep</li>
+  <ol type="1">
+    <li>Update changes.txt</li>
+    <li>Update readme.html</li>
+    <li>Update .NET AssemblyInfo.cs version number</li>
+  </ol>
+
+  <br />
+  <li>Build Java and .NET versions</li>
+  <ol type="1">
+    <li>"build release"</li>
+    <li>Double-check release directories</li>
+    <li>Rename file to include version number (e.g., fit-java-1.1.zip)</li>
+    <li>Commit changes to CVS</li>
+    <li>Tag CVS with name of release (e.g., Release1-1)</li>
+  </ol>
+
+  <br />
+  <li>Upload</li>
+  <ol type="1">
+    <li>Upload files to <a href="ftp://upload.sourceforge.net/incoming">ftp://upload.sourceforge.net/incoming</a> (anonymous login)</li>
+    <li>Register release with SourceForge at <a href="https://sourceforge.net/project/admin/editpackages.php?group_id=85646">https://sourceforge.net/project/admin/editpackages.php?group_id=85646</a></li>
+  </ol>
+
+  <br />
+  <li>Update Website</li>
+  <ol type="1">
+    <li>Change current release on <a href="http://fit.c2.com/login/wiki.cgi?page=WelcomeVisitors">WelcomeVisitors</a></li>
+    <li>Update <a href="http://fit.c2.com/login/wiki.cgi?DownloadNow">DownloadNow</a></li>
+    <li>Update <a href="http://fit.c2.com/login/wiki.cgi?LatestChanges">LatestChanges</a></li>
+  </ol>
+
+  <br />
+  <li>Announce</li>
+  <ol type="1">
+    <li>Create a news item on SourceForge.</li>
+    <li>Send email to: nunitasp-users@lists.sourceforge.net, nunitasp-devl@lists.sourceforge.net, agile-testing@yahoogroups.com, extremeprogramming@yahoogroups.com, testdrivendevelopment@yahoogroups.com</li>
+    <li>
+      <b>Sample announcement:</b>
+
+      <p>Fit 1.1 has been released for Java and .NET.</p>
+
+      <p>Fit is a tool for agile collaboration on software requirements.  It's also an acceptance testing framework.</p>
+
+      <p>Fit allows customers to give examples of program behavior using standard business tools like Word and Excel and it allows programmers to easily turn those examples into automated tests.  By doing so, Fit give customers, testers, and programmers a powerful tool for sharing what their software /should/ do and what it /does/ do.</p>
+
+      <p>To download Fit and for more information, visit the Fit website:
+      http://fit.c2.com.</p>
+    </li>
+  </ol>
 </ol>
 
 
