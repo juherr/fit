@@ -1,13 +1,5 @@
-// Copyright (c) 2002 Cunningham & Cunningham, Inc.
+// Copyright (c) 2002-2005 Cunningham & Cunningham, Inc.
 // Released under the terms of the GNU General Public License version 2 or later.
-//
-// For an alteration two methods from FitNesse's
-// fit.Fixture (getArgsForTable(),getArgs()):
-//   Copyright (C) 2003,2004 by Object Mentor, Inc. All rights reserved.
-//
-// For some alterations (doTables()),
-// and additions (interpretTables(), interpretFollowingTables()):
-//   Copyright (c) 2004 Rick Mugridge, University of Auckland, NZ
 
 using System;
 using System.Collections;
