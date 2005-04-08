@@ -30,6 +30,10 @@
     <mkdir dir="${example.dir}" />
     <mkdir dir="${spec-out.dir}" />
     <mkdir dir="${release.dir}" />
+    <mkdir dir="${release.dir}\examples\input" />
+    <mkdir dir="${release.dir}\examples\output" />
+    <mkdir dir="${release.dir}\spec\input" />
+    <mkdir dir="${release.dir}\spec\output" />
   </target>
   
   <!--*****
@@ -172,12 +176,39 @@
         <includes name="**" />
       </fileset>
     </copy>
-    <copy todir="${release.dir}">
-      <fileset basedir="${output.dir}">
-        <includes name="spec\**" />
-        <includes name="examples\**" />
+    
+    <copy todir="${release.dir}\examples\input">
+      <fileset basedir="${doc.dir}">
+        <includes name="**" />
       </fileset>
     </copy>
+    <copy todir="${release.dir}\examples\output">
+      <fileset basedir="${example.dir}">
+        <includes name="**" />
+      </fileset>
+    </copy>
+    <copy todir="${release.dir}\examples">
+      <fileset basedir="${source.dir}">
+        <includes name="eg\**" />
+      </fileset>
+    </copy>
+
+    <copy todir="${release.dir}\spec\input">
+      <fileset basedir="${spec.dir}">
+        <includes name="**" />
+      </fileset>
+    </copy>
+    <copy todir="${release.dir}\spec\output">
+      <fileset basedir="${spec-out.dir}">
+        <includes name="**" />
+      </fileset>
+    </copy>
+    <copy todir="${release.dir}\spec">
+      <fileset basedir="${source.dir}">
+        <includes name="fat\**" />
+      </fileset>
+    </copy>
+    
     <copy todir="${release.dir}\source">
       <fileset basedir="${root.dir}">
         <includes name="**" />
@@ -188,6 +219,7 @@
       <fileset basedir="${root.dir}">
         <includes name="imp\dotnet\**" />
         <excludes name="imp\dotnet\${output.dir}\**" />
+        <excludes name="imp\dotnet\*.snk" />
       </fileset>
     </copy>
 
