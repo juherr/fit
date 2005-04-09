@@ -10,7 +10,7 @@ public class ParseTest extends TestCase {
 	public ParseTest(String name) {
 		super(name);
 	}
-	
+
 	public void testParsing () throws Exception {
 		Parse p = new Parse("leader<Table foo=2>body</table>trailer", new String[] {"table"});
 		assertEquals("leader", p.leader);
@@ -18,21 +18,21 @@ public class ParseTest extends TestCase {
 		assertEquals("body", p.body);
 		assertEquals("trailer", p.trailer);
 	}
-	    
+
 	public void testRecursing () throws Exception {
 		Parse p = new Parse("leader<table><TR><Td>body</tD></TR></table>trailer");
 		assertEquals(null, p.body);
 		assertEquals(null, p.parts.body);
 		assertEquals("body", p.parts.parts.body);
 	}
-    
+
 	public void testIterating () throws Exception {
 		Parse p = new Parse("leader<table><tr><td>one</td><td>two</td><td>three</td></tr></table>trailer");
 		assertEquals("one", p.parts.parts.body);
 		assertEquals("two", p.parts.parts.more.body);
 		assertEquals("three", p.parts.parts.more.more.body);
 	}
-    
+
 	public void testIndexing () throws Exception {
 		Parse p = new Parse("leader<table><tr><td>one</td><td>two</td><td>three</td></tr><tr><td>four</td></tr></table>trailer");
 		assertEquals("one", p.at(0,0,0).body);
@@ -49,7 +49,7 @@ public class ParseTest extends TestCase {
 		assertEquals("one", p.leaf().body);
 		assertEquals("four", p.parts.last().leaf().body);
 	}
-	
+
 	public void testParseException () {
 		try {
 			Parse p = new Parse("leader<table><tr><th>one</th><th>two</th><th>three</th></tr><tr><td>four</td></tr></table>trailer");
@@ -72,7 +72,7 @@ public class ParseTest extends TestCase {
 		assertEquals("a>b & b>c &<", p.text());
 		p = new Parse("<TD><P><FONT FACE=\"Arial\" SIZE=2>GroupTestFixture</FONT></TD>", tags);
 		assertEquals("GroupTestFixture",p.text());
-		
+
 		assertEquals("", Parse.htmlToText("&nbsp;"));
 		assertEquals("a b", Parse.htmlToText("a <tag /> b"));
 		assertEquals("a", Parse.htmlToText("a &nbsp;"));
@@ -89,6 +89,8 @@ public class ParseTest extends TestCase {
 		assertEquals("a\nb\nc\nd", Parse.htmlToText("a<br>b<br/>c<  br   /   >d"));
 		assertEquals("a\nb", Parse.htmlToText("a</p><p>b"));
 		assertEquals("a\nb", Parse.htmlToText("a< / p >   <   p  >b"));
+		assertEquals("a\nb", Parse.htmlToText("a</p> <p yadda>b"));
+		assertEquals("a b", Parse.htmlToText("a</p> <pyadda>b"));
 	}
 
 	public void testUnescape () {
@@ -96,7 +98,6 @@ public class ParseTest extends TestCase {
 		assertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
 		assertEquals("&amp;&amp;", Parse.unescape("&amp;amp;&amp;amp;"));
 		assertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
-		assertEquals("\"\"'", Parse.unescape("“”’"));
 	}
 
 	public void testWhitespaceIsCondensed() {
