@@ -1,5 +1,5 @@
 # build.properties for ceefit
-# Rename this sample file to build.properties and save as 
+# Rename this sample file to build.properties and edit to suit your environment
 
 #########################
 # which.compiler = a symbolic keyword corresponding to an ant-contrib cpptasks compiler engine:

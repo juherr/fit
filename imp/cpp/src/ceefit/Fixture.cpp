@@ -391,7 +391,7 @@ namespace CEEFIT
       }
     }
 
-    return(aFixture); // figger me out
+    return(aFixture);
 	}
 
   void ceefit_call_spec FIXTURE::DoTable(PTR<PARSE>& table)
@@ -552,7 +552,7 @@ namespace CEEFIT
 
   // This method differs from the Java version in that we must go towards STRING for value comparisons versus using
   // TypeAdapter.equals() which works on Object's.  Here the CELLADAPTER is used to parse and filter values as well
-  // as convey data from method invocations.
+  // as convey return data from method invocations.
   void ceefit_call_spec FIXTURE::Check(PTR<PARSE>& cell, CELLADAPTER* aAdapter)
   {
       STRING text(cell->Text());

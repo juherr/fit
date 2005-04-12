@@ -25,8 +25,8 @@
  * @author David Woldrich
  */
 
-# define begin_fit_fixture(fixtureName, extendsType, alias)                                                                       \
-    class fixtureName : public extendsType                                                                                        \
+# define begin_fit_fixture(fixtureType, extendsType, alias)                                                                       \
+    class fixtureType : public extendsType                                                                                        \
     {                                                                                                                             \
       private:                                                                                                                    \
         class FIXTUREBEGINBODY                                                                                                    \
@@ -37,21 +37,21 @@
               ::CEEFIT::RUNNER::IncInFixtureConstructor();                                                                        \
             }                                                                                                                     \
         };                                                                                                                        \
-        FIXTUREBEGINBODY fixtureName##_BeginBody;                                                                                 \
+        FIXTUREBEGINBODY fixtureType##_BeginBody;                                                                                 \
                                                                                                                                   \
       public:                                                                                                                     \
-        inline fixtureName(void) {}                                                                                               \
-        inline virtual ~fixtureName(void) {}                                                                                      \
+        inline fixtureType(void) {}                                                                                               \
+        inline virtual ~fixtureType(void) {}                                                                                      \
                                                                                                                                   \
       private:                                                                                                                    \
-        fixtureName& operator=(const fixtureName&);                                                                               \
-        fixtureName(const fixtureName&);                                                                                          \
+        fixtureType& operator=(const fixtureType&);                                                                               \
+        fixtureType(const fixtureType&);                                                                                          \
                                                                                                                                   \
       public:                                                                                                                     \
         class PROVIDEFIXTUREOBJECTCASTER                                                                                          \
         {                                                                                                                         \
           public:                                                                                                                 \
-            static inline fixtureName* GetFixtureSubclass(::CEEFIT::FIXTURE* aFixture)                                            \
+            static inline fixtureType* GetFixtureSubclass(::CEEFIT::FIXTURE* aFixture)                                            \
             {                                                                                                                     \
               extendsType* extendsFixture = dynamic_cast< extendsType* >(aFixture);                                               \
               if(extendsFixture == NULL)                                                                                          \
@@ -60,11 +60,11 @@
                                               " because the types are not compatible.");                                          \
               }                                                                                                                   \
                                                                                                                                   \
-              fixtureName* subclassFixture = static_cast<fixtureName*>(extendsFixture);                                           \
+              fixtureType* subclassFixture = static_cast<fixtureType*>(extendsFixture);                                           \
               if(subclassFixture == NULL)                                                                                         \
               {                                                                                                                   \
                 throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast ") + #extendsType + " to " +    \
-                                    #fixtureName + " because the types are not compatible.");                                     \
+                                    #fixtureType + " because the types are not compatible.");                                     \
               }                                                                                                                   \
                                                                                                                                   \
               return(subclassFixture);                                                                                            \
@@ -84,7 +84,7 @@
       public:
                                                                                                                                   
                                                                                                                                   
-# define end_fit_fixture(fixtureName)                                                                                             \
+# define end_fit_fixture(fixtureType)                                                                                             \
       private:                                                                                                                    \
         class FIXTUREENDBODY                                                                                                      \
         {                                                                                                                         \
@@ -94,9 +94,10 @@
               ::CEEFIT::RUNNER::DecInFixtureConstructor();                                                                        \
             }                                                                                                                     \
         };                                                                                                                        \
-        FIXTUREENDBODY fixtureName##_EndBody;                                                                                     \
+        FIXTUREENDBODY fixtureType##_EndBody;                                                                                     \
     };                                                                                                                            \
-    static ::CEEFIT::REGISTERFIXTURECLASS< fixtureName > fixtureName##_CeeFITFixtureRegistration(#fixtureName, fixtureName::PROVIDEFIXTUREALIAS::GetFixtureAlias());
+                                                                                                                                  \
+    static ::CEEFIT::REGISTERFIXTURECLASS< fixtureType > fixtureType##_CeeFITFixtureRegistration(#fixtureType, fixtureType::PROVIDEFIXTUREALIAS::GetFixtureAlias());
 
 
 # ifdef __GNUC__
@@ -126,12 +127,13 @@
       };                                                                                                                          \
       friend class ::CEEFIT::SETFIELDINFO<PROVIDEFIELDINFO_##varName>;                                                            \
                                                                                                                                   \
-    public:                                                                                                                       \
-      ::CEEFIT::SETFIELDINFO<PROVIDEFIELDINFO_##varName> varName##_SetFitFieldName                                                
+      ::CEEFIT::SETFIELDINFO<PROVIDEFIELDINFO_##varName> varName##_SetFitFieldInfo;                                               \
+                                                                                                                                  \
+    public:                                                
                                                                                                                                   
                                                                                                                                   
 # define fit_test(testName, returnType)                                                                                           \
-    friend returnType ceefit_call_spec testName(void);                                                                            \
+      friend returnType ceefit_call_spec testName(void);                                                                          \
                                                                                                                                   \
     private:                                                                                                                      \
       friend class PROVIDETESTCALLER_##testName;                                                                                  \

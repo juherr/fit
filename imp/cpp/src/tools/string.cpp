@@ -844,7 +844,7 @@ namespace CEEFIT
     return(temp);
   }
 
-  static void AssertIsTrue(bool expression)
+  template<class ANYTYPE> static void AssertIsTrue(ANYTYPE& expression)
   {
     if(!expression)
     {

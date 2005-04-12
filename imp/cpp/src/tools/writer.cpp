@@ -23,13 +23,30 @@
 #include "tools/alloc.h"
 #include "ceefit.h"
 
+extern "C"
+{
+# include "unicode.h"
+# include "convert.h"
+};
+
 namespace CEEFIT
 {
   extern DYNARRAY<wchar_t> SprintfBuffer;
 
-  ceefit_init_spec FILEWRITER::FILEWRITER(const STRING& filePath, bool createFile)
+  ceefit_init_spec FILEWRITER::FILEWRITER(const STRING& filePath, bool createFile, unicode_encoding_t& aExpectedEncoding)
   {
     Output = _wfopen(filePath.GetBuffer(), createFile ? L"wb" : L"ab");
+    if(Output == NULL)
+    {
+      STRING reason;
+
+      reason = STRING("Failed to open file for writing:  ") + filePath;
+      
+      throw new IOEXCEPTION(reason);    
+    }
+
+    ExpectedEncoding = &aExpectedEncoding;
+    OutFilepath = filePath;
   }
 
   ceefit_init_spec FILEWRITER::~FILEWRITER()
@@ -103,39 +120,58 @@ namespace CEEFIT
     if(Output != NULL)
     {
       STRING outString(StringWriter.ToString());
+      DYNARRAY<unicode_char_t> convertSrcBuffer;
       DYNARRAY<char> outBuf;
       int srcLen = outString.Length();
-      outBuf.Reserve((srcLen*4) + 4);
-
-      wchar_t* outStringBuf = outString.GetBuffer();
-
-      // Hack:  Now restore any Java'fied smart quotes, en/em dashes and elipsis with their MsWord versions
-      // Credit:  http://home.hiwaay.net/~taylorc/toolbox/sw-dev/fixquotes.html
-      RestoreMsWordSpecialChar(outStringBuf, srcLen, 0x201c, 0x0093);   // smart double quote
-      RestoreMsWordSpecialChar(outStringBuf, srcLen, 0x201d, 0x0094);
-      RestoreMsWordSpecialChar(outStringBuf, srcLen, 0x2018, 0x0091);   // smart single quote
-      RestoreMsWordSpecialChar(outStringBuf, srcLen, 0x2019, 0x0092);
-      RestoreMsWordSpecialChar(outStringBuf, srcLen, 0x2013, 0x0096);   // en dash
-      RestoreMsWordSpecialChar(outStringBuf, srcLen, 0x2014, 0x0097);   // em dash
-      RestoreMsWordSpecialChar(outStringBuf, srcLen, 0x2026, 0x0085);   // elipsis
-
-      outBuf[0] = '\0';
-      setlocale(LC_CTYPE, "en_US.UTF-8");
-
-      const wchar_t* src = outString.GetBuffer();
-      size_t retCount = wcstombs(&outBuf[0], src, srcLen);
-
-      if(retCount == (size_t) -1)
+      wchar_t* srcWchar = outString.GetBuffer();
+      convertSrcBuffer.Reserve(srcLen);
+      
+      int i = -1;
+      while(++i < srcLen)
       {
-        throw new PARSEEXCEPTION(STRING("Failed to convert Wide char to UTF-8.  Errno == ") + (errno == EINVAL ? "EINVAL" :
-                                                                                               errno == EILSEQ ? "EILSEQ" :
-                                                                                               "unknown reason code")
-                                                                                            + "\n\n");
+        convertSrcBuffer[i] = srcWchar[i];
       }
 
-      outBuf[retCount] = '\0';
+      outBuf.Reserve((srcLen*6) + 6);
 
-      fwrite(&outBuf[0], retCount, 1, Output);
+      void* privateData;
+      if(ExpectedEncoding->init)
+      {
+        ExpectedEncoding->init(&privateData);
+      }
+
+      unicode_char_t* src = &convertSrcBuffer[0];
+      char* dest = &outBuf[0];
+      size_t incharsLeft = convertSrcBuffer.GetSize();
+      size_t outbytesLeft = outBuf.GetSize();
+      size_t maxbytesLeft = outbytesLeft;
+
+      memset(dest, 0, outbytesLeft);    // clear the dest buffer
+
+      if(ExpectedEncoding->reset)
+      {
+        ExpectedEncoding->reset(privateData, (char**) &dest, &outbytesLeft);
+      }
+      
+      enum unicode_write_result writeResult;
+      writeResult = ExpectedEncoding->write(privateData, &src, &incharsLeft, &dest, &outbytesLeft);
+
+      if(ExpectedEncoding->destroy)
+      {
+        ExpectedEncoding->destroy(&privateData);
+      }
+
+      if(writeResult != unicode_write_ok)
+      {
+        STRING reason;
+
+        reason = STRING("Failed to write output file ") + OutFilepath.GetBuffer() + " using " + ExpectedEncoding->names[0] + " encoding."; 
+
+        // must have hit a bad character, die monster die!
+        throw new IOEXCEPTION(reason);
+      }
+
+      fwrite(&outBuf[0], maxbytesLeft - outbytesLeft, 1, Output);
 
       fclose(Output);
       Output = NULL;
@@ -233,7 +269,7 @@ namespace CEEFIT
     IsClosed = true;
   }
 
-  STRING ceefit_call_spec STRINGWRITER::ToString(void)
+  STRING ceefit_call_spec STRINGWRITER::ToString()
   {
     return(Output);
   }

@@ -23,6 +23,12 @@
 #include "tools/alloc.h"
 #include "ceefit.h"
 
+extern "C"
+{
+# include "unicode.h"
+# include "convert.h"
+};
+
 namespace CEEFIT
 {
   class BUFFEREDFILEREADER : public OBJECT
@@ -33,23 +39,57 @@ namespace CEEFIT
       int TotalChars;
       bool IsClosed;
 
-      static void ceefit_call_spec ReplaceMsWordSpecialChar(wchar_t* uniBuffer, int aLength, wchar_t matchChar, wchar_t replaceChar)
+      void DecodeInputBuffer(const DYNARRAY<char>& Buffer, int totalsRead, const STRING& fileName, unicode_encoding_t& expectedEncoding = unicode_windows_1252_encoding)
       {
-        int i = -1;
+        DYNARRAY<unicode_char_t> ConvertBuffer;
+        ConvertBuffer.Reserve(totalsRead);
+        const char* src = &Buffer[0];
+        unicode_char_t* dest = &ConvertBuffer[0];
 
-        while(++i < aLength)
+        static bool InitedUnicode = false;
+        if(InitedUnicode == false)
         {
-          if(uniBuffer[i] == matchChar)
-          {
-            uniBuffer[i] = replaceChar;
-          }
+          unicode_init();
+
+          InitedUnicode = true;
         }
+
+        void* privateData;
+        if(expectedEncoding.init)
+        {
+          expectedEncoding.init(&privateData);
+        }
+
+        size_t inbytesLeft = totalsRead;
+        size_t outcharsLeft = ConvertBuffer.GetSize();
+        enum unicode_read_result readResult;
+        readResult = expectedEncoding.read(privateData,
+                     &src, &inbytesLeft,
+                     &dest, &outcharsLeft);
+
+        if(expectedEncoding.destroy)
+        {
+          expectedEncoding.destroy(&privateData);
+        }
+
+        if(readResult != unicode_read_ok)
+        {
+          STRING reason;
+
+          reason = STRING("Failed to read input file ") + fileName.GetBuffer() + " using " + expectedEncoding.names[0] + " encoding."; 
+
+          // must have hit a bad character, die monster die!
+          throw new IOEXCEPTION(reason);
+        }
+
+        UniBuffer.Reset();
+        UniBuffer = ConvertBuffer;    // convert from unsigned int to wchar_t
       }
 
     public:
       BUFFEREDFILEREADER(const STRING& fileName)
       {
-        FILE* FileHandle = _wfopen(fileName.GetBuffer(), L"r");
+        FILE* FileHandle = _wfopen(fileName.GetBuffer(), L"rb");
 
         if(FileHandle == NULL)
         {
@@ -88,34 +128,14 @@ namespace CEEFIT
         Buffer[totalsRead] = '\0';
         Buffer[totalsRead+1] = '\0';
         Buffer[totalsRead+2] = '\0';
-        Buffer[totalsRead+4] = '\0';
+        Buffer[totalsRead+3] = '\0';
 
-        UniBuffer.Reserve(totalsRead+4);
-        const char* src = &Buffer[0];
-
-        setlocale(LC_CTYPE, "en_US.UTF-8");
-        size_t convertLength = mbstowcs(&UniBuffer[0], src, totalsRead+1);
-
-        if(convertLength == (size_t) -1)
-        {
-          throw new PARSEEXCEPTION("Failed to convert UTF-8 to Wide char");
-        }
-
-        UniBuffer[convertLength] = L'\0';
+        // this populates UniBuffer with a decoded
+        DecodeInputBuffer(Buffer, totalsRead+4, fileName);      
 
         CharPos = 0;
-        TotalChars = convertLength;
+        TotalChars = wcslen(&UniBuffer[0]);
         IsClosed = false;
-
-        // Hack:  Now do what Java does and replace smart quotes, en/em dashes and elipsis with their unicode versions
-        // Credit:  http://home.hiwaay.net/~taylorc/toolbox/sw-dev/fixquotes.html
-        ReplaceMsWordSpecialChar(&UniBuffer[0], convertLength, 0x0093, 0x201c);   // smart double quote
-        ReplaceMsWordSpecialChar(&UniBuffer[0], convertLength, 0x0094, 0x201d);
-        ReplaceMsWordSpecialChar(&UniBuffer[0], convertLength, 0x0091, 0x2018);   // smart single quote
-        ReplaceMsWordSpecialChar(&UniBuffer[0], convertLength, 0x0092, 0x2019);
-        ReplaceMsWordSpecialChar(&UniBuffer[0], convertLength, 0x0096, 0x2013);   // en dash
-        ReplaceMsWordSpecialChar(&UniBuffer[0], convertLength, 0x0097, 0x2014);   // em dash
-        ReplaceMsWordSpecialChar(&UniBuffer[0], convertLength, 0x0085, 0x2026);   // elipsis
       }
 
       ~BUFFEREDFILEREADER(void)

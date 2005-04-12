@@ -182,7 +182,7 @@ namespace CEEFIT
         }
 
         int i = -1;
-        while(++i < aCollection.Count)
+        while(++i < aCollection.GetSize())
         {
           List[Count++] = aCollection[i];
         }
@@ -203,7 +203,7 @@ namespace CEEFIT
         }
 
         int i = -1;
-        while(++i < aCollection.Count)
+        while(++i < aCollection.GetSize())
         {
           List[Count++] = aCollection[i];
         }

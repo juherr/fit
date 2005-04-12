@@ -68,13 +68,37 @@ namespace CEEFIT
 
     //wprintf(L"%s %s %s %s\n", argList[0].GetBuffer(), argList[1].GetBuffer(), argList[2].GetBuffer(), argList[3].GetBuffer());
 
-    if(argList.GetSize() == 4 && IsEqual(argList[1], "-CeeFIT"))
+    if(argList.GetSize() >= 4)
     {
       int retVal = 0;
 
-      FILERUNNER* fileRunner = new FILERUNNER();
-      retVal = fileRunner->Run(argList);
-      delete fileRunner;
+      int i = 0;
+      while(++i < argList.GetSize())
+      {
+        if(IsEqual(argList[i], "-CeeFIT"))
+        {
+          if(argList.GetSize() - i < 3)
+          {
+            fwprintf(stderr, L"usage:  %s -CeeFIT <input_file> <output_file>", argList[0].GetBuffer());
+            retVal = 2;
+          }
+
+          if(retVal <= 1)
+          {
+            DYNARRAY<STRING> subList;
+            subList.Add(argList[0]);
+            subList.Add(argList[i]);
+            subList.Add(argList[i+1]);
+            subList.Add(argList[i+2]);
+
+            FILERUNNER* fileRunner = new FILERUNNER();
+            retVal = fileRunner->Run(subList);
+            delete fileRunner;
+
+            i += 2;
+          }
+        }
+      }
 
       return(retVal);
     }

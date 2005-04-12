@@ -263,6 +263,7 @@
 			<includepath>
 				<path>
 					<pathelement location="src"/>
+					<pathelement location="lib/libunicode-0.4"/>
 				</path>
 			</includepath>
 			<compiler inherit="true" name="${which.compiler}" extends="default.compiler.args">
@@ -271,6 +272,9 @@
 				</fileset>
 				<fileset dir="src/tools" casesensitive="false">
 					<include name="**/*.cpp"/>
+				</fileset>
+				<fileset dir="lib/libunicode-0.4" casesensitive="false" unless="using.external.libunicode">
+					<include name="*.c"/>
 				</fileset>
 			</compiler>
 		</cc>

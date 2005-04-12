@@ -25,6 +25,13 @@
  * @author David Woldrich
  */
 
+extern "C"
+{
+  struct unicode_encoding_t;
+
+  extern struct unicode_encoding_t unicode_windows_1252_encoding;
+};
+
 namespace CEEFIT
 {
   class WRITER
@@ -73,15 +80,17 @@ namespace CEEFIT
   class FILEWRITER : public WRITER
   {
     private:
+      unicode_encoding_t* ExpectedEncoding;
       STRINGWRITER StringWriter;
       FILE* Output;
+      STRING OutFilepath;
 
     public:
       /**
        * @param filePath file path to open
        * @param createFile true = create the file (or truncate it if it already exists), false = append to end of existing file (or create if it does not exist)
        */
-      ceefit_init_spec FILEWRITER(const STRING& filePath, bool createFile=true);
+      ceefit_init_spec FILEWRITER(const STRING& filePath, bool createFile=true, unicode_encoding_t& aExpectedEncoding = unicode_windows_1252_encoding);
       virtual ceefit_init_spec ~FILEWRITER(void);
 
       virtual void ceefit_call_spec Write(const STRING& aString);
