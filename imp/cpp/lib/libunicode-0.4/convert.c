@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <memory.h>
 
 #include "unicode.h"
 #include "convert.h"
@@ -224,11 +225,15 @@ unicode_iconv (unicode_iconv_t cd, const char **inbuf, size_t *inbytesleft,
 			  outbuf, outbytesleft);
 
       /* FIXME: circular buffer would be more efficient here.  */
+/*
 #ifdef HAVE_MEMMOVE
       memmove (cd->u.ours.buffer, buffer, charsleft * sizeof (unicode_char_t));
 #else
       bcopy (buffer, cd->u.ours.buffer, charsleft * sizeof (unicode_char_t));
 #endif
+*/
+      memcpy(buffer, cd->u.ours.buffer, charsleft * sizeof (unicode_char_t));  // replaced with more common memcpy
+
       cd->u.ours.valid = charsleft;
 
       switch (wr)

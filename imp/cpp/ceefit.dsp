@@ -490,10 +490,6 @@ SOURCE=".\lib\libunicode-0.4\convert.c"
 # End Source File
 # Begin Source File
 
-SOURCE=".\lib\libunicode-0.4\decomp.c"
-# End Source File
-# Begin Source File
-
 SOURCE=".\lib\libunicode-0.4\init.c"
 # End Source File
 # Begin Source File

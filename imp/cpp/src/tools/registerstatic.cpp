@@ -41,7 +41,6 @@ CEEFIT::CELLADAPTER* ceefit_call_spec FITTESTBASE::NewInstanceParse(const CEEFIT
 ceefit_init_spec FITTESTBASE::FITTESTBASE()
 {
   Name = "";
-  CEEFIT::RUNNER::RegisterTest(this);
 }
 
 ceefit_init_spec FITTESTBASE::~FITTESTBASE()
@@ -91,7 +90,7 @@ namespace CEEFIT
   {
     if(RUNNER::InFixtureConstructor())
     {
-      RUNNER::RegisterField(aField);
+      RUNNER::RegisterAutoField(aField);
     }
   }
 
@@ -229,7 +228,7 @@ namespace CEEFIT
     return(FixtureUnderConstruction);
   }
 
-  void ceefit_call_spec RUNNER::RegisterTest(CELLADAPTER* aTest)
+  void ceefit_call_spec RUNNER::RegisterAutoTest(CELLADAPTER* aTest)
   {
     SLINKLIST<CELLADAPTER>* aList = RUNNER::GetCurrentTestList();
 
@@ -243,7 +242,7 @@ namespace CEEFIT
     aList->AddTail(aTest);
   }
 
-  void ceefit_call_spec RUNNER::RegisterField(CELLADAPTER* aField)
+  void ceefit_call_spec RUNNER::RegisterAutoField(CELLADAPTER* aField)
   {
     SLINKLIST<CELLADAPTER>* aList = RUNNER::GetCurrentFieldList();
 
@@ -275,4 +274,18 @@ namespace CEEFIT
     }
     return(aList->GetTail());
   }
+
+  void ceefit_call_spec LinkManualTest(FIXTURE* aFixture, FITTESTBASE* fittestManual)
+  {        
+    aFixture->TestList.AddTail(fittestManual);
+    aFixture->DestroyAtFinish.Add(fittestManual);
+  }
+
+  void ceefit_call_spec LinkManualField(::CEEFIT::FIXTURE* aFixture, CELLADAPTER* fitfieldManual)
+  {
+    aFixture->FieldList.AddTail(fitfieldManual);
+    aFixture->DestroyAtFinish.Add(fitfieldManual);
+  }
+
 };
+

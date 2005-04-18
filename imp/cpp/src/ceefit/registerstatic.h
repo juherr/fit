@@ -182,8 +182,8 @@ namespace CEEFIT
 
       static FIXTUREFACTORY* ceefit_call_spec FindFixtureFactoryByName(const char* aName);
 
-      static void ceefit_call_spec RegisterField(CELLADAPTER* aVar);
-      static void ceefit_call_spec RegisterTest(CELLADAPTER* aTest);
+      static void ceefit_call_spec RegisterAutoField(CELLADAPTER* aVar);
+      static void ceefit_call_spec RegisterAutoTest(CELLADAPTER* aTest);
       static void ceefit_call_spec RegisterFixtureFactory(FIXTUREFACTORY* aTest);
 
       virtual ceefit_init_spec ~RUNNER(void);

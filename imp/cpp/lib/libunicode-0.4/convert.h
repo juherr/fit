@@ -54,13 +54,15 @@ typedef struct unicode_iconv_s
   size_t size;
 } unicode_iconv_s;
 
+typedef enum {
+  unicode_iconv_type_native,
+  unicode_iconv_type_ours
+} unicode_iconv_i_type;
+
 typedef struct unicode_iconv_i
 {
   /* Type of converter.  */
-  enum {
-    unicode_iconv_type_native,
-    unicode_iconv_type_ours
-  } type;
+  unicode_iconv_i_type type;
 
   union
   {

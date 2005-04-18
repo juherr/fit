@@ -151,7 +151,7 @@ sjis_write (void *arg,
 	      /* Set up reverse table */
 	      int i;
 
-	      revtable = ctx->revtable =
+	      revtable = ctx->revtable = (unsigned short **)
 		malloc (0x100 * sizeof (ctx->revtable[0]));
 	      
 	      for (i = 0; i < 0x100; i++)
@@ -168,7 +168,7 @@ sjis_write (void *arg,
 			if (revtable[msb] == NULL)
 			  {
 			    int k;
-			    revtable[msb] =
+			    revtable[msb] = (unsigned short *)
 			      malloc (0x100 * sizeof (unsigned short));
 			    for (k = 0; k < 0x100; k++)
 			      revtable[msb][k] = 0;

@@ -384,6 +384,14 @@ namespace CEEFIT
         }
       }
 
+      virtual inline void ceefit_call_spec RemoveAll(void)
+      {
+        while(GetHead() != NULL)
+        {
+          Remove(0);
+        }
+      }
+
       virtual inline void ceefit_call_spec Reset(void)
       {
         SetHead(NULL);

@@ -209,46 +209,14 @@ namespace CEEFIT
   {
     SummaryObj = (SUMMARY*) NULL;
     CountsObj = (COUNTS*) NULL;
-  }
 
-  void ceefit_call_spec FIXTURE::SetupFixture(FIXTURE* fixture, EXCEPTION*& exceptionThrown)
-  {
-    try
+    int i = -1;
+    int size = DestroyAtFinish.GetSize();
+    while(++i < size)
     {
-      fixture->Setup();
+      delete DestroyAtFinish.Get(i);
     }
-    catch(EXCEPTION* e)
-    {
-      if(exceptionThrown == NULL)
-      {
-        exceptionThrown = e;
-      }
-      else
-      {
-        // first exception takes precedence
-        delete e;
-      }
-    }
-  }
-
-  void ceefit_call_spec FIXTURE::TeardownFixture(FIXTURE* fixture, EXCEPTION*& exceptionThrown)
-  {
-    try
-    {
-      fixture->Teardown();
-    }
-    catch(EXCEPTION* e)
-    {
-      if(exceptionThrown == NULL)
-      {
-        exceptionThrown = e;
-      }
-      else
-      {
-        // first exception takes precedence
-        delete e;
-      }
-    }
+    DestroyAtFinish.Reset();
   }
 
   void ceefit_call_spec FIXTURE::DeleteFixture(FIXTURE* fixture, EXCEPTION*& exceptionThrown)
@@ -269,14 +237,6 @@ namespace CEEFIT
         delete e;
       }
     }
-  }
-
-  void ceefit_call_spec FIXTURE::Setup(void)
-  {
-  }
-
-  void ceefit_call_spec FIXTURE::Teardown(void)
-  {
   }
 
   // Traversal //////////////////////////
@@ -301,10 +261,7 @@ namespace CEEFIT
           // Step 1:  accumulate fixture Counts
           fixture->CountsObj = CountsObj;
 
-          // Step 2:  setup the fixture
-          SetupFixture(fixture, exceptionThrown);
-
-          // Step 3:  Call DoTable
+          // Step 2:  Call DoTable
           if(exceptionThrown == NULL)
           {
             try
@@ -318,10 +275,7 @@ namespace CEEFIT
             }
           }
 
-          // Step 4:  teardown the fixture
-          TeardownFixture(fixture, exceptionThrown);
-
-          // Step 5:  delete the fixture
+          // Step 3:  delete the fixture
           DeleteFixture(fixture, exceptionThrown);
 
           if(exceptionThrown)

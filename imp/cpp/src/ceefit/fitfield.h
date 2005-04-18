@@ -896,12 +896,25 @@ namespace CEEFIT
 {
   template<class T> inline void ceefit_call_spec SetLastLinkedFieldInfo(const char* aName, T& aField)
   {
-    CEEFIT::CELLADAPTER* baseAdapter = RUNNER::GetLastRegisteredField();
-    FITFIELD<T>* fitField = dynamic_cast< FITFIELD<T>* >(baseAdapter);
+    CELLADAPTER* baseAdapter = RUNNER::GetLastRegisteredField();
+    ::FITFIELD<T>* fitField = dynamic_cast< ::FITFIELD<T>* >(baseAdapter);
 
-    fitField->SetName(CEEFIT::STRING(aName));
+    fitField->SetName(STRING(aName));
     fitField->SetFieldPointer(&aField);
   }
+
+  void ceefit_call_spec LinkManualField(::CEEFIT::FIXTURE* aFixture, CELLADAPTER* fitfieldManual);
 };
+
+template<class FIXTURETYPE, class FIELDTYPE> void ceefit_call_spec RegisterCeefitField(FIXTURETYPE* fixture, const char* fieldName, FIELDTYPE& actualField)
+{
+  FITFIELD<FIELDTYPE>* aFitField = new FITFIELD<FIELDTYPE>();
+
+  aFitField->SetName(::CEEFIT::STRING(fieldName));
+  aFitField->SetFieldPointer(&actualField);
+
+  ::CEEFIT::LinkManualField(fixture, aFitField);
+}
+
 
 #endif // __CEEFIT_FITFIELD_H__

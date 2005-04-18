@@ -87,20 +87,25 @@ namespace CEEFIT
           ceefit_init_spec SUMMARY(SUMMARY& aSummary);
       };
 
+    public:
       PTR<SUMMARY> SummaryObj;
       PTR<COUNTS> CountsObj;
+
+    protected:
+      friend void ceefit_call_spec ::CEEFIT::LinkManualTest(FIXTURE* aFixture, FITTESTBASE* fittestManual);
+      friend void ceefit_call_spec ::CEEFIT::LinkManualField(::CEEFIT::FIXTURE* aFixture, CELLADAPTER* fitfieldManual);
+
       SLINKLIST<CELLADAPTER> FieldList;
       SLINKLIST<CELLADAPTER> TestList;
 
+    private:
+      DYNARRAY<CELLADAPTER*> DestroyAtFinish;   /**< Manual, dynamically allocated test and field registrations are linked here */
+
+    public:
       ceefit_init_spec FIXTURE(void);
       virtual ceefit_init_spec ~FIXTURE(void);
 
     public:
-      // Object Lifecycle ///////////////////////////
-
-      virtual void ceefit_call_spec Setup(void);
-      virtual void ceefit_call_spec Teardown(void);
-
       // Traversal //////////////////////////
 
       virtual void ceefit_call_spec DoTables(PTR<PARSE>& tables);
@@ -141,8 +146,6 @@ namespace CEEFIT
 
     private:
       // helpers for DoTables
-      void ceefit_call_spec SetupFixture(FIXTURE* fixture, EXCEPTION*& exceptionThrown);
-      void ceefit_call_spec TeardownFixture(FIXTURE* fixture, EXCEPTION*& exceptionThrown);
       void ceefit_call_spec DeleteFixture(FIXTURE* fixture, EXCEPTION*& exceptionThrown);
 
     protected:

@@ -29,22 +29,15 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  begin_fit_fixture(FAT_ANNOTATIONFIXTURE, COLUMNFIXTURE, fat.AnnotationFixture)
-
+  class FAT_ANNOTATIONFIXTURE : public COLUMNFIXTURE
+  {
     public:
-      fit_var(STRING, Type);
-      fit_var(STRING, Text);
-      fit_var(STRING, OriginalCell);
+      STRING Type;
+      STRING Text;
+      STRING OriginalCell;
 
-      virtual void ceefit_call_spec Setup()
-      {
-        COLUMNFIXTURE::Setup();
-
-        OriginalCell = "Text";
-      }
-
-	  // code smell note: copied from ParseFixture
 	  private:
+  	  // code smell note: copied from ParseFixture
       STRING GenerateOutput(PTR<PARSE>& parse)
       {
         STRINGWRITER writer;
@@ -55,7 +48,7 @@ namespace CEEFAT
 	    }
 
     public:
-      fit_test(Output, STRING)
+      virtual STRING Output()
       {
         PTR<PARSE> nullPointer;
 		    PTR<PARSE> parse(new PARSE(STRING("td"), OriginalCell, nullPointer, nullPointer));
@@ -91,7 +84,22 @@ namespace CEEFAT
 
 		    return GenerateOutput(parse);
 	    }
+      
+      FAT_ANNOTATIONFIXTURE(VOID) 
+      {
+        OriginalCell = "Text";
 
-  end_fit_fixture(FAT_ANNOTATIONFIXTURE);
+        RegisterCeefitField(this, "Type", Type);
+        RegisterCeefitField(this, "Text", Text);
+        RegisterCeefitField(this, "OriginalCell", OriginalCell);
 
+        RegisterCeefitTest(this, "Output", &FAT_ANNOTATIONFIXTURE::Output);
+      }
+
+      virtual ~FAT_ANNOTATIONFIXTURE(VOID) 
+      {
+      }
+  };
+
+  static ::CEEFIT::REGISTERFIXTURECLASS< FAT_ANNOTATIONFIXTURE > AnnotationFixtureRegistration("FAT_ANNOTATIONFIXTURE", "fat.AnnotationFixture");
 };

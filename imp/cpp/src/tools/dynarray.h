@@ -29,7 +29,7 @@ namespace CEEFIT
 {
 
 # define min_dynarray_size 16
-  
+
   /**
    * <p>A dynamically sized ARRAY/LIST class that is able to grow and shrink.</p>
    */ 
@@ -41,14 +41,19 @@ namespace CEEFIT
       ANYTYPE* List;    /**< DYNARRAY ANYTYPE list (ANYTYPE == generic type) */
 
     public:
-      inline DYNARRAY<ANYTYPE>(void) 
+      virtual inline ~DYNARRAY<ANYTYPE>(void)
+      {
+        Reset();
+      }
+
+      inline ceefit_init_spec DYNARRAY<ANYTYPE>(void) 
       {
         Limit = 0;
         Count = 0;
         List = NULL;
       }
 
-      template<class ANYTYPE2> explicit inline DYNARRAY<ANYTYPE>(DYNARRAY<ANYTYPE2>& otherArray)
+      template<class ANYTYPE2> explicit inline ceefit_init_spec DYNARRAY<ANYTYPE>(DYNARRAY<ANYTYPE2>& otherArray)
       {
         Limit = 0;
         Count = 0;
@@ -57,7 +62,7 @@ namespace CEEFIT
         AddAll(otherArray);
       }
 
-      template<class ANYTYPE2> explicit inline DYNARRAY<ANYTYPE>(const DYNARRAY<ANYTYPE2>& otherArray)
+      template<class ANYTYPE2> explicit inline ceefit_init_spec DYNARRAY<ANYTYPE>(const DYNARRAY<ANYTYPE2>& otherArray)
       {
         Limit = 0;
         Count = 0;
@@ -67,7 +72,7 @@ namespace CEEFIT
       }
 
 # ifdef __GNUC__
-      explicit inline DYNARRAY<ANYTYPE>(const DYNARRAY<ANYTYPE>& otherArray)
+      explicit inline ceefit_init_spec DYNARRAY<ANYTYPE>(const DYNARRAY<ANYTYPE>& otherArray)
       {
         Limit = 0;
         Count = 0;
@@ -77,12 +82,7 @@ namespace CEEFIT
       }
 # endif
 
-      inline virtual ~DYNARRAY<ANYTYPE>(void)
-      {
-        Reset();
-      }
-
-      template<class ANYTYPE2> inline DYNARRAY<ANYTYPE>& operator=(DYNARRAY<ANYTYPE2>& otherArray)
+      template<class ANYTYPE2> inline DYNARRAY<ANYTYPE>& ceefit_call_spec operator=(DYNARRAY<ANYTYPE2>& otherArray)
       {
         Reset();
 
@@ -91,7 +91,7 @@ namespace CEEFIT
         return(*this);
       }
 
-      template<class ANYTYPE2> inline DYNARRAY<ANYTYPE>& operator=(const DYNARRAY<ANYTYPE2>& otherArray)
+      template<class ANYTYPE2> inline DYNARRAY<ANYTYPE>& ceefit_call_spec operator=(const DYNARRAY<ANYTYPE2>& otherArray)
       {
         Reset();
 
@@ -101,7 +101,7 @@ namespace CEEFIT
       }
 
 //#ifdef __GNUC__
-      inline DYNARRAY<ANYTYPE>& operator=(const DYNARRAY<ANYTYPE>& otherArray)
+      inline DYNARRAY<ANYTYPE>& ceefit_call_spec operator=(const DYNARRAY<ANYTYPE>& otherArray)
       {
         Reset();
 
@@ -112,7 +112,7 @@ namespace CEEFIT
 //#endif
 
     public:
-      static inline DYNARRAY<ANYTYPE>& CreateArray(int size)
+      static inline DYNARRAY<ANYTYPE>& ceefit_call_spec CreateArray(int size)
       {
         DYNARRAY<ANYTYPE>* dynArray = new DYNARRAY<ANYTYPE>();
 
@@ -121,22 +121,22 @@ namespace CEEFIT
         return(*dynArray);
       }
 
-      virtual inline ANYTYPE& Get(int aIndex)
+      virtual inline ANYTYPE& ceefit_call_spec Get(int aIndex)
       {
         return(operator[](aIndex));
       }
 
-      virtual inline const ANYTYPE& Get(int aIndex) const
+      virtual inline const ANYTYPE& ceefit_call_spec Get(int aIndex) const
       {
         return(operator[](aIndex));
       }
 
-      virtual inline int GetSize(void) const 
+      virtual inline int ceefit_call_spec GetSize(void) const 
       {
         return(Count);
       }
 
-      virtual inline void Add(ANYTYPE& aItem)
+      virtual inline void ceefit_call_spec Add(ANYTYPE& aItem)
       {
         if(Limit == Count) 
         {        
@@ -146,7 +146,7 @@ namespace CEEFIT
       }
 
 //#ifdef __GNUC__
-//      template<class ANYTYPE2> inline void Add(ANYTYPE2& aItem)
+//      template<class ANYTYPE2> inline void ceefit_call_spec Add(ANYTYPE2& aItem)
 //      {
 //        if(Limit == Count) 
 //        {        
@@ -156,7 +156,7 @@ namespace CEEFIT
 //      }
 //#endif
 
-      template<class ANYTYPE2> inline void Add(const ANYTYPE2& aItem)
+      template<class ANYTYPE2> inline void ceefit_call_spec Add(const ANYTYPE2& aItem)
       {
         if(Limit == Count) 
         {        
@@ -167,7 +167,7 @@ namespace CEEFIT
         aDest = aItem;
       }
 
-      template<class ANYTYPE2> inline void AddAll(const DYNARRAY<ANYTYPE2>& aCollection)
+      template<class ANYTYPE2> inline void ceefit_call_spec AddAll(const DYNARRAY<ANYTYPE2>& aCollection)
       {
         int aSize = aCollection.GetSize();
 
@@ -188,7 +188,7 @@ namespace CEEFIT
         }
       }
 
-      template<class ANYTYPE2> inline void AddAll(DYNARRAY<ANYTYPE2>& aCollection)
+      template<class ANYTYPE2> inline void ceefit_call_spec AddAll(DYNARRAY<ANYTYPE2>& aCollection)
       {
         int aSize = aCollection.GetSize();
 
@@ -209,7 +209,7 @@ namespace CEEFIT
         }
       }
 
-      virtual inline void Set(int aIndex, ANYTYPE& aValue)
+      virtual inline void ceefit_call_spec Set(int aIndex, ANYTYPE& aValue)
       {
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
@@ -229,7 +229,7 @@ namespace CEEFIT
         }
       }
 
-      template<class ANYTYPE2> inline void Set(int aIndex, ANYTYPE2& aValue)
+      template<class ANYTYPE2> inline void ceefit_call_spec Set(int aIndex, ANYTYPE2& aValue)
       {
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
@@ -251,7 +251,7 @@ namespace CEEFIT
         }
       }
 
-      template<class ANYTYPE2> inline void Set(int aIndex, const ANYTYPE2& aValue)
+      template<class ANYTYPE2> inline void ceefit_call_spec Set(int aIndex, const ANYTYPE2& aValue)
       {
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
@@ -273,7 +273,7 @@ namespace CEEFIT
         }
       }
 
-      virtual inline void Insert(int aIndex, ANYTYPE& aValue)
+      virtual inline void ceefit_call_spec Insert(int aIndex, ANYTYPE& aValue)
       {
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
@@ -304,7 +304,7 @@ namespace CEEFIT
         }
       }
 
-      template<class ANYTYPE2> inline void Insert(int aIndex, ANYTYPE2& aValue)
+      template<class ANYTYPE2> inline void ceefit_call_spec Insert(int aIndex, ANYTYPE2& aValue)
       {
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
@@ -335,7 +335,7 @@ namespace CEEFIT
         }
       }
 
-      template<class ANYTYPE2> inline void Insert(int aIndex, const ANYTYPE2& aValue)
+      template<class ANYTYPE2> inline void ceefit_call_spec Insert(int aIndex, const ANYTYPE2& aValue)
       {
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
@@ -375,7 +375,7 @@ namespace CEEFIT
        * objects that you expect to be destroyed as a result of a call to Remove are not necessarily
        * deleted.  Use Compact to delete objects that need deleting.</p>
        */
-      virtual inline void Remove(int aIndex, int aCountToRemove=1)
+      virtual inline void ceefit_call_spec Remove(int aIndex, int aCountToRemove=1)
       {
         // Validate parameters
         if(aIndex < 0 || aIndex >= Count)
@@ -403,7 +403,7 @@ namespace CEEFIT
         Count -= aCountToRemove;
       }
 
-      virtual inline void Reset(void)
+      virtual inline void ceefit_call_spec Reset(void)
       {
         Limit = 0;
         Count = 0;      
@@ -411,7 +411,7 @@ namespace CEEFIT
         List = NULL;
       }
 
-      virtual inline void Compact(void) 
+      virtual inline void ceefit_call_spec Compact(void) 
       {    
         if(Count > 0) 
         {  
@@ -439,7 +439,7 @@ namespace CEEFIT
         }
       }
 
-      virtual inline ANYTYPE& operator[](int index) 
+      virtual inline ANYTYPE& ceefit_call_spec operator[](int index) 
       {
         if(!((index >= 0) && (index < Count)))
         {
@@ -449,7 +449,7 @@ namespace CEEFIT
         return(List[index]); 
       }
 
-      virtual inline const ANYTYPE& operator[](int index) const
+      virtual inline const ANYTYPE& ceefit_call_spec operator[](int index) const
       {
         if(!((index >= 0) && (index < Count)))
         {
@@ -465,7 +465,7 @@ namespace CEEFIT
        * <p>If the free number of elements does not already exist in the DYNARRAY, the Limit is automatically extended to cover any extra 
        * number of elements that need to be reserved.</p>
        */
-      virtual inline void Reserve(int howMany) 
+      virtual inline void ceefit_call_spec Reserve(int howMany) 
       {
         int difference = Limit - (Count + howMany);
 
@@ -483,7 +483,7 @@ namespace CEEFIT
        *
        * @param howMany the number of values to extend the limit by, it is illegal for this value to be <= 0
        */
-      virtual inline void ExtendLimit(int howMany) 
+      virtual inline void ceefit_call_spec ExtendLimit(int howMany) 
       {
         if(!(howMany > 0))
         {
@@ -516,7 +516,7 @@ namespace CEEFIT
        * size, this algorithm may lead to an unneccessary waste of memory.  Use Compact on your DYNARRAY's if memory 
        * consumption is an issue in your program due to this method's implementation.</p>
        */
-      virtual inline int GetExtension(int howMany) 
+      virtual inline int ceefit_call_spec GetExtension(int howMany) 
       {
         int retVal = Limit;
       
@@ -533,7 +533,6 @@ namespace CEEFIT
         return(retVal);
       }
   };
-
 };
 
 #endif // __TOOLS_DYNARRAY_H__

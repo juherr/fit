@@ -31,19 +31,21 @@ namespace CEEFIT
   class PRIMITIVEFIXTURE : public FIXTURE
   {
     public:
+      ceefit_init_spec PRIMITIVEFIXTURE(void);
+      virtual ceefit_init_spec ~PRIMITIVEFIXTURE(void);
+
       // format converters ////////////////////////
+
       static long ceefit_call_spec ParseLong(PTR<PARSE>& cell);
       static double ceefit_call_spec ParseDouble(PTR<PARSE>& cell);
       static bool ceefit_call_spec ParseBoolean(PTR<PARSE>& cell);
 
       // answer comparisons ///////////////////////
+
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, const STRING& value);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, long value);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, double value);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, bool value);
-
-      ceefit_init_spec PRIMITIVEFIXTURE(void);
-      virtual ceefit_init_spec ~PRIMITIVEFIXTURE(void);
 
     protected:
       ceefit_init_spec PRIMITIVEFIXTURE(const PRIMITIVEFIXTURE&);              /**< not implemented, do not call */

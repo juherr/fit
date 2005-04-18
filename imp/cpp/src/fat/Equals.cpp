@@ -33,24 +33,23 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-
-  begin_fit_fixture(FAT_EQUALS, PRIMITIVEFIXTURE, fat.Equals)
-
+  class FAT_EQUALS : public PRIMITIVEFIXTURE
+  {
     public:
       PTR<PARSE> Heads;
       STRING Current;
       CELLADAPTER* Type;
       CELLADAPTER* X;
       CELLADAPTER* Y;
-
-      virtual void ceefit_call_spec Setup(void)
+      
+      ceefit_init_spec FAT_EQUALS()
       {
         Type = NULL;
         X = NULL;
         Y = NULL;
       }
 
-      virtual void ceefit_call_spec Teardown(void)
+      virtual ~FAT_EQUALS()
       {
         delete Type;
         delete X;
@@ -194,26 +193,26 @@ namespace CEEFAT
         PRIMITIVEFIXTURE::Parse(aField, s);
       }
 
-    /*
-    Boolean parseCustomBoolean(String s) {
-        if (true) throw new RuntimeException("boolean");
-        return
-            s.startsWith("y") ?         Boolean.TRUE :
-            s.startsWith("n") ?         Boolean.FALSE :
-            s.startsWith("t") ?         Boolean.TRUE :
-            s.startsWith("f") ?         Boolean.FALSE :
-            null ;
-    }
-    */
+      /*
+      Boolean parseCustomBoolean(String s) {
+          if (true) throw new RuntimeException("boolean");
+          return
+              s.startsWith("y") ?         Boolean.TRUE :
+              s.startsWith("n") ?         Boolean.FALSE :
+              s.startsWith("t") ?         Boolean.TRUE :
+              s.startsWith("f") ?         Boolean.FALSE :
+              null ;
+      }
+      */
 
-    virtual STRING ceefit_call_spec Print(CELLADAPTER* value)
-    {
-      STRING aTemp;
-      value->ReadFromFixtureVar(aTemp);
+      virtual STRING ceefit_call_spec Print(CELLADAPTER* value)
+      {
+        STRING aTemp;
+        value->ReadFromFixtureVar(aTemp);
 
-      return aTemp;
-    }
+        return aTemp;
+      }
+  };
 
-  end_fit_fixture(FAT_EQUALS);
-
+  static ::CEEFIT::REGISTERFIXTURECLASS< FAT_EQUALS > FatEqualsFixtureRegistration("FAT_EQUALS", "fat.Equals");
 };

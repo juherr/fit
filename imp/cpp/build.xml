@@ -275,6 +275,7 @@
 				</fileset>
 				<fileset dir="lib/libunicode-0.4" casesensitive="false" unless="using.external.libunicode">
 					<include name="*.c"/>
+					<exclude name="decomp.*"/>
 				</fileset>
 			</compiler>
 		</cc>

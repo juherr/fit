@@ -73,6 +73,7 @@ template<class T, class TESTCALLCLASS> class FITTEST : public FITTESTBASE
   public:
     inline ceefit_init_spec FITTEST<T, TESTCALLCLASS>(void)
     {
+      CEEFIT::RUNNER::RegisterAutoTest(this);
     }
 
     virtual inline ceefit_init_spec ~FITTEST<T, TESTCALLCLASS>(void)
@@ -82,8 +83,6 @@ template<class T, class TESTCALLCLASS> class FITTEST : public FITTESTBASE
     virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
     {
       FITFIELD<T>* retVal = new FITFIELD<T>();
-      const char* fileName = NULL;
-      int lineNum = 0;
 
       try
       {
@@ -128,5 +127,91 @@ template<class T, class TESTCALLCLASS> class FITTEST : public FITTESTBASE
     FITTEST<T, TESTCALLCLASS>& operator=(const FITTEST<T, TESTCALLCLASS>&);
 };
 
+
+template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public FITTESTBASE
+{
+  private:
+    RETURNTYPE (FIXTURETYPE::*FuncCall)(void);
+
+  public:
+    inline ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(RETURNTYPE (FIXTURETYPE::*aFuncCall)(void))
+    {
+      FuncCall = aFuncCall;
+    }
+
+    virtual inline ~FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(void)
+    {
+    }
+
+    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
+    {
+      ::FITFIELD<RETURNTYPE>* retVal = new ::FITFIELD<RETURNTYPE>();
+
+      try
+      {
+        retVal->SetName(::CEEFIT::STRING("<") + this->GetName() + "() return value>");
+        FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture);
+
+        if(subclassPtr == NULL)
+        {
+          throw new ::CEEFIT::EXCEPTION("Unable to cast FIXTURE to subclass type");
+        }
+
+        if(FuncCall != NULL) 
+        {
+          (*retVal) = (subclassPtr->*FuncCall)();
+        }
+        else
+        {          
+          throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("No function pointer set for test:  ") + GetName());
+        }        
+      }
+      catch(::CEEFIT::FAILURE* failure)
+      {
+        delete retVal;
+        throw failure;
+      }
+      catch(::CEEFIT::EXCEPTION* exception)
+      {
+        delete retVal;
+        throw exception;
+      }
+      catch(...)
+      {
+        delete retVal;
+        throw;    // rethrow, hopefully ...
+      }
+
+      return(retVal);
+    }
+
+    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    {
+      static FITFIELD<RETURNTYPE> typeField;
+
+      return(typeField.GetType());
+    }
+
+  private:
+    ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(void);
+    ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(const FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>&);
+};
+
+namespace CEEFIT
+{
+  void ceefit_call_spec LinkManualTest(::CEEFIT::FIXTURE* aFixture, FITTESTBASE* fittestManual);
+};
+
+/**
+ * <p>Manually register a CeeFIT test with the FIXTURE.</p>
+ */
+template<class FIXTURETYPE, class RETURNTYPE> void ceefit_call_spec RegisterCeefitTest(FIXTURETYPE* fixture, const char* testName, RETURNTYPE (FIXTURETYPE::*testFunc)(void))
+{
+  FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>* manualTestRegister = new FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(testFunc);
+
+  manualTestRegister->SetName(::CEEFIT::STRING(testName));
+
+  ::CEEFIT::LinkManualTest(fixture, manualTestRegister);
+}
 
 #endif // __CEEFIT_FITTEST_H__
