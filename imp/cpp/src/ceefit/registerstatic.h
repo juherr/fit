@@ -67,7 +67,7 @@ namespace CEEFIT
        *                       heap and must be free'd by the caller.
        */
       virtual CELLADAPTER* ceefit_call_spec Invoke(FIXTURE* aFixture)=0;
-
+      
       inline ceefit_init_spec CELLADAPTER(void) {}
       virtual inline ceefit_init_spec ~CELLADAPTER(void) {}
 
@@ -269,7 +269,7 @@ template<class T> class FITFIELDBASE : public CEEFIT::CELLADAPTER
       CEEFIT::LinkFieldToCurrentFixture(this);                    // the new FIXTURE will be located and this will be added to it
     }
 
-    virtual inline ceefit_init_spec ~FITFIELDBASE<T>(void)
+    virtual inline ~FITFIELDBASE<T>(void)
     {
       if(DestroyField)
       {
@@ -301,6 +301,12 @@ template<class T> class FITFIELDBASE : public CEEFIT::CELLADAPTER
 
     inline void ceefit_call_spec SetFieldPointer(T* aField)
     {
+      if(Field != NULL && DestroyField == true) 
+      {
+        delete Field;
+        Field = NULL;
+        DestroyField = false;
+      }
       Field = aField;
     }
 

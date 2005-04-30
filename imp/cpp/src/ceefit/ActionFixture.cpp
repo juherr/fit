@@ -23,69 +23,136 @@
 #include "tools/alloc.h"
 #include "ceefit.h"
 
-//todo...
+declare_fit_module(FitActionFixture);
 
-/*
-  // Traversal ////////////////////////////////
-  void ACTIONFIXTURE::doCells(PTR<PARSE>& cells) 
+// Traversal ////////////////////////////////
+
+namespace CEEFIT
+{
+  FIXTURE* ACTIONFIXTURE::Actor = NULL;
+
+  // copied from COLUMNFIXTURE
+  CELLADAPTER* ceefit_call_spec ACTIONFIXTURE::BindMethod(const STRING& name)
   {
-      Cells = cells;
-      try 
-      {          
-          Method action = getClass().getMethod(Cells.text(), empty);
-          action.invoke(this, empty);
-      } 
-      catch (Exception e) 
+    CELLADAPTER* aTest = TestList.GetHead();
+    while(aTest != NULL)
+    {
+      if(aTest->IsMethod() && aTest->GetName().IsEqual(name))
       {
-          exception(cells, e);
+        return(aTest);
       }
+      aTest = aTest->GetNext();
+    }
+    return(NULL);
+  }
+
+  void ceefit_call_spec ACTIONFIXTURE::DoCells(PTR<PARSE>& cells) 
+  {
+    Cells = cells;
+    try 
+    {
+      CELLADAPTER* aAction = BindMethod(Cells->Text());
+
+      if(aAction != NULL)
+      {
+        aAction->Invoke(this);
+      }
+      else 
+      {
+        throw new EXCEPTION(STRING("Action method not found:  ") + Cells->Text());
+      }
+    } 
+    catch(EXCEPTION* e) 
+    {
+      Exception(cells, e);
+    }
   }
 
   // Actions //////////////////////////////////
 
-  public void start() throws Exception {
-      actor = (Fixture)(Class.forName(cells.more.text()).newInstance());
+  void ceefit_call_spec ACTIONFIXTURE::Start() 
+  {
+    delete Actor;
+    Actor = NULL;
+
+  	Actor = FIXTURE::LoadFixture(Cells->More->Text());
   }
 
-  public void enter() throws Exception {
-      Method method = method(1);
-      Class type = method.getParameterTypes()[0];
-      String text = cells.more.more.text();
-      Object args[] = {TypeAdapter.on(actor, type).parse(text)};
-      method.invoke(actor, args);
+  void ceefit_call_spec ACTIONFIXTURE::Enter() 
+  {
+    CELLADAPTER* aMethod = Method(1);
+    CELLADAPTER* aParamAdapter = dynamic_cast<FITTESTBASE*>(aMethod)->GetParameterAdapter(0);
+
+    STRING text(Cells->More->More->Text());
+    aParamAdapter->WriteToFixtureVar(text);
+
+    aMethod->Invoke(Actor);   // the arg is stored internal to aMethod and will be passed to the member function of Actor
   }
 
-  public void press() throws Exception {
-      method(0).invoke(actor, empty);
+  void ceefit_call_spec ACTIONFIXTURE::Press() 
+  {
+    Method(0)->Invoke(Actor);
   }
 
-  public void check() throws Exception {
-      TypeAdapter adapter = TypeAdapter.on(actor, method(0));
-      check (cells.more.more, adapter);
+  void ceefit_call_spec ACTIONFIXTURE::Check() 
+  {
+    CELLADAPTER* result = Method(0)->Invoke(Actor);
+
+    FIXTURE::Check(Cells->More->More, result);
   }
 
   // Utility //////////////////////////////////
 
-  protected Method method(int args) throws NoSuchMethodException {
-      return method(camel(cells.more.text()), args);
+  FITTESTBASE* ceefit_call_spec ACTIONFIXTURE::Method(int args) 
+  {
+    return Method(Camel(Cells->More->Text()), args);
   }
 
-  protected Method method(String test, int args) throws NoSuchMethodException {
-      Method methods[] = actor.getClass().getMethods();
-      Method result = null;
-      for (int i=0; i<methods.length; i++) {
-          Method m = methods[i];
-          if (m.getName().equals(test) && m.getParameterTypes().length == args) {
-              if (result==null) {
-                  result = m;
-              } else {
-                  throw new NoSuchMethodException("too many implementations");
-              }
-          }
+  FITTESTBASE* ceefit_call_spec ACTIONFIXTURE::Method(const STRING& test, int args) 
+  {
+    SLINKLIST<CELLADAPTER>& testList = Actor->TestList;
+    FITTESTBASE* result = NULL;
+    CELLADAPTER* aAdapter = testList.GetHead();
+
+    while(aAdapter != NULL)
+    {
+      FITTESTBASE* testPtr = dynamic_cast<FITTESTBASE*>(aAdapter);
+      if(aAdapter->GetName().IsEqual(test) && testPtr->GetParameterCount() == args)
+      {
+        if(result == NULL)
+        {
+          result = testPtr;
+        }
+        else 
+        {
+          throw new EXCEPTION("too many implementations");
+        }
       }
-      if (result==null) {
-          throw new NoSuchMethodException();
-      }
-      return result;
+      aAdapter = aAdapter->GetNext();
+    }
+
+    if(result == NULL)
+    {
+      throw new EXCEPTION("no such method exception");
+    }
+
+    return result;
   }
-*/
+
+  ceefit_init_spec ACTIONFIXTURE::ACTIONFIXTURE()
+  {    
+    Actor = NULL;
+
+    RegisterCeefitTest(this, "start", &ACTIONFIXTURE::Start);
+    RegisterCeefitTest(this, "enter", &ACTIONFIXTURE::Enter);
+    RegisterCeefitTest(this, "press", &ACTIONFIXTURE::Press);
+    RegisterCeefitTest(this, "check", &ACTIONFIXTURE::Check);
+  }
+
+  ceefit_init_spec ACTIONFIXTURE::~ACTIONFIXTURE()
+  {
+    delete Actor;
+  }
+  
+  static ::CEEFIT::REGISTERFIXTURECLASS< ACTIONFIXTURE > ActionFixtureRegistration("ACTIONFIXTURE", "fit.ActionFixture");
+};

@@ -62,6 +62,7 @@
 #include <sys/timeb.h>
 #include <fcntl.h>
 #include <io.h>
+#include <math.h>
 
 #include <stdio.h>
 #include <stdlib.h>

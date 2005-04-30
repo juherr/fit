@@ -31,6 +31,9 @@ namespace CEEFIT
   {
     protected:
       PTR<PARSE> Cells;
+  
+    public:
+      static FIXTURE* Actor;      /**< Uhhh ... static?!?  Don't blame me, I copied Java!!  :)  */
 
     public:
       ceefit_init_spec ACTIONFIXTURE(void);
@@ -50,8 +53,10 @@ namespace CEEFIT
     protected:
       // Utility //////////////////////////////////
 
-      //protected Method ceefit_call_spec method(int args) throws NoSuchMethodException;               // todo:  does this move to C++?
-      //protected Method ceefit_call_spec method(String test, int args) throws NoSuchMethodException;  // todo:  does this move to C++?
+      FITTESTBASE* ceefit_call_spec Method(int args);
+      FITTESTBASE* ceefit_call_spec Method(const STRING& test, int args);
+
+      CELLADAPTER* ceefit_call_spec BindMethod(const STRING& name);
 
     protected:
       inline ACTIONFIXTURE& ceefit_call_spec operator=(const ACTIONFIXTURE&);

@@ -281,7 +281,7 @@ namespace CEEFIT
     aFixture->DestroyAtFinish.Add(fittestManual);
   }
 
-  void ceefit_call_spec LinkManualField(::CEEFIT::FIXTURE* aFixture, CELLADAPTER* fitfieldManual)
+  void ceefit_call_spec LinkManualField(FIXTURE* aFixture, CELLADAPTER* fitfieldManual)
   {
     aFixture->FieldList.AddTail(fitfieldManual);
     aFixture->DestroyAtFinish.Add(fitfieldManual);

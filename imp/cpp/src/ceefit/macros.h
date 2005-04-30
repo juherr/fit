@@ -145,9 +145,9 @@
             return(PROVIDEFIXTUREOBJECTCASTER::GetFixtureSubclass(fixture)->testName());                                          \
           }                                                                                                                       \
       };                                                                                                                          \
-      friend class ::FITTEST< returnType, PROVIDETESTCALLER_##testName >;                                                         \
+      friend class ::FITTEST_AUTO< returnType, PROVIDETESTCALLER_##testName >;                                                    \
                                                                                                                                   \
-      ::FITTEST< returnType, PROVIDETESTCALLER_##testName > testName##_CeeFITTestRegistration;                                    \
+      ::FITTEST_AUTO< returnType, PROVIDETESTCALLER_##testName > testName##_CeeFITTestRegistration;                               \
                                                                                                                                   \
       class PROVIDETESTNAME_##testName                                                                                            \
       {                                                                                                                           \

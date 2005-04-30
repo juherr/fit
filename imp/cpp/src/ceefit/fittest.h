@@ -56,6 +56,17 @@ class FITTESTBASE : public CEEFIT::CELLADAPTER
       return(false);
     }
 
+    virtual inline int GetParameterCount(void)
+    {
+      return(0);
+    }
+
+    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec GetParameterAdapter(int index)
+    {
+      throw new CEEFIT::EXCEPTION("GetParameterAdapter not implemented for this FITTEST");
+    }
+
+
   private:
     /**
      * Not implemented.  Do not call.
@@ -68,15 +79,18 @@ class FITTESTBASE : public CEEFIT::CELLADAPTER
     FITTESTBASE& operator=(const FITTESTBASE&);
 };
 
-template<class T, class TESTCALLCLASS> class FITTEST : public FITTESTBASE
+/**
+ * CeeFIT test registration used by macros
+ */
+template<class T, class TESTCALLCLASS> class FITTEST_AUTO : public FITTESTBASE
 {
   public:
-    inline ceefit_init_spec FITTEST<T, TESTCALLCLASS>(void)
+    inline ceefit_init_spec FITTEST_AUTO<T, TESTCALLCLASS>(void)
     {
       CEEFIT::RUNNER::RegisterAutoTest(this);
     }
 
-    virtual inline ceefit_init_spec ~FITTEST<T, TESTCALLCLASS>(void)
+    virtual inline ceefit_init_spec ~FITTEST_AUTO<T, TESTCALLCLASS>(void)
     {
     }
 
@@ -119,14 +133,168 @@ template<class T, class TESTCALLCLASS> class FITTEST : public FITTESTBASE
     /**
      * Not implemented.  Do not call.
      */
-    FITTEST<T, TESTCALLCLASS>(const FITTEST<T, TESTCALLCLASS>&);
+    FITTEST_AUTO<T, TESTCALLCLASS>(const FITTEST_AUTO<T, TESTCALLCLASS>&);
 
     /**
      * Not implemented.  Do not call.
      */
-    FITTEST<T, TESTCALLCLASS>& operator=(const FITTEST<T, TESTCALLCLASS>&);
+    FITTEST_AUTO<T, TESTCALLCLASS>& operator=(const FITTEST_AUTO<T, TESTCALLCLASS>&);
 };
 
+namespace CEEFIT 
+{
+  template<class FIXTURETYPE> class FIXTURESELECTOR
+  {
+    private:
+      FIXTURESELECTOR<FIXTURETYPE>(void) 
+      {
+      }
+
+    public:
+      ~FIXTURESELECTOR<FIXTURETYPE>(void) 
+      {
+      }
+
+      static inline FIXTURESELECTOR<FIXTURETYPE>& GetInstance(void) 
+      {
+        static FIXTURESELECTOR<FIXTURETYPE> INSTANCE;
+
+        return(INSTANCE);
+      }
+  };
+
+  template<class RETURNTYPE> class METHODCALLER
+  {
+    private:
+      METHODCALLER<RETURNTYPE>(void) 
+      {
+      }
+
+    public:
+      static METHODCALLER<RETURNTYPE>& GetInstance() 
+      {
+        static METHODCALLER<RETURNTYPE> INSTANCE;
+
+        return(INSTANCE);
+      }
+
+      ~METHODCALLER<RETURNTYPE>(void) 
+      {
+      }
+
+      template<class FIXTURETYPE> inline CELLADAPTER* ceefit_call_spec InvokeMethod(
+                                                                FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector,
+                                                                const STRING& testName, 
+                                                                FIXTURE* aFixture, 
+                                                                RETURNTYPE (ceefit_call_spec FIXTURETYPE::*aFuncCall)(void))
+      {
+        ::FITFIELD<RETURNTYPE>* retVal = new ::FITFIELD<RETURNTYPE>();
+
+        try
+        {
+          retVal->SetName(STRING("<") + testName + "() return value>");
+          FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture);
+
+          if(subclassPtr == NULL)
+          {
+            throw new EXCEPTION("Unable to cast FIXTURE to subclass type");
+          }
+
+          if(aFuncCall != NULL) 
+          {
+            (*retVal) = (subclassPtr ->* aFuncCall)();
+          }
+          else
+          {          
+            throw new EXCEPTION(STRING("No function pointer set for test:  ") + testName);
+          }        
+        }
+        catch(FAILURE* failure)
+        {
+          delete retVal;
+          throw failure;
+        }
+        catch(EXCEPTION* exception)
+        {
+          delete retVal;
+          throw exception;
+        }
+        catch(...)
+        {
+          delete retVal;
+          throw;    // rethrow, hopefully ...
+        }
+
+        return(retVal);
+      }
+  };
+
+  template<> class METHODCALLER<void>
+  {
+    private:
+      METHODCALLER<void>(void) 
+      {
+      }
+
+    public:
+      static METHODCALLER<void>& GetInstance() 
+      {
+        static METHODCALLER<void> INSTANCE;
+
+        return(INSTANCE);
+      }
+
+      ~METHODCALLER<void>(void) 
+      {
+      }
+
+      template<class FIXTURETYPE> inline CELLADAPTER* ceefit_call_spec InvokeMethod(
+                                                                       FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector,
+                                                                       const STRING& testName, 
+                                                                       FIXTURE* aFixture, 
+                                                                       void (ceefit_call_spec FIXTURETYPE::*aFuncCall)(void))
+      {
+        ::FITFIELD<void>* retVal = new ::FITFIELD<void>();
+
+        try
+        {
+          retVal->SetName(STRING("<") + testName + "() return value>");
+          FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture);
+
+          if(subclassPtr == NULL)
+          {
+            throw new EXCEPTION("Unable to cast FIXTURE to subclass type");
+          }
+
+          if(aFuncCall != NULL) 
+          {
+            (subclassPtr ->* aFuncCall)();
+          }
+          else
+          {          
+            throw new EXCEPTION(STRING("No function pointer set for test:  ") + testName);
+          }        
+        }
+        catch(FAILURE* failure)
+        {
+          delete retVal;
+          throw failure;
+        }
+        catch(EXCEPTION* exception)
+        {
+          delete retVal;
+          throw exception;
+        }
+        catch(...)
+        {
+          delete retVal;
+          throw;    // rethrow, hopefully ...
+        }
+
+        return(retVal);
+      }
+  };
+};
 
 template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public FITTESTBASE
 {
@@ -134,13 +302,64 @@ template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public FITT
     RETURNTYPE (FIXTURETYPE::*FuncCall)(void);
 
   public:
-    inline ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(RETURNTYPE (FIXTURETYPE::*aFuncCall)(void))
+    inline ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(RETURNTYPE (ceefit_call_spec FIXTURETYPE::*aFuncCall)(void))
     {
-      FuncCall = aFuncCall;
+      FuncCall = (RETURNTYPE (FIXTURETYPE::*)(void)) aFuncCall;
     }
 
     virtual inline ~FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(void)
     {
+    }
+
+    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
+    {
+      CEEFIT::FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector = CEEFIT::FIXTURESELECTOR<FIXTURETYPE>::GetInstance();
+      CEEFIT::METHODCALLER<RETURNTYPE>& methodCaller = CEEFIT::METHODCALLER<RETURNTYPE>::GetInstance();
+
+      return(methodCaller.InvokeMethod(fixtureSelector, this->GetName(), aFixture, (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(void)) FuncCall));
+    }
+
+    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    {
+      static FITFIELD<RETURNTYPE> typeField;
+
+      return(typeField.GetType());
+    }
+
+  private:
+    ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(void);
+    ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(const FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>&);
+};
+
+template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_MANUAL : public FITTESTBASE
+{
+  private:
+    RETURNTYPE (FIXTURETYPE::*FuncCall)(ARGTYPE);
+    FITFIELD<ARGTYPE> ParamField;
+
+  public:
+    inline ceefit_init_spec FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>(RETURNTYPE (ceefit_call_spec FIXTURETYPE::*aFuncCall)(ARGTYPE))
+    {
+      FuncCall = (RETURNTYPE (FIXTURETYPE::*)(ARGTYPE)) aFuncCall;
+    }
+
+    virtual inline ~FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>(void)
+    {
+    }
+
+    virtual inline int GetParameterCount(void)
+    {
+      return(1);
+    }
+
+    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec GetParameterAdapter(int paramIndex)
+    {
+      if(paramIndex != 0)
+      {
+        throw new CEEFIT::BOUNDSEXCEPTION("Only one parameter available");
+      }
+
+      return(&ParamField);
     }
 
     virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
@@ -159,7 +378,8 @@ template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public FITT
 
         if(FuncCall != NULL) 
         {
-          (*retVal) = (subclassPtr->*FuncCall)();
+          RETURNTYPE (ceefit_call_spec FIXTURETYPE::*cdeclCall)(ARGTYPE) = (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(ARGTYPE)) FuncCall
+          (*retVal) = (subclassPtr ->* cdeclCall)(ParamField.GetField());
         }
         else
         {          
@@ -193,8 +413,8 @@ template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public FITT
     }
 
   private:
-    ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(void);
-    ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(const FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>&);
+    ceefit_init_spec FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>(void);
+    ceefit_init_spec FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>(const FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>&);
 };
 
 namespace CEEFIT
@@ -205,9 +425,21 @@ namespace CEEFIT
 /**
  * <p>Manually register a CeeFIT test with the FIXTURE.</p>
  */
-template<class FIXTURETYPE, class RETURNTYPE> void ceefit_call_spec RegisterCeefitTest(FIXTURETYPE* fixture, const char* testName, RETURNTYPE (FIXTURETYPE::*testFunc)(void))
+template<class FIXTURETYPE, class RETURNTYPE> void ceefit_call_spec RegisterCeefitTest(FIXTURETYPE* fixture, const char* testName, RETURNTYPE (ceefit_call_spec FIXTURETYPE::*testFunc)(void))
 {
   FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>* manualTestRegister = new FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(testFunc);
+
+  manualTestRegister->SetName(::CEEFIT::STRING(testName));
+
+  ::CEEFIT::LinkManualTest(fixture, manualTestRegister);
+}
+
+/**
+ * <p>Manually register a CeeFIT test with the FIXTURE that takes one argument.</p>
+ */
+template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> void ceefit_call_spec RegisterCeefitTest(FIXTURETYPE* fixture, const char* testName, RETURNTYPE (ceefit_call_spec FIXTURETYPE::*testFunc)(ARGTYPE))
+{
+  FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>* manualTestRegister = new FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>(testFunc);
 
   manualTestRegister->SetName(::CEEFIT::STRING(testName));
 

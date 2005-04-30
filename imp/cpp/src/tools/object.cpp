@@ -30,12 +30,14 @@ extern "C"
 
   void* ceefit_call_spec DefaultAlloc(size_t numBytes)
   {
-    return(malloc(numBytes));
+    return(new unsigned char[numBytes]);
   }
 
   void ceefit_call_spec DefaultFree(void* objPtr)
   {
-    free(objPtr);
+    if(objPtr != NULL) {
+      delete [] ((unsigned char*) objPtr);
+    }
   }
 };
 

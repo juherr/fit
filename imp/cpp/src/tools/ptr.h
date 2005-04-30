@@ -270,6 +270,10 @@ namespace CEEFIT
        */
 	    inline T* operator->(void) 
       {
+        if(ActualPointer == NULL)
+        {
+          throw new EXCEPTION("Null pointer detected in operator->");
+        }
 		    return(ActualPointer); 
 	    }
 
@@ -278,6 +282,10 @@ namespace CEEFIT
        */
 	    inline const T* operator->(void) const 
       {
+        if(ActualPointer == NULL)
+        {
+          throw new EXCEPTION("Null pointer detected in operator->");
+        }
 		    return(ActualPointer); 
 	    }
 
@@ -291,6 +299,14 @@ namespace CEEFIT
         return(aValue);
       }
 
+      /**
+       * Get the value of the MANAGED pointer
+       */
+	    inline T* GetPointer(void) const
+      {
+		    return ActualPointer;
+	    }
+	    
     protected:
       /**
        * The pointer to the MANAGED object
@@ -310,14 +326,6 @@ namespace CEEFIT
        */
 	    void SetPointer(T* aPointer) const;
 
-      /**
-       * Get the value of the MANAGED pointer
-       */
-	    inline T* GetPointer(void) const
-      {
-		    return ActualPointer;
-	    }
-	    
       /**
        * Assign the reference using the T's AddRef and ReleaseRef methods.
        */

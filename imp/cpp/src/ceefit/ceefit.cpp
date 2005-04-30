@@ -47,6 +47,8 @@ extern "C"
   extern ::CEEFITFREEFUNC CeeFitFreeFunc;       /**< Free function that either points to DefaultFree or user specified func */
 };
 
+force_link_fit_module(FitActionFixture);
+
 namespace CEEFIT
 {
   int ceefit_call_spec Run(const STRING& cmdLine)

@@ -85,7 +85,10 @@ namespace CEEFAT
           }
               //name.equals("date") ?       Date.class :
               //name.equals("money") ?      Money.class :
-              //name.equals("scientific") ? ScientificDouble.class :
+          else if(name.IsEqual("scientific"))
+          {
+            type = new FITFIELD< SCIENTIFICDOUBLE >();
+          }
           else if(name.IsEqual("integers"))
           {
             type = new FITFIELD< DYNARRAY<int> >();

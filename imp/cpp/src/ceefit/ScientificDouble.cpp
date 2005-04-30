@@ -25,4 +25,143 @@
 
 namespace CEEFIT
 {
+  ceefit_init_spec SCIENTIFICDOUBLE::SCIENTIFICDOUBLE(double value) 
+  {
+    Value = value;
+    Precision = 0.0;
+  }
+
+  ceefit_init_spec SCIENTIFICDOUBLE::SCIENTIFICDOUBLE()
+  {
+    Value = 0.0;
+    Precision = 0.0;
+  }
+
+  ceefit_init_spec SCIENTIFICDOUBLE::SCIENTIFICDOUBLE(const SCIENTIFICDOUBLE& obj)
+  {
+    Value = obj.Value;
+    Precision = obj.Precision;
+  }
+
+  ceefit_init_spec SCIENTIFICDOUBLE::~SCIENTIFICDOUBLE()
+  {
+  }
+
+  SCIENTIFICDOUBLE& ceefit_call_spec SCIENTIFICDOUBLE::operator=(const SCIENTIFICDOUBLE& obj)
+  {
+    Value = obj.Value;
+    Precision = obj.Precision;
+
+    return(*this);
+  }
+
+  SCIENTIFICDOUBLE& ceefit_call_spec SCIENTIFICDOUBLE::operator=(const STRING& obj)
+  {
+    (*this) = SCIENTIFICDOUBLE::ValueOf(obj);
+
+    return(*this);
+  }
+
+  SCIENTIFICDOUBLE& ceefit_call_spec SCIENTIFICDOUBLE::operator=(const double& obj)
+  {
+    Value = obj;
+    Precision = 0.0;
+
+    return(*this);
+  }
+
+  double ceefit_call_spec SCIENTIFICDOUBLE::ParseDouble(const STRING& s) 
+  {
+    double aDouble = 0.0;
+    int retVal = swscanf(s.GetBuffer(), L"%g", &aDouble);
+    if(retVal == EOF || retVal == 0) 
+    {
+      throw new PARSEEXCEPTION(STRING("Could not parse string to a double:  ") + s);
+    }
+
+    return(aDouble);
+  }
+
+  bool ceefit_call_spec SCIENTIFICDOUBLE::IsNaN(double aDouble) 
+  {
+    return((aDouble != aDouble) == true);
+  }
+
+  SCIENTIFICDOUBLE ceefit_call_spec SCIENTIFICDOUBLE::ValueOf(const STRING& s) 
+  {
+    SCIENTIFICDOUBLE result(ParseDouble(s));
+    result.Precision = CalcPrecision(s);
+
+    return result;
+  }
+
+  double ceefit_call_spec SCIENTIFICDOUBLE::CalcPrecision(const STRING& s) 
+  {
+    double value = ParseDouble(s);
+    double bound = ParseDouble(Tweak(s.Trim()));
+
+    return fabs(bound - value);
+  }
+
+  STRING ceefit_call_spec SCIENTIFICDOUBLE::Tweak(const STRING& s) 
+  {
+    int pos;
+    if((pos = s.ToLowercase().IndexOf("e")) >= 0) 
+    {
+      return Tweak(s.Substring(0, pos)) + s.Substring(pos);
+    }
+    if(s.IndexOf(".") >= 0) 
+    {
+      return s + "5";
+    }
+    return s + ".5";
+  }
+
+  bool ceefit_call_spec SCIENTIFICDOUBLE::IsEqual(const SCIENTIFICDOUBLE& obj) const 
+  {
+    return CompareTo(obj) == 0;
+  }
+
+  int ceefit_call_spec SCIENTIFICDOUBLE::CompareTo(const SCIENTIFICDOUBLE& obj) const 
+  {
+    double other = obj.Value;
+    double diff = Value - other;
+
+    if (diff < -Precision) return -1;
+    if (diff > Precision) return 1;
+    if (IsNaN(Value) && IsNaN(other)) return 0;
+    if (IsNaN(Value)) return 1;
+    if (IsNaN(other)) return -1;
+
+    return 0;
+  }
+
+  STRING ceefit_call_spec SCIENTIFICDOUBLE::ToString() const 
+  {
+    STRING out;
+
+    SafeSprintf(out, L"%g", Value);
+
+    return out;
+  }
+
+  double ceefit_call_spec SCIENTIFICDOUBLE::DoubleValue() const 
+  {
+    return Value;
+  }
+
+  float ceefit_call_spec SCIENTIFICDOUBLE::FloatValue() const 
+  {
+    return((float) Value);
+  }
+
+  long ceefit_call_spec SCIENTIFICDOUBLE::LongValue() const 
+  {
+    return((long) Value);
+  }
+
+  int ceefit_call_spec SCIENTIFICDOUBLE::IntValue() const 
+  {
+    return((int) Value);
+  }
 };

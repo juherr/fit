@@ -59,7 +59,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public FITFIELDBASE< CEEFIT
       while(++i < tokens.GetSize())
       {
         int temp = 0;
-        bool retVal = !!swscanf(tokens[i].Trim().GetBuffer(), L"%i", &temp);
+        bool retVal = (swscanf(tokens[i].Trim().GetBuffer(), L"%i", &temp)==1);
         out.Add(temp);
         if(retVal == false)
         {

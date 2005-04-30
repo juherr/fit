@@ -104,6 +104,16 @@ namespace CEEFIT
 
       int ceefit_call_spec Length(void) const;
 
+      /**
+       * <p>Indicate whether this STRING has been modified.</p>
+       *
+       * <p>This is not a complete port of the Java version of String.  Often a String's reference is checked to see if
+       * an object was created and the reference was assigned.  Here we do something similar by tracking whether the
+       * String object was ever assigned or modified.  The assignment to a STRING is a similar indicator of 'presence' to 
+       * that of an immutable Java String's reference being set.</p>
+       */
+      bool ceefit_call_spec IsAssigned(void) const;
+
       wchar_t ceefit_call_spec CharAt(int index) const;
       int ceefit_call_spec IndexOf(wchar_t aChar) const;
       int ceefit_call_spec IndexOf(char aChar) const;
@@ -122,12 +132,12 @@ namespace CEEFIT
 // these calls used Boost to provide regular expressions, Boost wouldn't link on gcc so I had to take it out.      
 //      STRING ceefit_call_spec ReplaceAll(const STRING& matchStr, const STRING& replaceStr);
 //      void ceefit_call_spec Split(DYNARRAY<STRING>& out, const STRING& matchStr) const;
-      bool ceefit_call_spec CapturingGroups(DYNARRAY<STRING>& out, const STRING& regexStr) const;
+//      bool ceefit_call_spec CapturingGroups(DYNARRAY<STRING>& out, const STRING& regexStr) const;
 
       // these methods provide regex-free replacements for the functionality that ReplaceAll, Split, and CapturingGroups provided
       STRING ceefit_call_spec SimplePatternReplaceAll(const STRING& patternStr, const STRING& replaceStr) const;
-      STRING ceefit_call_spec ArrayRegexPatternReplaceAll(const DYNARRAY<STRING>& patternStr, const STRING& replaceStr) const;
-      void ceefit_call_spec ArrayRegexPatternSplit(DYNARRAY<STRING>& out, const DYNARRAY<STRING>& patternStrArray) const;
+      STRING ceefit_call_spec ArrayRegexPatternReplaceAll(const DYNARRAY<STRING>& patternStr, const STRING& replaceStr, bool dotAll=false) const;
+      void ceefit_call_spec ArrayRegexPatternSplit(DYNARRAY<STRING>& out, const DYNARRAY<STRING>& patternStrArray, bool dotAll=false) const;
 
       bool ceefit_call_spec EndsWith(const STRING& aString) const;
       bool ceefit_call_spec StartsWith(const STRING& aString) const;

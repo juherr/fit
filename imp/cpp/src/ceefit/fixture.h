@@ -95,6 +95,7 @@ namespace CEEFIT
       friend void ceefit_call_spec ::CEEFIT::LinkManualTest(FIXTURE* aFixture, FITTESTBASE* fittestManual);
       friend void ceefit_call_spec ::CEEFIT::LinkManualField(::CEEFIT::FIXTURE* aFixture, CELLADAPTER* fitfieldManual);
 
+    public:
       SLINKLIST<CELLADAPTER> FieldList;
       SLINKLIST<CELLADAPTER> TestList;
 
@@ -187,12 +188,5 @@ namespace CEEFIT
       void ceefit_call_spec GetSummaryReport(DYNARRAY<SUMMARYITEM>& reportList);
   };
 };
-
-/**
- * <p>Register a function matching this prototype with the CeeFIT engine if you are manually registering your fields and tests.</p>
- *
- * <p>Call ::CEEFIT::FIXTURE::AddTest() and ::CEEFIT::FIXTURE::AddField() to register your fields and tests.</p>
- */
-typedef VOID ceefit_call_spec InitializeFixture(::CEEFIT::FIXTURE* aFixture);
 
 #endif // __CEEFIT_FIXTURE_H__

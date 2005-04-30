@@ -20,6 +20,8 @@
  * @author David Woldrich
  */
 
+#include <limits.h>
+
 #include "tools/alloc.h"
 #include "ceefit.h"
 
@@ -44,18 +46,52 @@ namespace CEEFIT
   {
   }
 
+	/* Added by Rick Mugridge, Feb 2005, adapted by Dave Woldrich for CeeFIT Apr 2005 */
+	static int findMatchingEndTag(const STRING& lc, int matchFromHere, const STRING& tag, int offset) 
+  {
+		int fromHere = matchFromHere;
+		int count = 1;
+		int startEnd = 0;
+		while (count > 0) 
+    {
+			int embeddedTag = lc.IndexOf(STRING("<") + tag, fromHere);
+			int embeddedTagEnd = lc.IndexOf(STRING("</") + tag, fromHere);
+			// Which one is closer?
+			if (embeddedTag < 0 && embeddedTagEnd < 0)
+				throw new PARSEEXCEPTION(STRING("Can't find tag: ") + tag, offset);
+			if (embeddedTag < 0)
+				embeddedTag = INT_MAX;
+			if (embeddedTagEnd < 0)
+				embeddedTagEnd = INT_MAX;
+			if (embeddedTag < embeddedTagEnd) 
+      {
+				count++;
+				startEnd = embeddedTag;
+				fromHere = lc.IndexOf(STRING(">"), embeddedTag) + 1;
+			}
+		  else if (embeddedTagEnd < embeddedTag) 
+      {
+				count--;
+				startEnd = embeddedTagEnd;
+				fromHere = lc.IndexOf(STRING(">"), embeddedTagEnd) + 1;
+			}
+		}
+		return startEnd;
+	}
+
   void ceefit_call_spec PARSE::Construct(const STRING& text, const DYNARRAY<STRING>& tags, int level, int offset)
   {
     STRING lc(text.ToLowercase());
     int startTag = lc.IndexOf(STRING("<")+tags[level]);
     int endTag = lc.IndexOf(STRING(">"), startTag) + 1;
-    int startEnd = lc.IndexOf(STRING("</")+tags[level], endTag);
+    //int startEnd = lc.IndexOf(STRING("</")+tags[level], endTag);
+		int startEnd = findMatchingEndTag(lc, endTag, tags[level], offset);
     int endEnd = lc.IndexOf(STRING(">"), startEnd) + 1;
-    if (startTag<0 || endTag<=0 || startEnd<0 || endEnd<=0)
+    int startMore = lc.IndexOf(STRING("<") + tags[level], endEnd);
+    if (startTag<0 || endTag<0 || startEnd<0 || endEnd<0)
     {
       throw new PARSEEXCEPTION(STRING("Can't find tag: ") + GetTagsStrings()[level], offset);
     }
-    int startMore = lc.IndexOf(STRING("<") + tags[level], endEnd);
 
     Leader = text.Substring(0, startTag);
     Tag = text.Substring(startTag, endTag);
@@ -63,16 +99,26 @@ namespace CEEFIT
     End = text.Substring(startEnd, endEnd);
     Trailer = text.Substring(endEnd);
 
-    if (level+1 < tags.GetSize())
+    if ((level+1) < tags.GetSize())
     {
-      Parts = new PARSE(Body, tags, level+1, offset+endTag);
-      Body = L"";
+      Parts = new PARSE(Body, tags, level + 1, offset + endTag);
+      Body.Reset();
     }
+		else 
+    { 
+      // Check for nested table
+			int index = Body.IndexOf(STRING("<") + tags[0]);
+			if (index >= 0) 
+      {
+				Parts = new PARSE(Body, tags, 0, offset + endTag);
+				Body = L"";
+			}
+		}
 
     if (startMore>=0)
     {
       More = new PARSE(Trailer, tags, level, offset+endEnd);
-      Trailer = L"";
+      Trailer.Reset();
     }
   }
 
@@ -247,7 +293,7 @@ namespace CEEFIT
 		return temp;
 	}
 
-  static const char* RegexStringPattern = "[ \t\n\x0B\f\r]";
+  static const char* RegexSpaceCharacters = "[ \t\n\x0B\f\r]";
 
 	STRING ceefit_call_spec PARSE::NormalizeLineBreaks(const STRING& s)
   {
@@ -255,29 +301,29 @@ namespace CEEFIT
 
     DYNARRAY<STRING> brPatternArray;
     brPatternArray.Add("<");
-    brPatternArray.Add(STRING(RegexStringPattern) + "*");
+    brPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     brPatternArray.Add("br");
-    brPatternArray.Add(STRING(RegexStringPattern) + "*");
+    brPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     brPatternArray.Add("/?");
-    brPatternArray.Add(STRING(RegexStringPattern) + "*");
+    brPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     brPatternArray.Add(">");
-    temp = temp.ArrayRegexPatternReplaceAll(brPatternArray, "<br />");   // was temp = temp.ReplaceAll("<\\s*br\\s*/?\\s*>", "<br />");
-		
+    temp = temp.ArrayRegexPatternReplaceAll(brPatternArray, "<br />");   // was				s = s.replaceAll("<\\s*br\\s*/?\\s*>", "<br />");
+
     DYNARRAY<STRING> pPatternArray;
     pPatternArray.Add("<");
-    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     pPatternArray.Add("/");
-    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     pPatternArray.Add("p");
-    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     pPatternArray.Add(">");
-    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     pPatternArray.Add("<");
-    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     pPatternArray.Add("p");
-    pPatternArray.Add(STRING(RegexStringPattern) + "*");
+    pPatternArray.Add(".*");
     pPatternArray.Add(">");
-		temp = temp.ArrayRegexPatternReplaceAll(pPatternArray, "<br />");  // was temp = temp.ReplaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p\\s*>", "<br />");
+		temp = temp.ArrayRegexPatternReplaceAll(pPatternArray, "<br />", true);  // was    		s = s.replaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p( .*?)?>", "<br />");
 
 		return temp;
 	}
@@ -289,11 +335,11 @@ namespace CEEFIT
     STRING temp(s);
 
     DYNARRAY<STRING> spacePatternArray;
-    spacePatternArray.Add(STRING(RegexStringPattern) + "+");
-    temp = temp.ArrayRegexPatternReplaceAll(spacePatternArray, " ");  // temp = temp.ReplaceAll("[ \t\n\x0B\f\r]+", " ");
-    
-    temp = temp.SimplePatternReplaceAll("&nbsp;", " ");
+    spacePatternArray.Add(STRING(RegexSpaceCharacters) + "+");
+
+    temp = temp.ArrayRegexPatternReplaceAll(spacePatternArray, " ");  // temp = temp.ReplaceAll("[ \t\n\x0B\f\r]+", " ");    
 	  temp = temp.Replace(NON_BREAKING_SPACE, L' ');
+    temp = temp.SimplePatternReplaceAll("&nbsp;", " ");
 	  temp = temp.Trim();
 
     return temp;
@@ -325,7 +371,7 @@ namespace CEEFIT
 
   int PARSE::FootnoteFiles = 0;
 
-  STRING PARSE::Footnote()
+  STRING ceefit_call_spec PARSE::Footnote()
   {
     if(FootnoteFiles >= 25)
     {

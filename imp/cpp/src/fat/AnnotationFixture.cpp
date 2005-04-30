@@ -32,72 +32,153 @@ namespace CEEFAT
   class FAT_ANNOTATIONFIXTURE : public COLUMNFIXTURE
   {
     public:
-      STRING Type;
-      STRING Text;
-      STRING OriginalCell;
+	    STRING OriginalHTML;
+	    int Row;
+	    int Column;
+	    
+	    STRING OverwriteCellBody;
+	    STRING AddToCellBody;
+	    
+	    STRING OverwriteCellTag;
+	    STRING OverwriteEndCellTag;
+	    STRING AddToCellTag;
+	    
+	    STRING OverwriteRowTag;
+	    STRING OverwriteEndRowTag;
+	    STRING AddToRowTag;
+
+	    STRING OverwriteTableTag;
+	    STRING OverwriteEndTableTag;
+	    STRING AddToTableTag;
+	    
+	    STRING AddCellFollowing;
+	    STRING RemoveFollowingCell;
+	    
+	    STRING AddRowFollowing;
+	    STRING RemoveFollowingRow;
+	    
+	    STRING AddTableFollowing;
 
 	  private:
-  	  // code smell note: copied from ParseFixture
-      STRING GenerateOutput(PTR<PARSE>& parse)
+    	// code smell note: copied from DocumentParseFixture	
+      STRING ceefit_call_spec GenerateOutput(PTR<PARSE>& document)
       {
         STRINGWRITER writer;
 
-        parse->Print(&writer);
+        document->Print(&writer);
 
 		    return writer.ToString().Trim();
 	    }
 
-    public:
-      virtual STRING Output()
+      void AddParse(PTR<PARSE>& parse, const STRING& newString, const char** tags) 
       {
-        PTR<PARSE> nullPointer;
-		    PTR<PARSE> parse(new PARSE(STRING("td"), OriginalCell, nullPointer, nullPointer));
-		    FIXTURE hack;
+        DYNARRAY<STRING> tagList;
+        int i = 0;
+        while(tags[i] != NULL) 
+        {
+          tagList.Add(tags[i]);
+          i++;
+        }
 
-		    if (Type.IsEqual("none")) {
-			    // do nothing
-		    }
-		    else if (Type.IsEqual("right"))
-        {
-			    hack.Right(parse);
-		    }
-		    else if (Type.IsEqual("wrong"))
-        {
-			    hack.Wrong(parse, Text);
-		    }
-		    else if (Type.IsEqual("error"))
-        {
-			    return "not implemented";
-		    }
-		    else if (Type.IsEqual("ignore"))
-        {
-			    hack.Ignore(parse);
-		    }
-		    else if (Type.IsEqual("unchecked"))
-        {
-			    return "not implemented";
-		    }
-		    else
-        {
-			    return STRING("unknown type: ") + Type;
-		    }
-
-		    return GenerateOutput(parse);
-	    }
-      
-      FAT_ANNOTATIONFIXTURE(VOID) 
-      {
-        OriginalCell = "Text";
-
-        RegisterCeefitField(this, "Type", Type);
-        RegisterCeefitField(this, "Text", Text);
-        RegisterCeefitField(this, "OriginalCell", OriginalCell);
-
-        RegisterCeefitTest(this, "Output", &FAT_ANNOTATIONFIXTURE::Output);
+        PTR<PARSE> newParse(new PARSE(newString, tagList));
+        newParse->More = parse->More;
+        newParse->Trailer = parse->Trailer;
+        parse->More = newParse;
+        parse->Trailer.Reset();
       }
 
-      virtual ~FAT_ANNOTATIONFIXTURE(VOID) 
+      void RemoveParse(PTR<PARSE>& parse) 
       {
+        parse->Trailer = parse->More->Trailer;
+
+        PTR<PARSE> temp(parse->More->More);   // this temp PTR<PARSE> will keep any orphan references alive 
+        parse->More = temp;
+      }
+
+      STRING StripDelimiters(const STRING& s) 
+      {
+        STRING temp;
+        
+        DYNARRAY<STRING> firstPattern;
+        firstPattern.Add("^");
+        firstPattern.Add("\\[");
+        temp = s.ArrayRegexPatternReplaceAll(firstPattern, STRING(""));
+
+        DYNARRAY<STRING> secondPattern;
+        secondPattern.Add("]");
+        secondPattern.Add("$");
+        temp = temp.ArrayRegexPatternReplaceAll(secondPattern, STRING(""));
+        
+        return temp;
+          
+        // this abomination is the equivalent of return s.replaceAll("^\\[", "").replaceAll("]$", ""); from the Java version
+      }
+
+    public:
+      STRING ceefit_call_spec ResultingHTML(void) 
+      {
+        PTR<PARSE> table(new PARSE(OriginalHTML));
+        PTR<PARSE> row(table->At(0, Row - 1));
+        PTR<PARSE> cell(row->At(0, Column - 1));
+
+        if (OverwriteCellBody.IsAssigned()) cell->Body = OverwriteCellBody;
+        if (AddToCellBody.IsAssigned()) cell->AddToBody(AddToCellBody);
+
+        if (OverwriteCellTag.IsAssigned()) cell->Tag = OverwriteCellTag;
+        if (OverwriteEndCellTag.IsAssigned()) cell->End = OverwriteEndCellTag;
+        if (AddToCellTag.IsAssigned()) cell->AddToTag(StripDelimiters(AddToCellTag));
+
+        if (OverwriteRowTag.IsAssigned()) row->Tag = OverwriteRowTag;
+        if (OverwriteEndRowTag.IsAssigned()) row->End = OverwriteEndRowTag;
+        if (AddToRowTag.IsAssigned()) row->AddToTag(StripDelimiters(AddToRowTag));
+
+        if (OverwriteTableTag.IsAssigned()) table->Tag = OverwriteTableTag;
+        if (OverwriteEndTableTag.IsAssigned()) table->End = OverwriteEndTableTag;
+        if (AddToTableTag.IsAssigned()) table->AddToTag(StripDelimiters(AddToTableTag));
+
+        static const char* cellFollowingTags[] = {"td", NULL};
+        if (AddCellFollowing.IsAssigned()) AddParse(cell, AddCellFollowing, cellFollowingTags);
+        if (RemoveFollowingCell.IsAssigned()) RemoveParse(cell);
+
+        static const char* rowFollowingTags[] = {"tr", "td", NULL};
+        if (AddRowFollowing.IsAssigned()) AddParse(row, AddRowFollowing, rowFollowingTags);
+        if (RemoveFollowingRow.IsAssigned()) RemoveParse(row);
+
+        static const char* tableFollowingTags[] = {"table", "tr", "td", NULL};
+        if (AddTableFollowing.IsAssigned()) AddParse(table, AddTableFollowing, tableFollowingTags);
+
+        return GenerateOutput(table);        
+      }
+
+      FAT_ANNOTATIONFIXTURE() {
+        RegisterCeefitField(this, "OriginalHTML", OriginalHTML);
+        RegisterCeefitField(this, "Row", Row);
+        RegisterCeefitField(this, "Column", Column);
+
+        RegisterCeefitField(this, "OverwriteCellBody", OverwriteCellBody);
+        RegisterCeefitField(this, "AddToCellBody", AddToCellBody);
+	      
+        RegisterCeefitField(this, "OverwriteCellTag", OverwriteCellTag);
+        RegisterCeefitField(this, "OverwriteEndCellTag", OverwriteEndCellTag);
+        RegisterCeefitField(this, "AddToCellTag", AddToCellTag);
+	      
+        RegisterCeefitField(this, "OverwriteRowTag", OverwriteRowTag);
+        RegisterCeefitField(this, "OverwriteEndRowTag", OverwriteEndRowTag);
+        RegisterCeefitField(this, "AddToRowTag", AddToRowTag);
+
+        RegisterCeefitField(this, "OverwriteTableTag", OverwriteTableTag);
+        RegisterCeefitField(this, "OverwriteEndTableTag", OverwriteEndTableTag);
+        RegisterCeefitField(this, "AddToTableTag", AddToTableTag);
+	      
+        RegisterCeefitField(this, "AddCellFollowing", AddCellFollowing);
+        RegisterCeefitField(this, "RemoveFollowingCell", RemoveFollowingCell);
+	      
+        RegisterCeefitField(this, "AddRowFollowing", AddRowFollowing);
+        RegisterCeefitField(this, "RemoveFollowingRow", RemoveFollowingRow);
+	      
+        RegisterCeefitField(this, "AddTableFollowing", AddTableFollowing);
+      
+        RegisterCeefitTest(this, "ResultingHTML", &FAT_ANNOTATIONFIXTURE::ResultingHTML);
       }
   };
 

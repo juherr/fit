@@ -31,7 +31,7 @@
 template<class T> class FITFIELD : public FITFIELDBASE<T>
 {
   private:
-    inline void ThrowSpecializationNeededException(void) const
+    inline void ceefit_call_spec ThrowSpecializationNeededException(void) const
     {
       throw new CEEFIT::EXCEPTION(CEEFIT::STRING("Specialization needed for FITFIELD for type:  ") + typeid(T).name());
     }
@@ -74,8 +74,8 @@ template<class T> class FITFIELD : public FITFIELDBASE<T>
     }
 
   private:
-    FITFIELD<T>(const FITFIELD<T>&);  /**< not implemented, do not call. */
-    FITFIELD<T>& operator=(const FITFIELD<T>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<T>(const FITFIELD<T>&);  /**< not implemented, do not call. */
+    FITFIELD<T>& ceefit_call_spec operator=(const FITFIELD<T>&);  /**< not implemented, do not call. */
 };
 
 // need to define NewInstanceParse that could not have been until now
@@ -87,6 +87,37 @@ template<class T> inline CEEFIT::CELLADAPTER* ceefit_call_spec FITFIELDBASE<T>::
 
   return(returnValue);
 }
+
+template<> class FITFIELD<void> : public CEEFIT::CELLADAPTER
+{
+  protected:
+    CEEFIT::STRING Name;
+
+  public:
+    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    {
+      static CEEFIT::STRING FieldType("void");
+
+      return(FieldType);
+    }
+
+    template<class U> inline FITFIELD<void>& ceefit_call_spec operator=(U& rValue) { throw new CEEFIT::EXCEPTION("Cannot assign to void"); }
+    inline ceefit_init_spec FITFIELD<void>(void) {}
+    virtual inline ceefit_init_spec ~FITFIELD<void>(void) {}
+
+    virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in) { throw new CEEFIT::EXCEPTION("Cannot assign to void"); }
+    virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out) { throw new CEEFIT::EXCEPTION("Cannot read from void"); }
+
+    virtual void ceefit_call_spec SetName(const CEEFIT::STRING& aName) { Name = aName; }
+    virtual const CEEFIT::STRING& ceefit_call_spec GetName(void) const { return(Name); }
+    virtual bool ceefit_call_spec IsMethod(void) const { return(false); }
+    virtual bool ceefit_call_spec IsField(void) const { return(true); }
+    virtual CEEFIT::CELLADAPTER* ceefit_call_spec NewInstanceParse(const CEEFIT::STRING& aText) { return(new FITFIELD<void>()); }
+    virtual CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture) { throw new CEEFIT::EXCEPTION("Not a method"); }
+
+  private:
+    ceefit_init_spec FITFIELD<void>(const FITFIELD<void>&);  /**< not implemented, do not call. */
+};
 
 template<> class FITFIELD<bool> : public FITFIELDBASE<bool>
 {
@@ -142,7 +173,7 @@ template<> class FITFIELD<bool> : public FITFIELDBASE<bool>
     }
 
   private:
-    FITFIELD<bool>(const FITFIELD<bool>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<bool>(const FITFIELD<bool>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<unsigned char> : public FITFIELDBASE<unsigned char>
@@ -156,7 +187,7 @@ template<> class FITFIELD<unsigned char> : public FITFIELDBASE<unsigned char>
     inline bool ceefit_call_spec Parse(unsigned char& out, const CEEFIT::STRING& in)
     {
       unsigned int temp = 0;
-      bool retVal = !!swscanf(in.GetBuffer(), L"%u", &temp);
+      bool retVal = (swscanf(in.GetBuffer(), L"%u", &temp)==1);
       out = (unsigned char) temp;
       return(retVal);
     }
@@ -191,7 +222,7 @@ template<> class FITFIELD<unsigned char> : public FITFIELDBASE<unsigned char>
     }
 
   private:
-    FITFIELD<unsigned char>(const FITFIELD<unsigned char>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<unsigned char>(const FITFIELD<unsigned char>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<signed char> : public FITFIELDBASE<signed char>
@@ -205,7 +236,7 @@ template<> class FITFIELD<signed char> : public FITFIELDBASE<signed char>
     inline bool ceefit_call_spec Parse(signed char& out, const CEEFIT::STRING& in)
     {
       int temp = 0;
-      bool retVal = !!swscanf(in.GetBuffer(), L"%C", &temp);
+      bool retVal = (swscanf(in.GetBuffer(), L"%C", &temp)==1);
       out = (signed char) temp;
       return(retVal);
     }
@@ -240,7 +271,7 @@ template<> class FITFIELD<signed char> : public FITFIELDBASE<signed char>
     }
 
   private:
-    FITFIELD<signed char>(const FITFIELD<signed char>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<signed char>(const FITFIELD<signed char>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<char> : public FITFIELDBASE<char>
@@ -255,7 +286,7 @@ template<> class FITFIELD<char> : public FITFIELDBASE<char>
     inline bool ceefit_call_spec Parse(char& out, const CEEFIT::STRING& in)
     {
       int temp = 0;
-      bool retVal = !!swscanf(in.GetBuffer(), L"%C", &temp);
+      bool retVal = (swscanf(in.GetBuffer(), L"%C", &temp)==1);
       out = (char) temp;
       return(retVal);
     }
@@ -290,7 +321,7 @@ template<> class FITFIELD<char> : public FITFIELDBASE<char>
     }
 
   private:
-    FITFIELD<char>(const FITFIELD<char>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<char>(const FITFIELD<char>&);  /**< not implemented, do not call. */
 };
 
 # ifdef __GNUC__
@@ -307,7 +338,7 @@ template<> class FITFIELD<char> : public FITFIELDBASE<char>
       inline bool ceefit_call_spec Parse(unsigned short& out, const CEEFIT::STRING& in)
       {
         unsigned int temp = 0;
-        bool retVal = !!swscanf(in.GetBuffer(), L"%u", &temp);
+        bool retVal = (swscanf(in.GetBuffer(), L"%u", &temp)==1);
         out = (unsigned short) temp;
         return(retVal);
       }
@@ -342,7 +373,7 @@ template<> class FITFIELD<char> : public FITFIELDBASE<char>
       }
 
     private:
-      FITFIELD<unsigned short>(const FITFIELD<unsigned short>&);  /**< not implemented, do not call. */
+      ceefit_init_spec FITFIELD<unsigned short>(const FITFIELD<unsigned short>&);  /**< not implemented, do not call. */
   };
 # endif
 
@@ -359,7 +390,7 @@ template<> class FITFIELD<signed short> : public FITFIELDBASE<signed short>
     inline bool ceefit_call_spec Parse(signed short& out, const CEEFIT::STRING& in)
     {
       signed int temp = 0;
-      bool retVal = !!swscanf(in.GetBuffer(), L"%i", &temp);
+      bool retVal = (swscanf(in.GetBuffer(), L"%i", &temp)==1);
       out = (signed short) temp;
       return(retVal);
     }
@@ -394,7 +425,7 @@ template<> class FITFIELD<signed short> : public FITFIELDBASE<signed short>
     }
 
   private:
-    FITFIELD<signed short>(const FITFIELD<signed short>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<signed short>(const FITFIELD<signed short>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<wchar_t> : public FITFIELDBASE<wchar_t>
@@ -409,7 +440,7 @@ template<> class FITFIELD<wchar_t> : public FITFIELDBASE<wchar_t>
 
     inline bool ceefit_call_spec Parse(wchar_t& out, const CEEFIT::STRING& in)
     {
-      return(!!swscanf(in.GetBuffer(), L"%c", &out));
+      return(swscanf(in.GetBuffer(), L"%c", &out)==1);
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -442,7 +473,7 @@ template<> class FITFIELD<wchar_t> : public FITFIELDBASE<wchar_t>
     }
 
   private:
-    FITFIELD<wchar_t>(const FITFIELD<wchar_t>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<wchar_t>(const FITFIELD<wchar_t>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<unsigned int> : public FITFIELDBASE<unsigned int>
@@ -457,7 +488,7 @@ template<> class FITFIELD<unsigned int> : public FITFIELDBASE<unsigned int>
 
     inline bool ceefit_call_spec Parse(unsigned int& out, const CEEFIT::STRING& in)
     {
-      return(!!swscanf(in.GetBuffer(), L"%u", &out));
+      return(swscanf(in.GetBuffer(), L"%u", &out)==1);
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -490,7 +521,7 @@ template<> class FITFIELD<unsigned int> : public FITFIELDBASE<unsigned int>
     }
 
   private:
-    FITFIELD<unsigned int>(const FITFIELD<unsigned int>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<unsigned int>(const FITFIELD<unsigned int>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<signed int> : public FITFIELDBASE<signed int>
@@ -505,7 +536,7 @@ template<> class FITFIELD<signed int> : public FITFIELDBASE<signed int>
 
     inline bool ceefit_call_spec Parse(signed int& out, const CEEFIT::STRING& in)
     {
-      return(!!swscanf(in.GetBuffer(), L"%i", &out));
+      return(swscanf(in.GetBuffer(), L"%i", &out)==1);
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -538,7 +569,7 @@ template<> class FITFIELD<signed int> : public FITFIELDBASE<signed int>
     }
 
   private:
-    FITFIELD<signed int>(const FITFIELD<signed int>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<signed int>(const FITFIELD<signed int>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<unsigned long> : public FITFIELDBASE<unsigned long>
@@ -553,7 +584,7 @@ template<> class FITFIELD<unsigned long> : public FITFIELDBASE<unsigned long>
 
     inline bool ceefit_call_spec Parse(unsigned long& out, const CEEFIT::STRING& in)
     {
-      return(!!swscanf(in.GetBuffer(), L"%lu", &out));
+      return(swscanf(in.GetBuffer(), L"%lu", &out)==1);
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -586,7 +617,7 @@ template<> class FITFIELD<unsigned long> : public FITFIELDBASE<unsigned long>
     }
 
   private:
-    FITFIELD<unsigned long>(const FITFIELD<unsigned long>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<unsigned long>(const FITFIELD<unsigned long>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<signed long> : public FITFIELDBASE<signed long>
@@ -601,7 +632,7 @@ template<> class FITFIELD<signed long> : public FITFIELDBASE<signed long>
 
     inline bool ceefit_call_spec Parse(signed long& out, const CEEFIT::STRING& in)
     {
-      return(!!swscanf(in.GetBuffer(), L"%li", &out));
+      return(swscanf(in.GetBuffer(), L"%li", &out)==1);
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -634,7 +665,7 @@ template<> class FITFIELD<signed long> : public FITFIELDBASE<signed long>
     }
 
   private:
-    FITFIELD<signed long>(const FITFIELD<signed long>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<signed long>(const FITFIELD<signed long>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<UINT64> : public FITFIELDBASE<UINT64>
@@ -654,9 +685,9 @@ template<> class FITFIELD<UINT64> : public FITFIELDBASE<UINT64>
     inline bool ceefit_call_spec Parse(UINT64& out, const CEEFIT::STRING& in)
     {
 #     ifdef _MSC_VER
-        return(!!swscanf(in.GetBuffer(), L"%I64u", &out));
+        return(swscanf(in.GetBuffer(), L"%I64u", &out)==1);
 #     else
-        return(!!swscanf(in.GetBuffer(), L"%llu", &out));
+        return(swscanf(in.GetBuffer(), L"%llu", &out)==1);
 #     endif
     }
 
@@ -690,7 +721,7 @@ template<> class FITFIELD<UINT64> : public FITFIELDBASE<UINT64>
     }
 
   private:
-    FITFIELD<UINT64>(const FITFIELD<UINT64>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<UINT64>(const FITFIELD<UINT64>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<INT64> : public FITFIELDBASE<INT64>
@@ -710,9 +741,9 @@ template<> class FITFIELD<INT64> : public FITFIELDBASE<INT64>
     inline bool ceefit_call_spec Parse(INT64& out, const CEEFIT::STRING& in)
     {
 #     ifdef _MSC_VER
-        return(!!swscanf(in.GetBuffer(), L"%I64i", &out));
+        return(swscanf(in.GetBuffer(), L"%I64i", &out)==1);
 #     else
-        return(!!swscanf(in.GetBuffer(), L"%lld", &out));
+        return(swscanf(in.GetBuffer(), L"%lld", &out)==1);
 #     endif
     }
 
@@ -746,7 +777,7 @@ template<> class FITFIELD<INT64> : public FITFIELDBASE<INT64>
     }
 
   private:
-    FITFIELD<INT64>(const FITFIELD<INT64>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<INT64>(const FITFIELD<INT64>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<float> : public FITFIELDBASE<float>
@@ -761,7 +792,7 @@ template<> class FITFIELD<float> : public FITFIELDBASE<float>
 
     inline bool ceefit_call_spec Parse(float& out, const CEEFIT::STRING& in)
     {
-      return(!!swscanf(in.GetBuffer(), L"%f", &out));
+      return(swscanf(in.GetBuffer(), L"%f", &out)==1);
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -794,7 +825,7 @@ template<> class FITFIELD<float> : public FITFIELDBASE<float>
     }
 
   private:
-    FITFIELD<float>(const FITFIELD<float>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<float>(const FITFIELD<float>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD<double> : public FITFIELDBASE<double>
@@ -809,7 +840,7 @@ template<> class FITFIELD<double> : public FITFIELDBASE<double>
 
     inline bool ceefit_call_spec Parse(double& out, const CEEFIT::STRING& in)
     {
-      return(!!swscanf(in.GetBuffer(), L"%g", &out));
+      return(swscanf(in.GetBuffer(), L"%g", &out)==1);
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -842,7 +873,7 @@ template<> class FITFIELD<double> : public FITFIELDBASE<double>
     }
 
   private:
-    FITFIELD<double>(const FITFIELD<double>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<double>(const FITFIELD<double>&);  /**< not implemented, do not call. */
 };
 
 template<> class FITFIELD< CEEFIT::STRING > : public FITFIELDBASE< CEEFIT::STRING >
@@ -889,7 +920,7 @@ template<> class FITFIELD< CEEFIT::STRING > : public FITFIELDBASE< CEEFIT::STRIN
     }
 
   private:
-    FITFIELD<CEEFIT::STRING>(const FITFIELD<CEEFIT::STRING>&);  /**< not implemented, do not call. */
+    ceefit_init_spec FITFIELD<CEEFIT::STRING>(const FITFIELD<CEEFIT::STRING>&);  /**< not implemented, do not call. */
 };
 
 namespace CEEFIT

@@ -95,6 +95,11 @@ namespace CEEFIT
       else if(a->IsField())
       {
         a->WriteToFixtureVar(text);
+
+        STRING aVal;
+        a->ReadFromFixtureVar(aVal);
+        
+        aVal = aVal;
       }
       else if(a->IsMethod())
       {

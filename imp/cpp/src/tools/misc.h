@@ -35,6 +35,16 @@ namespace CEEFIT
   extern void ceefit_call_spec SafeSprintf(STRING& out, const wchar_t* format, ...);
   extern void ceefit_call_spec SafeFprintf(FILE* out, const wchar_t* format, ...);  /**< @throws IOEXCEPTION* if write fails */
 
+  class VOIDTYPE
+  {
+    public:
+      inline ceefit_init_spec VOIDTYPE(void) {}
+      virtual ceefit_init_spec ~VOIDTYPE(void) {}
+    
+    private:
+      ceefit_init_spec VOIDTYPE(const VOIDTYPE&);
+      VOIDTYPE& ceefit_call_spec operator=(const VOIDTYPE&);
+  };
 };
 
 # ifdef _MSC_VER
@@ -44,6 +54,5 @@ namespace CEEFIT
     typedef long long int INT64;
     typedef unsigned long long int UINT64;
 # endif
-
 
 #endif // __TOOLS_MISC_H__

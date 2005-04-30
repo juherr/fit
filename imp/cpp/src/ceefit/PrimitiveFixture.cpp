@@ -25,17 +25,17 @@
 
 namespace CEEFIT
 {
-  PRIMITIVEFIXTURE::PRIMITIVEFIXTURE(void)
+  ceefit_init_spec PRIMITIVEFIXTURE::PRIMITIVEFIXTURE(void)
   {
   }
 
-  PRIMITIVEFIXTURE::~PRIMITIVEFIXTURE(void)
+  ceefit_init_spec PRIMITIVEFIXTURE::~PRIMITIVEFIXTURE(void)
   {
   }
 
   // format converters ////////////////////////
 
-  long PRIMITIVEFIXTURE::ParseLong(PTR<PARSE>& cell) 
+  long ceefit_call_spec PRIMITIVEFIXTURE::ParseLong(PTR<PARSE>& cell) 
   {
     long retVal;
     int returnCount;
@@ -50,7 +50,7 @@ namespace CEEFIT
     return(retVal);
   }
 
-  double PRIMITIVEFIXTURE::ParseDouble(PTR<PARSE>& cell) 
+  double ceefit_call_spec PRIMITIVEFIXTURE::ParseDouble(PTR<PARSE>& cell) 
   {
     double retVal;
     int returnCount;
@@ -65,7 +65,7 @@ namespace CEEFIT
     return(retVal);
   }
 
-  bool PRIMITIVEFIXTURE::ParseBoolean(PTR<PARSE>& cell) 
+  bool ceefit_call_spec PRIMITIVEFIXTURE::ParseBoolean(PTR<PARSE>& cell) 
   {
     STRING cellText(cell->Text());
 
@@ -85,7 +85,7 @@ namespace CEEFIT
 
   // answer comparisons ///////////////////////
 
-  void PRIMITIVEFIXTURE::Check(PTR<PARSE>& cell, const STRING& value) 
+  void ceefit_call_spec PRIMITIVEFIXTURE::Check(PTR<PARSE>& cell, const STRING& value) 
   {
     if(cell->Text().IsEqual(value)) 
     {
@@ -97,7 +97,7 @@ namespace CEEFIT
     }
   }
 
-  void PRIMITIVEFIXTURE::Check(PTR<PARSE>& cell, long value) 
+  void ceefit_call_spec PRIMITIVEFIXTURE::Check(PTR<PARSE>& cell, long value) 
   {
     if(ParseLong(cell) == value) 
     {
@@ -112,7 +112,7 @@ namespace CEEFIT
     }
   }
 
-  void PRIMITIVEFIXTURE::Check(PTR<PARSE>& cell, double value) 
+  void ceefit_call_spec PRIMITIVEFIXTURE::Check(PTR<PARSE>& cell, double value) 
   {
     if(ParseDouble(cell) == value) 
     {
@@ -127,7 +127,7 @@ namespace CEEFIT
     }
   }
 
-  void PRIMITIVEFIXTURE::Check(PTR<PARSE>& cell, bool value) 
+  void ceefit_call_spec PRIMITIVEFIXTURE::Check(PTR<PARSE>& cell, bool value) 
   {
     if(ParseBoolean(cell) == value) 
     {

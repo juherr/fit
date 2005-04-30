@@ -39,7 +39,7 @@ namespace CEEFIT
       int TotalChars;
       bool IsClosed;
 
-      void DecodeInputBuffer(const DYNARRAY<char>& Buffer, int totalsRead, const STRING& fileName, unicode_encoding_t& expectedEncoding = unicode_windows_1252_encoding)
+      void ceefit_call_spec DecodeInputBuffer(const DYNARRAY<char>& Buffer, int totalsRead, const STRING& fileName, unicode_encoding_t& expectedEncoding = unicode_windows_1252_encoding)
       {
         DYNARRAY<unicode_char_t> ConvertBuffer;
         ConvertBuffer.Reserve(totalsRead);
@@ -87,7 +87,7 @@ namespace CEEFIT
       }
 
     public:
-      BUFFEREDFILEREADER(const STRING& fileName)
+      ceefit_init_spec BUFFEREDFILEREADER(const STRING& fileName)
       {
         FILE* FileHandle = _wfopen(fileName.GetBuffer(), L"rb");
 
@@ -138,17 +138,17 @@ namespace CEEFIT
         IsClosed = false;
       }
 
-      ~BUFFEREDFILEREADER(void)
+      ceefit_init_spec ~BUFFEREDFILEREADER(void)
       {
         Close();
       }
 
-      bool IsEof(void) const
+      bool ceefit_call_spec IsEof(void) const
       {
         return(CharPos >= TotalChars || IsClosed);
       }
 
-      void Close(void)
+      void ceefit_call_spec Close(void)
       {
         IsClosed = true;
       }
@@ -156,7 +156,7 @@ namespace CEEFIT
       /**
        * @return number of chars read, -1 on end-of-file ...
        */
-      int Read(int numChars, wchar_t* charArray)
+      int ceefit_call_spec Read(int numChars, wchar_t* charArray)
       {
         int i = 0;
         while(!IsEof() && i < numChars)
@@ -172,20 +172,20 @@ namespace CEEFIT
       }
 
     private:
-      BUFFEREDFILEREADER(void);
-      BUFFEREDFILEREADER(const BUFFEREDFILEREADER&);
-      BUFFEREDFILEREADER& operator=(const BUFFEREDFILEREADER&);
+      ceefit_init_spec BUFFEREDFILEREADER(void);
+      ceefit_init_spec BUFFEREDFILEREADER(const BUFFEREDFILEREADER&);
+      BUFFEREDFILEREADER& ceefit_call_spec operator=(const BUFFEREDFILEREADER&);
   };
 
-  FILERUNNER::FILERUNNER()
+  ceefit_init_spec FILERUNNER::FILERUNNER()
   {
   }
 
-  FILERUNNER::~FILERUNNER()
+  ceefit_init_spec FILERUNNER::~FILERUNNER()
   {
   }
 
-  int FILERUNNER::Run(const DYNARRAY<STRING>& argv)
+  int ceefit_call_spec FILERUNNER::Run(const DYNARRAY<STRING>& argv)
   {
     try
     {
@@ -215,7 +215,7 @@ namespace CEEFIT
     }
   }
 
-  void FILERUNNER::Process()
+  void ceefit_call_spec FILERUNNER::Process()
   {
     try
     {
@@ -254,7 +254,7 @@ namespace CEEFIT
     }
   }
 
-  void FILERUNNER::ValidateOrCreateDir(const STRING& aDir)
+  void ceefit_call_spec FILERUNNER::ValidateOrCreateDir(const STRING& aDir)
   {
     struct _wfinddata_t findData;
     memset(&findData, 0, sizeof(struct _wfinddata_t));
@@ -280,7 +280,7 @@ namespace CEEFIT
     }
   }
 
-  STRING FILERUNNER::ValidateOutputPath(const STRING& rawOutPath)
+  STRING ceefit_call_spec FILERUNNER::ValidateOutputPath(const STRING& rawOutPath)
   {
     wchar_t drive[_MAX_DRIVE];
     wchar_t dir[_MAX_DIR];
@@ -312,7 +312,7 @@ namespace CEEFIT
     return(outPathName + "/" + fname + ext);
   }
 
-  int FILERUNNER::Args(const DYNARRAY<STRING>& argv)
+  int ceefit_call_spec FILERUNNER::Args(const DYNARRAY<STRING>& argv)
   {
     if(argv.GetSize() != 4)
     {
@@ -342,7 +342,7 @@ namespace CEEFIT
     return(1);
   }
 
-  STRING FILERUNNER::Read(const STRING& inputFilename)
+  STRING ceefit_call_spec FILERUNNER::Read(const STRING& inputFilename)
   {
     BUFFEREDFILEREADER reader(inputFilename);
     STRING retVal;
@@ -368,7 +368,7 @@ namespace CEEFIT
     return(retVal);
   }
 
-  void FILERUNNER::Exception(EXCEPTION* e)
+  void ceefit_call_spec FILERUNNER::Exception(EXCEPTION* e)
   {
     PTR<PARSE> nullParse;
 
@@ -376,7 +376,7 @@ namespace CEEFIT
     Fixture.Exception(Tables, e);
   }
 
-  int FILERUNNER::Exit()
+  int ceefit_call_spec FILERUNNER::Exit()
   {
     if(Output != NULL)
     {

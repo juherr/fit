@@ -33,10 +33,12 @@ namespace CEEFIT
   {
     public:
       DYNARRAY<wchar_t> Array;
+      bool AssignedFlag;
 
     public:
       STRINGDATA(void)
       {        
+        AssignedFlag = false;
       }
 
       inline ~STRINGDATA(void)
@@ -46,11 +48,13 @@ namespace CEEFIT
       inline STRINGDATA(const STRINGDATA& aData)
       {        
         Array = aData.Array;
+        AssignedFlag = aData.AssignedFlag;
       }
 
       inline STRINGDATA& operator=(const STRINGDATA& aData)
       {
         Array = aData.Array;
+        AssignedFlag = aData.AssignedFlag;
 
         return(*this);
       }

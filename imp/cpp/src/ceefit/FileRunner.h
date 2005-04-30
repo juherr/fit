@@ -35,19 +35,23 @@ namespace CEEFIT
       FIXTURE Fixture;
       WRITER* Output;
 
-      FILERUNNER(void);
-      ~FILERUNNER(void);
+      ceefit_init_spec FILERUNNER(void);
+      ceefit_init_spec ~FILERUNNER(void);
 
-      int Run(const DYNARRAY<STRING>& argv);
-      void Process(void);
-      int Args(const DYNARRAY<STRING>& argv);
-      STRING Read(const STRING& inputFilename);
-      int Exit(void);        
+      int ceefit_call_spec Run(const DYNARRAY<STRING>& argv);
+      void ceefit_call_spec Process(void);
+      int ceefit_call_spec Args(const DYNARRAY<STRING>& argv);
+      STRING ceefit_call_spec Read(const STRING& inputFilename);
+      int ceefit_call_spec Exit(void);        
       
     protected:
-      void Exception(EXCEPTION* e);
-      STRING ValidateOutputPath(const STRING& rawOutPath);
-      void ValidateOrCreateDir(const STRING& aDir);
+      void ceefit_call_spec Exception(EXCEPTION* e);
+      STRING ceefit_call_spec ValidateOutputPath(const STRING& rawOutPath);
+      void ceefit_call_spec ValidateOrCreateDir(const STRING& aDir);
+
+    private:
+      ceefit_init_spec FILERUNNER(const FILERUNNER&);   /**< Not implemented, do not call */
+      FILERUNNER& ceefit_call_spec operator=(const FILERUNNER&);    /**< Not implemented, do not call */
   };
 };
 
