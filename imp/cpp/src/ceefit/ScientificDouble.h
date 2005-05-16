@@ -56,10 +56,12 @@ namespace CEEFIT
       virtual float ceefit_call_spec FloatValue(void) const;
       virtual long ceefit_call_spec LongValue(void) const;
       virtual int ceefit_call_spec IntValue(void) const;
+
+      virtual int ceefit_call_spec GetHashCode(void) const;
   };
 };
 
-template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>
+template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>
 {
   public:
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::SCIENTIFICDOUBLE& in)
@@ -88,16 +90,16 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public FITFIELDBASE<CEEFIT
       return(FieldType);
     }
 
-    template<class U> inline FITFIELD<CEEFIT::SCIENTIFICDOUBLE>& ceefit_call_spec operator=(U& rValue)
+    template<class U> inline FITFIELD<CEEFIT::SCIENTIFICDOUBLE>& operator=(U& rValue)
     {
-      FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>::operator=(rValue);
+      this->FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>::operator=(rValue);
 
       return(*this);
     }
 
-    FITFIELD<CEEFIT::SCIENTIFICDOUBLE>& ceefit_call_spec operator=(const CEEFIT::SCIENTIFICDOUBLE& rValue)
+    FITFIELD<CEEFIT::SCIENTIFICDOUBLE>& operator=(const CEEFIT::SCIENTIFICDOUBLE& rValue)
     {
-      FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>::operator=(rValue);
+      this->FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>::operator=(rValue);
 
       return(*this);
     }
@@ -109,6 +111,8 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public FITFIELDBASE<CEEFIT
     virtual inline ceefit_init_spec ~FITFIELD<CEEFIT::SCIENTIFICDOUBLE>(void)
     {
     }
+
+    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<CEEFIT::SCIENTIFICDOUBLE>)); }
 
   private:
     ceefit_init_spec FITFIELD<CEEFIT::SCIENTIFICDOUBLE>(const FITFIELD<CEEFIT::SCIENTIFICDOUBLE>&);  /**< not implemented, do not call. */

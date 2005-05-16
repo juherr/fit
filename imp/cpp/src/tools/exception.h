@@ -151,6 +151,31 @@ namespace CEEFIT
       DIVIDEBYZEROEXCEPTION(const DIVIDEBYZEROEXCEPTION&);                /**< Not implemented.  Do not call. */
   };
 
+  // ----------------------------------------------------
+  // Simple assertions
+  // ----------------------------------------------------
+
+  template<class ANYTYPE> inline void ceefit_init_spec AssertNotNull(ANYTYPE* aPtr)
+  {
+    if(aPtr == NULL)
+    {
+      throw new EXCEPTION("AssertNotNull failed");
+    }
+  }
+
+  inline void ceefit_init_spec AssertIsTrue(bool aExpr) 
+  {
+    if(aExpr != true)
+    {
+#     ifdef _DEBUG
+#       ifdef WIN32
+          DebugBreak();
+#       endif        
+#     endif
+      throw new EXCEPTION("AssertIsTrue failed");
+    }
+  }
+
 };
 
 #endif // __TOOLS_EXCEPTION_H__

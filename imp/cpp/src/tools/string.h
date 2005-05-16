@@ -148,6 +148,8 @@ namespace CEEFIT
       bool ceefit_call_spec IsEqual(const STRING& aString) const;
       bool ceefit_call_spec IsEqual(const char* aString) const;
       bool ceefit_call_spec IsEqual(const wchar_t* aString) const;
+
+      int ceefit_call_spec GetHashCode(void) const;
   };
 
   extern void ceefit_call_spec TokenizeRespectQuotes(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool doDequotify=true);

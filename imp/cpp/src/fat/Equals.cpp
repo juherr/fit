@@ -38,22 +38,16 @@ namespace CEEFAT
     public:
       PTR<PARSE> Heads;
       STRING Current;
-      CELLADAPTER* Type;
-      CELLADAPTER* X;
-      CELLADAPTER* Y;
+      PTR<CELLADAPTER> Type;
+      PTR<CELLADAPTER> X;
+      PTR<CELLADAPTER> Y;
       
       ceefit_init_spec FAT_EQUALS()
       {
-        Type = NULL;
-        X = NULL;
-        Y = NULL;
       }
 
       virtual ~FAT_EQUALS()
       {
-        delete Type;
-        delete X;
-        delete Y;
       }
 
       virtual void ceefit_call_spec DoRows(PTR<PARSE>& rows)
@@ -63,49 +57,50 @@ namespace CEEFAT
         PRIMITIVEFIXTURE::DoRows(rows->More);
       }
 
-      virtual CELLADAPTER* ceefit_call_spec GetType(const STRING& name)
+      virtual VALUE<CELLADAPTER> ceefit_call_spec GetType(const STRING& name)
       {
-          CELLADAPTER* type = NULL;
+        CELLADAPTER* type = NULL;
 
-          if(name.IsEqual("boolean"))
-          {
-            type = new FITFIELD<bool>();
-          }
-          else if(name.IsEqual("integer"))
-          {
-            type = new FITFIELD<signed int>();
-          }
-          else if(name.IsEqual("real"))
-          {
-            type = new FITFIELD<float>();
-          }
-          else if(name.IsEqual("string"))
-          {
-            type = new FITFIELD<STRING>();
-          }
-              //name.equals("date") ?       Date.class :
-              //name.equals("money") ?      Money.class :
-          else if(name.IsEqual("scientific"))
-          {
-            type = new FITFIELD< SCIENTIFICDOUBLE >();
-          }
-          else if(name.IsEqual("integers"))
-          {
-            type = new FITFIELD< DYNARRAY<int> >();
-          }
-          else if(name.IsEqual("booleans"))
-          {
-            type = new FITFIELD< DYNARRAY<bool> >();
-          }
-          else if(name.IsEqual("strings"))
-          {
-            type = new FITFIELD< DYNARRAY<STRING> >();
-          }
-          if (type == NULL)
-          {
-            throw new EXCEPTION(STRING("Unimplemented choice ") + name);
-          }
-          return type;
+        if(name.IsEqual("boolean"))
+        {
+          type = new FITFIELD<bool>();
+        }
+        else if(name.IsEqual("integer"))
+        {
+          type = new FITFIELD<signed int>();
+        }
+        else if(name.IsEqual("real"))
+        {
+          type = new FITFIELD<float>();
+        }
+        else if(name.IsEqual("string"))
+        {
+          type = new FITFIELD<STRING>();
+        }
+            //name.equals("date") ?       Date.class :
+            //name.equals("money") ?      Money.class :
+        else if(name.IsEqual("scientific"))
+        {
+          type = new FITFIELD< SCIENTIFICDOUBLE >();
+        }
+        else if(name.IsEqual("integers"))
+        {
+          type = new FITFIELD< DYNARRAY<int> >();
+        }
+        else if(name.IsEqual("booleans"))
+        {
+          type = new FITFIELD< DYNARRAY<bool> >();
+        }
+        else if(name.IsEqual("strings"))
+        {
+          type = new FITFIELD< DYNARRAY<STRING> >();
+        }
+        if (type == NULL)
+        {
+          throw new EXCEPTION(STRING("Unimplemented choice ") + name);
+        }
+        
+        return(VALUE<CELLADAPTER>(type));
       }
 
       virtual void ceefit_call_spec DoCell(PTR<PARSE>& cell, int col)
@@ -121,7 +116,6 @@ namespace CEEFAT
               {
                 if(Type != NULL)
                 {
-                  delete Type;
                   Type = NULL;
                 }
                 Type = GetType(cellText);
@@ -131,28 +125,26 @@ namespace CEEFAT
               {
                 if(X != NULL)
                 {
-                  delete X;
                   X = NULL;
                 }
                 if(Type == NULL)
                 {
                   throw new EXCEPTION("No type available to parse");
                 }
-                X = Type->NewInstanceParse(cellText);
+                Type->NewInstanceParse(X, cellText);
                 break;
               }
               case L'y':
               {
                 if(Y != NULL)
                 {
-                  delete Y;
                   Y = NULL;
                 }
                 if(Type == NULL)
                 {
                   throw new EXCEPTION("No type available to parse");
                 }
-                Y = Type->NewInstanceParse(cellText);
+                Type->NewInstanceParse(Y, cellText);
                 break;
               }
               case L'=':
@@ -186,12 +178,10 @@ namespace CEEFAT
         catch(EXCEPTION* e)
         {
           Exception(cell, e);
-
-          delete e;
         }
       }
 
-      virtual void ceefit_call_spec Parse(CELLADAPTER* aField, const STRING& s)
+      virtual void ceefit_call_spec Parse(PTR<CELLADAPTER>& aField, const STRING& s)
       {
         PRIMITIVEFIXTURE::Parse(aField, s);
       }
@@ -208,7 +198,7 @@ namespace CEEFAT
       }
       */
 
-      virtual STRING ceefit_call_spec Print(CELLADAPTER* value)
+      virtual STRING ceefit_call_spec Print(PTR<CELLADAPTER>& value)
       {
         STRING aTemp;
         value->ReadFromFixtureVar(aTemp);

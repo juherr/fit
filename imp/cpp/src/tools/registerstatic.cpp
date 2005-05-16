@@ -23,6 +23,53 @@
 #include "tools/alloc.h"
 #include "ceefit.h"
 
+namespace CEEFIT
+{
+  void ceefit_call_spec CELLADAPTER::Invoke(PTR<CELLADAPTER>& out, CELLADAPTER* fixtureContainer)
+  {
+    ::FITFIXTURECONTAINER* aContainer = dynamic_cast< ::FITFIXTURECONTAINER* >(fixtureContainer);
+
+    AssertNotNull(aContainer);
+
+    this->Invoke(out, aContainer->GetFixture());
+  }
+
+  // this finds a like named CELLADAPTER in another fixture and reads from it
+  void ceefit_call_spec CELLADAPTER::ReadFromFixtureVar(STRING& out, FIXTURE* aFixture)
+  {    
+    if(this->IsField())
+    {
+      int i = -1;
+      int size = aFixture->FieldList.GetSize();
+      while(++i < size)
+      {
+        PTR<CELLADAPTER> aCell(&aFixture->FieldList.Get(i));
+
+        if(::CEEFIT::IsEqual(aCell->GetName(), this->GetName()))
+        {
+          aCell->ReadFromFixtureVar(out);
+          return;
+        }
+      }
+    }
+    else
+    {
+      int i = -1;
+      int size = aFixture->TestList.GetSize();
+      while(++i < size)
+      {
+        PTR<CELLADAPTER> aCell(&aFixture->TestList.Get(i));
+
+        if(::CEEFIT::IsEqual(aCell->GetName(), this->GetName()))
+        {
+          aCell->ReadFromFixtureVar(out);
+          return;
+        }
+      }
+    }
+  }
+};
+
 void ceefit_call_spec FITTESTBASE::WriteToFixtureVar(const CEEFIT::STRING&)
 {
   throw new CEEFIT::EXCEPTION("Invalid operation for tests");
@@ -33,7 +80,7 @@ void ceefit_call_spec FITTESTBASE::ReadFromFixtureVar(CEEFIT::STRING&)
   throw new CEEFIT::EXCEPTION("Invalid operation for tests");
 }
 
-CEEFIT::CELLADAPTER* ceefit_call_spec FITTESTBASE::NewInstanceParse(const CEEFIT::STRING& aText)
+void ceefit_call_spec FITTESTBASE::NewInstanceParse(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, const CEEFIT::STRING& aText)
 {
   throw new CEEFIT::EXCEPTION("Cannot perform a new instance parse on function-type cells");
 }
@@ -96,7 +143,7 @@ namespace CEEFIT
 
   void ceefit_call_spec SetLastLinkedTestName(const char* aName)
   {
-    CELLADAPTER* aTest = RUNNER::GetLastRegisteredTest();
+    PTR<CELLADAPTER> aTest(RUNNER::GetLastRegisteredTest());
 
     aTest->SetName(STRING(aName));
   }
@@ -240,6 +287,7 @@ namespace CEEFIT
     // Todo:  this is insufficient due to base class field names potentially taking precendence
     // over sub class ones.
     aList->AddTail(aTest);
+    aTest->AddRef();  // Since the auto test is a member of the containing class, we need to add a ref to guarantee it will never accidentially be dereferenced and deleted
   }
 
   void ceefit_call_spec RUNNER::RegisterAutoField(CELLADAPTER* aField)
@@ -251,9 +299,10 @@ namespace CEEFIT
       throw new EXCEPTION("No Current Field List");
     }
     aList->AddTail(aField);
+    aField->AddRef();  // Since the auto field is a member of the containing class, we need to add a ref to guarantee it will never accidentially be dereferenced and deleted
   }
 
-  CELLADAPTER* ceefit_call_spec RUNNER::GetLastRegisteredField()
+  VALUE<CELLADAPTER> ceefit_call_spec RUNNER::GetLastRegisteredField()
   {
     SLINKLIST<CELLADAPTER>* aList = RUNNER::GetCurrentFieldList();
 
@@ -261,10 +310,10 @@ namespace CEEFIT
     {
       throw new EXCEPTION("No Current Field List");
     }
-    return(aList->GetTail());
+    return(VALUE<CELLADAPTER>(aList->GetTail()));
   }
 
-  CELLADAPTER* ceefit_call_spec RUNNER::GetLastRegisteredTest()
+  VALUE<CELLADAPTER> ceefit_call_spec RUNNER::GetLastRegisteredTest()
   {
     SLINKLIST<CELLADAPTER>* aList = RUNNER::GetCurrentTestList();
 
@@ -272,7 +321,7 @@ namespace CEEFIT
     {
       throw new EXCEPTION("No Current Test List");
     }
-    return(aList->GetTail());
+    return(VALUE<CELLADAPTER>(aList->GetTail()));
   }
 
   void ceefit_call_spec LinkManualTest(FIXTURE* aFixture, FITTESTBASE* fittestManual)

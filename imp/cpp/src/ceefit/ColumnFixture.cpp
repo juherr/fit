@@ -35,13 +35,13 @@ namespace CEEFIT
   }
 
   // don't call
-  COLUMNFIXTURE::COLUMNFIXTURE(const COLUMNFIXTURE&)
+  COLUMNFIXTURE::COLUMNFIXTURE(COLUMNFIXTURE&)
   {
-    assert(false);
+    throw new EXCEPTION("Unsuppoted constructor");
   }
 
   // don't call
-  COLUMNFIXTURE& COLUMNFIXTURE::operator=(const COLUMNFIXTURE& aFixture)
+  COLUMNFIXTURE& COLUMNFIXTURE::operator=(COLUMNFIXTURE& aFixture)
   {
     HasExecuted = aFixture.HasExecuted;
     ColumnBindings = aFixture.ColumnBindings;
@@ -80,7 +80,7 @@ namespace CEEFIT
 
   void COLUMNFIXTURE::DoCell(PTR<PARSE>& cell, int column)
   {
-    CELLADAPTER* a = ColumnBindings[column];
+    PTR<CELLADAPTER> a(ColumnBindings[column]);
     try
     {
       STRING text(cell->Text());
@@ -95,11 +95,6 @@ namespace CEEFIT
       else if(a->IsField())
       {
         a->WriteToFixtureVar(text);
-
-        STRING aVal;
-        a->ReadFromFixtureVar(aVal);
-        
-        aVal = aVal;
       }
       else if(a->IsMethod())
       {
@@ -112,8 +107,13 @@ namespace CEEFIT
     }
   }
 
-  void COLUMNFIXTURE::Check(PTR<PARSE>& cell, CELLADAPTER* a)
+  void COLUMNFIXTURE::Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, FIXTURE* target)
   {
+    if(target == NULL)
+    {
+      target = this;
+    }
+
     if (!HasExecuted)
     {
       try
@@ -126,7 +126,7 @@ namespace CEEFIT
       }
       HasExecuted = true;
     }
-    FIXTURE::Check(cell, a);
+    FIXTURE::Check(cell, a, target);
   }
 
   void COLUMNFIXTURE::Reset()
@@ -140,6 +140,13 @@ namespace CEEFIT
   }
 
   // Utility //////////////////////////////////
+  void COLUMNFIXTURE::DeleteFixture(EXCEPTION*& exceptionThrown)
+  {
+    ColumnBindings.Reset();
+
+    this->FIXTURE::DeleteFixture(exceptionThrown);
+  }
+  
   void COLUMNFIXTURE::Bind(PTR<PARSE>& heads)
   {
     ColumnBindings.Reset();
@@ -148,13 +155,14 @@ namespace CEEFIT
     PTR<PARSE> headsPtr(heads);
     for (int i=0; headsPtr != NULL; i++, headsPtr = headsPtr->More)
     {
+      static STRING suffix("()");
+
       STRING name(headsPtr->Text());
-      STRING suffix("()");
       try
       {
         if(name.IsEqual(""))
         {
-          ColumnBindings[i] = NULL;
+          ColumnBindings[i] = (CELLADAPTER*) NULL;
         }
         else if(name.EndsWith(suffix))
         {
@@ -173,31 +181,31 @@ namespace CEEFIT
 
   }
 
-  CELLADAPTER* ceefit_call_spec COLUMNFIXTURE::BindMethod(const STRING& name)
+  VALUE<CELLADAPTER> ceefit_call_spec COLUMNFIXTURE::BindMethod(const STRING& name)
   {
-    CELLADAPTER* aTest = TestList.GetHead();
+    PTR<CELLADAPTER> aTest(TestList.GetHead());
     while(aTest != NULL)
     {
       if(aTest->IsMethod() && aTest->GetName().IsEqual(name))
       {
-        return(aTest);
+        return(VALUE<FITTESTBASE>(aTest));
       }
       aTest = aTest->GetNext();
     }
-    return(NULL);
+    return(VALUE<FITTESTBASE>(NULL));
   }
 
-  CELLADAPTER* ceefit_call_spec COLUMNFIXTURE::BindField(const STRING& name)
+  VALUE<CELLADAPTER> ceefit_call_spec COLUMNFIXTURE::BindField(const STRING& name)
   {
-    CELLADAPTER* aField = FieldList.GetHead();
+    PTR<CELLADAPTER> aField(FieldList.GetHead());
     while(aField != NULL)
     {
       if(aField->IsField() && aField->GetName().IsEqual(name))
       {
-        return(aField);
+        return(VALUE<CELLADAPTER>(aField));
       }
-      aField = aField->GetNext();
+      aField = dynamic_cast<SLINK<CELLADAPTER>*>(aField.GetPointer())->GetNext();
     }
-    return(NULL);
+    return(VALUE<CELLADAPTER>(NULL));
   }
 };

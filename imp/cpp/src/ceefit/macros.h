@@ -60,7 +60,7 @@
                                               " because the types are not compatible.");                                          \
               }                                                                                                                   \
                                                                                                                                   \
-              fixtureType* subclassFixture = static_cast<fixtureType*>(extendsFixture);                                           \
+              fixtureType* subclassFixture = static_cast< fixtureType* >(extendsFixture);                                         \
               if(subclassFixture == NULL)                                                                                         \
               {                                                                                                                   \
                 throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast ") + #extendsType + " to " +    \

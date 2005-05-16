@@ -321,7 +321,7 @@ namespace CEEFIT
     pPatternArray.Add("<");
     pPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     pPatternArray.Add("p");
-    pPatternArray.Add(".*");
+    pPatternArray.Add(".*?");
     pPatternArray.Add(">");
 		temp = temp.ArrayRegexPatternReplaceAll(pPatternArray, "<br />", true);  // was    		s = s.replaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p( .*?)?>", "<br />");
 

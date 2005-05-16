@@ -31,49 +31,119 @@ namespace CEEFIT
   // Equality Tests
   //--------------------------------------------------------------------------------------------------------
 
-  template<class ANYTYPE> inline bool IsEqual(bool aValue, const ANYTYPE& bValue)
+  inline bool IsEqual(const bool aValue, const bool bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(unsigned char aValue, const ANYTYPE& bValue)
+  template<class ANYTYPE> inline bool IsEqual(const bool& aValue, const ANYTYPE& bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(signed char aValue, const ANYTYPE& bValue)
+  inline bool IsEqual(const unsigned char aValue, const unsigned char bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(char aValue, const ANYTYPE& bValue)
+  template<class ANYTYPE> inline bool IsEqual(const unsigned char& aValue, const ANYTYPE& bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(unsigned short aValue, const ANYTYPE& bValue)
+  inline bool IsEqual(const signed char aValue, const signed char bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(signed short aValue, const ANYTYPE& bValue)
+  template<class ANYTYPE> inline bool IsEqual(const signed char& aValue, const ANYTYPE& bValue)
   {
     return(aValue == bValue);
   }
 
-# ifdef __GNUC__
-    template<class ANYTYPE> inline bool IsEqual(wchar_t aValue, const ANYTYPE& bValue)
-    {
-      return(aValue == bValue);
-    }
-# endif
-
-  template<class ANYTYPE> inline bool IsEqual(unsigned int aValue, const ANYTYPE& bValue)
+  inline bool IsEqual(const char aValue, const char bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(int aValue, const ANYTYPE& bValue)
+  template<class ANYTYPE> inline bool IsEqual(const char& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  inline bool IsEqual(const short aValue, const short bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  template<class ANYTYPE> inline bool IsEqual(const short& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  inline bool IsEqual(const unsigned short aValue, const unsigned short bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  template<class ANYTYPE> inline bool IsEqual(const unsigned short& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+
+#ifdef __GNUC__
+  inline bool IsEqual(const wchar_t aValue, const wchar_t bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  template<class ANYTYPE> inline bool IsEqual(const wchar_t& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+#endif
+
+  inline bool IsEqual(const unsigned int aValue, const unsigned int bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  template<class ANYTYPE> inline bool IsEqual(const unsigned int& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  inline bool IsEqual(const signed int aValue, const signed int bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  template<class ANYTYPE> inline bool IsEqual(const signed int& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  inline bool IsEqual(const unsigned long aValue, const unsigned long bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  template<class ANYTYPE> inline bool IsEqual(const unsigned long& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  inline bool IsEqual(const signed long aValue, const signed long bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  template<class ANYTYPE> inline bool IsEqual(const signed long& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  inline bool IsEqual(const INT64 aValue, const INT64 bValue)
   {
     return(aValue == bValue);
   }
@@ -83,12 +153,27 @@ namespace CEEFIT
     return(aValue == bValue);
   }
 
+  inline bool IsEqual(const UINT64 aValue, const UINT64 bValue)
+  {
+    return(aValue == bValue);
+  }
+
   template<class ANYTYPE> inline bool IsEqual(const UINT64& aValue, const ANYTYPE& bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(float aValue, const ANYTYPE& bValue)
+  inline bool IsEqual(const float aValue, const float bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  template<class ANYTYPE> inline bool IsEqual(const float& aValue, const ANYTYPE& bValue)
+  {
+    return(aValue == bValue);
+  }
+
+  inline bool IsEqual(const double aValue, const double bValue)
   {
     return(aValue == bValue);
   }
@@ -124,17 +209,15 @@ namespace CEEFIT
     return(wcscmp(aValue, bValue) == 0);
   }
 
-  template<class ANYTYPE1, class ANYTYPE2> inline bool IsEqual(ANYTYPE1& aValue, const ANYTYPE2& bValue)
+  template<class ANYTYPE1, class ANYTYPE2> inline bool IsEqual(const ANYTYPE1& aValue, const ANYTYPE2& bValue)
   {
     return(aValue.IsEqual(bValue));
   }
 
-/*
-  template<class ANYTYPE1, class ANYTYPE2> inline bool IsEqual(ANYTYPE1* aValue, const ANYTYPE2* bValue)
+  template<class ANYTYPE1, class ANYTYPE2> inline bool IsEqual(const ANYTYPE1* aValue, const ANYTYPE2* bValue)
   {
     return(aValue->IsEqual(*bValue));
   }
-*/
 
 };
 

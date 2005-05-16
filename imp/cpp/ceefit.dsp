@@ -270,6 +270,10 @@ SOURCE=.\src\tools\alloc.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\ceefit\celladapter.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\ceefit\ColumnFixture.h
 # End Source File
 # Begin Source File
@@ -310,6 +314,10 @@ SOURCE=.\src\ceefit\registerstatic.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\ceefit\RowFixture.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\ceefit\ScientificDouble.h
 # End Source File
 # End Group
@@ -331,6 +339,10 @@ SOURCE=.\src\tools\exception.h
 # Begin Source File
 
 SOURCE=.\src\tools\failure.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\tools\hashmap.h
 # End Source File
 # Begin Source File
 

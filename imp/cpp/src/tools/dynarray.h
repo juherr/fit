@@ -405,8 +405,8 @@ namespace CEEFIT
 
       virtual inline void ceefit_call_spec Reset(void)
       {
-        Limit = 0;
         Count = 0;      
+        Limit = 0;
         delete [] List;
         List = NULL;
       }
@@ -476,6 +476,51 @@ namespace CEEFIT
           
         Count += howMany;
       }
+
+      /**
+       * <p>IsEqual compares contents of arrays</p>
+       */
+      template<class ANYTYPE2> inline bool IsEqual(const DYNARRAY<ANYTYPE2>& other)
+      {
+        if(GetSize() != other.GetSize())
+        {
+          return(false);
+        }
+        int i = -1;
+        while(++i < GetSize())
+        {
+          if(!::CEEFIT::IsEqual(Get(i), other.Get(i)))
+          {
+            return(false);
+          }
+        }
+        return(true);
+      }
+
+      /**
+       * <p>IsEqual compares contents of arrays</p>
+       */
+      inline bool IsEqual(const DYNARRAY<ANYTYPE>& other) const
+      {
+        if(GetSize() != other.GetSize())
+        {
+          return(false);
+        }
+        int i = -1;
+        while(++i < GetSize())
+        {
+          if(!::CEEFIT::IsEqual(Get(i), other.Get(i)))
+          {
+            return(false);
+          }
+        }
+        return(true);
+      }
+
+      /**
+       * <p>Generate a hash code from the contents of the array</p>
+       */
+      int GetHashCode(void) const;
 
     protected:
       /**

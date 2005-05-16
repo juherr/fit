@@ -30,7 +30,7 @@ namespace CEEFIT
   /**
    * <p>Single link for linked list classes.</p>
    */
-  template<class T> class SLINK : public OBJECT
+  template<class T> class SLINK : public virtual OBJECT
   {
     private:
       T* Next;
@@ -131,7 +131,7 @@ namespace CEEFIT
         ANYTYPE* aNode = Head;
         while(aNode)
         {
-          ANYTYPE* nextNode = aNode->GetNext();
+          ANYTYPE* nextNode = (dynamic_cast< SLINK<ANYTYPE>* >(aNode))->GetNext();
           if(nextNode == NULL)
           {
             break;
@@ -146,7 +146,7 @@ namespace CEEFIT
         ANYTYPE* aNode = Head;
         while(aNode)
         {
-          ANYTYPE* nextNode = aNode->GetNext();
+          ANYTYPE* nextNode = (dynamic_cast< SLINK<ANYTYPE>* >(aNode))->GetNext();
           if(nextNode == NULL)
           {
             break;
@@ -186,7 +186,7 @@ namespace CEEFIT
 		    while(aVal)
 		    {
 			    i++;
-			    aVal = aVal->GetNext();
+			    aVal = (dynamic_cast< const SLINK<ANYTYPE>* >(aVal))->GetNext();
 		    }
 
 		    return(i);
@@ -197,15 +197,15 @@ namespace CEEFIT
 		    ANYTYPE* aVal = GetHead();
         if(aVal == NULL)
         {
-          SetHead(&aItem);
+          SetHead(dynamic_cast<ANYTYPE2*>(&aItem));
         }
         else
         {
-          while(aVal->GetNext() != NULL)
+          while((dynamic_cast< SLINK<ANYTYPE>* >(aVal))->GetNext() != NULL)
           {
-            aVal = aVal->GetNext();
+            aVal = (dynamic_cast< SLINK<ANYTYPE>* >(aVal))->GetNext();
           }
-          aVal->SetNext(&aItem);
+          (dynamic_cast< SLINK<ANYTYPE>* >(aVal))->SetNext(dynamic_cast<ANYTYPE2*>(&aItem));
         }
       }
 
@@ -223,8 +223,8 @@ namespace CEEFIT
 
         if(aIndex == 0)
         {
-          aValue.SetNext(GetHead());
-          SetHead(&aValue);
+          (dynamic_cast< SLINK<ANYTYPE2>* >(&aValue))->SetNext(GetHead());
+          SetHead(dynamic_cast<ANYTYPE2*>(&aValue));
         }
         else
         {
@@ -232,10 +232,10 @@ namespace CEEFIT
           ANYTYPE* current = GetHead();
 
           int i = aIndex;
-          while(i > 0 && current->GetNext() != NULL)
+          while(i > 0 && (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext() != NULL)
           {
             previous = current;
-            current = current->GetNext();
+            current = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
             i--;
           }
 
@@ -244,10 +244,10 @@ namespace CEEFIT
             ThrowBoundsException();
           }
 
-          previous->SetNext(&aValue);
+          (dynamic_cast< SLINK<ANYTYPE>* >(previous))->SetNext(dynamic_cast<ANYTYPE2*>(&aValue));
           if(current != NULL)  // This if statement maintains the semantics of an Add operation if aIndex was the end of list
           {
-            aValue.SetNext(current);
+            (dynamic_cast< SLINK<ANYTYPE2>* >(&aValue))->SetNext(current);
           }
         }
       }
@@ -278,8 +278,8 @@ namespace CEEFIT
         {
           if(current != NULL)
           {
-            ANYTYPE* oldNext = current->GetNext();
-            aValue.SetNext(oldNext);
+            ANYTYPE* oldNext = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
+            (dynamic_cast< SLINK<ANYTYPE2>* >(&aValue))->SetNext(oldNext);
           }
           SetHead(&aValue);
           return;
@@ -287,10 +287,10 @@ namespace CEEFIT
         else
         {
           int i = aIndex;
-          while(i > 0 && current->GetNext() != NULL)
+          while(i > 0 && (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext() != NULL)
           {
             previous = current;
-            current = current->GetNext();
+            current = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
             i--;
           }
 
@@ -299,10 +299,10 @@ namespace CEEFIT
             ThrowBoundsException();
           }
 
-          previous->SetNext(&aValue);
+          (dynamic_cast< SLINK<ANYTYPE>* >(previous))->SetNext(&aValue);
           if(current != NULL)
           {
-            aValue.SetNext(current->GetNext());
+            (dynamic_cast< SLINK<ANYTYPE2>* >(&aValue))->SetNext((dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext());
           }
         }
       }
@@ -313,7 +313,7 @@ namespace CEEFIT
         int remaining = aIndex;
         while(remaining > 0 && current != NULL)
         {
-          current = current->GetNext();
+          current = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
           remaining--;
         }
 
@@ -331,7 +331,7 @@ namespace CEEFIT
         int remaining = aIndex;
         while(remaining > 0 && current != NULL)
         {
-          current = current->GetNext();
+          current = (dynamic_cast< const SLINK<ANYTYPE>* >(current))->GetNext();
           remaining--;
         }
 
@@ -351,7 +351,7 @@ namespace CEEFIT
         while(i > 0 && current != NULL)
         {
           previous = current;
-          current = current->GetNext();
+          current = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
           i--;
         }
 
@@ -367,11 +367,11 @@ namespace CEEFIT
             ThrowBoundsException();
           }
 
-          ANYTYPE* newNext = current->GetNext();
+          ANYTYPE* newNext = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
 
           if(previous != NULL)
           {
-            previous->SetNext(newNext);
+            (dynamic_cast< SLINK<ANYTYPE>* >(previous))->SetNext(newNext);
             previous = current;
           }
           else
@@ -404,7 +404,7 @@ namespace CEEFIT
 
         while(aVal != NULL)
         {
-          ANYTYPE* nextVal = aVal->GetNext();
+          ANYTYPE* nextVal = (dynamic_cast< SLINK<ANYTYPE>* >(aVal))->GetNext();
           delete aVal;
           aVal = nextVal;
         }
@@ -418,25 +418,27 @@ namespace CEEFIT
 
 			  if(GetHead() == aVal)
 			  {
-				  SetHead(aVal->GetNext());
+				  SetHead((dynamic_cast< SLINK<ANYTYPE>* >(aVal))->GetNext());
 			  }
 			  else
 			  {
 				  tracker = GetHead();
 				  if(tracker)
 				  {
-					  while(tracker->GetNext())
+					  while((dynamic_cast< SLINK<ANYTYPE>* >(tracker))->GetNext())
 					  {
-						  if(tracker->GetNext() == aVal)
+						  if((dynamic_cast< SLINK<ANYTYPE>* >(tracker))->GetNext() == aVal)
 						  {
-							  tracker->SetNext(tracker->GetNext()->GetNext());
+                ANYTYPE* nextTrackerVal = (dynamic_cast< SLINK<ANYTYPE>* >(tracker))->GetNext();
+
+							  (dynamic_cast< SLINK<ANYTYPE>* >(tracker))->SetNext((dynamic_cast< SLINK<ANYTYPE>* >(nextTrackerVal))->GetNext());
 							  break;
 						  }
-						  tracker = tracker->GetNext();
+						  tracker = (dynamic_cast< SLINK<ANYTYPE>* >(tracker))->GetNext();
 					  }
 				  }
 			  }
-			  aVal->SetNext(NULL);
+			  (dynamic_cast< SLINK<ANYTYPE>* >(aVal))->SetNext(NULL);
 	    }
 
       virtual inline void ceefit_call_spec AddHead(ANYTYPE* aVal)

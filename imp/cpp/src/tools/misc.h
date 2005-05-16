@@ -45,7 +45,6 @@ namespace CEEFIT
       ceefit_init_spec VOIDTYPE(const VOIDTYPE&);
       VOIDTYPE& ceefit_call_spec operator=(const VOIDTYPE&);
   };
-};
 
 # ifdef _MSC_VER
     typedef __int64 INT64;
@@ -54,5 +53,6 @@ namespace CEEFIT
     typedef long long int INT64;
     typedef unsigned long long int UINT64;
 # endif
+};
 
 #endif // __TOOLS_MISC_H__

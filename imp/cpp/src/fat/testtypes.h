@@ -76,9 +76,11 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public FITFIELDBASE< CEEFIT
       return(FieldType);
     }
 
-    template<class U> inline CEEFIT::DYNARRAY<int>& ceefit_call_spec operator=(U& rValue)
+    template<class U> inline FITFIELD< CEEFIT::DYNARRAY<int> >& operator=(U& rValue)
     {
-      return(FITFIELDBASE< CEEFIT::DYNARRAY<int> >::operator=(rValue));
+      this->FITFIELDBASE< CEEFIT::DYNARRAY<int> >::operator=(rValue);
+
+      return(*this);
     }
 
     inline ceefit_init_spec FITFIELD< CEEFIT::DYNARRAY<int> >(void)
@@ -88,6 +90,8 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public FITFIELDBASE< CEEFIT
     virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::DYNARRAY<int> >(void)
     {
     }
+
+    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD< CEEFIT::DYNARRAY<int> >)); }
 
   private:
     FITFIELD< CEEFIT::DYNARRAY<int> >(const FITFIELD< CEEFIT::DYNARRAY<int> >&);  /**< not implemented, do not call. */
@@ -140,9 +144,11 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public FITFIELDBASE< CEEFI
       return(FieldType);
     }
 
-    template<class U> inline CEEFIT::DYNARRAY<bool>& ceefit_call_spec operator=(U& rValue)
+    template<class U> inline FITFIELD< CEEFIT::DYNARRAY<bool> >& operator=(U& rValue)
     {
-      return(FITFIELDBASE< CEEFIT::DYNARRAY<bool> >::operator=(rValue));
+      this->FITFIELDBASE< CEEFIT::DYNARRAY<bool> >::operator=(rValue);
+
+      return(*this);
     }
 
     inline ceefit_init_spec FITFIELD< CEEFIT::DYNARRAY<bool> >(void)
@@ -152,6 +158,8 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public FITFIELDBASE< CEEFI
     virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::DYNARRAY<bool> >(void)
     {
     }
+
+    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD< CEEFIT::DYNARRAY<bool> >)); }
 
   private:
     FITFIELD< CEEFIT::DYNARRAY<bool> >(const FITFIELD< CEEFIT::DYNARRAY<bool> >&);  /**< not implemented, do not call. */
@@ -201,9 +209,11 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public FITFIELDB
       return(FieldType);
     }
 
-    template<class U> inline CEEFIT::DYNARRAY<CEEFIT::STRING>& ceefit_call_spec operator=(U& rValue)
+    template<class U> inline FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >& operator=(U& rValue)
     {
-      return(FITFIELDBASE< CEEFIT::DYNARRAY<CEEFIT::STRING> >::operator=(rValue));
+      this->FITFIELDBASE< CEEFIT::DYNARRAY<CEEFIT::STRING> >::operator=(rValue);
+
+      return(*this);
     }
 
     inline ceefit_init_spec FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >(void)
@@ -213,6 +223,8 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public FITFIELDB
     virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >(void)
     {
     }
+
+    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >)); }
 
   private:
     FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >(const FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >&);  /**< not implemented, do not call. */

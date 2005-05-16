@@ -68,7 +68,7 @@ namespace CEEFAT
 		    STRING outputFileName(outDirName + "/" + fname + ext);
 		    try 
         {
-			    FILERUNNER runner;
+  			  FILERUNNER runner;
           DYNARRAY<STRING> args;
           args.Add("ReferenceFixture");
           args.Add("-CeeFIT");
@@ -79,7 +79,7 @@ namespace CEEFAT
 			    runner.Process();
 			    runner.Exit();
 			    
-			    PTR<FIXTURE::COUNTS> counts(runner.Fixture.CountsObj);
+			    PTR<COUNTS> counts(runner.Fixture.CountsObj);
 			    if ((counts->exceptions == 0) && (counts->wrong == 0)) 
           {
 				    return STRING("pass");
@@ -88,10 +88,6 @@ namespace CEEFAT
           {
 				    return STRING("fail: ") + counts->right + " right, " + counts->wrong + " wrong, " + counts->exceptions + " exceptions";
 			    }
-
-          //counts = (FIXTUREDATA::COUNTS*) NULL;
-          //runner.Fixture.FixtureData.Counts = (FIXTUREDATA::COUNTS*) NULL;
-          //delete runner;
 		    }
 		    catch (EXCEPTION* e) 
         {

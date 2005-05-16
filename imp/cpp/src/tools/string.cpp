@@ -715,6 +715,22 @@ namespace CEEFIT
     return(this->IsEqual(temp));
   }
 
+  int ceefit_call_spec STRING::GetHashCode(void) const
+  {
+    int retVal = 0;
+    int i = -1;
+    while(++i < this->Data.Array.GetSize())
+    {
+      if(this->Data.Array[i] == L'\0')
+      {
+        break;
+      }
+      retVal += this->Data.Array[i];
+    }
+
+    return(retVal);
+  }
+
   bool ceefit_call_spec STRING::EndsWith(const STRING& aString) const
   {
     int thisIndex = Length();
@@ -1016,7 +1032,7 @@ namespace CEEFIT
   {
     matchEnd = curBuf;    // we always match on zero or more
 
-    AssertIsTrue(patternBuf.IsEqual(".*"));   // this is a no frills matcher, must be .*
+    AssertIsTrue(patternBuf.IsEqual(".*?"));   // this is a no frills matcher, must be .*
 
     while(*curBuf != L'\0')
     {
@@ -1224,6 +1240,8 @@ namespace CEEFIT
     static STRING dollarSign("$");
     static STRING caret("^");
     static STRING slashEscape("\\");
+    static STRING dot(".");
+    static STRING dotStarQuestionMark(".*?");
 
     if(patternBuf.IsEqual(caret)) 
     {
@@ -1233,13 +1251,13 @@ namespace CEEFIT
     {
       return(RegexMatchEndOfLine(curBuf, patternBuf, matchEnd));
     }
-    else if(patternBuf.StartsWith(".")) 
+    else if(patternBuf.StartsWith(dot)) 
     {
-      if(patternBuf.IsEqual(".")) 
+      if(patternBuf.IsEqual(dot)) 
       {
         return(RegexMatchOneAnyNoNewline(curBuf, patternBuf, lookAheadPattern, matchEnd, dotAll));
       }
-      else if(patternBuf.IsEqual(".*")) 
+      else if(patternBuf.IsEqual(dotStarQuestionMark)) 
       {
         return(RegexMatchZeroOrMoreAnyNoNewline(curBuf, patternBuf, lookAheadPattern, matchEnd, dotAll));
       }

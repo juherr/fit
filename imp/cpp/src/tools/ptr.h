@@ -47,6 +47,9 @@ namespace CEEFIT
     public:
       virtual void AddRef(void)=0;
       virtual bool ReleaseRef(bool DoDestroy=true)=0;    
+      
+      // useful in debugging MANAGED types
+      virtual inline const type_info& GetTypeInfo(void) { return(typeid(MANAGED)); }
   };
 
 
@@ -138,6 +141,34 @@ namespace CEEFIT
 #    endif
 
       /**
+       * Constructor, initializes the PTR with a value, with optional addref, not for public use
+       */
+	    inline PTR<T>(VALUE<T>& aSPtr, bool addRef) 
+      {
+        if(addRef == true)
+        {
+  		    SetPointer(NULL);
+		      this->operator=(aSPtr);
+        }
+        else
+        {
+          SetPointer(aSPtr.Value);
+        }
+	    }
+
+      /**
+       * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
+       */
+	    inline PTR<T>& operator=(void* aValue) 
+      {
+        if(aValue != NULL)
+        {
+          throw new EXCEPTION("Expected a null pointer for operator=(void*)");
+        }
+        return(AssignRef(NULL));
+	    }
+
+      /**
        * Copy constructor, initializes the PTR with a pointer to some object
        */
 	    template<class U> explicit inline PTR(PTR<U>& aSmartPtr) 
@@ -153,9 +184,12 @@ namespace CEEFIT
       {
 		    if(ActualPointer) 
         {
-          MANAGED* managedPointer = ActualPointer;
-      
-          managedPointer->ReleaseRef();
+#         ifdef _DEBUG
+            bool pointerConsistencyCheck = (dynamic_cast<MANAGED*>(ActualPointer) != NULL && ActualPointer->GetTypeInfo() != typeid(MANAGED));
+            AssertIsTrue(pointerConsistencyCheck);
+#         endif
+
+          dynamic_cast<MANAGED*>(ActualPointer)->ReleaseRef();
           SetPointer(NULL);
 		    }
 	    }
@@ -241,12 +275,37 @@ namespace CEEFIT
 		    return(ActualPointer == aPtr);
 	    }
 
-      /**
-       * IsEqual returns true if the rvalue in the expression is equivalent to the pointer value stored in this PTR
-       */
-	    inline bool IsEqual(const T* aPtr) const 
+    private:
+      template<class U> bool ObjectIsEqual(U* aPtr)
       {
-		    return(ActualPointer == aPtr);
+        if(ActualPointer == NULL)
+        {
+          return(aPtr == NULL);
+        }
+        else
+        {
+          if(aPtr == NULL)
+          {
+            return(false);
+          }
+
+          return(::CEEFIT::IsEqual(*ActualPointer, *aPtr));
+        }
+      }
+
+    public:
+      /**
+       * IsEqual returns true if the rvalue in the expression is equivalent to the pointer value stored in this PTR, in addition,
+       * the actual objects are compared
+       */
+	    inline bool IsEqual(T* aPtr)
+      {
+		    return(ActualPointer == aPtr || ObjectIsEqual(aPtr));
+	    }
+
+	    template<class U> inline bool IsEqual(PTR<U>& aPtr)
+      {
+		    return(ActualPointer == aPtr || ObjectIsEqual(aPtr->GetPointer()));
 	    }
 
       /**
@@ -258,13 +317,31 @@ namespace CEEFIT
 	    }
 
       /**
-       * NotEqual returns true if the rvalue in the expression is not equivalent to the pointer value stored in this PTR
+       * NotEqual returns true if the rvalue in the expression is not equivalent to the pointer value stored in this PTR, in addition,
+       * the actual objects are compared
        */
-	    inline bool IsNotEqual(const T* aPtr) const 
+	    inline bool IsNotEqual(T* aPtr)
       {
-		    return(ActualPointer != aPtr);
+		    return(ActualPointer != aPtr && !ObjectIsEqual(aPtr));
 	    }
 
+	    template<class U> inline bool IsNotEqual(PTR<U>& aPtr)
+      {
+		    return(ActualPointer != aPtr && !ObjectIsEqual(aPtr->GetPointer()));
+	    }
+
+      inline int GetHashCode(void)
+      {
+        if(ActualPointer == NULL)
+        {
+          return(0);
+        }
+        else 
+        {
+          return(ActualPointer->GetHashCode());
+        }
+      }
+        
       /**
        * operator-> returns the pointer that is stored in this PTR
        */
@@ -287,6 +364,36 @@ namespace CEEFIT
           throw new EXCEPTION("Null pointer detected in operator->");
         }
 		    return(ActualPointer); 
+	    }
+
+      /**
+       * <p>operator* returns a reference to the object that is stored in this PTR.</p>
+       *
+       * <p>It is an error to attempt to perform the operator* on a NULL PTR.</p>
+       */
+	    inline T& operator*(void) 
+      {
+        if(ActualPointer == NULL)
+        {
+          throw new EXCEPTION("NullPointerException in PTR::operator*");
+        }
+
+		    return(*ActualPointer); 
+	    }
+
+      /**
+       * <p>operator* returns a reference to the object that is stored in this PTR.</p>
+       *
+       * <p>It is an error to attempt to perform the operator* on a NULL PTR.</p>
+       */
+	    inline const T& operator*(void) const
+      {
+        if(ActualPointer == NULL)
+        {
+          throw new EXCEPTION("NullPointerException in PTR::operator*");
+        }
+
+		    return(*ActualPointer); 
 	    }
 
       /**
@@ -317,7 +424,11 @@ namespace CEEFIT
        * Force the managed pointer to be set to an object (or NULL) WITHOUT adding a ref to that object.
        */
 	    inline void SetPointer(T* aPointer) 
-      { 
+      {
+#       ifdef _DEBUG
+          AssertIsTrue(aPointer == NULL || dynamic_cast<MANAGED*>(aPointer) != NULL && aPointer->GetTypeInfo() != typeid(MANAGED));
+#       endif        
+
 		    ActualPointer = aPointer; 
 	    }
 
@@ -338,13 +449,17 @@ namespace CEEFIT
 	      }
 	      if(currentPtrRef) 
         {      
-          static_cast<MANAGED*>(currentPtrRef)->ReleaseRef(DoDestroy);
+          dynamic_cast<MANAGED*>(currentPtrRef)->ReleaseRef(DoDestroy);
           this->SetPointer(NULL);
 	      }
 	      if(aPointer) 
         {
           this->SetPointer(aPointer);
-          static_cast<MANAGED*>(aPointer)->AddRef();
+          MANAGED* aManaged = dynamic_cast<MANAGED*>(aPointer);
+          
+          AssertNotNull(aManaged);
+
+          aManaged->AddRef();
 	      }
 
 	      return(*this);

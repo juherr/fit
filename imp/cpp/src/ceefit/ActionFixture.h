@@ -53,10 +53,10 @@ namespace CEEFIT
     protected:
       // Utility //////////////////////////////////
 
-      FITTESTBASE* ceefit_call_spec Method(int args);
-      FITTESTBASE* ceefit_call_spec Method(const STRING& test, int args);
+      virtual CELLADAPTER* ceefit_call_spec Method(int args);
+      virtual CELLADAPTER* ceefit_call_spec Method(const STRING& test, int args);
 
-      CELLADAPTER* ceefit_call_spec BindMethod(const STRING& name);
+      virtual VALUE<CELLADAPTER> ceefit_call_spec BindMethod(const STRING& name);
 
     protected:
       inline ACTIONFIXTURE& ceefit_call_spec operator=(const ACTIONFIXTURE&);

@@ -32,18 +32,18 @@ namespace CEEFIT
   FIXTURE* ACTIONFIXTURE::Actor = NULL;
 
   // copied from COLUMNFIXTURE
-  CELLADAPTER* ceefit_call_spec ACTIONFIXTURE::BindMethod(const STRING& name)
+  VALUE<CELLADAPTER> ceefit_call_spec ACTIONFIXTURE::BindMethod(const STRING& name)
   {
-    CELLADAPTER* aTest = TestList.GetHead();
+    PTR<CELLADAPTER> aTest(TestList.GetHead());
     while(aTest != NULL)
     {
       if(aTest->IsMethod() && aTest->GetName().IsEqual(name))
       {
-        return(aTest);
+        return(VALUE<CELLADAPTER>(aTest));
       }
       aTest = aTest->GetNext();
     }
-    return(NULL);
+    return(VALUE<CELLADAPTER>(NULL));
   }
 
   void ceefit_call_spec ACTIONFIXTURE::DoCells(PTR<PARSE>& cells) 
@@ -51,11 +51,13 @@ namespace CEEFIT
     Cells = cells;
     try 
     {
-      CELLADAPTER* aAction = BindMethod(Cells->Text());
+      PTR<CELLADAPTER> aAction(BindMethod(Cells->Text()));
 
       if(aAction != NULL)
       {
-        aAction->Invoke(this);
+        PTR<CELLADAPTER> result;
+
+        aAction->Invoke(result, this);
       }
       else 
       {
@@ -80,43 +82,48 @@ namespace CEEFIT
 
   void ceefit_call_spec ACTIONFIXTURE::Enter() 
   {
-    CELLADAPTER* aMethod = Method(1);
-    CELLADAPTER* aParamAdapter = dynamic_cast<FITTESTBASE*>(aMethod)->GetParameterAdapter(0);
+    PTR<CELLADAPTER> aMethod(Method(1));
+    PTR<CELLADAPTER> aParamAdapter;
+
+    dynamic_cast<FITTESTBASE*>(aMethod.GetPointer())->GetParameterAdapter(aParamAdapter, 0);
 
     STRING text(Cells->More->More->Text());
     aParamAdapter->WriteToFixtureVar(text);
 
-    aMethod->Invoke(Actor);   // the arg is stored internal to aMethod and will be passed to the member function of Actor
+    PTR<CELLADAPTER> result;
+    aMethod->Invoke(result, Actor);   // the arg is stored internal to aMethod and will be passed to the member function of Actor
   }
 
   void ceefit_call_spec ACTIONFIXTURE::Press() 
   {
-    Method(0)->Invoke(Actor);
+    PTR<CELLADAPTER> result;
+    Method(0)->Invoke(result, Actor);
   }
 
   void ceefit_call_spec ACTIONFIXTURE::Check() 
   {
-    CELLADAPTER* result = Method(0)->Invoke(Actor);
+    PTR<CELLADAPTER> result;
 
+    Method(0)->Invoke(result, Actor);
     FIXTURE::Check(Cells->More->More, result);
   }
 
   // Utility //////////////////////////////////
 
-  FITTESTBASE* ceefit_call_spec ACTIONFIXTURE::Method(int args) 
+  CELLADAPTER* ceefit_call_spec ACTIONFIXTURE::Method(int args) 
   {
     return Method(Camel(Cells->More->Text()), args);
   }
 
-  FITTESTBASE* ceefit_call_spec ACTIONFIXTURE::Method(const STRING& test, int args) 
+  CELLADAPTER* ceefit_call_spec ACTIONFIXTURE::Method(const STRING& test, int args) 
   {
     SLINKLIST<CELLADAPTER>& testList = Actor->TestList;
     FITTESTBASE* result = NULL;
-    CELLADAPTER* aAdapter = testList.GetHead();
+    PTR<CELLADAPTER> aAdapter(testList.GetHead());
 
     while(aAdapter != NULL)
     {
-      FITTESTBASE* testPtr = dynamic_cast<FITTESTBASE*>(aAdapter);
+      FITTESTBASE* testPtr = dynamic_cast<FITTESTBASE*>(aAdapter.GetPointer());
       if(aAdapter->GetName().IsEqual(test) && testPtr->GetParameterCount() == args)
       {
         if(result == NULL)

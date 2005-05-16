@@ -32,7 +32,7 @@ namespace CEEFIT
   {
     protected:
       bool HasExecuted;
-      DYNARRAY<CELLADAPTER*> ColumnBindings;
+      DYNARRAY< PTR<CELLADAPTER> > ColumnBindings;
 
     public:
       ceefit_init_spec COLUMNFIXTURE(void);
@@ -45,7 +45,7 @@ namespace CEEFIT
       virtual void ceefit_call_spec DoRow(PTR<PARSE>& row);
 
       virtual void ceefit_call_spec DoCell(PTR<PARSE>& cell, int column);
-      virtual void ceefit_call_spec Check(PTR<PARSE>& cell, CELLADAPTER* a);
+      virtual void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, FIXTURE* whichFixture=NULL);
 
       virtual void ceefit_call_spec Reset(void);
       virtual void ceefit_call_spec Execute(void);
@@ -54,12 +54,15 @@ namespace CEEFIT
       // Utility //////////////////////////////////
       virtual void ceefit_call_spec Bind(PTR<PARSE>& heads);
 
-      virtual CELLADAPTER* ceefit_call_spec BindMethod(const STRING& name);
-      virtual CELLADAPTER* ceefit_call_spec BindField(const STRING& name);
+      virtual VALUE<CELLADAPTER> ceefit_call_spec BindMethod(const STRING& name);
+      virtual VALUE<CELLADAPTER> ceefit_call_spec BindField(const STRING& name);
+
+      // helpers for DoTables required by CeeFIT
+      virtual void ceefit_call_spec DeleteFixture(EXCEPTION*& exceptionThrown);
 
     protected:
-      COLUMNFIXTURE& ceefit_call_spec operator=(const COLUMNFIXTURE&);
-      ceefit_init_spec COLUMNFIXTURE(const COLUMNFIXTURE&);
+      COLUMNFIXTURE& ceefit_call_spec operator=(COLUMNFIXTURE&);
+      ceefit_init_spec COLUMNFIXTURE(COLUMNFIXTURE&);
   };
 
 };

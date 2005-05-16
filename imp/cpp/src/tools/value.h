@@ -37,6 +37,8 @@ namespace CEEFIT
     protected:
       T* Value;
 
+      friend class PTR<T>;
+
     public:
       explicit inline VALUE<T>(T* aValue)
       {      
@@ -45,7 +47,7 @@ namespace CEEFIT
 
       template<class U> explicit inline VALUE<T>(VALUE<U>& aValueObj)
       {
-        Value = aValueObj.Value;
+        aValueObj.SetValue(Value);
       }
 /*
       template<class U> explicit inline VALUE<T>(U* aValue)
@@ -116,6 +118,11 @@ namespace CEEFIT
       template<class U> inline void AtomicSetPtr(U& aPtrTarget) 
       {
         aPtrTarget.AtomicSet(Value);
+      }
+
+      template<class U> inline void SetValue(U*& aValue) 
+      {
+        aValue = dynamic_cast<U*>(Value);
       }
 
     private:

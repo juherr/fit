@@ -86,6 +86,8 @@ namespace CEEFIT
       ceefit_init_spec PARSE(const STRING& text);
       ceefit_init_spec PARSE(const STRING& text, const DYNARRAY<STRING>& tags);
 
+      virtual inline const type_info& GetTypeInfo(void) { return(typeid(PARSE)); }
+
     protected:
       ceefit_init_spec PARSE(const PARSE&);
       PARSE& ceefit_call_spec operator=(const PARSE&);

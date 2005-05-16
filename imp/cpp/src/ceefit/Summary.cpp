@@ -51,9 +51,9 @@ namespace CEEFIT
       void Mark(PTR<PARSE>& row)
       {
         // mark summary good/bad without counting beyond here
-        PTR<FIXTURE::COUNTS> official(CountsObj);
+        PTR<COUNTS> official(CountsObj);
 
-        CountsObj = new FIXTURE::COUNTS();
+        CountsObj = new COUNTS();
         PTR<PARSE> cell(row->Parts->More);
         if (official->wrong + official->exceptions > 0)
         {

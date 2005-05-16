@@ -30,52 +30,6 @@ namespace CEEFIT
 
   class FIXTURE;
 
-  /**
-   * <p>This class is an attempt to simulate a lot of what the Java Fit's TypeAdapter class does.</p>
-   *
-   * <p>I like to think of this class as the "HTML Table Cell Type/Field/Method Adapter" because cells
-   * in Fit tables can be either fields or return values to match with method calls.</p>
-   */
-  class CELLADAPTER : public SLINK< CELLADAPTER >
-  {
-    public:
-      virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in)=0;
-      virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out)=0;
-
-      virtual void ceefit_call_spec SetName(const CEEFIT::STRING& aName)=0;
-      virtual const CEEFIT::STRING& ceefit_call_spec GetName(void) const=0;
-
-      /**
-       * <p>This returns a unique string per each type, specified by the developer.</p>
-       *
-       * <p>If the cell is a function type, then the string returned is the type of the return value for the function.</p>
-       */
-      virtual const CEEFIT::STRING& ceefit_call_spec GetType(void) const=0;
-
-      virtual bool ceefit_call_spec IsMethod(void) const=0;
-      virtual bool ceefit_call_spec IsField(void) const=0;
-
-      /**
-       * <p>Creates a new instance of the CELLADAPTER type
-       */
-      virtual CELLADAPTER* ceefit_call_spec NewInstanceParse(const CEEFIT::STRING& aText)=0;
-
-      /**
-       * <p>Invoke test fixture method, only function-type cells can be invoked</p>
-       *
-       * @returns CELLADAPTER* Containing the return value from the fixture test method call.  This CELLADAPTER* is allocated from the
-       *                       heap and must be free'd by the caller.
-       */
-      virtual CELLADAPTER* ceefit_call_spec Invoke(FIXTURE* aFixture)=0;
-      
-      inline ceefit_init_spec CELLADAPTER(void) {}
-      virtual inline ceefit_init_spec ~CELLADAPTER(void) {}
-
-    protected:
-      inline ceefit_init_spec CELLADAPTER(CELLADAPTER&);     /**< not implemented, do not call. */
-      inline CELLADAPTER& ceefit_call_spec operator=(const CELLADAPTER&);   /**< not implemented, do not call. */
-  };
-
   extern void ceefit_call_spec LinkFieldToCurrentFixture(CELLADAPTER* newField);
 
   extern void ceefit_call_spec SetLastLinkedTestName(const char* aName);
@@ -169,8 +123,8 @@ namespace CEEFIT
       static SLINKLIST<CELLADAPTER>* ceefit_call_spec GetCurrentTestList(void);
       static SLINKLIST<CELLADAPTER>* ceefit_call_spec GetCurrentFieldList(void);
 
-      static CELLADAPTER* ceefit_call_spec GetLastRegisteredField(void);
-      static CELLADAPTER* ceefit_call_spec GetLastRegisteredTest(void);
+      static VALUE<CELLADAPTER> ceefit_call_spec GetLastRegisteredField(void);
+      static VALUE<CELLADAPTER> ceefit_call_spec GetLastRegisteredTest(void);
 
       static void ceefit_call_spec SetCurrentFixtureUnderConstruction(FIXTURE* aFixture);
       static FIXTURE* ceefit_call_spec GetCurrentFixtureUnderConstruction(void);
@@ -251,159 +205,93 @@ namespace CEEFIT
        */
       REGISTERFIXTURECLASS<T>(const REGISTERFIXTURECLASS<T>&);
   };
+
 };
 
-
-template<class T> class FITFIELDBASE : public CEEFIT::CELLADAPTER
+/**
+ * <p>Special one-off CELLADAPTER that simply contains and exposes a FIXTURE object</p>
+ *
+ * <p>Currently only used by RowFixture.</p>
+ */
+class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
 {
-  protected:
-    mutable T* Field;
-    mutable bool DestroyField;      /**< Sometimes we refer to an external Field, sometimes we refer to an internal one (which must be destroyed) */
-    CEEFIT::STRING Name;
+  private:
+    class CEEFIT::FIXTURE* Fixture;
 
   public:
-    inline ceefit_init_spec FITFIELDBASE<T>(void)
+    virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in)
     {
-      Field = NULL;
-      DestroyField = false;
-      CEEFIT::LinkFieldToCurrentFixture(this);                    // the new FIXTURE will be located and this will be added to it
+      throw new CEEFIT::EXCEPTION("Cannot WriteToFixtureVar on FITFIXTURECONTAINER CELLADAPTER");
     }
 
-    virtual inline ~FITFIELDBASE<T>(void)
+    virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out)
     {
-      if(DestroyField)
-      {
-        delete Field;
-      }
+      throw new CEEFIT::EXCEPTION("Cannot ReadFromFixtureVar on FITFIXTURECONTAINER CELLADAPTER");
     }
 
-    inline void ceefit_call_spec SetName(const CEEFIT::STRING& aName)
+    virtual void ceefit_call_spec SetName(const CEEFIT::STRING& aName)
     {
-      Name = aName;
+      throw new CEEFIT::EXCEPTION("Cannot SetName on FITFIXTURECONTAINER CELLADAPTER");
     }
 
-    inline const CEEFIT::STRING& ceefit_call_spec GetName(void) const
+    virtual const CEEFIT::STRING& ceefit_call_spec GetName(void) const
     {
-      return(Name);
+      throw new CEEFIT::EXCEPTION("Cannot GetName on FITFIXTURECONTAINER CELLADAPTER");
     }
 
-    virtual const CEEFIT::STRING& ceefit_call_spec GetType(void) const=0;
+    virtual const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    {
+      throw new CEEFIT::EXCEPTION("Cannot GetType on FITFIXTURECONTAINER CELLADAPTER");
+    }
 
-    virtual inline bool ceefit_call_spec IsMethod(void) const
+    virtual bool ceefit_call_spec IsMethod(void) const
+    {
+      throw new CEEFIT::EXCEPTION("Cannot IsMethod on FITFIXTURECONTAINER CELLADAPTER");
+    }
+
+    virtual bool ceefit_call_spec IsField(void) const
+    {
+      throw new CEEFIT::EXCEPTION("Cannot IsField on FITFIXTURECONTAINER CELLADAPTER");
+    }
+
+    virtual void ceefit_call_spec NewInstanceParse(::CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, const CEEFIT::STRING& aText)
+    {
+      throw new CEEFIT::EXCEPTION("Cannot NewInstanceParse on FITFIXTURECONTAINER CELLADAPTER");
+    }
+
+    virtual void ceefit_call_spec Invoke(::CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, CEEFIT::FIXTURE* aFixture)
+    {
+      throw new CEEFIT::EXCEPTION("Cannot Invoke on FITFIXTURECONTAINER CELLADAPTER");
+    }
+    
+    inline ceefit_init_spec FITFIXTURECONTAINER(CEEFIT::FIXTURE* aFixture) 
+    {
+      Fixture = aFixture;
+    }
+
+    virtual inline ceefit_init_spec ~FITFIXTURECONTAINER(void) {}
+
+    virtual int ceefit_call_spec GetHashCode(void)
+    {
+      return(0);
+    }
+
+    virtual bool ceefit_call_spec IsEqual(const CEEFIT::CELLADAPTER* aAdapter) const
     {
       return(false);
     }
 
-    virtual inline bool ceefit_call_spec IsField(void) const
+    virtual CEEFIT::FIXTURE* GetFixture(void)
     {
-      return(true);
+      return(Fixture);
     }
 
-    inline void ceefit_call_spec SetFieldPointer(T* aField)
-    {
-      if(Field != NULL && DestroyField == true) 
-      {
-        delete Field;
-        Field = NULL;
-        DestroyField = false;
-      }
-      Field = aField;
-    }
-
-    inline T& ceefit_call_spec GetField(void)
-    {
-      if(Field == NULL)
-      {
-        Field = new T;
-        DestroyField = true;
-      }
-
-      return(*Field);
-    }
-
-    inline const T& ceefit_call_spec GetField(void) const
-    {
-      if(Field == NULL)
-      {
-        Field = new T;
-        DestroyField = true;
-      }
-
-      return(*Field);
-    }
-
-    virtual CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
-    {
-      throw new CEEFIT::EXCEPTION("You may not call Invoke on a Field-type cell");
-    }
-
-    inline ceefit_call_spec operator T&(void)
-    {
-      return(GetField());
-    }
-
-    inline ceefit_call_spec operator const T&(void) const
-    {
-      return(GetField());
-    }
-
-    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec NewInstanceParse(const CEEFIT::STRING& aText);
-
-  private:
-    template<class U> class RVAL
-    {
-      public:
-        static inline T ceefit_call_spec Resolve(U& rValue)
-        {
-          return((T) rValue);
-        }
-    };
-
-    template<class U> class RVAL< FITFIELDBASE<U> >
-    {
-      public:
-        static inline U& ceefit_call_spec Resolve(FITFIELDBASE<U>& rValue)
-        {
-          return(*(rValue.Field));
-        }
-    };
-
-  public:
-    template<class U> inline T& ceefit_call_spec operator=(U& rValue) { return(GetField() = RVAL<U>::Resolve(rValue)); }
-
-    template<class U> inline T ceefit_call_spec operator+(U& rValue) { return(GetField() + RVAL<U>::Resolve(rValue)); }
-    template<class U> inline T ceefit_call_spec operator-(U& rValue) { return(GetField() - RVAL<U>::Resolve(rValue)); }
-    template<class U> inline T ceefit_call_spec operator*(U& rValue) { return(GetField() * RVAL<U>::Resolve(rValue)); }
-    template<class U> inline T ceefit_call_spec operator/(U& rValue) { return(GetField() / RVAL<U>::Resolve(rValue)); }
-    template<class U> inline T ceefit_call_spec operator%(U& rValue) { return(GetField() % RVAL<U>::Resolve(rValue)); }
-
-    template<class U> inline T& ceefit_call_spec operator+=(U& rValue) { return(GetField() += RVAL<U>::Resolve(rValue)); }
-    template<class U> inline T& ceefit_call_spec operator-=(U& rValue) { return(GetField() -= RVAL<U>::Resolve(rValue)); }
-    template<class U> inline T& ceefit_call_spec operator*=(U& rValue) { return(GetField() *= RVAL<U>::Resolve(rValue)); }
-    template<class U> inline T& ceefit_call_spec operator/=(U& rValue) { return(GetField() /= RVAL<U>::Resolve(rValue)); }
-    template<class U> inline T& ceefit_call_spec operator%=(U& rValue) { return(GetField() %= RVAL<U>::Resolve(rValue)); }
-
-    template<class U> inline bool ceefit_call_spec operator==(U& rValue) { return(GetField() == (T) rValue); }
-    template<class U> inline bool ceefit_call_spec operator!=(U& rValue) { return(GetField() != (T) rValue); }
-
-    inline T& ceefit_call_spec operator*(int) { return(*GetField()); }
-    inline const T& ceefit_call_spec operator*(int) const { return(*GetField()); }
-
-    inline void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in)
-    {
-      this->Parse(GetField(), in);
-    }
-
-    inline void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out)
-    {
-      this->ToString(out, GetField());
-    }
-
-    virtual void ceefit_call_spec ToString(CEEFIT::STRING& out, const T& in)=0;
-    virtual bool ceefit_call_spec Parse(T& out, const CEEFIT::STRING& in)=0;
+    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIXTURECONTAINER)); }
 
   protected:
-    ceefit_init_spec FITFIELDBASE<T>(FITFIELDBASE<T>&);  /**< not implemented, do not call */
+    inline ceefit_init_spec FITFIXTURECONTAINER(void); /**< not implemented, do not call.*/
+    inline ceefit_init_spec FITFIXTURECONTAINER(FITFIXTURECONTAINER&);     /**< not implemented, do not call. */
+    inline FITFIXTURECONTAINER& ceefit_call_spec operator=(const FITFIXTURECONTAINER&);   /**< not implemented, do not call. */
 };
 
 #endif // __CEEFIT_REGISTERSTATIC_H__

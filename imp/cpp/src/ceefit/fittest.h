@@ -25,64 +25,78 @@
  * @author David Woldrich
  */
 
-class FITTESTBASE : public CEEFIT::CELLADAPTER
+namespace CEEFIT
 {
-  protected:
-    CEEFIT::STRING Name;
+  class FITTESTBASE : public CELLADAPTER
+  {
+    protected:
+      CEEFIT::STRING Name;
 
-  public:
-    ceefit_init_spec FITTESTBASE(void);
-    virtual ceefit_init_spec ~FITTESTBASE();
+    public:
+      ceefit_init_spec FITTESTBASE(void);
+      virtual ceefit_init_spec ~FITTESTBASE();
 
-    const CEEFIT::STRING& ceefit_call_spec GetName(void) const;
-    void ceefit_call_spec SetName(const CEEFIT::STRING& testName);
+      const CEEFIT::STRING& ceefit_call_spec GetName(void) const;
+      virtual void ceefit_call_spec SetName(const CEEFIT::STRING& testName);
 
-    virtual CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)=0;
+      virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, CEEFIT::FIXTURE* aFixture) { throw new CEEFIT::EXCEPTION("Invoke not implemented for this FITTEST"); }
 
-    virtual const CEEFIT::STRING& ceefit_call_spec GetType(void) const=0;
+      virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const { throw new CEEFIT::EXCEPTION("GetType not implemented for this FITTEST"); }
 
-    virtual CEEFIT::CELLADAPTER* ceefit_call_spec NewInstanceParse(const CEEFIT::STRING& aText);
+      virtual void ceefit_call_spec NewInstanceParse(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, const CEEFIT::STRING& aText);
 
-    void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING&);
-    void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING&);
+      virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING&);
+      virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING&);
 
-    inline bool ceefit_call_spec IsMethod(void) const
-    {
-      return(true);
-    }
+      virtual inline bool ceefit_call_spec IsMethod(void) const
+      {
+        return(true);
+      }
 
-    inline bool ceefit_call_spec IsField(void) const
-    {
-      return(false);
-    }
+      virtual inline bool ceefit_call_spec IsField(void) const
+      {
+        return(false);
+      }
 
-    virtual inline int GetParameterCount(void)
-    {
-      return(0);
-    }
+      virtual inline int GetParameterCount(void)
+      {
+        return(0);
+      }
 
-    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec GetParameterAdapter(int index)
-    {
-      throw new CEEFIT::EXCEPTION("GetParameterAdapter not implemented for this FITTEST");
-    }
+      virtual inline void ceefit_call_spec GetParameterAdapter(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, int index)
+      {
+        throw new CEEFIT::EXCEPTION("GetParameterAdapter not implemented for this FITTEST");
+      }
 
+      virtual inline int ceefit_call_spec GetHashCode(void)
+      { 
+        throw new CEEFIT::EXCEPTION("Cant get a hash code for methods yet");
+      }
+    
+      virtual inline bool ceefit_call_spec IsEqual(const ::CEEFIT::CELLADAPTER* aCell) const
+      { 
+        throw new CEEFIT::EXCEPTION("Cant test for equality for methods yet");
+      }
 
-  private:
-    /**
-     * Not implemented.  Do not call.
-     */
-    FITTESTBASE(const FITTESTBASE&);
+      virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITTESTBASE)); }
 
-    /**
-     * Not implemented.  Do not call.
-     */
-    FITTESTBASE& operator=(const FITTESTBASE&);
+    private:
+      /**
+       * Not implemented.  Do not call.
+       */
+      FITTESTBASE(const FITTESTBASE&);
+
+      /**
+       * Not implemented.  Do not call.
+       */
+      FITTESTBASE& operator=(const FITTESTBASE&);
+  };
 };
 
 /**
  * CeeFIT test registration used by macros
  */
-template<class T, class TESTCALLCLASS> class FITTEST_AUTO : public FITTESTBASE
+template<class T, class TESTCALLCLASS> class FITTEST_AUTO : public ::CEEFIT::FITTESTBASE
 {
   public:
     inline ceefit_init_spec FITTEST_AUTO<T, TESTCALLCLASS>(void)
@@ -94,7 +108,7 @@ template<class T, class TESTCALLCLASS> class FITTEST_AUTO : public FITTESTBASE
     {
     }
 
-    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
+    virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, CEEFIT::FIXTURE* aFixture)
     {
       FITFIELD<T>* retVal = new FITFIELD<T>();
 
@@ -119,7 +133,7 @@ template<class T, class TESTCALLCLASS> class FITTEST_AUTO : public FITTESTBASE
         throw;    // rethrow, hopefully ...
       }
 
-      return(retVal);
+      out = retVal;
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -128,6 +142,8 @@ template<class T, class TESTCALLCLASS> class FITTEST_AUTO : public FITTESTBASE
 
       return(typeField.GetType());
     }
+
+    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITTEST_AUTO<T, TESTCALLCLASS>)); }
 
   private:
     /**
@@ -182,7 +198,7 @@ namespace CEEFIT
       {
       }
 
-      template<class FIXTURETYPE> inline CELLADAPTER* ceefit_call_spec InvokeMethod(
+      template<class FIXTURETYPE> inline VALUE<CELLADAPTER> ceefit_call_spec InvokeMethod(
                                                                 FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector,
                                                                 const STRING& testName, 
                                                                 FIXTURE* aFixture, 
@@ -225,7 +241,7 @@ namespace CEEFIT
           throw;    // rethrow, hopefully ...
         }
 
-        return(retVal);
+        return(VALUE<CELLADAPTER>(retVal));
       }
   };
 
@@ -248,7 +264,7 @@ namespace CEEFIT
       {
       }
 
-      template<class FIXTURETYPE> inline CELLADAPTER* ceefit_call_spec InvokeMethod(
+      template<class FIXTURETYPE> inline VALUE<CELLADAPTER> ceefit_call_spec InvokeMethod(
                                                                        FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector,
                                                                        const STRING& testName, 
                                                                        FIXTURE* aFixture, 
@@ -291,12 +307,12 @@ namespace CEEFIT
           throw;    // rethrow, hopefully ...
         }
 
-        return(retVal);
+        return(VALUE<CELLADAPTER>(retVal));
       }
   };
 };
 
-template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public FITTESTBASE
+template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public ::CEEFIT::FITTESTBASE
 {
   private:
     RETURNTYPE (FIXTURETYPE::*FuncCall)(void);
@@ -311,12 +327,12 @@ template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public FITT
     {
     }
 
-    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
+    virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, CEEFIT::FIXTURE* aFixture)
     {
       CEEFIT::FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector = CEEFIT::FIXTURESELECTOR<FIXTURETYPE>::GetInstance();
       CEEFIT::METHODCALLER<RETURNTYPE>& methodCaller = CEEFIT::METHODCALLER<RETURNTYPE>::GetInstance();
 
-      return(methodCaller.InvokeMethod(fixtureSelector, this->GetName(), aFixture, (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(void)) FuncCall));
+      out = methodCaller.InvokeMethod(fixtureSelector, this->GetName(), aFixture, (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(void)) FuncCall);
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
@@ -326,20 +342,23 @@ template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public FITT
       return(typeField.GetType());
     }
 
+    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>)); }
+
   private:
     ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(void);
     ceefit_init_spec FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>(const FITTEST_MANUAL<FIXTURETYPE, RETURNTYPE>&);
 };
 
-template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_MANUAL : public FITTESTBASE
+template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_MANUAL : public ::CEEFIT::FITTESTBASE
 {
   private:
     RETURNTYPE (FIXTURETYPE::*FuncCall)(ARGTYPE);
-    FITFIELD<ARGTYPE> ParamField;
+    ::CEEFIT::PTR< ARGTYPE > ParamField;
 
   public:
     inline ceefit_init_spec FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>(RETURNTYPE (ceefit_call_spec FIXTURETYPE::*aFuncCall)(ARGTYPE))
     {
+      ParamField = new FITFIELD<ARGTYPE>();
       FuncCall = (RETURNTYPE (FIXTURETYPE::*)(ARGTYPE)) aFuncCall;
     }
 
@@ -352,17 +371,17 @@ template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_M
       return(1);
     }
 
-    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec GetParameterAdapter(int paramIndex)
+    virtual inline void ceefit_call_spec GetParameterAdapter(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, int paramIndex)
     {
       if(paramIndex != 0)
       {
         throw new CEEFIT::BOUNDSEXCEPTION("Only one parameter available");
       }
 
-      return(&ParamField);
+      out = ParamField.GetPointer();
     }
 
-    virtual inline CEEFIT::CELLADAPTER* ceefit_call_spec Invoke(CEEFIT::FIXTURE* aFixture)
+    virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, CEEFIT::FIXTURE* aFixture)
     {
       ::FITFIELD<RETURNTYPE>* retVal = new ::FITFIELD<RETURNTYPE>();
 
@@ -379,7 +398,7 @@ template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_M
         if(FuncCall != NULL) 
         {
           RETURNTYPE (ceefit_call_spec FIXTURETYPE::*cdeclCall)(ARGTYPE) = (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(ARGTYPE)) FuncCall
-          (*retVal) = (subclassPtr ->* cdeclCall)(ParamField.GetField());
+          (*retVal) = (subclassPtr ->* cdeclCall)(ParamField->GetField());
         }
         else
         {          
@@ -402,7 +421,7 @@ template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_M
         throw;    // rethrow, hopefully ...
       }
 
-      return(retVal);
+      out = retVal;
     }
 
     virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const

@@ -97,7 +97,7 @@ namespace CEEFIT
             retVal = fileRunner->Run(subList);
             delete fileRunner;
 
-            i += 2;
+            i += 2;   // the while loop increments i for a total of 3...
           }
         }
       }

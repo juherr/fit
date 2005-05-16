@@ -179,6 +179,7 @@ namespace CEEFIT
 
   ceefit_init_spec FILERUNNER::FILERUNNER()
   {
+    Output = NULL;
   }
 
   ceefit_init_spec FILERUNNER::~FILERUNNER()
@@ -221,23 +222,29 @@ namespace CEEFIT
     {
       if(Input.IndexOf("<wiki>") >= 0)
       {
-        DYNARRAY<STRING> stringArray;
+        static DYNARRAY<STRING> stringArray;
 
-        stringArray.Add("wiki");
-        stringArray.Add("table");
-        stringArray.Add("tr");
-        stringArray.Add("td");
+        if(stringArray.GetSize() == 0)      // done only once, the first time stringArray is used
+        {
+          stringArray.Add("wiki");
+          stringArray.Add("table");
+          stringArray.Add("tr");
+          stringArray.Add("td");
+        }
 
         Tables = new PARSE(Input, stringArray);
         Fixture.DoTables(Tables->Parts);
       }
       else
       {
-        DYNARRAY<STRING> stringArray;
+        static DYNARRAY<STRING> stringArray;
 
-        stringArray.Add("table");
-        stringArray.Add("tr");
-        stringArray.Add("td");
+        if(stringArray.GetSize() == 0)      // done only once, the first time stringArray is used
+        {
+          stringArray.Add("table");
+          stringArray.Add("tr");
+          stringArray.Add("td");
+        }
 
         Tables = new PARSE(Input, stringArray);
         Fixture.DoTables(Tables);

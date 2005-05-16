@@ -164,4 +164,9 @@ namespace CEEFIT
   {
     return((int) Value);
   }
+
+  int ceefit_call_spec SCIENTIFICDOUBLE::GetHashCode(void) const
+  {
+    return((int) FloatValue());
+  }
 };
