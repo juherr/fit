@@ -22,44 +22,39 @@
 
 #include "ceefit.h"
 
-namespace CEEFIT
+declare_fit_module(FatTextToHtmlFixture);
+
+using namespace CEEFIT;
+
+namespace CEEFAT
 {
-  ceefit_init_spec FAILURE::FAILURE()
-  {
-  }
+  begin_fit_fixture(FAT_TEXTTOHTMLFIXTURE, COLUMNFIXTURE, fat.TextToHtmlFixture)
 
-  ceefit_init_spec FAILURE::~FAILURE()
-  {
-  }
+    public:
+      fit_var(STRING, Text);
+	    
+    private:
+	    STRING UnescapeAscii(const STRING& text) 
+      {
+        STRING temp(text);
+		    temp = temp.SimplePatternReplaceAll("\\n", "\n");
+		    temp = temp.SimplePatternReplaceAll("\\r", "\r");
+		    return(temp);
+	    }
+	    
+	    STRING GenerateOutput(PTR<PARSE>& parse) 
+      {
+        STRINGWRITER result;
+		    parse->Print(&result);
+		    return(result.ToString());
+	    }
 
-  STRING& ceefit_call_spec FAILURE::GetReason()
-  {
-    return(Reason);
-  }
+    public:
+	    fit_test(HTML, STRING) 
+      {
+		    Text = UnescapeAscii(Text);
+        return(this->FIXTURE::Escape(Text));
+	    }
 
-  ceefit_init_spec FITASSERTIONFAILED::FITASSERTIONFAILED(const char* aFile, int aLineNumber)
-  {
-    Reason = STRING("Assertion failed");
-    if(aLineNumber > 0)
-    {
-      Reason += STRING(": ") + aFile + "(" + aLineNumber + ")";
-    }
-  }
-
-  ceefit_init_spec FITASSERTIONFAILED::~FITASSERTIONFAILED()
-  {
-  }
-
-  ceefit_init_spec FITFAILED::FITFAILED(const char* aFile, int aLineNumber)
-  {
-    Reason = STRING("Failed");
-    if(aLineNumber > 0)
-    {
-      Reason += STRING(": ") + aFile + "(" + aLineNumber + ")";
-    }
-  }
-
-  ceefit_init_spec FITFAILED::~FITFAILED()
-  {
-  }
+  end_fit_fixture(FAT_TEXTTOHTMLFIXTURE)
 };

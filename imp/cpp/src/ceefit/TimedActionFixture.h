@@ -1,3 +1,8 @@
+#ifndef __CEEFIT_TIMEDACTIONFIXTURE_H__
+#define __CEEFIT_TIMEDACTIONFIXTURE_H__
+
+#include "ceefit/mandatory.h"
+
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -20,46 +25,23 @@
  * @author David Woldrich
  */
 
-#include "ceefit.h"
-
 namespace CEEFIT
 {
-  ceefit_init_spec FAILURE::FAILURE()
+  class TIMEDACTIONFIXTURE : public ACTIONFIXTURE 
   {
-  }
+    public:
+      //public DateFormat format = new SimpleDateFormat("hh:mm:ss");
 
-  ceefit_init_spec FAILURE::~FAILURE()
-  {
-  }
+      // Traversal ////////////////////////////////
 
-  STRING& ceefit_call_spec FAILURE::GetReason()
-  {
-    return(Reason);
-  }
+      virtual void ceefit_call_spec DoTable(PTR<PARSE>& table);
+      virtual void ceefit_call_spec DoCells(PTR<PARSE>& cells);
 
-  ceefit_init_spec FITASSERTIONFAILED::FITASSERTIONFAILED(const char* aFile, int aLineNumber)
-  {
-    Reason = STRING("Assertion failed");
-    if(aLineNumber > 0)
-    {
-      Reason += STRING(": ") + aFile + "(" + aLineNumber + ")";
-    }
-  }
+      // Utility //////////////////////////////////
 
-  ceefit_init_spec FITASSERTIONFAILED::~FITASSERTIONFAILED()
-  {
-  }
-
-  ceefit_init_spec FITFAILED::FITFAILED(const char* aFile, int aLineNumber)
-  {
-    Reason = STRING("Failed");
-    if(aLineNumber > 0)
-    {
-      Reason += STRING(": ") + aFile + "(" + aLineNumber + ")";
-    }
-  }
-
-  ceefit_init_spec FITFAILED::~FITFAILED()
-  {
-  }
+      virtual INT64 ceefit_call_spec Time(void);
+      virtual void ceefit_call_spec td(PTR<PARSE>& out, const STRING& body);
+  };
 };
+
+#endif // __CEEFIT_TIMEDACTIONFIXTURE_H__

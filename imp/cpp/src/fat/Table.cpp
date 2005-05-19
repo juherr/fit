@@ -20,7 +20,6 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 #include "fat/Table.h"
 
@@ -40,19 +39,27 @@ namespace CEEFAT
     FAT_TABLE::Table = new PARSE(STRING("table"), emptyString, rowCopy, nullParse);
 
     // evaluate the rest of the table like a runner
-    FIXTURE temp;
-    temp.DoTables(FAT_TABLE::Table);
-
-    //rows->More = rowCopy;     // overwrite so that we get the output
+    FIXTURE* temp = NULL;
+    try 
+    {
+      temp = new FIXTURE();
+      temp->DoTables(FAT_TABLE::Table);
+    }
+    catch(...)
+    {
+      if(temp != NULL)
+      {
+        delete temp;
+      }
+      throw;
+    }
   }
 
   VALUE<PARSE> ceefit_call_spec FAT_TABLE::Copy(PTR<PARSE>& tree)
   {
-    PARSE* nullParse = NULL;
-
     if(tree == NULL)
     {
-      return(VALUE<PARSE>(nullParse));
+      return(VALUE<PARSE>(NULL));
     }
     else
     {

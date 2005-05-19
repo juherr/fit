@@ -22,7 +22,6 @@
 
 #include <limits.h>
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 
 #define lengthof(a)       (sizeof(a) / sizeof((a)[0]))
@@ -321,6 +320,7 @@ namespace CEEFIT
     pPatternArray.Add("<");
     pPatternArray.Add(STRING(RegexSpaceCharacters) + "*");
     pPatternArray.Add("p");
+    pPatternArray.Add(STRING(RegexSpaceCharacters) + "+??");
     pPatternArray.Add(".*?");
     pPatternArray.Add(">");
 		temp = temp.ArrayRegexPatternReplaceAll(pPatternArray, "<br />", true);  // was    		s = s.replaceAll("<\\s*/\\s*p\\s*>\\s*<\\s*p( .*?)?>", "<br />");

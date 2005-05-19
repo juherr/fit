@@ -20,7 +20,6 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 
 declare_fit_module(FatFixtureNameFixture);
@@ -29,144 +28,84 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
+  static const char* RegexSpaceCharacters = "[ \t\n\x0B\f\r]";
 
   begin_fit_fixture(FAT_FIXTURENAMEFIXTURE, COLUMNFIXTURE, fat.FixtureNameFixture)
   
     public:
-      fit_var(STRING, Table);
+	    fit_var(STRING, Table);
 
-/*
-    private:  
-      STRING DumpCells(PTR<PARSE>& cell) 
-      {
-		    PTR<PARSE> temp(cell);
-        STRING result;
-		    STRING separator;
-		    
-        while(temp != NULL) 
-        {
-			    result += separator;
-			    result += STRING("[") + temp->Text() + "]";
-			    separator = " ";
-			    temp = temp->More;
-		    }
-		    return(result);
-	    }
-
-	    STRING DumpRows(PTR<PARSE>& row) 
-      {
-        PTR<PARSE> temp(row);
-		    STRING result;
-		    STRING separator;
-
-		    while(temp != NULL) 
-        {
-			    result += separator;
-			    result += DumpCells(temp->Parts);
-			    separator = "\n";
-			    temp = temp->More;
-		    }
-		    return(result);
-	    }
-
-	    STRING DumpTables(PTR<PARSE>& table) 
-      {
-        PTR<PARSE> temp(table);
-		    STRING result;
-		    STRING separator;
-
-		    while(temp != NULL) 
-        {
-			    result += separator;
-			    result += DumpRows(temp->Parts);
-			    separator = "\n----\n";
-			    temp = temp->More;
-		    }
-		    return(result);
-	    }
-	  
+    private:
 	    VALUE<PARSE> GenerateTableParse(const STRING& table) 
       {
-        DYNARRAY<STRING> rows;
-		    table.Split(rows, "\n");
-		    
-        STRING nullString;
-        PTR<PARSE> rowParses(GenerateRowParses(rows, 0));
-        PTR<PARSE> nullPtr;
-        return(VALUE<PARSE>(new PARSE(STRING("table"), nullString, rowParses, nullPtr)));
+        DYNARRAY<STRING> patternStrArray;
+        patternStrArray.Add(STRING("\n"));
+
+        DYNARRAY<STRING> output;
+        table.ArrayRegexPatternSplit(output, patternStrArray, false);
+
+        PTR<PARSE> temp(GenerateRowParses(output, 0));
+		    PTR<PARSE> nullPtr;
+        return(VALUE<PARSE>(new PARSE(STRING("table"), STRING(""), temp, nullPtr)));
 	    }
 
-	    VALUE<PARSE> GenerateRowParses(DYNARRAY<STRING>& rows, int rowIndex) 
-      {
-		    if (rowIndex >= rows.GetSize()) 
-        {
-          return VALUE<PARSE>(NULL);
-        }
-		    
-        DYNARRAY<STRING> temp;
-        DYNARRAY<STRING> cells;
-        rows[rowIndex].CapturingGroups(temp, "\\[(.*?)\\]");
-            
-        if(temp.GetSize() == 1)
-        {
-          cells.Reserve(temp.GetSize());
-        }
-        else
-        {
-          cells.Reserve(temp.GetSize()-1);
-        }
-
-		    for (int i = 0; i < temp.GetSize(); i++) 
-        {
-          if((i + 1) < temp.GetSize())
-          {
-			      cells[i] = temp[i + 1];     // don't copy the 0 group
-          }
-		    }
-		    
-        STRING nullString;
-        PTR<PARSE> cellParses(GenerateCellParses(cells, 0));
-        PTR<PARSE> rowParses(GenerateRowParses(rows, rowIndex+1));
-		    
-        return(VALUE<PARSE>(new PARSE(STRING("tr"), nullString, cellParses, rowParses)));
-	    }		
-
-	    VALUE<PARSE> GenerateCellParses(DYNARRAY<STRING>& cells, int cellIndex) 
+	    VALUE<PARSE> GenerateCellParses(const DYNARRAY<STRING>& cells, int cellIndex) 
       {
 		    if (cellIndex >= cells.GetSize()) 
         {
           return(VALUE<PARSE>(NULL));
         }
-
-        PTR<PARSE> nullParse;		  
-        PTR<PARSE> cellParses(GenerateCellParses(cells, cellIndex + 1));		  
-		    return(VALUE<PARSE>(new PARSE(STRING("td"), cells[cellIndex], nullParse, cellParses)));
+		    
+        PTR<PARSE> cellParses(GenerateCellParses(cells, cellIndex + 1));
+        PTR<PARSE> nullParse;
+		    return(VALUE<PARSE>(new PARSE("td", cells[cellIndex], nullParse, cellParses)));
 	    }
     
+	    VALUE<PARSE> GenerateRowParses(const DYNARRAY<STRING>& rows, int rowIndex) 
+      {
+		    if (rowIndex >= rows.GetSize()) 
+        {
+          return(VALUE<PARSE>(NULL));
+        }
+
+        DYNARRAY<STRING> patternStrArray;
+        patternStrArray.Add(STRING("\\]"));
+        patternStrArray.Add(STRING(RegexSpaceCharacters) + "*");
+        patternStrArray.Add(STRING("\\["));
+        
+		    DYNARRAY<STRING> cells;
+        rows[rowIndex].ArrayRegexPatternSplit(cells, patternStrArray, false);
+
+		    if (cells.GetSize() != 0) 
+        {
+          cells[0] = cells[0].Substring(1); // strip beginning '['
+			    int lastCell = cells.GetSize() - 1;
+
+          DYNARRAY<STRING> patternStrArray2;
+          patternStrArray2.Add(STRING("\\]"));
+          patternStrArray2.Add(STRING("$"));
+          cells[lastCell] = cells[lastCell].ArrayRegexPatternReplaceAll(patternStrArray2, "");  // strip ending ']' 
+		    }
+		    
+        PTR<PARSE> cellParses(GenerateCellParses(cells, 0));
+        PTR<PARSE> rowParses(GenerateRowParses(rows, rowIndex+1));
+        return(VALUE<PARSE>(new PARSE("tr", STRING(""), cellParses, rowParses)));
+	    }		
+
     public:
-*/
       fit_test(FixtureName, STRING)
       {
-/*
-		    PTR<PARSE> tableParse(GenerateTableParse(Table));
+		    PTR<PARSE> tableParse(GenerateTableParse(Table));		    
+        PTR<PARSE> fixtureNameParse(this->COLUMNFIXTURE::FixtureName(tableParse));
 
-        STRING retVal = DumpTables(tableParse);
-		    
-        return retVal;
-*/
-		    return("not implemented");
-      }
-
-	    fit_test(ValidFixture, STRING) 
-      {
-		    return("not implemented");
-	    }
+        STRING result(fixtureNameParse->Text());
+		    if (result.IsEqual("")) 
+        {
+          return STRING("(missing)");
+        }
+		    return result;
+	    }	
 	    
-	    fit_test(Error, STRING) 
-      {
-		    return("not implemented");
-	    }
-	    
-  end_fit_fixture(FAT_FIXTURENAMEFIXTURE);
+  end_fit_fixture(FAT_FIXTURENAMEFIXTURE)
 
 };

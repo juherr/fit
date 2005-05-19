@@ -1,8 +1,6 @@
 #ifndef __TOOLS_EXCEPTION_H__
 #define __TOOLS_EXCEPTION_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -24,6 +22,8 @@
  *
  * @author David Woldrich
  */
+
+#include "ceefit/mandatory.h"
 
 namespace CEEFIT
 {
@@ -163,19 +163,14 @@ namespace CEEFIT
     }
   }
 
-  inline void ceefit_init_spec AssertIsTrue(bool aExpr) 
-  {
-    if(aExpr != true)
-    {
-#     ifdef _DEBUG
-#       ifdef WIN32
-          DebugBreak();
-#       endif        
-#     endif
-      throw new EXCEPTION("AssertIsTrue failed");
-    }
-  }
+  extern void ceefit_init_spec AssertIsTrueImpl(bool aExpr);
 
+  template<class ANYTYPE> inline void ceefit_init_spec AssertIsTrue(const ANYTYPE& aExpr)
+  {
+    bool aValue = !!aExpr;
+
+    AssertIsTrueImpl(aValue);
+  }
 };
 
 #endif // __TOOLS_EXCEPTION_H__

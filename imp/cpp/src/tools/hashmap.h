@@ -141,8 +141,8 @@ namespace CEEFIT
   class HASHMAPNODEBASE : public REFCOUNTED
   {
     public:
-      inline HASHMAPNODEBASE(VOID) {}
-      virtual inline ~HASHMAPNODEBASE(VOID) {}
+      inline HASHMAPNODEBASE(void) {}
+      virtual inline ~HASHMAPNODEBASE(void) {}
       inline HASHMAPNODEBASE(const HASHMAPNODEBASE&) {}
       HASHMAPNODEBASE& operator=(const HASHMAPNODEBASE&) { return(*this); }
 
@@ -160,7 +160,7 @@ namespace CEEFIT
           ANYTYPE Value;
 
         public:
-          virtual inline ~NODE(VOID) {}
+          virtual inline ~NODE(void) {}
     
           template<class ANYTYPE2> NODE(ANYTYPE2& aValue) 
           { 
@@ -210,7 +210,7 @@ namespace CEEFIT
           }
 
         private:
-          NODE(VOID);
+          NODE(void);
           NODE(const NODE&);
       };
 
@@ -307,10 +307,10 @@ namespace CEEFIT
       HASHMAP<ANYTYPE, listsize>(const HASHMAP<ANYTYPE, listsize>& aHash);
 
     public:
-      inline HASHMAP<ANYTYPE, listsize>(VOID) {}
-      inline ~HASHMAP<ANYTYPE, listsize>(VOID) {}
+      inline HASHMAP<ANYTYPE, listsize>(void) {}
+      inline ~HASHMAP<ANYTYPE, listsize>(void) {}
   
-      inline VOID Reset(VOID)
+      inline void Reset(void)
       {
         int i = -1;
         while(++i < listsize)
@@ -319,7 +319,7 @@ namespace CEEFIT
         }
       }
 
-      template<class KEYTYPE> inline BOOL Put(KEYTYPE& aKey, ANYTYPE& aValue, BOOL allowDuplicates = false)
+      template<class KEYTYPE> inline bool Put(KEYTYPE& aKey, ANYTYPE& aValue, bool allowDuplicates = false)
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;
@@ -359,7 +359,7 @@ namespace CEEFIT
         return(true);
       }
 
-      template<class KEYTYPE> inline VOID RemoveKey(KEYTYPE& aKey)
+      template<class KEYTYPE> inline void RemoveKey(KEYTYPE& aKey)
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;
@@ -379,7 +379,7 @@ namespace CEEFIT
         }
       }
 
-      template<class KEYTYPE> inline VOID Remove(KEYTYPE& aKey, ANYTYPE& aValue)
+      template<class KEYTYPE> inline void Remove(KEYTYPE& aKey, ANYTYPE& aValue)
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;
@@ -442,7 +442,7 @@ namespace CEEFIT
         return(NULL);
       }
 
-      template<class KEYTYPE> inline VOID GetAll(const KEYTYPE& aKey, DYNARRAY<ANYTYPE*>& retList)
+      template<class KEYTYPE> inline void GetAll(const KEYTYPE& aKey, DYNARRAY<ANYTYPE*>& retList)
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;

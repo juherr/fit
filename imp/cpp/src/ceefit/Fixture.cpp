@@ -20,12 +20,11 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT
 {
-  static INT64 CurrentTimeMillis(void)
+  INT64 CurrentTimeMillis(void)
   {
     static double clocksPerMsec = ((double) CLOCKS_PER_SEC) / 1000.0;
 
@@ -40,6 +39,13 @@ namespace CEEFIT
     static SLINKLIST<FIXTUREFACTORY> FixtureFactoryList;
 
     return(FixtureFactoryList);
+  }
+
+  SLINKLIST<NONFIXTUREFACTORY>& ceefit_call_spec RUNNER::GetNonFixtureFactoryList()
+  {
+    static SLINKLIST<NONFIXTUREFACTORY> NonFixtureFactoryList;
+
+    return(NonFixtureFactoryList);
   }
 
   ceefit_init_spec COUNTS::COUNTS()
@@ -471,7 +477,17 @@ namespace CEEFIT
 
       if(aFixture == NULL)
       {
-        throw new CLASSNOTFOUNDEXCEPTION(STRING("Fixture class ") + fixtureName + " not found.");
+        NONFIXTUREFACTORY* nonFixtureFactoryByName = RUNNER::FindNonFixtureFactoryByName(fixtureName);
+        NONFIXTUREFACTORY* nonFixtureFactoryByAlias = RUNNER::FindNonFixtureFactoryByAlias(fixtureName);
+        
+        if(nonFixtureFactoryByName || nonFixtureFactoryByAlias) 
+        {          
+          throw new CLASSNOTFOUNDEXCEPTION(STRING("\"") + fixtureName + "\" was found, but it's not a fixture.");
+        }
+        else
+        {
+          throw new CLASSNOTFOUNDEXCEPTION(STRING("The fixture \"") + fixtureName + "\" was not found.");
+        }
       }
     }
 
@@ -540,6 +556,7 @@ namespace CEEFIT
   void ceefit_call_spec FIXTURE::Wrong(PTR<PARSE>& cell)
   {
     cell->AddToTag(STRING(" bgcolor=\"") + red + "\"");
+		cell->Body = Escape(cell->Text());
     CountsObj->wrong++;
   }
 
@@ -608,12 +625,7 @@ namespace CEEFIT
 
   STRING ceefit_call_spec FIXTURE::Label(const STRING& string)
   {
-    return (STRING(" <font size=-1 color=#c08080><i>") + string + "</i></font>");
-  }
-
-  STRING ceefit_call_spec FIXTURE::Gray(const STRING& string)
-  {
-    return (STRING(" <font color=#808080>") + string + "</font>");
+    return (STRING(" <font size=-1 color=\"#c08080\"><i>") + string + "</i></font>");
   }
 
   STRING ceefit_call_spec FIXTURE::Escape(const STRING& string)
@@ -624,7 +636,6 @@ namespace CEEFIT
     temp = temp.SimplePatternReplaceAll("<", "&lt;");
     temp = temp.SimplePatternReplaceAll("  ", " &nbsp;");
 		temp = temp.SimplePatternReplaceAll("\r\n", "<br />");
-		temp = temp.SimplePatternReplaceAll("\n\r", "<br />");
 		temp = temp.SimplePatternReplaceAll("\r", "<br />");
 		temp = temp.SimplePatternReplaceAll("\n", "<br />");
 
@@ -695,23 +706,23 @@ namespace CEEFIT
             }
           }
 
-          cell->AddToBody(Gray(aTemp));
+          Info(cell, aTemp);
         }
         catch(FAILURE* failure)
         {
-          cell->AddToBody(Gray(failure->GetReason()));
+          Info(cell, "error");
 
           delete failure;
         }
         catch(EXCEPTION* e)
         {
-          cell->AddToBody(Gray("error"));
+          Info(cell, "error");
 
           delete e;
         }
         catch(...)
         {
-          cell->AddToBody(Gray("error"));
+          Info(cell, "error");
         }
       }
       else if (text.IsEqual("error"))

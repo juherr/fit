@@ -106,6 +106,7 @@
 #include "ceefit/ColumnFixture.h"
 #include "ceefit/PrimitiveFixture.h"
 #include "ceefit/RowFixture.h"
+#include "ceefit/TimedActionFixture.h"
 #include "ceefit/macros.h"
 #include "ceefit/Parse.h"
 #include "ceefit/ScientificDouble.h"

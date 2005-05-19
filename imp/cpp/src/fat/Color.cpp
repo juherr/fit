@@ -20,7 +20,6 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 #include "fat/Table.h"
 
@@ -35,30 +34,7 @@ namespace CEEFAT
     public:
       PTR<PARSE> ActualRow;
 
-      virtual void ceefit_call_spec DoRows(PTR<PARSE>& rows)
-      {
-        ActualRow = FAT_TABLE::Table->Parts;
-        if (rows->Size() != ActualRow->Size())
-        {
-          throw new EXCEPTION("wrong size table");
-        }
-        PRIMITIVEFIXTURE::DoRows(rows);
-      }
-
-      virtual void ceefit_call_spec DoRow(PTR<PARSE>& row)
-      {
-        PRIMITIVEFIXTURE::DoRow(row);
-
-        ActualRow = ActualRow->More;
-      }
-
-      virtual void ceefit_call_spec DoCell(PTR<PARSE>& cell, int columnNumber)
-      {
-        PTR<PARSE> temp(ActualRow->Parts->At(columnNumber));
-
-        Check(cell, Color(temp));
-      }
-
+    private:
       virtual STRING Color(PTR<PARSE>& cell)
       {
         STRING b(Extract(cell->Tag, "bgcolor=\"", "white"));
@@ -88,6 +64,31 @@ namespace CEEFAT
               code.IsEqual(FIXTURE::gray) ?     "gray" :
               code.IsEqual("#808080") ?        "gray" :
               code;
+      }
+
+    public:
+      virtual void ceefit_call_spec DoRows(PTR<PARSE>& rows)
+      {
+        ActualRow = FAT_TABLE::Table->Parts;
+        if (rows->Size() != ActualRow->Size())
+        {
+          throw new EXCEPTION("wrong size table");
+        }
+        PRIMITIVEFIXTURE::DoRows(rows);
+      }
+
+      virtual void ceefit_call_spec DoRow(PTR<PARSE>& row)
+      {
+        PRIMITIVEFIXTURE::DoRow(row);
+
+        ActualRow = ActualRow->More;
+      }
+
+      virtual void ceefit_call_spec DoCell(PTR<PARSE>& cell, int columnNumber)
+      {
+        PTR<PARSE> temp(ActualRow->Parts->At(columnNumber));
+
+        Check(cell, Color(temp));
       }
 
   end_fit_fixture(FAT_COLOR);

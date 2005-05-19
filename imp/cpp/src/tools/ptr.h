@@ -449,7 +449,6 @@ namespace CEEFIT
 	      }
 	      if(currentPtrRef) 
         {      
-          dynamic_cast<MANAGED*>(currentPtrRef)->ReleaseRef(DoDestroy);
           this->SetPointer(NULL);
 	      }
 	      if(aPointer) 
@@ -461,6 +460,10 @@ namespace CEEFIT
 
           aManaged->AddRef();
 	      }
+        if(currentPtrRef)
+        {
+          dynamic_cast<MANAGED*>(currentPtrRef)->ReleaseRef(DoDestroy);
+        }
 
 	      return(*this);
       }

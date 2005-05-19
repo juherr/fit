@@ -22,44 +22,20 @@
 
 #include "ceefit.h"
 
-namespace CEEFIT
+declare_fit_module(FatNotAFixture);
+
+using namespace CEEFIT;
+
+namespace CEEFAT
 {
-  ceefit_init_spec FAILURE::FAILURE()
+  class FAT_NOTAFIXTURE : public virtual OBJECT
   {
-  }
+    public:
+      FAT_NOTAFIXTURE(void) {}
+      virtual ~FAT_NOTAFIXTURE(void) {}
+      FAT_NOTAFIXTURE& operator=(const FAT_NOTAFIXTURE&) { return(*this); }
+      FAT_NOTAFIXTURE(const FAT_NOTAFIXTURE&) { }
+  };
 
-  ceefit_init_spec FAILURE::~FAILURE()
-  {
-  }
-
-  STRING& ceefit_call_spec FAILURE::GetReason()
-  {
-    return(Reason);
-  }
-
-  ceefit_init_spec FITASSERTIONFAILED::FITASSERTIONFAILED(const char* aFile, int aLineNumber)
-  {
-    Reason = STRING("Assertion failed");
-    if(aLineNumber > 0)
-    {
-      Reason += STRING(": ") + aFile + "(" + aLineNumber + ")";
-    }
-  }
-
-  ceefit_init_spec FITASSERTIONFAILED::~FITASSERTIONFAILED()
-  {
-  }
-
-  ceefit_init_spec FITFAILED::FITFAILED(const char* aFile, int aLineNumber)
-  {
-    Reason = STRING("Failed");
-    if(aLineNumber > 0)
-    {
-      Reason += STRING(": ") + aFile + "(" + aLineNumber + ")";
-    }
-  }
-
-  ceefit_init_spec FITFAILED::~FITFAILED()
-  {
-  }
+  static ::CEEFIT::REGISTERNONFIXTURECLASS< FAT_NOTAFIXTURE > FatNotAFixtureRegistration("FAT_NOTAFIXTURE", "fat.NotAFixture");
 };

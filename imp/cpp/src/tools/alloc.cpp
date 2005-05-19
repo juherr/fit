@@ -23,6 +23,9 @@
 #include "tools/alloc.h"
 #include "ceefit.h"
 
+#ifdef WIN32
+# include <windows.h>
+#endif
 
 extern "C++"
 {

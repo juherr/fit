@@ -169,7 +169,6 @@ namespace CEEFIT
 
       virtual STRING ceefit_call_spec Counts(void);
       virtual STRING ceefit_call_spec Label(const STRING& string);
-      virtual STRING ceefit_call_spec Gray(const STRING& string);
       static STRING ceefit_call_spec Escape(const STRING& string);
       static STRING ceefit_call_spec Camel(const STRING& name);
       virtual void ceefit_call_spec Parse(PTR<CELLADAPTER>& aField, const STRING& s);
@@ -221,6 +220,8 @@ namespace CEEFIT
        */
       void ceefit_call_spec GetSummaryReport(DYNARRAY<SUMMARYITEM>& reportList);
   };
+
+  INT64 CurrentTimeMillis(void);
 };
 
 #endif // __CEEFIT_FIXTURE_H__

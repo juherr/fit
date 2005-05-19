@@ -27,7 +27,7 @@
 
 namespace CEEFIT
 {
-  class SCIENTIFICDOUBLE
+  class SCIENTIFICDOUBLE : public ::CEEFIT::OBJECT
   {
     protected:
       double Value;

@@ -20,8 +20,11 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
+
+#ifdef WIN32
+# include <windows.h>  
+#endif
 
 namespace CEEFIT
 {
@@ -225,4 +228,19 @@ namespace CEEFIT
 
     return(typeName);
   }
+
+  void ceefit_init_spec AssertIsTrueImpl(bool aExpr) 
+  {
+    if(aExpr != true)
+    {
+// uncomment if you want to have debug break in when an assertion fails
+//#     ifdef _DEBUG
+//#       ifdef WIN32
+//          DebugBreak();
+//#       endif        
+//#     endif
+      throw new EXCEPTION("AssertIsTrue failed");
+    }
+  }
+
 };

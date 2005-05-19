@@ -112,10 +112,42 @@ namespace CEEFIT
       FIXTUREFACTORY& operator=(const FIXTUREFACTORY&);
   };
 
+  class NONFIXTUREFACTORY : public SLINK<NONFIXTUREFACTORY>
+  {
+    protected:
+      const char* Name;
+      const char* Alias;
+
+    public:
+      ceefit_init_spec NONFIXTUREFACTORY(const char* aName, const char* aAlias=NULL);
+      virtual ceefit_init_spec ~NONFIXTUREFACTORY(void);
+      virtual const char* ceefit_call_spec GetName(void) const;
+      virtual const char* ceefit_call_spec GetAlias(void) const;
+
+      virtual OBJECT* ceefit_call_spec CreateNonFixture(void)=0;
+
+    private:
+      /**
+       * Not implemented.  Do not call.
+       */
+      NONFIXTUREFACTORY(void);
+
+      /**
+       * Not implemented.  Do not call.
+       */
+      NONFIXTUREFACTORY(const NONFIXTUREFACTORY&);
+
+      /**
+       * Not implemented.  Do not call.
+       */
+      NONFIXTUREFACTORY& operator=(const NONFIXTUREFACTORY&);
+  };
+
   class RUNNER : public virtual OBJECT
   {
     public:
       static SLINKLIST<FIXTUREFACTORY>& ceefit_call_spec GetFixtureFactoryList(void);
+      static SLINKLIST<NONFIXTUREFACTORY>& ceefit_call_spec GetNonFixtureFactoryList(void);
       static FIXTUREFACTORY* ceefit_call_spec GetSetCurrentFixtureFactory(FIXTUREFACTORY* aFactory=NULL, bool clearCurrentFactory=false);
 
       static void ceefit_call_spec SetCurrentTestList(SLINKLIST<CELLADAPTER>* aList);
@@ -135,10 +167,13 @@ namespace CEEFIT
       static void ceefit_call_spec ResetInFixtureConstructor(void);
 
       static FIXTUREFACTORY* ceefit_call_spec FindFixtureFactoryByName(const char* aName);
+      static NONFIXTUREFACTORY* ceefit_call_spec FindNonFixtureFactoryByName(const STRING& aName);
+      static NONFIXTUREFACTORY* ceefit_call_spec FindNonFixtureFactoryByAlias(const STRING& aAlias);
 
       static void ceefit_call_spec RegisterAutoField(CELLADAPTER* aVar);
       static void ceefit_call_spec RegisterAutoTest(CELLADAPTER* aTest);
-      static void ceefit_call_spec RegisterFixtureFactory(FIXTUREFACTORY* aTest);
+      static void ceefit_call_spec RegisterFixtureFactory(FIXTUREFACTORY* aFixtureFactory);
+      static void ceefit_call_spec RegisterNonFixtureFactory(NONFIXTUREFACTORY* aNonFixtureFactory);
 
       virtual ceefit_init_spec ~RUNNER(void);
 
@@ -204,6 +239,43 @@ namespace CEEFIT
        * Not implemented.  Do not call.
        */
       REGISTERFIXTURECLASS<T>(const REGISTERFIXTURECLASS<T>&);
+  };
+
+  template<class T> class REGISTERNONFIXTURECLASS : public NONFIXTUREFACTORY
+  {
+    protected:
+      friend class RUNNER;
+
+    public:
+      inline ceefit_init_spec REGISTERNONFIXTURECLASS<T>(const char* nonFixtureName, const char* aliasName=NULL) : NONFIXTUREFACTORY(nonFixtureName, aliasName)
+      {
+        RUNNER::RegisterNonFixtureFactory(this);
+      }
+
+      inline ceefit_init_spec ~REGISTERNONFIXTURECLASS<T>(void)
+      {
+      }
+
+      virtual OBJECT* ceefit_call_spec CreateNonFixture(void)
+      {
+        return(new T());
+      }
+
+    private:
+      /**
+       * Not implemented.  Do not call.
+       */
+      REGISTERNONFIXTURECLASS<T>(void);
+
+      /**
+       * Not implemented.  Do not call.
+       */
+      REGISTERNONFIXTURECLASS<T>& operator=(const REGISTERNONFIXTURECLASS<T>&);
+
+      /**
+       * Not implemented.  Do not call.
+       */
+      REGISTERNONFIXTURECLASS<T>(const REGISTERNONFIXTURECLASS<T>&);
   };
 
 };

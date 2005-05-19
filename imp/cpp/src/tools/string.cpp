@@ -20,7 +20,6 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 
 // Boost includes
@@ -854,17 +853,19 @@ namespace CEEFIT
   STRING ceefit_call_spec STRING::SimplePatternReplaceAll(const STRING& patternStr, const STRING& replaceStr) const
   {
     STRING temp(*this);
+    long nextStart = 0;
 
     while(true)
     {
       STRING work;
 
       wchar_t* tempBuf = temp.GetBuffer();
-      wchar_t* aOccurrence = wcsstr(tempBuf, patternStr.GetBuffer());
+      wchar_t* aOccurrence = wcsstr(tempBuf+nextStart, patternStr.GetBuffer());
       if(aOccurrence == NULL)
       {
         break;
       }
+      nextStart = ((long) aOccurrence - (long) tempBuf) / sizeof(wchar_t) + replaceStr.Length();
 
       work.Append(temp.Substring(0, (int) (aOccurrence - tempBuf)));
       work.Append(replaceStr);
@@ -876,15 +877,7 @@ namespace CEEFIT
     return(temp);
   }
 
-  template<class ANYTYPE> static void AssertIsTrue(const ANYTYPE& expression)
-  {
-    if(!expression)
-    {
-      throw new EXCEPTION("Internal CeeFIT Assertion failed");
-    }
-  }
-
-  static bool RegexPatternMatch(bool atBufferStart, wchar_t* curBuf, const STRING& patternBuf, const STRING* lookAheadPattern, wchar_t*& matchEnd, bool dotAll=false);
+  static bool RegexPatternMatch(bool atBufferStart, bool& nextMustMatchIfIMatch, wchar_t* curBuf, const STRING& patternBuf, const STRING* lookAheadPattern, wchar_t*& matchEnd, bool dotAll=false);
 
   static bool RegexMatchZeroOrMoreCharClass(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
   {
@@ -1049,8 +1042,8 @@ namespace CEEFIT
         if(lookaheadPattern != NULL) 
         {
           wchar_t* lookaheadMatchEnd = NULL;
-          
-          if(RegexPatternMatch(false, curBuf, *lookaheadPattern, NULL, lookaheadMatchEnd, dotAll))
+          bool nextMustMatchIfIMatch = false;
+          if(RegexPatternMatch(false, nextMustMatchIfIMatch, curBuf, *lookaheadPattern, NULL, lookaheadMatchEnd, dotAll))
           {
             return(true);
           }         
@@ -1108,6 +1101,8 @@ namespace CEEFIT
 
   static bool RegexMatchOneOrNone(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
   {
+    wchar_t* startBuf = curBuf;
+
     while(*curBuf != L'\0')
     {
       const wchar_t* aPattern = patternBuf.GetBuffer();
@@ -1115,7 +1110,11 @@ namespace CEEFIT
       {
         if(*curBuf == L'\0') 
         { 
-          return(matchEnd != NULL); // don't fall off the end of the string by accident
+          if(matchEnd == NULL)
+          {
+            matchEnd = startBuf;    // matched none, get out...
+          }
+          return(true); // don't fall off the end of the string by accident
         }
 
         AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
@@ -1128,7 +1127,11 @@ namespace CEEFIT
 
         if(*curBuf != *aPattern)
         {
-          return(matchEnd != NULL);
+          if(matchEnd == NULL)
+          {
+            matchEnd = startBuf;    // matched none, get out...
+          }
+          return(true);
         }
         curBuf++;
         aPattern++;
@@ -1141,7 +1144,7 @@ namespace CEEFIT
       }
       matchEnd = curBuf;
     }
-    return(matchEnd != NULL);
+    return(true);
   }
 
   static bool RegexMatchOne(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
@@ -1231,7 +1234,7 @@ namespace CEEFIT
     return(false);
   }
 
-  static bool RegexPatternMatch(bool atBufferStart, wchar_t* curBuf, const STRING& patternBuf, const STRING* lookAheadPattern, wchar_t*& matchEnd, bool dotAll)
+  static bool RegexPatternMatch(bool atBufferStart, bool& nextMustMatchIfIMatch, wchar_t* curBuf, const STRING& patternBuf, const STRING* lookAheadPattern, wchar_t*& matchEnd, bool dotAll)
   {
     static STRING brace("[");
     static STRING star("*");
@@ -1242,24 +1245,33 @@ namespace CEEFIT
     static STRING slashEscape("\\");
     static STRING dot(".");
     static STRING dotStarQuestionMark(".*?");
+    static STRING questionMarkQuestionMark("??");
 
-    if(patternBuf.IsEqual(caret)) 
+    STRING tempPatternBuf(patternBuf);
+
+    if(tempPatternBuf.EndsWith(questionMarkQuestionMark))
+    {
+      tempPatternBuf = tempPatternBuf.Substring(0, tempPatternBuf.Length()-2);
+      nextMustMatchIfIMatch = true;
+    }
+
+    if(tempPatternBuf.IsEqual(caret)) 
     {
       return(RegexMatchStartOfLine(atBufferStart, curBuf, matchEnd));
     }
-    else if(patternBuf.IsEqual(dollarSign))
+    else if(tempPatternBuf.IsEqual(dollarSign))
     {
-      return(RegexMatchEndOfLine(curBuf, patternBuf, matchEnd));
+      return(RegexMatchEndOfLine(curBuf, tempPatternBuf, matchEnd));
     }
-    else if(patternBuf.StartsWith(dot)) 
+    else if(tempPatternBuf.StartsWith(dot)) 
     {
-      if(patternBuf.IsEqual(dot)) 
+      if(tempPatternBuf.IsEqual(dot)) 
       {
-        return(RegexMatchOneAnyNoNewline(curBuf, patternBuf, lookAheadPattern, matchEnd, dotAll));
+        return(RegexMatchOneAnyNoNewline(curBuf, tempPatternBuf, lookAheadPattern, matchEnd, dotAll));
       }
-      else if(patternBuf.IsEqual(dotStarQuestionMark)) 
+      else if(tempPatternBuf.IsEqual(dotStarQuestionMark)) 
       {
-        return(RegexMatchZeroOrMoreAnyNoNewline(curBuf, patternBuf, lookAheadPattern, matchEnd, dotAll));
+        return(RegexMatchZeroOrMoreAnyNoNewline(curBuf, tempPatternBuf, lookAheadPattern, matchEnd, dotAll));
       }
       else 
       {
@@ -1267,38 +1279,38 @@ namespace CEEFIT
         return(false);
       }
     }
-    else if(patternBuf.StartsWith(brace))
+    else if(tempPatternBuf.StartsWith(brace))
     {
-      if(patternBuf.EndsWith(star))
+      if(tempPatternBuf.EndsWith(star))
       {
-        return(RegexMatchZeroOrMoreCharClass(curBuf, patternBuf, matchEnd));
+        return(RegexMatchZeroOrMoreCharClass(curBuf, tempPatternBuf, matchEnd));
       }
-      else if(patternBuf.EndsWith(plus))
+      else if(tempPatternBuf.EndsWith(plus))
       {
-        return(RegexMatchOneOrMoreCharClass(curBuf, patternBuf, matchEnd));
+        return(RegexMatchOneOrMoreCharClass(curBuf, tempPatternBuf, matchEnd));
       }
       else 
       {
-        return(RegexMatchOneCharClass(curBuf, patternBuf, matchEnd));
+        return(RegexMatchOneCharClass(curBuf, tempPatternBuf, matchEnd));
       }
     }
     else
     {
-      if(patternBuf.EndsWith(star))
+      if(tempPatternBuf.EndsWith(star))
       {
-        return(RegexMatchZeroOrMore(curBuf, patternBuf, matchEnd));
+        return(RegexMatchZeroOrMore(curBuf, tempPatternBuf, matchEnd));
       }
-      else if(patternBuf.EndsWith(plus))
+      else if(tempPatternBuf.EndsWith(plus))
       {
-        return(RegexMatchOneOrMore(curBuf, patternBuf, matchEnd));
+        return(RegexMatchOneOrMore(curBuf, tempPatternBuf, matchEnd));
       }
-      else if(patternBuf.EndsWith(questionMark))
+      else if(tempPatternBuf.EndsWith(questionMark))
       {
-        return(RegexMatchOneOrNone(curBuf, patternBuf, matchEnd));
+        return(RegexMatchOneOrNone(curBuf, tempPatternBuf, matchEnd));
       }
       else 
       {
-        return(RegexMatchOne(curBuf, patternBuf, matchEnd));
+        return(RegexMatchOne(curBuf, tempPatternBuf, matchEnd));
       }
     }
   }
@@ -1309,6 +1321,7 @@ namespace CEEFIT
 
     bool atStartOfString = true;
     int startIndex = 0;
+    wchar_t* matchRollback = NULL;
 
   restart:
     while(true)
@@ -1324,13 +1337,24 @@ namespace CEEFIT
           while(++i < patternStrArray.GetSize())
           {
             wchar_t* matchEnd = NULL;
+            bool nextMustMatchIfCurMatches = false; 
             if(RegexPatternMatch(atStartOfString && curBuf == curStartBuf, 
+                                 nextMustMatchIfCurMatches,
                                  curBuf, 
                                  patternStrArray.Get(i), 
                                  (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : NULL,
                                  matchEnd, 
                                  dotAll))
             {
+              if(nextMustMatchIfCurMatches)
+              {
+                matchRollback = curBuf;
+              }
+              else 
+              {
+                matchRollback = NULL;
+              }
+
               if(firstMatch == NULL)
               {
                 firstMatch = curBuf;
@@ -1343,8 +1367,23 @@ namespace CEEFIT
             }
             else
             {
-              firstMatch = NULL;
-              break;
+              if(nextMustMatchIfCurMatches)   // cur didn't match, so the next must be skipped
+              {
+                ++i;  // skip the next pattern entirely!  leave curBuf where it is ...
+              }
+              else
+              {
+                if(matchRollback != NULL)
+                {
+                  curBuf = matchRollback;
+                  matchRollback = NULL;
+                }
+                else 
+                {
+                  firstMatch = NULL;
+                  break;
+                }
+              }
             }
           }
 
@@ -1387,6 +1426,7 @@ namespace CEEFIT
   {
     STRING temp(*this);
     bool atStartOfString = true;
+    wchar_t* matchRollback = NULL;
 
   restart:
     while(true)
@@ -1402,13 +1442,23 @@ namespace CEEFIT
           while(++i < patternStrArray.GetSize())
           {
             wchar_t* matchEnd = NULL;
+            bool nextMustMatchIfCurMatches = false; 
             if(RegexPatternMatch(atStartOfString && curBuf == curStartBuf, 
+                                 nextMustMatchIfCurMatches,
                                  curBuf, 
                                  patternStrArray.Get(i), 
                                  (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : NULL,
                                  matchEnd,
                                  dotAll))
             {
+              if(nextMustMatchIfCurMatches)
+              {
+                matchRollback = curBuf;
+              }
+              else {
+                matchRollback = NULL;
+              }
+
               if(firstMatch == NULL)
               {
                 firstMatch = curBuf;
@@ -1422,8 +1472,23 @@ namespace CEEFIT
             }
             else
             {
-              firstMatch = NULL;
-              break;
+              if(nextMustMatchIfCurMatches)   // cur didn't match, so the next must be skipped
+              {
+                ++i;  // skip the next pattern entirely!  leave curBuf where it is ...
+              }
+              else
+              {
+                if(matchRollback != NULL)
+                {
+                  curBuf = matchRollback;
+                  matchRollback = NULL;
+                }
+                else 
+                {
+                  firstMatch = NULL;
+                  break;
+                }
+              }
             }
           }
 

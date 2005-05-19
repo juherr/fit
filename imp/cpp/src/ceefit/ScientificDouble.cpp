@@ -20,7 +20,6 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT

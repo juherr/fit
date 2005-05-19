@@ -20,9 +20,9 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 #include "fat/testtypes.h"
+#include "fat/Money.h"
 
 // This macro declares this module to the system, allowing it to be linked into the EXE forcibly even though it's not being
 // directly used by anything.  (see ceefit.cpp for details ...)
@@ -78,7 +78,10 @@ namespace CEEFAT
           type = new FITFIELD<STRING>();
         }
             //name.equals("date") ?       Date.class :
-            //name.equals("money") ?      Money.class :
+        else if(name.IsEqual("money"))
+        {
+          type = new FITFIELD< CEEFAT::MONEY >();
+        }
         else if(name.IsEqual("scientific"))
         {
           type = new FITFIELD< SCIENTIFICDOUBLE >();
@@ -168,7 +171,7 @@ namespace CEEFAT
               }
               case L'?':
               {
-                cell->AddToBody(Gray(STRING("x: ") + Print(X) + " y: " + Print(Y)));
+                cell->AddToBody(Info(STRING("x: ") + Print(X) + " y: " + Print(Y)));
                 break;
               }
 

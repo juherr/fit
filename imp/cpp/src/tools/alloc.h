@@ -1,8 +1,6 @@
 #ifndef __TOOLS_ALLOC_H__
 #define __TOOLS_ALLOC_H__
 
-#include "ceefit/mandatory.h"
-#include <windows.h>
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -24,6 +22,8 @@
  *
  * @author David Woldrich
  */
+
+#include "ceefit/mandatory.h"
 
 #include <new>
 #include <assert.h>

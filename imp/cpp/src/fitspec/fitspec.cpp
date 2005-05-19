@@ -1,4 +1,3 @@
-#include "tools/alloc.h"
 #include "ceefit.h"
 
 /**
@@ -36,6 +35,14 @@ force_link_fit_module(Summary);
 force_link_fit_module(FatFixtureNameFixture);
 force_link_fit_module(FatAnnotationFixture);
 force_link_fit_module(FatColor);
+force_link_fit_module(FatDocumentParseFixture);
+force_link_fit_module(FatHtmlToTextFixture);
+force_link_fit_module(FatTextToHtmlFixture);
+force_link_fit_module(TableParseFixture);
+force_link_fit_module(FatFixtureLoadFixture);
+force_link_fit_module(FatNotAFixture);
+force_link_fit_module(FatExampleFixture);
+force_link_fit_module(FatStandardAnnotationFixture);
 
 // Define the Alloc and Free functions that CeeFIT should use
 

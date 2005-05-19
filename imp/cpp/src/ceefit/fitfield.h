@@ -187,7 +187,12 @@ namespace CEEFIT
 
       inline void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in)
       {
-        this->Parse(this->GetField(), in);
+        if(!this->Parse(this->GetField(), in)) 
+        {
+          throw new PARSEEXCEPTION(STRING("Failed to parse a field, expected type") + 
+              ((this->GetName().Length() > 0) ? (STRING(" for field named \"") + this->GetName() + "\"") : STRING("")) + 
+              " was:  " + typeid(T).name() + ".  String that failed to parse to expected type was:  " + in);
+        }
       }
 
       inline void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out)

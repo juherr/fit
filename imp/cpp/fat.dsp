@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /Gr /MTd /W3 /Gm /vmb /GR /GX /Zi /Od /I "src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /Gr /MTd /W3 /Gm /GR /GX /Zi /Od /I "src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -97,11 +97,35 @@ SOURCE=.\src\fat\Divide.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\fat\DocumentParseFixture.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\fat\Equals.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\fat\ExampleFixture.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\fat\FixtureLoadFixture.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\fat\FixtureNameFixture.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\fat\HtmlToTextFixture.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\fat\Money.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\fat\NotAFixture.cpp
 # End Source File
 # Begin Source File
 
@@ -117,16 +141,32 @@ SOURCE=.\src\fat\ReferenceFixture.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\fat\StandardAnnotationFixture.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\fat\Table.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\fat\TableParseFixture.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\src\fat\testtypes.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\src\fat\TextToHtmlFixture.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\src\fat\Money.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\src\fat\Table.h

@@ -20,7 +20,6 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 
 declare_fit_module(Summary);
@@ -31,7 +30,7 @@ namespace CEEFIT
   begin_fit_fixture(FIT_SUMMARY, FIXTURE, fit.Summary)
 
     protected:
-      VALUE<PARSE> tr(PTR<PARSE>& parts, PTR<PARSE>& more)
+      virtual VALUE<PARSE> tr(PTR<PARSE>& parts, PTR<PARSE>& more)
       {
         STRING aTag("tr");
         STRING aBody("");
@@ -39,16 +38,16 @@ namespace CEEFIT
         return(VALUE<PARSE>(new PARSE(aTag, aBody, parts, more)));
       }
 
-      VALUE<PARSE> td(const STRING& body, PTR<PARSE>& more)
+      virtual VALUE<PARSE> td(const STRING& body, PTR<PARSE>& more)
       {
         STRING aTag("td");
-        STRING aBody(Gray(body));
+        STRING aBody(Info(body));
         PTR<PARSE> nullParts(NULL);
 
         return(VALUE<PARSE>(new PARSE(aTag, aBody, nullParts, more)));
       }
 
-      void Mark(PTR<PARSE>& row)
+      virtual void Mark(PTR<PARSE>& row)
       {
         // mark summary good/bad without counting beyond here
         PTR<COUNTS> official(CountsObj);
@@ -68,7 +67,7 @@ namespace CEEFIT
         CountsObj = official;
       }
 
-      void Rows(PTR<PARSE>& out, DYNARRAY<FIXTURE::SUMMARYITEM>& keys, int aIndex)
+      virtual void Rows(PTR<PARSE>& out, DYNARRAY<FIXTURE::SUMMARYITEM>& keys, int aIndex)
       {
         if(aIndex < keys.GetSize())
         {

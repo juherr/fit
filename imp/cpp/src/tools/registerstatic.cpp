@@ -20,7 +20,6 @@
  * @author David Woldrich
  */
 
-#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT
@@ -166,6 +165,24 @@ namespace CEEFIT
     return(Alias);
   }
 
+  ceefit_init_spec NONFIXTUREFACTORY::NONFIXTUREFACTORY(const char* aName, const char* aAlias) : Name(aName), Alias(aAlias)
+  {
+  }
+
+  ceefit_init_spec NONFIXTUREFACTORY::~NONFIXTUREFACTORY()
+  {
+  }
+
+  const char* ceefit_call_spec NONFIXTUREFACTORY::GetName() const
+  {
+    return(Name);
+  }
+
+  const char* ceefit_call_spec NONFIXTUREFACTORY::GetAlias() const
+  {
+    return(Alias);
+  }
+
   ceefit_init_spec RUNNER::RUNNER()
   {
   }
@@ -235,9 +252,58 @@ namespace CEEFIT
     return(NULL);
   }
 
+  NONFIXTUREFACTORY* ceefit_call_spec RUNNER::FindNonFixtureFactoryByName(const STRING& aName)
+  {
+    SLINKLIST<NONFIXTUREFACTORY>& nonFactoryList = GetNonFixtureFactoryList();
+
+    if(aName.Length() == 0)
+    {
+      return(NULL);
+    }
+
+    NONFIXTUREFACTORY* aNonFactory = nonFactoryList.GetHead();
+    while(aNonFactory != NULL)
+    {
+      if(aNonFactory->GetName() != NULL && aName.IsEqual(STRING(aNonFactory->GetName())))
+      {
+        return(aNonFactory);
+      }
+      aNonFactory = aNonFactory->GetNext();
+    }
+
+    return(NULL);
+  }
+
+  NONFIXTUREFACTORY* ceefit_call_spec RUNNER::FindNonFixtureFactoryByAlias(const STRING& aAlias)
+  {
+    SLINKLIST<NONFIXTUREFACTORY>& nonFactoryList = GetNonFixtureFactoryList();
+
+    if(aAlias.Length() == 0)
+    {
+      return(NULL);
+    }
+
+    NONFIXTUREFACTORY* aNonFactory = nonFactoryList.GetHead();
+    while(aNonFactory != NULL)
+    {
+      if(aNonFactory->GetAlias() != NULL && aAlias.IsEqual(STRING(aNonFactory->GetAlias())))
+      {
+        return(aNonFactory);
+      }
+      aNonFactory = aNonFactory->GetNext();
+    }
+
+    return(NULL);
+  }
+
   void ceefit_call_spec RUNNER::RegisterFixtureFactory(FIXTUREFACTORY* aFixture)
   {
     GetFixtureFactoryList().AddTail(aFixture);
+  }
+
+  void ceefit_call_spec RUNNER::RegisterNonFixtureFactory(NONFIXTUREFACTORY* aNonFixture)
+  {
+    GetNonFixtureFactoryList().AddTail(aNonFixture);
   }
 
   SLINKLIST<CELLADAPTER>* RUNNER::CurrentTestList = NULL;

@@ -320,6 +320,10 @@ SOURCE=.\src\ceefit\RowFixture.h
 
 SOURCE=.\src\ceefit\ScientificDouble.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\src\ceefit\TimedActionFixture.h
+# End Source File
 # End Group
 # Begin Group "Tools Header Files"
 
