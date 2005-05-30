@@ -1,8 +1,6 @@
 #ifndef __TOOLS_PTR_H__
 #define __TOOLS_PTR_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -47,9 +45,6 @@ namespace CEEFIT
     public:
       virtual void AddRef(void)=0;
       virtual bool ReleaseRef(bool DoDestroy=true)=0;    
-      
-      // useful in debugging MANAGED types
-      virtual inline const type_info& GetTypeInfo(void) { return(typeid(MANAGED)); }
   };
 
 
@@ -70,75 +65,83 @@ namespace CEEFIT
       /**
        * Constructor, initializes the PTR with a pointer to some object
        */
-	    explicit inline PTR<T>(T* aSPtr) 
+	    explicit inline PTR<T>(const int nullPointer) 
       {
-		    SetPointer(NULL);
-		    operator=(aSPtr);
+        if(nullPointer != 0)
+        {
+          throw new EXCEPTION("Expected a null pointer for PTR<T>(int)");
+        }
+
+        SetPointer(NULL);
 	    }
 
-#    ifdef __GNUC__
-        /**
-         * <p>Constructor, initializes the PTR with a pointer to some object</p>
-         *
-         * <p>GCC seemed to need this less optimal version of the function in order to compile some things properly</p>
-         */
-        explicit inline PTR<T>(VALUE<T> aValue) 
+	    explicit inline PTR<T>(const unsigned int nullPointer) 
+      {
+        if(nullPointer != 0)
         {
-		      SetPointer(NULL);
-          this->operator=(aValue);
+          throw new EXCEPTION("Expected a null pointer for PTR<T>(unsigned int)");
         }
 
-        /**
-         * <p>Constructor, initializes the PTR with a pointer to some object.</p>
-         *
-         * <p>GCC seemed to need this less optimal version of the function in order to compile some things properly</p>
-         */
-        template<class U> explicit inline PTR<T>(VALUE<U> aValue) 
-        {
-		      SetPointer(NULL);
-          this->operator=(aValue);
-        }
+        SetPointer(NULL);
+	    }
 
-        /**
-         * Copy constructor, initializes the PTR with a pointer to some object
-         */
-	      explicit inline PTR<T>(PTR<T>& aSmartPtr) 
-        {
-		      SetPointer(NULL);
-		      operator=(aSmartPtr);
-	      }
+      /**
+       * <p>Constructor, initializes the PTR with a pointer to some object</p>
+       *
+       * <p>GCC seemed to need this less optimal version of the function in order to compile some things properly</p>
+       */
+      explicit inline PTR<T>(VALUE<T> aValue) 
+      {
+        SetPointer(NULL);
+        aValue.SetPtr(*this);
+      }
 
-        /**
-         * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
-         */
-	      inline PTR<T>& operator=(VALUE<T> aValue) 
-        {
-          return(aValue.SetPtr(*this));
-	      }
+      /**
+       * <p>Constructor, initializes the PTR with a pointer to some object.</p>
+       *
+       * <p>GCC seemed to need this less optimal version of the function in order to compile some things properly</p>
+       */
+      template<class U> inline PTR<T>(VALUE<U>& aValue) 
+      {
+		    SetPointer(NULL);
+        aValue.SetPtr(*this);
+      }
 
-	      inline PTR<T>& operator=(const PTR<T>& aSmartPtr) 
-        {
-		      return(AssignRef(aSmartPtr.ActualPointer));
-	      }
+      /**
+       * Copy constructor, initializes the PTR with a pointer to some object
+       */
+//	    explicit inline PTR<T>(PTR<T>& aSmartPtr) 
+//      {
+//		    SetPointer(NULL);
+//		    operator=(aSmartPtr);
+//	    }
 
-        /**
-         * operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to
-         */
-	      template<class U> inline PTR<T>& operator=(PTR<U>& aSmartPtr) 
-        {    
-		      return(AssignRef(aSmartPtr.GetPointer()));
-	      }
+      /**
+       * Copy constructor, initializes the PTR with a pointer to some object
+       */
+	    template<class U> inline PTR<T>(PTR<U>& aSmartPtr) 
+      {
+		    SetPointer(NULL);
+		    operator=(aSmartPtr);
+	    }
 
-#    else
-        /**
-         * Constructor, initializes the PTR with a pointer to some object
-         */
-        template<class U> explicit inline PTR<T>(VALUE<U>& aValue) 
-        {
-		      SetPointer(NULL);
-          this->operator=(aValue);
-        }
-#    endif
+      /**
+       * Copy constructor, initializes the PTR with a pointer to some object
+       */
+	    explicit inline PTR<T>(PTR<T>& aSmartPtr) 
+      {
+		    SetPointer(NULL);
+		    operator=(aSmartPtr);
+	    }
+
+      /**
+       * Initializes the PTR with a pointer to some object
+       */
+	    template<class U> explicit inline PTR<T>(U* aPointer) 
+      {
+		    SetPointer(NULL);
+		    operator=(aPointer);
+	    }
 
       /**
        * Constructor, initializes the PTR with a value, with optional addref, not for public use
@@ -159,39 +162,40 @@ namespace CEEFIT
       /**
        * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
        */
-	    inline PTR<T>& operator=(void* aValue) 
+	    inline PTR<T>& operator=(VALUE<T> aValue) 
       {
-        if(aValue != NULL)
+        return(aValue.SetPtr(*this));
+	    }
+
+      /**
+       * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
+       */
+	    template<class U> inline PTR<T>& operator=(VALUE<U>& aValue) 
+      {
+        return(aValue.SetPtr(*this));
+	    }
+
+
+	    inline PTR<T>& operator=(const PTR<T>& aSmartPtr) 
+      {
+		    return(AssignRef(aSmartPtr.ActualPointer));
+	    }
+
+      /**
+       * operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to
+       */
+	    template<class U> inline PTR<T>& operator=(PTR<U>& aSmartPtr) 
+      {    
+        if(aSmartPtr != NULL)
         {
-          throw new EXCEPTION("Expected a null pointer for operator=(void*)");
+          T* castedPointer = dynamic_cast<T*>(aSmartPtr.GetPointer());
+
+	  	    return(AssignRef(castedPointer));
         }
-        return(AssignRef(NULL));
-	    }
-
-      /**
-       * Copy constructor, initializes the PTR with a pointer to some object
-       */
-	    template<class U> explicit inline PTR(PTR<U>& aSmartPtr) 
-      {
-		    SetPointer(NULL);
-		    operator=(aSmartPtr);
-	    }
-
-      /**
-       * Destructor, releases the reference to the pointer if any is held
-       */
-	    inline ~PTR<T>(void)
-      {
-		    if(ActualPointer) 
+        else
         {
-#         ifdef _DEBUG
-            bool pointerConsistencyCheck = (dynamic_cast<MANAGED*>(ActualPointer) != NULL && ActualPointer->GetTypeInfo() != typeid(MANAGED));
-            AssertIsTrue(pointerConsistencyCheck);
-#         endif
-
-          dynamic_cast<MANAGED*>(ActualPointer)->ReleaseRef();
-          SetPointer(NULL);
-		    }
+          return(AssignRef(NULL));
+        }
 	    }
 
       /**
@@ -212,19 +216,52 @@ namespace CEEFIT
 	    }
 
       /**
+       * operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to
+       */
+//	    inline PTR<T>& operator=(PTR<T>& aSmartPtr) 
+//      {
+//		    return(AssignRef(aSmartPtr.ActualPointer));
+//	    }
+
+      /**
        * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
        */
-	    template<class U> inline PTR<T>& operator=(VALUE<U> aValue) 
+	    inline PTR<T>& operator=(const int aValue) 
       {
-        return(aValue.SetPtr(*this));
+        if(aValue != 0)
+        {
+          throw new EXCEPTION("Expected a null pointer for operator=(int)");
+        }
+        return(AssignRef(NULL));
 	    }
 
       /**
-       * operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to
+       * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
        */
-	    inline PTR& operator=(PTR& aSmartPtr) 
+	    inline PTR<T>& operator=(const unsigned int aValue) 
       {
-		    return(AssignRef(aSmartPtr.ActualPointer));
+        if(aValue != 0)
+        {
+          throw new EXCEPTION("Expected a null pointer for operator=(unsigned int)");
+        }
+        return(AssignRef(NULL));
+	    }
+
+      /**
+       * Destructor, releases the reference to the pointer if any is held
+       */
+	    inline ~PTR<T>(void)
+      {
+		    if(ActualPointer) 
+        {
+#         ifdef _DEBUG
+            bool pointerConsistencyCheck = (dynamic_cast<MANAGED*>(ActualPointer) != NULL && typeid(T) != typeid(MANAGED));
+            AssertIsTrue(pointerConsistencyCheck);
+#         endif
+
+          dynamic_cast<MANAGED*>(ActualPointer)->ReleaseRef();
+          SetPointer(NULL);
+		    }
 	    }
 
       /**
@@ -426,7 +463,11 @@ namespace CEEFIT
 	    inline void SetPointer(T* aPointer) 
       {
 #       ifdef _DEBUG
-          AssertIsTrue(aPointer == NULL || dynamic_cast<MANAGED*>(aPointer) != NULL && aPointer->GetTypeInfo() != typeid(MANAGED));
+          if(aPointer != NULL) 
+          {
+            AssertIsTrue(dynamic_cast<MANAGED*>(aPointer) != NULL);
+            AssertIsTrue(typeid(T) != typeid(MANAGED));
+          }
 #       endif        
 
 		    ActualPointer = aPointer; 

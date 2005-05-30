@@ -1,8 +1,6 @@
 #ifndef __TOOLS_MISC_H__
 #define __TOOLS_MISC_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>Miscallaneous typedefs and function prototypes that do not fit anywhere else</p>
  *

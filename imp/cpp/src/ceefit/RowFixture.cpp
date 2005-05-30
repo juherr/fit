@@ -271,7 +271,7 @@ namespace CEEFIT
 
     for (int i=0; i < ColumnBindings.GetSize() && cell != NULL; i++) 
     {
-      FIXTURE* target = this;
+      PTR<FIXTURE> target(this);
       PTR<CELLADAPTER> a(ColumnBindings[i]);
       if (a != NULL) 
       {

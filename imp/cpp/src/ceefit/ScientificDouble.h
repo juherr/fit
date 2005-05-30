@@ -1,8 +1,6 @@
 #ifndef __PRIVATE_SCIENTIFICDOUBLE_H__
 #define __PRIVATE_SCIENTIFICDOUBLE_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -111,8 +109,6 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDB
     virtual inline ceefit_init_spec ~FITFIELD<CEEFIT::SCIENTIFICDOUBLE>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<CEEFIT::SCIENTIFICDOUBLE>)); }
 
   private:
     ceefit_init_spec FITFIELD<CEEFIT::SCIENTIFICDOUBLE>(const FITFIELD<CEEFIT::SCIENTIFICDOUBLE>&);  /**< not implemented, do not call. */

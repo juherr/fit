@@ -2,29 +2,37 @@
 
 setlocal
 
+set DEBUG_BUILD=-Ddebug.mode=false
+set RELEASE_BUILD=-Drelease.mode=false
+
 :doSwitches
 if "%1"=="-help" goto giveHelp
 if "%1"=="-h" goto giveHelp
 if "%1"=="-debugAnt" goto debugAnt
 if "%1"=="-debug" goto debugBuild
 if "%1"=="-release" goto releaseBuild
+if "%1"=="-fastCompile" goto fastCompileBuild
 if "%1"=="-msvc" goto useMsvc
 if "%1"=="-g++" goto useGplusplus
 goto checkEnv
 
 :giveHelp
 echo Ant script for CeeFIT
-echo usage:  ant [-debugAnt] [-debug] [-release] {ant params or ant targets...}
-echo            -debugAnt : Tells ant to print out debugging and diagnostic
-echo                        information
-echo            -debug    : Force ant to build CeeFIT with debugging
-echo                        information (overrides build.properties)
-echo            -release  : Force ant to build CeeFIT with optimizations
-echo                        enabled (overrides build.properties)
-echo            -msvc     : Force ant to build using MSVC compiler and linker
-echo                        (overrides build.properties)
-echo            -g++      : Force ant to build using GCC's g++ compiler and
-echo                        linker (overrides build.properties)
+echo usage:  ant [-debugAnt] [{build.properties overrides}] {ant param(s)}
+echo            -debugAnt     : Tells ant to print out debugging and
+echo                            diagnostic information
+echo .
+echo          build.properties overrides:
+echo            -fastCompile  : Force ant to build CeeFIT with debugging
+echo                            information (overrides build.properties)
+echo            -debug        : Force ant to build CeeFIT with debugging
+echo                            information (overrides build.properties)
+echo            -release      : Force ant to build CeeFIT with optimizations
+echo                            enabled (overrides build.properties)
+echo            -msvc         : Force ant to build using MSVC compiler and
+echo                            linker (overrides build.properties)
+echo            -g++          : Force ant to build using GCC's g++ compiler
+echo                            and linker (overrides build.properties)
 echo .
 echo Set GCC_HOME or MSVCDir environment variables set prior to calling
 echo ant.bat so that Ant knows where to find your C++ compiler.
@@ -41,11 +49,19 @@ goto doSwitches
 
 :releaseBuild
 set DEBUG_BUILD=-Ddebug.mode=false
+set RELEASE_BUILD=-Drelease.mode=true
 shift
 goto doSwitches
 
 :debugBuild
 set DEBUG_BUILD=-Ddebug.mode=true
+set RELEASE_BUILD=-Drelease.mode=false
+shift
+goto doSwitches
+
+:fastCompileBuild
+set DEBUG_BUILD=-Ddebug.mode=false
+set RELEASE_BUILD=-Drelease.mode=false
 shift
 goto doSwitches
 
@@ -84,7 +100,7 @@ set LIB=%GCC_HOME%\lib;%INCLUDE%
 goto runAnt
 
 :runAnt
-cmd /c lib\apache-ant-1.6.2\bin\ant %DEBUG_ANT_FLAG% %DEBUG_BUILD% %USE_MSVC% %USE_GPP% %1 %2 %3 %4 %5 %6 %7 %8 %9
+cmd /c lib\apache-ant-1.6.2\bin\ant %DEBUG_ANT_FLAG% %DEBUG_BUILD% %RELEASE_BUILD% %USE_MSVC% %USE_GPP% %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 set PATH=%oldPATH%
 set oldPATH=
@@ -96,6 +112,7 @@ set GCC_HOME_VAR=
 set MSVCDir_VAR=
 set DEBUG_ANT_FLAG=
 set DEBUG_BUILD=
+set RELEASE_BUILD=
 set SKIP_MSVC=
 set SKIP_GCC=
 set USE_MSVC=

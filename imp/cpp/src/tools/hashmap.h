@@ -297,8 +297,6 @@ namespace CEEFIT
           { 
             SetKey(aKey);
           }
-
-          virtual inline const type_info& GetTypeInfo(void) { return(typeid(NODEIMPL<KEYTYPE>)); }
       };
 
       DYNARRAY< PTR<NODE> > Array[listsize];

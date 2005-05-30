@@ -34,20 +34,6 @@ namespace CEEFIT
     return((INT64) clock());
   }
 
-  SLINKLIST<FIXTUREFACTORY>& ceefit_call_spec RUNNER::GetFixtureFactoryList()
-  {
-    static SLINKLIST<FIXTUREFACTORY> FixtureFactoryList;
-
-    return(FixtureFactoryList);
-  }
-
-  SLINKLIST<NONFIXTUREFACTORY>& ceefit_call_spec RUNNER::GetNonFixtureFactoryList()
-  {
-    static SLINKLIST<NONFIXTUREFACTORY> NonFixtureFactoryList;
-
-    return(NonFixtureFactoryList);
-  }
-
   ceefit_init_spec COUNTS::COUNTS()
   {
     right = 0;
@@ -219,22 +205,6 @@ namespace CEEFIT
 
   void ceefit_call_spec FIXTURE::DeleteFixture(EXCEPTION*& exceptionThrown)
   {
-    try
-    {
-      delete this;
-    }
-    catch(EXCEPTION* e)
-    {
-      if(exceptionThrown == NULL)
-      {
-        exceptionThrown = e;
-      }
-      else
-      {
-        // first exception takes precedence
-        delete e;
-      }
-    }
   }
 
   // Traversal //////////////////////////
@@ -242,6 +212,8 @@ namespace CEEFIT
   /* Altered by Rick Mugridge to dispatch on the first Fixture, adapted for CeeFIT by Dave Woldrich 05/01/05 */
   void ceefit_call_spec FIXTURE::DoTables(PTR<PARSE>& tables) 
   {
+    PTR<FIXTURE> fixture;
+    
     _ftime(&SummaryObj->RunDate);
     SummaryObj->RunElapsedTime = new FIXTURE::RUNTIME();
     if(tables != NULL) 
@@ -251,9 +223,17 @@ namespace CEEFIT
       {
         try 
         {
-          FIXTURE* fixture = GetLinkedFixtureWithArgs(tables);
+          GetLinkedFixtureWithArgs(fixture, tables);
           
           fixture->InterpretTables(tables);
+
+          EXCEPTION* exceptionThrown = NULL;
+          fixture->DeleteFixture(exceptionThrown);
+          if(exceptionThrown)
+          {
+            // rethrow any exception that was thrown ...
+            throw exceptionThrown;
+          }
         } 
         catch (EXCEPTION* e) 
         {
@@ -286,11 +266,11 @@ namespace CEEFIT
   /* Added by Rick Mugridge, adapted for CeeFIT by Dave Woldrich 05/01/05 */
   void ceefit_call_spec FIXTURE::InterpretFollowingTables(PTR<PARSE>& tables) 
   {
+    PTR<FIXTURE> fixture;
     PTR<PARSE> temp(tables);
-    //listener.tableFinished(temp);     // cruftacular!!!
 
-    temp = temp->More;      /// uhhh ... what is this leading ->More for?
-    while (temp != NULL) 
+    temp = temp->More;      
+    while(temp != NULL)
     {
       PTR<PARSE> fixtureName(FixtureName(temp));
       if (fixtureName != NULL) 
@@ -298,7 +278,10 @@ namespace CEEFIT
         EXCEPTION* exceptionThrown = NULL;
         try 
         {
-          FIXTURE* fixture = GetLinkedFixtureWithArgs(temp);
+          // Step 1:  Make sure our PTR is NULL, just to ensure any old FIXTURE is released
+          //          and get next FIXTURE
+          fixture = NULL;   
+          GetLinkedFixtureWithArgs(fixture, temp);
 
           // Step 2:  Call DoTable
           if(exceptionThrown == NULL)
@@ -328,26 +311,23 @@ namespace CEEFIT
         }
       }
 
-      //listener.tableFinished(temp);     // more yummy cruft from java version!
       temp = temp->More;
     }
   }
 
     /* Added from FitNesse, adapted for CeeFIT by Dave Woldrich 05/01/05 */
-	FIXTURE* ceefit_call_spec FIXTURE::GetLinkedFixtureWithArgs(PTR<PARSE>& tables) 
+	void ceefit_call_spec FIXTURE::GetLinkedFixtureWithArgs(PTR<FIXTURE>& out, PTR<PARSE>& tables) 
   {
 		PTR<PARSE> header(tables->At(0, 0, 0));
 
-    FIXTURE* fixture = LoadFixture(header->Text());
+    LoadFixture(out, header->Text());
 
     // Step 1:  accumulate fixture objects
-		fixture->CountsObj = CountsObj;
-		fixture->SummaryObj = SummaryObj;
+		out->CountsObj = CountsObj;
+		out->SummaryObj = SummaryObj;
 
     // Step 1a:  uhhh... what ees thees?
-    fixture->GetArgsForTable(tables);
-
-		return fixture;
+    out->GetArgsForTable(tables);
 	}
 
 	/* Added by Rick Mugridge?  Adapted for CeeFIT by Dave Woldrich 05/01/05 */
@@ -391,7 +371,7 @@ namespace CEEFIT
         {
           EXCEPTION* exceptionThrown = NULL;
           STRING headingText(heading->Text());
-          FIXTURE* fixture = LoadFixture(headingText);
+          PTR<FIXTURE> fixture(LoadFixture(headingText));
 
           // Step 1:  accumulate fixture Counts
           fixture->CountsObj = CountsObj;
@@ -430,7 +410,7 @@ namespace CEEFIT
   }
 */
 
-  FIXTURE* ceefit_call_spec FIXTURE::CreateFixtureByClassName(const STRING& className)
+  void ceefit_call_spec FIXTURE::CreateFixtureByClassName(PTR<FIXTURE>& out, const STRING& className)
   {
     SLINKLIST<FIXTUREFACTORY>& aList = RUNNER::GetFixtureFactoryList();
 
@@ -440,15 +420,16 @@ namespace CEEFIT
       const char* aName = aFactory->GetName();
       if(aName != NULL && className.IsEqual(aName))
       {
-        return(aFactory->CreateFixture());
+        aFactory->CreateFixture(out);
+        return;
       }
       aFactory = aFactory->GetNext();
     }
 
-    return(NULL);
+    out = NULL;
   }
 
-  FIXTURE* ceefit_call_spec FIXTURE::CreateFixtureByAlias(const STRING& aAlias)
+  void ceefit_call_spec FIXTURE::CreateFixtureByAlias(PTR<FIXTURE>& out, const STRING& aAlias)
   {
     SLINKLIST<FIXTUREFACTORY>& aList = RUNNER::GetFixtureFactoryList();
 
@@ -458,24 +439,25 @@ namespace CEEFIT
       const char* bAlias = aFactory->GetAlias();
       if(bAlias != NULL && aAlias.IsEqual(bAlias))
       {
-        return(aFactory->CreateFixture());
+        aFactory->CreateFixture(out);
+        return;
       }
       aFactory = aFactory->GetNext();
     }
 
-    return(NULL);
+    out = NULL;
   }
 
-	FIXTURE* ceefit_call_spec FIXTURE::LoadFixture(const STRING& fixtureName)
+	void ceefit_call_spec FIXTURE::LoadFixture(PTR<FIXTURE>& out, const STRING& fixtureName)
   {
-    FIXTURE* aFixture = FIXTURE::CreateFixtureByClassName(fixtureName);
+    FIXTURE::CreateFixtureByClassName(out, fixtureName);
 
-    if(aFixture == NULL)
+    if(out == NULL)
     {
       // ok, now see if the fixture name matches any known aliases
-      aFixture = FIXTURE::CreateFixtureByAlias(fixtureName);
+      FIXTURE::CreateFixtureByAlias(out, fixtureName);
 
-      if(aFixture == NULL)
+      if(out == NULL)
       {
         NONFIXTUREFACTORY* nonFixtureFactoryByName = RUNNER::FindNonFixtureFactoryByName(fixtureName);
         NONFIXTUREFACTORY* nonFixtureFactoryByAlias = RUNNER::FindNonFixtureFactoryByAlias(fixtureName);
@@ -490,8 +472,6 @@ namespace CEEFIT
         }
       }
     }
-
-    return(aFixture);
 	}
 
   void ceefit_call_spec FIXTURE::DoTable(PTR<PARSE>& table)
@@ -668,11 +648,12 @@ namespace CEEFIT
   // This method differs from the Java version in that we must go towards STRING for value comparisons versus using
   // TypeAdapter.equals() which works on Object's.  Here the CELLADAPTER is used to parse and filter values as well
   // as convey return data from method invocations.
-  void ceefit_call_spec FIXTURE::Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& aAdapter, FIXTURE* target)
+  void ceefit_call_spec FIXTURE::Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& aAdapter, PTR<FIXTURE>& target)
   {
-      if(target == NULL)
+      PTR<FIXTURE> targetPtr(target);
+      if(targetPtr == NULL)
       {
-        target = this;      // set the default fixture target to this...
+        targetPtr = this;      // set the default fixture target to this...
       }
 
       STRING text(cell->Text());
@@ -691,7 +672,7 @@ namespace CEEFIT
           {
             PTR<CELLADAPTER> result;
 
-            aAdapter->Invoke(result, target);
+            aAdapter->Invoke(result, targetPtr);
             result->ReadFromFixtureVar(aTemp);
           }
           else // if(aAdpater->IsField())
@@ -702,7 +683,7 @@ namespace CEEFIT
             }
             else
             {
-              aAdapter->ReadFromFixtureVar(aTemp, target);
+              aAdapter->ReadFromFixtureVar(aTemp, targetPtr);
             }
           }
 
@@ -729,10 +710,11 @@ namespace CEEFIT
       {
         try
         {
+          PTR<FIXTURE> thisFixture(this);
           STRING aTemp;
           PTR<CELLADAPTER> aResult;
 
-          aAdapter->Invoke(aResult, this);
+          aAdapter->Invoke(aResult, thisFixture);
 
           aResult->ReadFromFixtureVar(aTemp);
           Wrong(cell, aTemp);
@@ -779,7 +761,9 @@ namespace CEEFIT
           }
           else // if(aAdapter->IsMethod())
           {
-            aAdapter->Invoke(callResults, this);
+            PTR<FIXTURE> thisFixture(this);
+            
+            aAdapter->Invoke(callResults, thisFixture);
             callResults->NewInstanceParse(checkValueCell, text);
 
             // load results and checkValue with the parsed/checked STRING's in the cells

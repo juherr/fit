@@ -23,7 +23,7 @@
  * @author David Woldrich
  */
 
-#include "ceefit/mandatory.h"
+#include "tools/mandatory.h"
 
 #include <new>
 #include <assert.h>

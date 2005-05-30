@@ -39,20 +39,8 @@ namespace CEEFAT
     FAT_TABLE::Table = new PARSE(STRING("table"), emptyString, rowCopy, nullParse);
 
     // evaluate the rest of the table like a runner
-    FIXTURE* temp = NULL;
-    try 
-    {
-      temp = new FIXTURE();
-      temp->DoTables(FAT_TABLE::Table);
-    }
-    catch(...)
-    {
-      if(temp != NULL)
-      {
-        delete temp;
-      }
-      throw;
-    }
+    PTR<FIXTURE> temp(new FIXTURE());
+    temp->DoTables(FAT_TABLE::Table);
   }
 
   VALUE<PARSE> ceefit_call_spec FAT_TABLE::Copy(PTR<PARSE>& tree)

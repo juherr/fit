@@ -23,8 +23,6 @@
  * @author David Woldrich
  */
 
-#include "ceefit/mandatory.h"
-
 namespace CEEFAT
 {
   class MONEY : public ::CEEFIT::OBJECT 
@@ -96,8 +94,6 @@ template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT:
     virtual inline ceefit_init_spec ~FITFIELD<CEEFAT::MONEY>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<CEEFAT::MONEY>)); }
 
   private:
     ceefit_init_spec FITFIELD<CEEFAT::MONEY>(const FITFIELD<CEEFAT::MONEY>&);  /**< not implemented, do not call. */

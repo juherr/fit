@@ -1,5 +1,5 @@
-#ifndef __CEEFIT_MANDATORY_H__
-#define __CEEFIT_MANDATORY_H__
+#ifndef __TOOLS_MANDATORY_H__
+#define __TOOLS_MANDATORY_H__
 
 /**
  * <p>Mandatory typedefs and #defines for all CeeFIT classes</p>
@@ -33,4 +33,4 @@
 # define ceefit_call_spec __cdecl
 #endif
 
-#endif // __CEEFIT_MANDATORY_H__
+#endif // __TOOLS_MANDATORY_H__

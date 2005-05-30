@@ -1,8 +1,6 @@
 #ifndef __CEEFIT_ACTIONFIXTURE_H__
 #define __CEEFIT_ACTIONFIXTURE_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -33,7 +31,7 @@ namespace CEEFIT
       PTR<PARSE> Cells;
   
     public:
-      static FIXTURE* Actor;      /**< Uhhh ... static?!?  Don't blame me, I copied Java!!  :)  */
+      static PTR<FIXTURE> Actor;      /**< Uhhh ... static?!?  Don't blame me, I copied Java!!  :)  */
 
     public:
       ceefit_init_spec ACTIONFIXTURE(void);

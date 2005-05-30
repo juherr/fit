@@ -106,11 +106,12 @@ namespace CEEFIT
     }
   }
 
-  void COLUMNFIXTURE::Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, FIXTURE* target)
+  void COLUMNFIXTURE::Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, PTR<FIXTURE>& target)
   {
-    if(target == NULL)
+    PTR<FIXTURE> temp(target);
+    if(temp == NULL)
     {
-      target = this;
+      temp = this;
     }
 
     if (!HasExecuted)
@@ -125,7 +126,7 @@ namespace CEEFIT
       }
       HasExecuted = true;
     }
-    FIXTURE::Check(cell, a, target);
+    FIXTURE::Check(cell, a, temp);
   }
 
   void COLUMNFIXTURE::Reset()
@@ -187,11 +188,11 @@ namespace CEEFIT
     {
       if(aTest->IsMethod() && aTest->GetName().IsEqual(name))
       {
-        return(VALUE<FITTESTBASE>(aTest));
+        return(VALUE<CELLADAPTER>(aTest));
       }
       aTest = aTest->GetNext();
     }
-    return(VALUE<FITTESTBASE>(NULL));
+    return(VALUE<CELLADAPTER>(NULL));
   }
 
   VALUE<CELLADAPTER> ceefit_call_spec COLUMNFIXTURE::BindField(const STRING& name)

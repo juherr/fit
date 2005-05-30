@@ -1,66 +1,49 @@
 # build.properties for ceefit
-# Rename this sample file to build.properties and edit to suit your environment
 
 #########################
 # which.compiler = a symbolic keyword corresponding to an ant-contrib cpptasks compiler engine:
 #   Possible values are:  
-#       gcc     (default) 	GCC C++ compiler
-#       g++ 	  GCC C++ compiler
-#       c++ 	  GCC C++ compiler
-#       g77 	  GNU FORTRAN compiler
-#       msvc 	  Microsoft Visual C++
-#       bcc 	  Borland C++ Compiler
-#       msrc 	  Microsoft Resource Compiler
-#       brc 	  Borland Resource Compiler
-#       df 	    Compaq Visual Fortran Compiler
-#       midl 	  Microsoft MIDL Compiler
-#       icl 	  Intel C++ compiler for Windows (IA-32)
-#       ecl 	  Intel C++ compiler for Windows (IA-64)
-#       icc 	  Intel C++ compiler for Linux (IA-32)
-#       ecc 	  Intel C++ compiler for Linux (IA-64)
-#       CC 	    Sun ONE C++ compiler
-#       aCC 	  HP aC++ C++ Compiler
+#       gcc (default) 	GCC C++ compiler
+#       g++ 	GCC C++ compiler
+#       c++ 	GCC C++ compiler
+#       g77 	GNU FORTRAN compiler
+#       msvc 	Microsoft Visual C++
+#       bcc 	Borland C++ Compiler
+#       msrc 	Microsoft Resource Compiler
+#       brc 	Borland Resource Compiler
+#       df 	Visual Fortran Compiler
+#       midl 	Microsoft MIDL Compiler
+#       icl 	Intel C++ compiler for Windows (IA-32)
+#       ecl 	Intel C++ compiler for Windows (IA-64)
+#       icc 	Intel C++ compiler for Linux (IA-32)
+#       ecc 	Intel C++ compiler for Linux (IA-64)
+#       CC	Sun ONE C++ compiler
+#       aCC 	HP aC++ C++ Compiler
 #       os390 	OS390 C Compiler
 #       os400 	Icc Compiler
 #       sunc89 	Sun C89 C Compiler
-#       xlC 	  VisualAge C Compiler
+#       xlC 	VisualAge C Compiler
 
 which.compiler=g++
 
-
-#########################
-# which.linker = a symbolic keyword corresponding to an ant-contrib cpptasks linker engine:
-#                if which.linker is not specified, then which.linker will be set to which.compiler 
-#   Possible values are:  
-#       gcc 	      Gcc Linker
-#       g++ 	      G++ Linker
-#       ld 	        Ld Linker
-#       ar 	        Gcc Librarian
-#       msvc 	      Microsoft Linker
-#       bcc 	      Borland Linker
-#       df 	        Compaq Visual Fortran Linker
-#       icl 	      Intel Linker for Windows (IA-32)
-#       ecl 	      Intel Linker for Windows (IA-64)
-#       icc 	      Intel Linker for Linux (IA-32)
-#       ecc 	      Intel Linker for Linux (IA-64)
-#       CC 	        Sun ONE Linker
-#       aCC 	      HP aC++ Linker
-#       os390 	    OS390 Linker
-#       os390batch 	OS390 Linker
-#       os400 	    IccLinker
-#       sunc89 	    C89 Linker
-#       xlC 	      VisualAge Linker
-
-#which.linker=g++
 
 
 ########################
 # debug.mode
 #   Possible values:
-#     true  : (default) build code with optimizations disabled and debugging enabled
-#     false : build code with optimizations enabled and debugging disabled
+#     true  : build code with debugging enabled
+#     false : (default) build code with debugging disabled
 
-debug.mode=true
+debug.mode=false
+
+
+########################
+# release.mode
+#   Possible values:
+#     true  : build code with optimizations enabled
+#     false : (default) build code with optimizations disabled
+
+release.mode=false
 
 
 ########################
@@ -79,5 +62,4 @@ debug.mode=true
 #     false : something other than IA32 is the target
 
 intel.target=true
-
 

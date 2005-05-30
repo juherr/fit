@@ -79,6 +79,9 @@
 #include <errno.h>
 #include <typeinfo>
 
+// Define up-front, mandatory symbols
+#include "tools/mandatory.h"
+
 // Tools and Java-like classes
 #include "tools/object.h"
 #include "tools/misc.h"
@@ -96,8 +99,8 @@
 #include "tools/hashmap.h"
 
 // CeeFIT system files
-#include "ceefit/mandatory.h"
 #include "ceefit/celladapter.h"
+#include "ceefit/Runner.h"
 #include "ceefit/fitfield.h"
 #include "ceefit/fittest.h"
 #include "ceefit/registerstatic.h"

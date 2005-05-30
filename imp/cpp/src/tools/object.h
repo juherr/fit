@@ -1,8 +1,6 @@
 #ifndef __TOOLS_OBJECT_H__
 #define __TOOLS_OBJECT_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *

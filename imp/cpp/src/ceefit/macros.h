@@ -1,8 +1,6 @@
 #ifndef __CEEFIT_MACROS_H__
 #define __CEEFIT_MACROS_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -140,9 +138,9 @@
       class PROVIDETESTCALLER_##testName                                                                                          \
       {                                                                                                                           \
         public:                                                                                                                   \
-          static inline returnType CallFitTest(::CEEFIT::FIXTURE* fixture)                                                        \
+          static inline returnType CallFitTest(::CEEFIT::PTR< ::CEEFIT::FIXTURE >& fixture)                                       \
           {                                                                                                                       \
-            return(PROVIDEFIXTUREOBJECTCASTER::GetFixtureSubclass(fixture)->testName());                                          \
+            return(PROVIDEFIXTUREOBJECTCASTER::GetFixtureSubclass(fixture.GetPointer())->testName());                             \
           }                                                                                                                       \
       };                                                                                                                          \
       friend class ::FITTEST_AUTO< returnType, PROVIDETESTCALLER_##testName >;                                                    \

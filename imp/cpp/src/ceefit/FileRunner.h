@@ -1,8 +1,6 @@
 #ifndef __CEEFIT_FILERUNNER_H__
 #define __CEEFIT_FILERUNNER_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *

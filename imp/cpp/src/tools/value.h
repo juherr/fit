@@ -1,8 +1,6 @@
 #ifndef __TOOLS_VALUE_H__
 #define __TOOLS_VALUE_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -45,7 +43,25 @@ namespace CEEFIT
         Value = aValue;
       }
 
-      template<class U> explicit inline VALUE<T>(VALUE<U>& aValueObj)
+      explicit inline VALUE<T>(int aNull)
+      {      
+        if(aNull != 0) 
+        {
+          throw new EXCEPTION("Expected a null pointer for VALUE<T>(int)");
+        }
+        Value = NULL;
+      }
+
+      explicit inline VALUE<T>(unsigned int aNull)
+      {      
+        if(aNull != 0) 
+        {
+          throw new EXCEPTION("Expected a null pointer for VALUE<T>(unsigned int)");
+        }
+        Value = NULL;
+      }
+
+      template<class U> inline VALUE<T>(VALUE<U>& aValueObj)
       {
         aValueObj.SetValue(Value);
       }
@@ -55,9 +71,9 @@ namespace CEEFIT
         Value = aValue;
       }
 */
-      template<class U> explicit inline VALUE<T>(PTR<U>& aPtr)   // set a VALUE from a PTR
+      template<class U> inline VALUE<T>(PTR<U>& aPtr)   // set a VALUE from a PTR
       {     
-        VALUE<T> aValue(aPtr.GetValue());
+        VALUE<T> aValue(dynamic_cast<T*>(aPtr.GetPointer()));
      
         (*this) = aValue;
       }
@@ -65,6 +81,28 @@ namespace CEEFIT
       template<class U> inline VALUE<T>& operator=(VALUE<U>& aValue)
       {
         Value = aValue.Value;
+
+        return(*this);
+      }
+
+      inline VALUE<T>& operator=(int aNull)
+      {
+        if(aNull != 0) 
+        {
+          throw new EXCEPTION("Expected a null pointer for operator=(int)");
+        }
+        Value = NULL;
+
+        return(*this);
+      }
+
+      inline VALUE<T>& operator=(unsigned int aNull)
+      {
+        if(aNull != 0) 
+        {
+          throw new EXCEPTION("Expected a null pointer for operator=(unsigned int)");
+        }
+        Value = NULL;
 
         return(*this);
       }

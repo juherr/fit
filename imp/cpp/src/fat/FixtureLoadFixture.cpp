@@ -36,20 +36,11 @@ namespace CEEFAT
     private:
       virtual void ceefit_call_spec LoadFixture()
       {
-        FIXTURE* fixture = NULL;
-        try
-        {
-          fixture = new FIXTURE();
-          fixture->LoadFixture(FixtureName);
-        }
-        catch(...)
-        {
-          if(fixture != NULL)
-          {
-            delete fixture;
-          }
-          throw;
-        }
+        PTR<FIXTURE> fixture;
+        PTR<FIXTURE> loadedFixture;
+        
+        fixture = new FIXTURE();
+        fixture->LoadFixture(loadedFixture, FixtureName);
       }
 	  
     public:

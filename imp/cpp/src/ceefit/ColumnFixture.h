@@ -1,8 +1,6 @@
 #ifndef __CEEFIT_COLUMNFIXTURE_H__
 #define __CEEFIT_COLUMNFIXTURE_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -45,7 +43,13 @@ namespace CEEFIT
       virtual void ceefit_call_spec DoRow(PTR<PARSE>& row);
 
       virtual void ceefit_call_spec DoCell(PTR<PARSE>& cell, int column);
-      virtual void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, FIXTURE* whichFixture=NULL);
+      virtual void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, PTR<FIXTURE>& whichFixture);
+      virtual inline void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a) 
+      {
+        PTR<FIXTURE> nullFixture(NULL);
+
+        this->Check(cell, a, nullFixture);
+      }
 
       virtual void ceefit_call_spec Reset(void);
       virtual void ceefit_call_spec Execute(void);

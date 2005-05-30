@@ -1,8 +1,6 @@
 #ifndef __CEEFIT_PARSE_H__
 #define __CEEFIT_PARSE_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -85,8 +83,6 @@ namespace CEEFIT
     public:
       ceefit_init_spec PARSE(const STRING& text);
       ceefit_init_spec PARSE(const STRING& text, const DYNARRAY<STRING>& tags);
-
-      virtual inline const type_info& GetTypeInfo(void) { return(typeid(PARSE)); }
 
     protected:
       ceefit_init_spec PARSE(const PARSE&);

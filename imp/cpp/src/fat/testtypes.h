@@ -1,8 +1,6 @@
 #ifndef __FAT_TESTTYPES_H__
 #define __FAT_TESTTYPES_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -91,8 +89,6 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public FITFIELDBASE< CEEFIT
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD< CEEFIT::DYNARRAY<int> >)); }
-
   private:
     FITFIELD< CEEFIT::DYNARRAY<int> >(const FITFIELD< CEEFIT::DYNARRAY<int> >&);  /**< not implemented, do not call. */
     //FITFIELD< CEEFIT::DYNARRAY<int> >& operator=(const FITFIELD< CEEFIT::DYNARRAY<int> >&);  /**< not implemented, do not call. */
@@ -159,8 +155,6 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public FITFIELDBASE< CEEFI
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD< CEEFIT::DYNARRAY<bool> >)); }
-
   private:
     FITFIELD< CEEFIT::DYNARRAY<bool> >(const FITFIELD< CEEFIT::DYNARRAY<bool> >&);  /**< not implemented, do not call. */
     //FITFIELD< CEEFIT::DYNARRAY<bool> >& operator=(const FITFIELD< CEEFIT::DYNARRAY<bool> >&);  /**< not implemented, do not call. */
@@ -223,8 +217,6 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public FITFIELDB
     virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >)); }
 
   private:
     FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >(const FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >&);  /**< not implemented, do not call. */

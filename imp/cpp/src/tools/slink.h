@@ -1,8 +1,6 @@
 #ifndef __TOOLS_SLINK_H__
 #define __TOOLS_SLINK_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *

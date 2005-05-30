@@ -1,8 +1,6 @@
 #ifndef __CEEFIT_CELLADAPTER_H__
 #define __CEEFIT_CELLADAPTER_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -49,7 +47,7 @@ namespace CEEFIT
        *
        * <p>Only used in special cases like RowFixture</p>
        */
-      virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out, FIXTURE* aFixture);
+      virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out, PTR<FIXTURE>& aFixture);
 
       virtual void ceefit_call_spec SetName(const CEEFIT::STRING& aName)=0;
       virtual const CEEFIT::STRING& ceefit_call_spec GetName(void) const=0;
@@ -74,7 +72,7 @@ namespace CEEFIT
        *
        * @param out PTR<CELLADAPTER> Containing the return value from the fixture test method call.
        */
-      virtual void ceefit_call_spec Invoke(PTR<CELLADAPTER>& out, FIXTURE* aFixture)=0;
+      virtual void ceefit_call_spec Invoke(PTR<CELLADAPTER>& out, PTR<FIXTURE>& aFixture)=0;
 
       /**
        * <p>Invoke test fixture method, where the FIXTURE is supplied by a CELLADAPTER</p>
@@ -89,8 +87,6 @@ namespace CEEFIT
 
       virtual int ceefit_call_spec GetHashCode(void)=0;
       virtual bool ceefit_call_spec IsEqual(const CELLADAPTER* aAdapter) const=0;
-
-      virtual inline const type_info& GetTypeInfo(void) { return(typeid(CELLADAPTER)); }
 
     protected:
       inline ceefit_init_spec CELLADAPTER(CELLADAPTER&);     /**< not implemented, do not call. */

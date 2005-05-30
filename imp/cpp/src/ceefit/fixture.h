@@ -1,8 +1,6 @@
 #ifndef __CEEFIT_FIXTURE_H__
 #define __CEEFIT_FIXTURE_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -45,14 +43,12 @@ namespace CEEFIT
       STRING ceefit_call_spec ToString(void);
       void ceefit_call_spec Tally(const COUNTS& source);
 
-      virtual inline const type_info& GetTypeInfo(void) { return(typeid(COUNTS)); }
-
     private:
       ceefit_init_spec COUNTS(const COUNTS&);
       COUNTS& ceefit_call_spec operator=(const COUNTS&);
   };
 
-  class FIXTURE
+  class FIXTURE : public REFCOUNTED
   {
     public:
       class RUNTIME : public REFCOUNTED
@@ -65,8 +61,6 @@ namespace CEEFIT
           virtual ceefit_init_spec ~RUNTIME(void);
 
           virtual STRING ceefit_call_spec ToString(void);
-
-          virtual inline const type_info& GetTypeInfo(void) { return(typeid(RUNTIME)); }
 
         protected:
           STRING ceefit_call_spec d(INT64 scale);
@@ -89,8 +83,6 @@ namespace CEEFIT
           virtual ceefit_init_spec ~SUMMARY(void);
           SUMMARY& ceefit_call_spec operator=(SUMMARY& aSummary);
           ceefit_init_spec SUMMARY(SUMMARY& aSummary);
-
-          virtual inline const type_info& GetTypeInfo(void) { return(typeid(SUMMARY)); }
       };
 
     public:
@@ -116,7 +108,7 @@ namespace CEEFIT
       // Traversal ////////////////////////////////////
 
       virtual void ceefit_call_spec DoTables(PTR<PARSE>& tables);
-  	  static FIXTURE* ceefit_call_spec LoadFixture(const STRING& fixtureName);
+  	  static void ceefit_call_spec LoadFixture(PTR<FIXTURE>& out, const STRING& fixtureName);
       virtual void ceefit_call_spec DoTable(PTR<PARSE>& table);
       virtual void ceefit_call_spec DoRows(PTR<PARSE>& rows);
       virtual void ceefit_call_spec DoRow(PTR<PARSE>& row);
@@ -132,7 +124,7 @@ namespace CEEFIT
       void ceefit_call_spec InterpretTables(PTR<PARSE>& tables);
 
       /* Added from FitNesse, Modified for CeeFIT by Dave Woldrich 05/01/05 */
-    	FIXTURE* ceefit_call_spec GetLinkedFixtureWithArgs(PTR<PARSE>& tables);
+    	void ceefit_call_spec GetLinkedFixtureWithArgs(PTR<FIXTURE>& out, PTR<PARSE>& tables);
 
 	    /* Added by Rick Mugridge, from FitNesse */
 	    void ceefit_call_spec GetArgsForTable(PTR<PARSE>& table);
@@ -172,11 +164,16 @@ namespace CEEFIT
       static STRING ceefit_call_spec Escape(const STRING& string);
       static STRING ceefit_call_spec Camel(const STRING& name);
       virtual void ceefit_call_spec Parse(PTR<CELLADAPTER>& aField, const STRING& s);
-      virtual void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, FIXTURE* whichFixture=NULL);
+      virtual void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, PTR<FIXTURE>& whichFixture);
+      virtual inline void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a) 
+      {
+        PTR<FIXTURE> nullFixture(NULL);
+        this->Check(cell, a, nullFixture);
+      }
 
     protected:
-      static FIXTURE* ceefit_call_spec CreateFixtureByClassName(const STRING& className);  /**< @return NULL if no FIXTURE factory matched className */
-      static FIXTURE* ceefit_call_spec CreateFixtureByAlias(const STRING& aAlias);         /**< @return NULL if no FIXTURE factory's alias matched aAlias */
+      static void ceefit_call_spec CreateFixtureByClassName(PTR<FIXTURE>& out, const STRING& className);  /**< @param out set to NULL if no FIXTURE factory matched className */
+      static void ceefit_call_spec CreateFixtureByAlias(PTR<FIXTURE>& out, const STRING& aAlias);         /**< @param out set to NULL if no FIXTURE factory's alias matched aAlias */
 
     protected:
       // helpers for DoTables required by CeeFIT

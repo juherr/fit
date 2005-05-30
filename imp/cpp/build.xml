@@ -71,6 +71,7 @@
 	<target name="clean">
 		<delete failonerror="false" dir="Debug"/>
 		<delete failonerror="false" dir="Release"/>
+		<delete failonerror="false" dir="FastCompile"/>
 	</target>
 	
 	<!-- have a build.properties file in the same folder as build.xml if you need to override the default project settings -->
@@ -99,6 +100,15 @@
 			</not>
 			<then>
 				<property name="debug.mode" value="true"/>
+			</then>
+			<else/>
+		</if>
+		<if>
+			<not>
+				<isset property="release.mode"/>
+			</not>
+			<then>
+				<property name="release.mode" value="false"/>
 			</then>
 			<else/>
 		</if>
@@ -166,6 +176,8 @@
 				<property name="debug.mode.define" value="_DEBUG"/>
 				<property name="output.dir" value="Debug"/>
 				<property name="optimize.parm" value="none"/>
+				<property name="is.not.release.mode" value="true"/>
+				<property name="is.debug.mode" value="true"/>
 				<if>
 					<or>
 						<equals arg1="${which.compiler}" arg2="gcc"/>
@@ -184,10 +196,11 @@
 					</then>
 				</if>
 			</then>
-			<else>
+			<else><if><equals arg1="${release.mode}" arg2="true"/><then>
 				<property name="debug.mode.define" value="NDEBUG"/>
 				<property name="output.dir" value="Release"/>
 				<property name="optimize.parm" value="extreme"/>
+				<property name="is.release.mode" value="true"/>
 				<if>
 					<or>
 						<equals arg1="${which.compiler}" arg2="gcc"/>
@@ -205,7 +218,30 @@
 						<property name="msvc.linker.stdlib" value="msvcrt"/>
 					</then>
 				</if>
-			</else>
+			</then>
+			<else>
+				<property name="debug.mode.define" value="NDEBUG"/>
+				<property name="output.dir" value="FastCompile"/>
+				<property name="optimize.parm" value="none"/>
+				<property name="is.not.release.mode" value="true"/>
+				<if>
+					<or>
+						<equals arg1="${which.compiler}" arg2="gcc"/>
+						<equals arg1="${which.compiler}" arg2="g++"/>
+						<equals arg1="${which.compiler}" arg2="c++"/>
+					</or>
+					<then>
+						<property name="stdcpplib.dir" location="${env.GCC_HOME}/lib"/>
+					</then>
+				</if>
+				<if>
+					<equals arg1="${which.linker}" arg2="msvc"/>
+					<then>
+						<property name="using.msvc.linker" value="true"/>
+						<property name="msvc.linker.stdlib" value="msvcrt"/>
+					</then>
+				</if>
+			</else></if></else>
 		</if>
 		<mkdir dir="${output.dir}"/>
 	</target>
@@ -216,14 +252,14 @@
 		       optimize="${optimize.parm}" runtime="static" outtype="static" rebuild="false" relentless="false" rtti="true" subsystem="console">
 
 			<compiler id="default.compiler.args">
-				<compilerarg location="mid" value="-Winline" if="using.gcc"/>
+				<!-- <compilerarg location="mid" value="-Winline" if="using.gcc"/> -->
 				<compilerarg location="mid" value="-std=gnu++98" if="using.gcc"/>
 				<!-- <compilerarg location="mid" value="-fshort-wchar" if="using.gcc"/>-->
-				<compilerarg location="mid" value="-frepo" if="using.gcc"/>
+				<!-- <compilerarg location="mid" value="-frepo" if="using.gcc"/> -->
 				<compilerarg location="mid" value="-fkeep-static-consts" if="using.gcc"/>
 				<compilerarg location="mid" value="-fkeep-inline-functions" if="using.gcc"/>
 				<compilerarg location="mid" value="-fconst-strings" if="using.gcc"/>
-				<compilerarg location="mid" value="-ftemplate-depth-255" if="using.gcc"/>
+				<compilerarg location="mid" value="-ftemplate-depth-255" unless="is.not.release.mode" if="using.gcc"/>
 				<!-- <compilerarg location="mid" value="-ffast-math" if="using.gcc"/> -->
 				<compilerarg location="mid" value="-ftrapping-math" if="using.gcc"/>
 				<compilerarg location="mid" value="-ftrapv" if="using.gcc"/>
@@ -239,11 +275,11 @@
 				<compilerarg location="mid" value="-mno-sse" if="using.gcc.on.intel"/>
 				<compilerarg location="mid" value="-mno-sse2" if="using.gcc.on.intel"/>
 				<compilerarg location="mid" value="-mno-sse3" if="using.gcc.on.intel"/>
-				<compilerarg location="mid" value="-minline-all-stringops" unless="is.debug.mode" if="using.gcc"/>
-				<compilerarg location="mid" value="-fimplicit-inline-templates" if="using.gcc"/>
-				<compilerarg location="mid" value="-fimplicit-templates" if="using.gcc"/>
-				<compilerarg location="mid" value="-fdefault-inline" if="using.gcc"/>
-				<compilerarg location="mid" value="-fimplement-inlines" if="using.gcc"/>
+				<compilerarg location="mid" value="-minline-all-stringops" unless="is.not.release.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-fimplicit-inline-templates" unless="is.not.release.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-fimplicit-templates" unless="is.not.release.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-fdefault-inline" unless="is.not.release.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-fimplement-inlines" unless="is.not.release.mode" if="using.gcc"/>
 				<compilerarg location="mid" value="-felide-constructors" if="using.gcc"/>
 				<compilerarg location="mid" value="-fenforce-eh-specs" if="using.gcc"/>
 				<compilerarg location="mid" value="-ffor-scope" if="using.gcc"/>

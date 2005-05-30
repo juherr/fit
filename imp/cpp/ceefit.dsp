@@ -210,6 +210,10 @@ SOURCE=.\src\ceefit\RowFixture.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\ceefit\Runner.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\ceefit\ScientificDouble.cpp
 
 !IF  "$(CFG)" == "ceefit - Win32 Release"
@@ -298,10 +302,6 @@ SOURCE=.\src\ceefit\macros.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\src\ceefit\mandatory.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\src\ceefit\Parse.h
 # End Source File
 # Begin Source File
@@ -315,6 +315,10 @@ SOURCE=.\src\ceefit\registerstatic.h
 # Begin Source File
 
 SOURCE=.\src\ceefit\RowFixture.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\ceefit\Runner.h
 # End Source File
 # Begin Source File
 
@@ -347,6 +351,10 @@ SOURCE=.\src\tools\failure.h
 # Begin Source File
 
 SOURCE=.\src\tools\hashmap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\tools\mandatory.h
 # End Source File
 # Begin Source File
 

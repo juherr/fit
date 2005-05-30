@@ -1,8 +1,6 @@
 #ifndef __CEEFIT_FITFIELD_H__
 #define __CEEFIT_FITFIELD_H__
 
-#include "ceefit/mandatory.h"
-
 /**
  * <p>This file is part of CeeFIT.</p>
  *
@@ -27,6 +25,8 @@
 
 namespace CEEFIT
 {
+  void ceefit_call_spec LinkFieldToCurrentFixture(CELLADAPTER* newField);
+
   template<class T> class FITFIELDBASE : public CELLADAPTER
   {
     protected:
@@ -40,7 +40,7 @@ namespace CEEFIT
         Field = NULL;
         DestroyField = false;
 
-        CEEFIT::LinkFieldToCurrentFixture(this);                    // the new FIXTURE will be located and this will be added to it
+        ::CEEFIT::LinkFieldToCurrentFixture(this);          // the new FIXTURE will be located and this will be added to it
       }
 
       virtual inline ~FITFIELDBASE<T>(void)
@@ -106,7 +106,7 @@ namespace CEEFIT
         return(*Field);
       }
 
-      virtual void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, CEEFIT::FIXTURE* aFixture)
+      virtual void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, CEEFIT::PTR<CEEFIT::FIXTURE>& aFixture)
       {
         throw new CEEFIT::EXCEPTION("You may not call Invoke on a Field-type cell");
       }
@@ -142,8 +142,6 @@ namespace CEEFIT
           return(::CEEFIT::IsEqual(thisField, aCellField));
         }
       }
-
-      virtual inline const type_info& GetTypeInfo(void) { return(typeid( ::CEEFIT::FITFIELDBASE<T> )); }
 
     private:
       template<class U> class RVAL
@@ -299,12 +297,10 @@ template<> class FITFIELD<void> : public CEEFIT::CELLADAPTER
     virtual bool ceefit_call_spec IsMethod(void) const { return(false); }
     virtual bool ceefit_call_spec IsField(void) const { return(true); }
     virtual void ceefit_call_spec NewInstanceParse(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, const CEEFIT::STRING& aText) { out = new FITFIELD<void>(); }
-    virtual void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, CEEFIT::FIXTURE* aFixture) { throw new CEEFIT::EXCEPTION("Not a method"); }
+    virtual void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, ::CEEFIT::PTR< ::CEEFIT::FIXTURE >& aFixture) { throw new CEEFIT::EXCEPTION("Not a method"); }
 
     virtual int ceefit_call_spec GetHashCode() { throw new CEEFIT::EXCEPTION("Cannot get hashcode to void"); }
     virtual bool ceefit_call_spec IsEqual(const ::CEEFIT::CELLADAPTER* aCell) const { throw new CEEFIT::EXCEPTION("Cannot test hashcode for equality"); }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<void>)); }
 
   private:
     ceefit_init_spec FITFIELD<void>(const FITFIELD<void>&);  /**< not implemented, do not call. */
@@ -363,8 +359,6 @@ template<> class FITFIELD<bool> : public FITFIELDBASE<bool>
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<bool>)); }
-
   private:
     ceefit_init_spec FITFIELD<bool>(const FITFIELD<bool>&);  /**< not implemented, do not call. */
 };
@@ -413,8 +407,6 @@ template<> class FITFIELD<unsigned char> : public FITFIELDBASE<unsigned char>
     virtual inline ceefit_init_spec ~FITFIELD<unsigned char>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<unsigned char>)); }
 
   private:
     ceefit_init_spec FITFIELD<unsigned char>(const FITFIELD<unsigned char>&);  /**< not implemented, do not call. */
@@ -465,8 +457,6 @@ template<> class FITFIELD<signed char> : public ::CEEFIT::FITFIELDBASE<signed ch
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<signed char>)); }
-
   private:
     ceefit_init_spec FITFIELD<signed char>(const FITFIELD<signed char>&);  /**< not implemented, do not call. */
 };
@@ -516,8 +506,6 @@ template<> class FITFIELD<char> : public ::CEEFIT::FITFIELDBASE<char>
     virtual inline ceefit_init_spec ~FITFIELD<char>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<char>)); }
 
   private:
     ceefit_init_spec FITFIELD<char>(const FITFIELD<char>&);  /**< not implemented, do not call. */
@@ -571,8 +559,6 @@ template<> class FITFIELD<char> : public ::CEEFIT::FITFIELDBASE<char>
       {
       }
 
-      virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<unsigned short>)); }
-
     private:
       ceefit_init_spec FITFIELD<unsigned short>(const FITFIELD<unsigned short>&);  /**< not implemented, do not call. */
   };
@@ -625,8 +611,6 @@ template<> class FITFIELD<signed short> : public ::CEEFIT::FITFIELDBASE<signed s
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<signed short>)); }
-
   private:
     ceefit_init_spec FITFIELD<signed short>(const FITFIELD<signed short>&);  /**< not implemented, do not call. */
 };
@@ -674,8 +658,6 @@ template<> class FITFIELD<wchar_t> : public ::CEEFIT::FITFIELDBASE<wchar_t>
     virtual inline ceefit_init_spec ~FITFIELD<wchar_t>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<wchar_t>)); }
 
   private:
     ceefit_init_spec FITFIELD<wchar_t>(const FITFIELD<wchar_t>&);  /**< not implemented, do not call. */
@@ -725,8 +707,6 @@ template<> class FITFIELD<unsigned int> : public ::CEEFIT::FITFIELDBASE<unsigned
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<unsigned int>)); }
-
   private:
     ceefit_init_spec FITFIELD<unsigned int>(const FITFIELD<unsigned int>&);  /**< not implemented, do not call. */
 };
@@ -774,8 +754,6 @@ template<> class FITFIELD<signed int> : public ::CEEFIT::FITFIELDBASE<signed int
     virtual inline ceefit_init_spec ~FITFIELD<signed int>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<signed int>)); }
 
   private:
     ceefit_init_spec FITFIELD<signed int>(const FITFIELD<signed int>&);  /**< not implemented, do not call. */
@@ -825,8 +803,6 @@ template<> class FITFIELD<unsigned long> : public ::CEEFIT::FITFIELDBASE<unsigne
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<unsigned long>)); }
-
   private:
     ceefit_init_spec FITFIELD<unsigned long>(const FITFIELD<unsigned long>&);  /**< not implemented, do not call. */
 };
@@ -874,8 +850,6 @@ template<> class FITFIELD<signed long> : public ::CEEFIT::FITFIELDBASE<signed lo
     virtual inline ceefit_init_spec ~FITFIELD<signed long>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<signed long>)); }
 
   private:
     ceefit_init_spec FITFIELD<signed long>(const FITFIELD<signed long>&);  /**< not implemented, do not call. */
@@ -933,8 +907,6 @@ template<> class FITFIELD< ::CEEFIT::UINT64 > : public ::CEEFIT::FITFIELDBASE< :
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD< ::CEEFIT::UINT64 >)); }
-
   private:
     ceefit_init_spec FITFIELD< ::CEEFIT::UINT64 >(const FITFIELD< ::CEEFIT::UINT64 >&);  /**< not implemented, do not call. */
 };
@@ -991,8 +963,6 @@ template<> class FITFIELD< ::CEEFIT::INT64 > : public ::CEEFIT::FITFIELDBASE< ::
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD< ::CEEFIT::INT64 >)); }
-
   private:
     ceefit_init_spec FITFIELD< ::CEEFIT::INT64 >(const FITFIELD< ::CEEFIT::INT64 >&);  /**< not implemented, do not call. */
 };
@@ -1040,8 +1010,6 @@ template<> class FITFIELD<float> : public ::CEEFIT::FITFIELDBASE<float>
     virtual inline ceefit_init_spec ~FITFIELD<float>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<float>)); }
 
   private:
     ceefit_init_spec FITFIELD<float>(const FITFIELD<float>&);  /**< not implemented, do not call. */
@@ -1091,8 +1059,6 @@ template<> class FITFIELD<double> : public ::CEEFIT::FITFIELDBASE<double>
     {
     }
 
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<double>)); }
-
   private:
     ceefit_init_spec FITFIELD<double>(const FITFIELD<double>&);  /**< not implemented, do not call. */
 };
@@ -1139,8 +1105,6 @@ template<> class FITFIELD< CEEFIT::STRING > : public ::CEEFIT::FITFIELDBASE< CEE
     virtual inline ceefit_init_spec ~FITFIELD<CEEFIT::STRING>(void)
     {
     }
-
-    virtual inline const type_info& GetTypeInfo(void) { return(typeid(FITFIELD<CEEFIT::STRING>)); }
 
   private:
     ceefit_init_spec FITFIELD<CEEFIT::STRING>(const FITFIELD<CEEFIT::STRING>&);  /**< not implemented, do not call. */

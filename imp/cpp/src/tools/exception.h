@@ -23,8 +23,6 @@
  * @author David Woldrich
  */
 
-#include "ceefit/mandatory.h"
-
 namespace CEEFIT
 {
   /**

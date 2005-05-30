@@ -28,7 +28,7 @@ declare_fit_module(FitActionFixture);
 
 namespace CEEFIT
 {
-  FIXTURE* ACTIONFIXTURE::Actor = NULL;
+  PTR<FIXTURE> ACTIONFIXTURE::Actor;
 
   // copied from COLUMNFIXTURE
   VALUE<CELLADAPTER> ceefit_call_spec ACTIONFIXTURE::BindMethod(const STRING& name)
@@ -54,9 +54,10 @@ namespace CEEFIT
 
       if(aAction != NULL)
       {
+        PTR<FIXTURE> thisFixture(this);
         PTR<CELLADAPTER> result;
 
-        aAction->Invoke(result, this);
+        aAction->Invoke(result, thisFixture);
       }
       else 
       {
@@ -73,10 +74,7 @@ namespace CEEFIT
 
   void ceefit_call_spec ACTIONFIXTURE::Start() 
   {
-    delete Actor;
-    Actor = NULL;
-
-  	Actor = FIXTURE::LoadFixture(Cells->More->Text());
+  	FIXTURE::LoadFixture(Actor, Cells->More->Text());
   }
 
   void ceefit_call_spec ACTIONFIXTURE::Enter() 
@@ -147,8 +145,6 @@ namespace CEEFIT
 
   ceefit_init_spec ACTIONFIXTURE::ACTIONFIXTURE()
   {    
-    Actor = NULL;
-
     RegisterCeefitTest(this, "start", &ACTIONFIXTURE::Start);
     RegisterCeefitTest(this, "enter", &ACTIONFIXTURE::Enter);
     RegisterCeefitTest(this, "press", &ACTIONFIXTURE::Press);
@@ -157,7 +153,6 @@ namespace CEEFIT
 
   ceefit_init_spec ACTIONFIXTURE::~ACTIONFIXTURE()
   {
-    delete Actor;
   }
   
   static ::CEEFIT::REGISTERFIXTURECLASS< ACTIONFIXTURE > ActionFixtureRegistration("ACTIONFIXTURE", "fit.ActionFixture");

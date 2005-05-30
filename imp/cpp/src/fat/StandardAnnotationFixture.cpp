@@ -51,45 +51,29 @@ namespace CEEFAT
         tags.Add("td");
         PTR<PARSE> parse(new PARSE(OriginalHTML, tags));
 		    
-        FIXTURE* testbed = NULL;
-        
-        try
-        {
-          testbed = new FIXTURE();		    
-		      if (Annotation.IsEqual("right")) 
-          { 
-            testbed->Right(parse);
-          }
-		      if (Annotation.IsEqual("wrong")) 
-          {
-            testbed->Wrong(parse, Text);
-          }
-		      if (Annotation.IsEqual("error")) 
-          {
-            testbed->Error(parse, Text);
-          }
-		      if (Annotation.IsEqual("info"))
-          {
-            testbed->Info(parse, Text); 
-          }
-		      if (Annotation.IsEqual("ignore"))
-          {
-            testbed->Ignore(parse);
-          }
-				      
-		      STRING temp = GenerateOutput(parse); 
-          delete testbed;
-          testbed = NULL;
-          return(temp);
+        PTR<FIXTURE> testbed(new FIXTURE());		    
+		    if (Annotation.IsEqual("right")) 
+        { 
+          testbed->Right(parse);
         }
-        catch(...)
+		    if (Annotation.IsEqual("wrong")) 
         {
-          if(testbed != NULL)
-          {
-            delete testbed;
-          }
-          throw;
+          testbed->Wrong(parse, Text);
         }
+		    if (Annotation.IsEqual("error")) 
+        {
+          testbed->Error(parse, Text);
+        }
+		    if (Annotation.IsEqual("info"))
+        {
+          testbed->Info(parse, Text); 
+        }
+		    if (Annotation.IsEqual("ignore"))
+        {
+          testbed->Ignore(parse);
+        }
+				    
+        return(GenerateOutput(parse));
 	    }
 	
 	    virtual inline void ceefit_call_spec DoCell(PTR<PARSE>& cell, int column) 
