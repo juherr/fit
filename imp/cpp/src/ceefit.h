@@ -77,6 +77,8 @@
 #include <wchar.h>
 #include <locale.h>
 #include <errno.h>
+#include <limits.h>
+
 #include <typeinfo>
 
 // Define up-front, mandatory symbols
@@ -96,6 +98,7 @@
 #include "tools/ptr.h"
 #include "tools/refcounted.h"
 #include "tools/writer.h"
+#include "tools/BufferedFileReader.h"
 #include "tools/hashmap.h"
 
 // CeeFIT system files
@@ -133,7 +136,6 @@ extern ::CEEFITFREEFUNC ceefit_call_spec GetCeeFitFreeFunc(void);
 
 namespace CEEFIT
 {
-
   /**
    * <p>Run the CeeFIT tests on an input file and write to an output file.</p>
    *
@@ -151,20 +153,21 @@ namespace CEEFIT
    * @param argc The argc passed from main()
    * @param argv The argv passed from main().  Pathspecs that contain spaces are expected to be surrounded with double quotes
    *             ('\"') by the caller.
+   * @param doReleaseStatics If true, static references in FIXTURE's will be released at the end of the CeeFIT run.
    * @return 0 if no -CeeFIT parameter was detected and no action was taken, 1 if -CeeFIT parameter was detected and all tests pass,
    *         2 if -CeeFIT parameter was detected and one or more tests had a failure or error.
    */
-  extern int ceefit_call_spec Run(int argc, char** argv);
+  extern int ceefit_call_spec Run(int argc, char** argv, bool doReleaseStatics=true);
 
   /**
    * <p>Same as Run() above that takes WinMain style command line.</p>
    */
-  extern int ceefit_call_spec Run(const char* cmdLine);
+  extern int ceefit_call_spec Run(const char* cmdLine, bool doReleaseStatics=true);
 
   /**
    * <p>Same as Run() above that takes WinMainW style command line (unicode string.)</p>
    */
-  extern int ceefit_call_spec Run(const wchar_t* wideCmdLine);
+  extern int ceefit_call_spec Run(const wchar_t* wideCmdLine, bool doReleaseStatics=true);
 };
 
 #endif // __CEEFIT_H__

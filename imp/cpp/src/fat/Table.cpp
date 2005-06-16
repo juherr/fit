@@ -29,25 +29,26 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
+  PTR<PARSE> TABLE::Table(null);
 
-  void ceefit_call_spec FAT_TABLE::DoRows(PTR<PARSE>& rows)
+  void ceefit_call_spec TABLE::DoRows(PTR<PARSE>& rows)
   {
-    PTR<PARSE> nullParse(NULL);
+    PTR<PARSE> nullParse(null);
     STRING emptyString;
 
     PTR<PARSE> rowCopy(Copy(rows));
-    FAT_TABLE::Table = new PARSE(STRING("table"), emptyString, rowCopy, nullParse);
+    TABLE::Table = new PARSE(STRING("table"), emptyString, rowCopy, nullParse);
 
     // evaluate the rest of the table like a runner
     PTR<FIXTURE> temp(new FIXTURE());
-    temp->DoTables(FAT_TABLE::Table);
+    temp->DoTables(TABLE::Table);
   }
 
-  VALUE<PARSE> ceefit_call_spec FAT_TABLE::Copy(PTR<PARSE>& tree)
+  VALUE<PARSE> ceefit_call_spec TABLE::Copy(PTR<PARSE>& tree)
   {
-    if(tree == NULL)
+    if(tree == null)
     {
-      return(VALUE<PARSE>(NULL));
+      return(VALUE<PARSE>(null));
     }
     else
     {
@@ -58,8 +59,12 @@ namespace CEEFAT
     }
   }
 
-  static REGISTERFIXTURECLASS< FAT_TABLE > FAT_TABLE_CeeFITFixtureRegistration("FAT_TABLE", "fat.Table");
+  void ceefit_call_spec TABLE::ReleaseStatics(void) 
+  {
+    TABLE::Table = null;
 
-  PTR<PARSE> FAT_TABLE::Table(NULL);
+    this->PRIMITIVEFIXTURE::ReleaseStatics();
+  }
 
+  static REGISTERFIXTURECLASS< TABLE > FatTableFixtureRegistration("CEEFAT::TABLE", "fat.Table");
 };

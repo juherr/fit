@@ -20,10 +20,19 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT
 {
+  ROWFIXTURE::ROWFIXTURE()
+  {
+  }
+
+  ROWFIXTURE::~ROWFIXTURE()
+  {
+  }
+
   void ROWFIXTURE::DoRows(PTR<PARSE>& rows)
   {
     try 
@@ -43,7 +52,7 @@ namespace CEEFIT
       BuildRows(last->More, Surplus);
 
       Mark(last->More, STRING("surplus"));
-      Mark(Missing, "missing");
+      Mark(Missing, STRING("missing"));
     } 
     catch(EXCEPTION* e) 
     {
@@ -59,7 +68,7 @@ namespace CEEFIT
     {
       Check(expected, computed);
     } 
-    else if (ColumnBindings[col] == NULL) 
+    else if (ColumnBindings[col] == null) 
     {
       Match(expected, computed, col+1);
     } 
@@ -81,14 +90,14 @@ namespace CEEFIT
       int i = -1;
       while(++i < keys.GetSize()) 
       {
-        PTR<HASHMAPNODEBASE> key(keys.Get(i));
-        DYNARRAY< PTR<PARSE> >* eList = eMap.Get(*key);
-        DYNARRAY< PTR<CELLADAPTER> >* cList = cMap.Get(*key);
-        if (eList == NULL) 
+        PTR< HASHMAPNODEBASE > key(keys.Get(i));
+        DYNARRAY< PTR< PARSE > >* eList = eMap.Get(*key);
+        DYNARRAY< PTR< CELLADAPTER > >* cList = cMap.Get(*key);
+        if (eList == null) 
         {
           Surplus.AddAll(*cList);
         } 
-        else if (cList == NULL) 
+        else if (cList == null) 
         {
           Missing.AddAll(*eList);
         } 
@@ -109,7 +118,7 @@ namespace CEEFIT
     out.Reset();
 
     PTR<PARSE> temp(rows);
-    while (temp != NULL) {
+    while (temp != null) {
         out.Add(temp);
         temp = temp->More;
     }
@@ -138,14 +147,14 @@ namespace CEEFIT
       {
         PTR<CELLADAPTER> key;
         
-        a->NewInstanceParse(key, cell->Text());
+        a->NewInstanceParse(this, key, cell->Text());
         Bin(out, key, row);
       } 
       catch(EXCEPTION* e) 
       {
         Exception(cell, e);
         PTR<PARSE> rest(cell->More);
-        while(rest != NULL)
+        while(rest != null)
         {
           Ignore(rest);
           rest = rest->More;
@@ -156,7 +165,6 @@ namespace CEEFIT
 
   void ROWFIXTURE::cSort(HASHMAP< DYNARRAY< PTR<CELLADAPTER> > >& out, DYNARRAY< PTR<CELLADAPTER> >& list, int col)
   {
-    PTR<CELLADAPTER> a(ColumnBindings[col]);
     int i = -1;
     while(++i < list.GetSize())
     {
@@ -165,16 +173,20 @@ namespace CEEFIT
       {
         PTR<CELLADAPTER> key;
         STRING cellContents;
+        PTR<CELLADAPTER> a(ColumnBindings[col]);
         
         if(a->IsField())
         {          
-          // key is value in the row's bound column, parsed into some type by the ColumnBinding
+          PTR<FIXTURE> aFixture(row->ToFixture());
+          PTR<FIXTURE> targetFixture;
+          PTR<CELLADAPTER> aField(aFixture->FindField(targetFixture, a->GetName()));
+          
+          // key will be value in the row's bound column, parsed into some type by the ColumnBinding
           // value is the row itself coming out of the list (which comes from a call to Query)
           
           STRING keyString;
-
-          row->ReadFromFixtureVar(keyString);           // clone the value in a so we have a copy
-          a->NewInstanceParse(key, keyString);          
+          aField->ReadFromFixtureVar(keyString);
+          a->NewInstanceParse(targetFixture.GetPointer(), key, keyString);          
         }
         else // if(a->IsMethod())
         {
@@ -199,7 +211,7 @@ namespace CEEFIT
   void ROWFIXTURE::Bin(HASHMAP< DYNARRAY< PTR<PARSE> > >& map, PTR<CELLADAPTER>& key, PTR<PARSE>& row)
   {
     DYNARRAY< PTR<PARSE> >* listInMap = map.Get(key);
-    if(listInMap != NULL) 
+    if(listInMap != null) 
     {
       listInMap->Add(row);
     } 
@@ -215,7 +227,7 @@ namespace CEEFIT
   void ROWFIXTURE::Bin(HASHMAP< DYNARRAY< PTR<CELLADAPTER> > >& map, PTR<CELLADAPTER>& key, PTR<CELLADAPTER>& row)
   {
     DYNARRAY< PTR<CELLADAPTER> >* listInMap = map.Get(key);
-    if(listInMap != NULL) 
+    if(listInMap != null) 
     {
       listInMap->Add(row);
     } 
@@ -236,12 +248,12 @@ namespace CEEFIT
     int i = -1;
     while(++i < a.GetSize())
     {
-      result.Put(a[i], i);
+      result.Put(a[i]->GetKey(), i);
     }
     i = -1;
     while(++i < b.GetSize())
     {
-      result.Put(b[i], i);
+      result.Put(b[i]->GetKey(), i);
     }
 
     out.Reset();
@@ -269,17 +281,15 @@ namespace CEEFIT
     PTR<CELLADAPTER> obj(cList.Get(0));
     cList.Remove(0);
 
-    for (int i=0; i < ColumnBindings.GetSize() && cell != NULL; i++) 
+    for (int i=0; i < ColumnBindings.GetSize() && cell != null; i++) 
     {
       PTR<FIXTURE> target(this);
       PTR<CELLADAPTER> a(ColumnBindings[i]);
-      if (a != NULL) 
+      if (a != null) 
       {
-        ::FITFIXTURECONTAINER* fixtureContainer = dynamic_cast< ::FITFIXTURECONTAINER* >(obj.GetPointer());
-        AssertNotNull(fixtureContainer);
-
-        target = fixtureContainer->GetFixture();
+        target = obj->ToFixture();    // reassign to the row obj and cast to a FIXTURE
       }
+      AssertNotNull(target.GetPointer());
       
       this->COLUMNFIXTURE::Check(cell, a, target);
       cell = cell->More;
@@ -290,10 +300,29 @@ namespace CEEFIT
 
   void ROWFIXTURE::Mark(PTR<PARSE>& rows, const STRING& message)
   {
+    PTR<PARSE> temp(rows);
+
+    STRING annotation(Label(message));
+    while(temp != null) 
+    {
+      Wrong(temp->Parts);
+
+      temp->Parts->AddToBody(annotation);
+      temp = temp->More;
+    }
   }
 
   void ROWFIXTURE::Mark(DYNARRAY< PTR<PARSE> >& rows, const STRING& message)
   {
+    int i = -1;
+    STRING annotation(Label(message));
+    while (++i < rows.GetSize()) 
+    {
+      PTR<PARSE> row(rows[i]);
+
+      Wrong(row->Parts);
+      row->Parts->AddToBody(annotation);
+    }
   }
 
   void ROWFIXTURE::BuildRows(PTR<PARSE>& out, DYNARRAY< PTR<CELLADAPTER> >& rows)
@@ -307,7 +336,8 @@ namespace CEEFIT
       PTR<PARSE> builtCells;      
       BuildCells(builtCells, rows[i]);
 
-      next = next->More = new PARSE(STRING("tr"), STRING(), builtCells, emptyParse);
+      next->More = new PARSE(STRING("tr"), STRING(), builtCells, emptyParse);
+      next = next->More;
     }
 
     out = root->More;
@@ -317,7 +347,7 @@ namespace CEEFIT
   {
     PTR<PARSE> emptyParse;    // null
 
-    if (row == NULL) 
+    if (row == null) 
     {
       PTR<PARSE> nil(new PARSE(STRING("td"), STRING("null"), emptyParse, emptyParse));
       nil->AddToTag(" colspan=" + ColumnBindings.GetSize());
@@ -330,8 +360,9 @@ namespace CEEFIT
     for (int i=0; i < ColumnBindings.GetSize(); i++) 
     {
       next = next->More = new PARSE(STRING("td"), STRING("&nbsp;"), emptyParse, emptyParse);
+
       PTR<CELLADAPTER> a(ColumnBindings[i]);
-      if(a == NULL) 
+      if(a == null) 
       {
         Ignore(next);
       } 
@@ -341,12 +372,14 @@ namespace CEEFIT
         {
           STRING rowVal;
           row->ReadFromFixtureVar(rowVal);
-          
-          PTR<CELLADAPTER> temp;         
-          a->NewInstanceParse(temp, rowVal);
+
+          PTR<FIXTURE> targetPtr(row->ToFixture());          
+
+//          PTR<CELLADAPTER> temp;         
+//          a->NewInstanceParse(targetPtr.GetPointer(), temp, rowVal);
 
           STRING columnVal;
-          temp->ReadFromFixtureVar(columnVal);
+          a->ReadFromFixtureVar(columnVal, targetPtr);
 
           Info(next, columnVal);
         } 
@@ -358,4 +391,7 @@ namespace CEEFIT
     }
     out = root->More;
   }
+
+  // this cannot be registered because it is an abstract base class and cannot be directly instantiated...
+  //static ::CEEFIT::REGISTERFIXTURECLASS< ROWFIXTURE > RowFixtureRegistration("CEEFIT::ROWFIXTURE", "fit.RowFixture");
 };

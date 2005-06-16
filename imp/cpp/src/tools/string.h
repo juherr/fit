@@ -116,9 +116,13 @@ namespace CEEFIT
       int ceefit_call_spec IndexOf(wchar_t aChar) const;
       int ceefit_call_spec IndexOf(char aChar) const;
       int ceefit_call_spec IndexOf(const STRING& aString) const;
+      int ceefit_call_spec IndexOf(const wchar_t* aString) const;
+      int ceefit_call_spec IndexOf(const char* aString) const;
       int ceefit_call_spec IndexOf(wchar_t aChar, int fromIndex) const;
       int ceefit_call_spec IndexOf(char aChar, int fromIndex) const;
       int ceefit_call_spec IndexOf(const STRING& aString, int fromIndex) const;
+      int ceefit_call_spec IndexOf(const wchar_t* aString, int fromIndex) const;
+      int ceefit_call_spec IndexOf(const char* aString, int fromIndex) const;
       STRING ceefit_call_spec Substring(int startChar, int endChar) const;
       STRING ceefit_call_spec Substring(int startChar) const;
       STRING ceefit_call_spec ToLowercase(void) const;
@@ -138,7 +142,11 @@ namespace CEEFIT
       void ceefit_call_spec ArrayRegexPatternSplit(DYNARRAY<STRING>& out, const DYNARRAY<STRING>& patternStrArray, bool dotAll=false) const;
 
       bool ceefit_call_spec EndsWith(const STRING& aString) const;
+      bool ceefit_call_spec EndsWith(const wchar_t* aString) const;
+      bool ceefit_call_spec EndsWith(const char* aString) const;
       bool ceefit_call_spec StartsWith(const STRING& aString) const;
+      bool ceefit_call_spec StartsWith(const wchar_t* aString) const;
+      bool ceefit_call_spec StartsWith(const char* aString) const;
 
       const wchar_t* ceefit_call_spec GetBuffer(void) const;  /**< Get const buffer ... calling this is evil, do you reeeally want to be evil? */
       wchar_t* ceefit_call_spec GetBuffer(void);  /**< Get buffer ... calling this is REALLY evil, do you reeeally want to be really really evil? */
@@ -150,7 +158,8 @@ namespace CEEFIT
       int ceefit_call_spec GetHashCode(void) const;
   };
 
-  extern void ceefit_call_spec TokenizeRespectQuotes(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool doDequotify=true);
+  extern void ceefit_call_spec Tokenize(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool delimitersAreTokens=false);
+  extern void ceefit_call_spec TokenizeRespectQuotes(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool doDequotify=true, bool delimitersAreTokens=false);
 
   template<> class ASSIGNHELP<const STRING>
   {

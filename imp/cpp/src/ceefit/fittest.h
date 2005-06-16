@@ -39,12 +39,17 @@ namespace CEEFIT
 
       virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, ::CEEFIT::PTR< ::CEEFIT::FIXTURE >& aFixture) { throw new CEEFIT::EXCEPTION("Invoke not implemented for this FITTEST"); }
 
-      virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const { throw new CEEFIT::EXCEPTION("GetType not implemented for this FITTEST"); }
+      virtual inline const char* ceefit_call_spec GetType(void) const { throw new CEEFIT::EXCEPTION("GetType not implemented for this FITTEST"); }
 
-      virtual void ceefit_call_spec NewInstanceParse(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, const CEEFIT::STRING& aText);
+      virtual void ceefit_call_spec NewInstanceParse(::CEEFIT::FIXTURE* callParseOn, ::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, const CEEFIT::STRING& aText);
 
       virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING&);
       virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING&);
+
+      /**
+       * This is essentially an alias for Invoke(), but the output is not parsed into a CELLADAPTER (and rather left as a string)
+       */
+      virtual void ceefit_call_spec ReadFromFixtureVar(STRING& out, PTR<FIXTURE>& targetFixture);
 
       virtual inline bool ceefit_call_spec IsMethod(void) const
       {
@@ -54,6 +59,11 @@ namespace CEEFIT
       virtual inline bool ceefit_call_spec IsField(void) const
       {
         return(false);
+      }
+
+      virtual inline FIXTURE* ceefit_call_spec ToFixture(void) 
+      { 
+        throw new EXCEPTION("Fit test not a FIXTURE");
       }
 
       virtual inline int GetParameterCount(void)
@@ -71,7 +81,7 @@ namespace CEEFIT
         throw new CEEFIT::EXCEPTION("Cant get a hash code for methods yet");
       }
     
-      virtual inline bool ceefit_call_spec IsEqual(const ::CEEFIT::CELLADAPTER* aCell) const
+      virtual inline bool ceefit_call_spec IsEqual(const ::CEEFIT::CELLADAPTER& aCell) const
       { 
         throw new CEEFIT::EXCEPTION("Cant test for equality for methods yet");
       }
@@ -132,9 +142,9 @@ template<class T, class TESTCALLCLASS> class FITTEST_AUTO : public ::CEEFIT::FIT
       out = retVal;
     }
 
-    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual inline const char* ceefit_call_spec GetType(void) const
     {
-      static FITFIELD<T> typeField;
+      FITFIELD<T> typeField;
 
       return(typeField.GetType());
     }
@@ -205,12 +215,12 @@ namespace CEEFIT
           retVal->SetName(STRING("<") + testName + "() return value>");
           FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture.GetPointer());
 
-          if(subclassPtr == NULL)
+          if(subclassPtr == null)
           {
             throw new EXCEPTION("Unable to cast FIXTURE to subclass type");
           }
 
-          if(aFuncCall != NULL) 
+          if(aFuncCall != null) 
           {
             (*retVal) = (subclassPtr ->* aFuncCall)();
           }
@@ -271,14 +281,148 @@ namespace CEEFIT
           retVal->SetName(STRING("<") + testName + "() return value>");
           FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture.GetPointer());
 
-          if(subclassPtr == NULL)
+          if(subclassPtr == null)
           {
             throw new EXCEPTION("Unable to cast FIXTURE to subclass type");
           }
 
-          if(aFuncCall != NULL) 
+          if(aFuncCall != null) 
           {
             (subclassPtr ->* aFuncCall)();
+          }
+          else
+          {          
+            throw new EXCEPTION(STRING("No function pointer set for test:  ") + testName);
+          }        
+        }
+        catch(FAILURE* failure)
+        {
+          delete retVal;
+          throw failure;
+        }
+        catch(EXCEPTION* exception)
+        {
+          delete retVal;
+          throw exception;
+        }
+        catch(...)
+        {
+          delete retVal;
+          throw;    // rethrow, hopefully ...
+        }
+
+        return(VALUE<CELLADAPTER>(retVal));
+      }
+  };
+
+  template<class RETURNTYPE> class ARG_METHODCALLER
+  {
+    private:
+      ARG_METHODCALLER<RETURNTYPE>(void) 
+      {
+      }
+
+    public:
+      static ARG_METHODCALLER<RETURNTYPE>& GetInstance() 
+      {
+        static ARG_METHODCALLER<RETURNTYPE> INSTANCE;
+
+        return(INSTANCE);
+      }
+
+      ~ARG_METHODCALLER<RETURNTYPE>(void) 
+      {
+      }
+
+      template<class FIXTURETYPE, class ARGTYPE> inline VALUE<CELLADAPTER> ceefit_call_spec InvokeMethod(
+                                                                                FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector,
+                                                                                const STRING& testName, 
+                                                                                PTR<FIXTURE>& aFixture, 
+                                                                                PTR< ::FITFIELD<ARGTYPE> >& aArg,
+                                                                                RETURNTYPE (ceefit_call_spec FIXTURETYPE::*aFuncCall)(ARGTYPE))
+      {
+        ::FITFIELD<RETURNTYPE>* retVal = new ::FITFIELD<RETURNTYPE>();
+
+        try
+        {
+          retVal->SetName(STRING("<") + testName + "() return value>");
+          FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture.GetPointer());
+
+          if(subclassPtr == null)
+          {
+            throw new EXCEPTION("Unable to cast FIXTURE to subclass type");
+          }
+
+          if(aFuncCall != null) 
+          {
+            (*retVal) = (subclassPtr ->* aFuncCall)(aArg->GetField());
+          }
+          else
+          {          
+            throw new EXCEPTION(STRING("No function pointer set for test:  ") + testName);
+          }        
+        }
+        catch(FAILURE* failure)
+        {
+          delete retVal;
+          throw failure;
+        }
+        catch(EXCEPTION* exception)
+        {
+          delete retVal;
+          throw exception;
+        }
+        catch(...)
+        {
+          delete retVal;
+          throw;    // rethrow, hopefully ...
+        }
+
+        return(VALUE<CELLADAPTER>(retVal));
+      }
+  };
+
+  template<> class ARG_METHODCALLER<void>
+  {
+    private:
+      ARG_METHODCALLER<void>(void) 
+      {
+      }
+
+    public:
+      static ARG_METHODCALLER<void>& GetInstance() 
+      {
+        static ARG_METHODCALLER<void> INSTANCE;
+
+        return(INSTANCE);
+      }
+
+      ~ARG_METHODCALLER<void>(void) 
+      {
+      }
+
+      template<class FIXTURETYPE, class ARGTYPE> inline VALUE<CELLADAPTER> ceefit_call_spec InvokeMethod(
+                                                                                FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector,
+                                                                                const STRING& testName, 
+                                                                                PTR<FIXTURE>& aFixture, 
+                                                                                PTR< ::FITFIELD<ARGTYPE> >& aArg,
+                                                                                void (ceefit_call_spec FIXTURETYPE::*aFuncCall)(ARGTYPE))
+      {
+        ::FITFIELD<void>* retVal = new ::FITFIELD<void>();
+
+        try
+        {
+          retVal->SetName(STRING("<") + testName + "() return value>");
+          FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture.GetPointer());
+
+          if(subclassPtr == null)
+          {
+            throw new EXCEPTION("Unable to cast FIXTURE to subclass type");
+          }
+
+          if(aFuncCall != null) 
+          {
+            (subclassPtr ->* aFuncCall)(aArg->GetField());
           }
           else
           {          
@@ -329,9 +473,9 @@ template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public ::CE
       out = methodCaller.InvokeMethod(fixtureSelector, this->GetName(), aFixture, (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(void)) FuncCall);
     }
 
-    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual inline const char* ceefit_call_spec GetType(void) const
     {
-      static FITFIELD<RETURNTYPE> typeField;
+      FITFIELD<RETURNTYPE> typeField;
 
       return(typeField.GetType());
     }
@@ -345,7 +489,7 @@ template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_M
 {
   private:
     RETURNTYPE (FIXTURETYPE::*FuncCall)(ARGTYPE);
-    ::CEEFIT::PTR< ARGTYPE > ParamField;
+    ::CEEFIT::PTR< ::FITFIELD< ARGTYPE > > ParamField;
 
   public:
     inline ceefit_init_spec FITTEST_ARG_MANUAL<FIXTURETYPE, RETURNTYPE, ARGTYPE>(RETURNTYPE (ceefit_call_spec FIXTURETYPE::*aFuncCall)(ARGTYPE))
@@ -375,21 +519,27 @@ template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_M
 
     virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, ::CEEFIT::PTR< ::CEEFIT::FIXTURE >& aFixture)
     {
+      CEEFIT::FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector = CEEFIT::FIXTURESELECTOR<FIXTURETYPE>::GetInstance();
+      CEEFIT::ARG_METHODCALLER<RETURNTYPE>& methodCaller = CEEFIT::ARG_METHODCALLER<RETURNTYPE>::GetInstance();
+
+      out = methodCaller.InvokeMethod(fixtureSelector, this->GetName(), aFixture, ParamField, (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(ARGTYPE)) FuncCall);
+
+/*      
       ::FITFIELD<RETURNTYPE>* retVal = new ::FITFIELD<RETURNTYPE>();
 
       try
       {
         retVal->SetName(::CEEFIT::STRING("<") + this->GetName() + "() return value>");
-        FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture);
+        FIXTURETYPE* subclassPtr = dynamic_cast<FIXTURETYPE*>(aFixture.GetPointer());
 
-        if(subclassPtr == NULL)
+        if(subclassPtr == null)
         {
           throw new ::CEEFIT::EXCEPTION("Unable to cast FIXTURE to subclass type");
         }
 
-        if(FuncCall != NULL) 
+        if(FuncCall != null) 
         {
-          RETURNTYPE (ceefit_call_spec FIXTURETYPE::*cdeclCall)(ARGTYPE) = (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(ARGTYPE)) FuncCall
+          RETURNTYPE (ceefit_call_spec FIXTURETYPE::*cdeclCall)(ARGTYPE) = (RETURNTYPE (ceefit_call_spec FIXTURETYPE::*)(ARGTYPE)) FuncCall;
           (*retVal) = (subclassPtr ->* cdeclCall)(ParamField->GetField());
         }
         else
@@ -414,11 +564,12 @@ template<class FIXTURETYPE, class RETURNTYPE, class ARGTYPE> class FITTEST_ARG_M
       }
 
       out = retVal;
+*/
     }
 
-    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual inline const char* ceefit_call_spec GetType(void) const
     {
-      static FITFIELD<RETURNTYPE> typeField;
+      FITFIELD<RETURNTYPE> typeField;
 
       return(typeField.GetType());
     }

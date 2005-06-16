@@ -20,165 +20,15 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
-
-extern "C"
-{
-# include "unicode.h"
-# include "convert.h"
-};
 
 namespace CEEFIT
 {
-  class BUFFEREDFILEREADER : public OBJECT
-  {
-    private:
-      DYNARRAY<wchar_t> UniBuffer;
-      int CharPos;
-      int TotalChars;
-      bool IsClosed;
-
-      void ceefit_call_spec DecodeInputBuffer(const DYNARRAY<char>& Buffer, int totalsRead, const STRING& fileName, unicode_encoding_t& expectedEncoding = unicode_windows_1252_encoding)
-      {
-        DYNARRAY<unicode_char_t> ConvertBuffer;
-        ConvertBuffer.Reserve(totalsRead);
-        const char* src = &Buffer[0];
-        unicode_char_t* dest = &ConvertBuffer[0];
-
-        static bool InitedUnicode = false;
-        if(InitedUnicode == false)
-        {
-          unicode_init();
-
-          InitedUnicode = true;
-        }
-
-        void* privateData;
-        if(expectedEncoding.init)
-        {
-          expectedEncoding.init(&privateData);
-        }
-
-        size_t inbytesLeft = totalsRead;
-        size_t outcharsLeft = ConvertBuffer.GetSize();
-        enum unicode_read_result readResult;
-        readResult = expectedEncoding.read(privateData,
-                     &src, &inbytesLeft,
-                     &dest, &outcharsLeft);
-
-        if(expectedEncoding.destroy)
-        {
-          expectedEncoding.destroy(&privateData);
-        }
-
-        if(readResult != unicode_read_ok)
-        {
-          STRING reason;
-
-          reason = STRING("Failed to read input file ") + fileName.GetBuffer() + " using " + expectedEncoding.names[0] + " encoding."; 
-
-          // must have hit a bad character, die monster die!
-          throw new IOEXCEPTION(reason);
-        }
-
-        UniBuffer.Reset();
-        UniBuffer = ConvertBuffer;    // convert from unsigned int to wchar_t
-      }
-
-    public:
-      ceefit_init_spec BUFFEREDFILEREADER(const STRING& fileName)
-      {
-        FILE* FileHandle = _wfopen(fileName.GetBuffer(), L"rb");
-
-        if(FileHandle == NULL)
-        {
-          throw new IOEXCEPTION("File error on open");
-        }
-
-        DYNARRAY<char> Buffer;
-        int readPos = 0;
-        int readSize = 16384;
-        int totalsRead = 0;
-        bool dataRemaining = true;
-        while(dataRemaining)
-        {
-          Buffer.Reserve(readSize);
-          size_t retVal = fread(&Buffer[readPos], 1, readSize, FileHandle);
-          if(retVal != readSize && ferror(FileHandle))
-          {
-            fclose(FileHandle);
-            FileHandle = NULL;
-
-            throw new IOEXCEPTION("File read error");
-          }
-
-          readPos += retVal;
-          totalsRead += retVal;
-
-          if(retVal != readSize && feof(FileHandle))
-          {
-            fclose(FileHandle);
-            FileHandle = NULL;
-
-            break;
-          }
-        }
-        Buffer.Reserve(4);
-        Buffer[totalsRead] = '\0';
-        Buffer[totalsRead+1] = '\0';
-        Buffer[totalsRead+2] = '\0';
-        Buffer[totalsRead+3] = '\0';
-
-        // this populates UniBuffer with a decoded
-        DecodeInputBuffer(Buffer, totalsRead+4, fileName);      
-
-        CharPos = 0;
-        TotalChars = wcslen(&UniBuffer[0]);
-        IsClosed = false;
-      }
-
-      ceefit_init_spec ~BUFFEREDFILEREADER(void)
-      {
-        Close();
-      }
-
-      bool ceefit_call_spec IsEof(void) const
-      {
-        return(CharPos >= TotalChars || IsClosed);
-      }
-
-      void ceefit_call_spec Close(void)
-      {
-        IsClosed = true;
-      }
-
-      /**
-       * @return number of chars read, -1 on end-of-file ...
-       */
-      int ceefit_call_spec Read(int numChars, wchar_t* charArray)
-      {
-        int i = 0;
-        while(!IsEof() && i < numChars)
-        {
-          charArray[i++] = UniBuffer[CharPos++];
-        }
-
-        if(i == 0 && IsEof())
-        {
-          return(-1);
-        }
-        return(i);
-      }
-
-    private:
-      ceefit_init_spec BUFFEREDFILEREADER(void);
-      ceefit_init_spec BUFFEREDFILEREADER(const BUFFEREDFILEREADER&);
-      BUFFEREDFILEREADER& ceefit_call_spec operator=(const BUFFEREDFILEREADER&);
-  };
-
   ceefit_init_spec FILERUNNER::FILERUNNER()
   {
-    Output = NULL;
+    Fixture = new FIXTURE();
+    Output = null;
   }
 
   ceefit_init_spec FILERUNNER::~FILERUNNER()
@@ -221,7 +71,7 @@ namespace CEEFIT
     {
       if(Input.IndexOf("<wiki>") >= 0)
       {
-        static DYNARRAY<STRING> stringArray;
+        DYNARRAY<STRING> stringArray;
 
         if(stringArray.GetSize() == 0)      // done only once, the first time stringArray is used
         {
@@ -232,11 +82,11 @@ namespace CEEFIT
         }
 
         Tables = new PARSE(Input, stringArray);
-        Fixture.DoTables(Tables->Parts);
+        Fixture->DoTables(Tables->Parts);
       }
       else
       {
-        static DYNARRAY<STRING> stringArray;
+        DYNARRAY<STRING> stringArray;
 
         if(stringArray.GetSize() == 0)      // done only once, the first time stringArray is used
         {
@@ -246,7 +96,7 @@ namespace CEEFIT
         }
 
         Tables = new PARSE(Input, stringArray);
-        Fixture.DoTables(Tables);
+        Fixture->DoTables(Tables);
       }
     }
     catch(EXCEPTION* e)
@@ -254,7 +104,7 @@ namespace CEEFIT
       Exception(e);
     }
 
-    if(Tables != NULL)
+    if(Tables != null)
     {
       Tables->Print(Output);
     }
@@ -327,23 +177,23 @@ namespace CEEFIT
     }
 
     // initialize Summary fields
-    Fixture.SummaryObj->InputFile = argv[2];
+    Fixture->SummaryObj->InputFile = argv[2];
 
     struct _wfinddata_t findData;
     memset(&findData, 0, sizeof(struct _wfinddata_t));
     long retVal = _wfindfirst(argv[2].GetBuffer(), &findData);
     if(retVal != -1)
     {
-      Fixture.SummaryObj->InputUpdate = findData.time_write;
+      Fixture->SummaryObj->InputUpdate = findData.time_write;
 
       _findclose(retVal);
     }
 
-    Fixture.SummaryObj->OutputFile = ValidateOutputPath(argv[3]);
+    Fixture->SummaryObj->OutputFile = ValidateOutputPath(argv[3]);
 
     // Read input and setup output writer
-    Input = Read(Fixture.SummaryObj->InputFile);
-    Output = new FILEWRITER(Fixture.SummaryObj->OutputFile);
+    Input = Read(Fixture->SummaryObj->InputFile);
+    Output = new FILEWRITER(Fixture->SummaryObj->OutputFile);
 
     return(1);
   }
@@ -379,21 +229,21 @@ namespace CEEFIT
     PTR<PARSE> nullParse;
 
     Tables = new PARSE(STRING("body"), STRING("Unable to parse input. Input ignored."), nullParse, nullParse);
-    Fixture.Exception(Tables, e);
+    Fixture->Exception(Tables, e);
   }
 
   int ceefit_call_spec FILERUNNER::Exit()
   {
-    if(Output != NULL)
+    if(Output != null)
     {
       Output->Close();
       delete Output;
-      Output = NULL;
+      Output = null;
     }
 
     // todo ... figure out exit codes ...
 
-    STRING countsString(Fixture.Counts());
+    STRING countsString(Fixture->Counts());
     fwprintf(stderr, L"%s", countsString.GetBuffer());
     // System.exit(fixture.counts.wrong + fixture.counts.exceptions);
 

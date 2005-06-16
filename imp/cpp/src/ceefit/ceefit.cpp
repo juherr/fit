@@ -23,8 +23,8 @@
 #include "tools/alloc.h"
 #include "ceefit.h"
 
-extern "C"
-{
+//extern "C"
+//{
   /**
    * <p>Calls the default system operator new on numBytes.</p>
    *
@@ -32,7 +32,7 @@ extern "C"
    *
    * @param numBytes number of bytes that should be allocated.
    */
-  extern void* ceefit_call_spec DefaultAlloc(size_t numBytes);
+//  extern void* ceefit_call_spec DefaultAlloc(size_t numBytes);
 
   /**
    * <p>Calls the default system operator delete on objPtr.</p>
@@ -41,30 +41,51 @@ extern "C"
    *
    * @param objPtr pointer to the object that should be freed.
    */
-  extern void ceefit_call_spec DefaultFree(void* objPtr);
+//  extern void ceefit_call_spec DefaultFree(void* objPtr);
 
-  extern ::CEEFITALLOCFUNC CeeFitAllocFunc;     /**< Alloc function that either points to DefaultAlloc or user specified func */
-  extern ::CEEFITFREEFUNC CeeFitFreeFunc;       /**< Free function that either points to DefaultFree or user specified func */
-};
+
+//  extern ::CEEFITALLOCFUNC CeeFitAllocFunc;     /**< Alloc function that either points to DefaultAlloc or user specified func */
+//  extern ::CEEFITFREEFUNC CeeFitFreeFunc;       /**< Free function that either points to DefaultFree or user specified func */
+//};
 
 force_link_fit_module(FitActionFixture);
 
 namespace CEEFIT
 {
-  int ceefit_call_spec Run(const STRING& cmdLine)
+  /**
+   * <p>Releases any references to any allocated static members at the end of a call to CEEFIT::Run</p>
+   */
+  void ceefit_call_spec ReleaseStatics()
   {
-    if(CeeFitAllocFunc == NULL)
+    SLINKLIST<FIXTUREFACTORY>& factoryList = RUNNER::GetFixtureFactoryList();
+
+    FIXTUREFACTORY* aFixtureFactory = factoryList.GetHead();
+    while(aFixtureFactory != null) 
+    {
+      PTR<FIXTURE> aFixture;
+      aFixtureFactory->CreateFixture(aFixture);
+
+      aFixture->ReleaseStatics();
+
+      aFixtureFactory = aFixtureFactory->GetNext();
+    }
+  }
+
+  int ceefit_call_spec Run(const STRING& cmdLine, bool doReleaseStatics)
+  {
+/*
+    if(CeeFitAllocFunc == null)
     {
       CeeFitAllocFunc = DefaultAlloc;
     }
 
-    if(CeeFitFreeFunc == NULL)
+    if(CeeFitFreeFunc == null)
     {
       CeeFitFreeFunc = DefaultFree;
     }
-
+*/
     DYNARRAY<STRING> argList;
-    static STRING delimitList(" ");
+    STRING delimitList(" ");
 
     TokenizeRespectQuotes(argList, cmdLine, delimitList);
 
@@ -93,9 +114,39 @@ namespace CEEFIT
             subList.Add(argList[i+1]);
             subList.Add(argList[i+2]);
 
-            FILERUNNER* fileRunner = new FILERUNNER();
-            retVal = fileRunner->Run(subList);
-            delete fileRunner;
+            PTR<FILERUNNER> fileRunner;
+            try 
+            {
+              fileRunner = new FILERUNNER();
+              retVal = fileRunner->Run(subList);
+              
+              if(doReleaseStatics)
+              {
+                ReleaseStatics();
+              }
+            }
+            catch(EXCEPTION* e) 
+            {
+              STRING message;
+
+              message = STRING("An unhandled exception occurred:  ") + (e != null ? e->GetReason() : "<unknown reason>");
+              wprintf(L"%s\n", message.GetBuffer());
+
+              delete e;              
+            }
+            catch(FAILURE* f) 
+            {
+              STRING message;
+
+              message = STRING("A failure occurred:  ") + (f != null ? f->GetReason() : "<unknown reason>");
+              wprintf(L"%s\n", message.GetBuffer());
+
+              delete f;              
+            }
+            catch(...) 
+            {
+              wprintf(L"An unknown exception occurred.\n");
+            }
 
             i += 2;   // the while loop increments i for a total of 3...
           }
@@ -107,28 +158,29 @@ namespace CEEFIT
     return(0);
   }
 
-  int ceefit_call_spec Run(const wchar_t* wideCmdLine)
+  int ceefit_call_spec Run(const wchar_t* wideCmdLine, bool doReleaseStatics)
   {
-    return(Run(STRING(wideCmdLine)));
+    return(Run(STRING(wideCmdLine), doReleaseStatics));
   }
 
-  int ceefit_call_spec Run(const char* cmdLine)
+  int ceefit_call_spec Run(const char* cmdLine, bool doReleaseStatics)
   {
-    return(Run(STRING(cmdLine)));
+    return(Run(STRING(cmdLine), doReleaseStatics));
   }
 
-  int ceefit_call_spec Run(int argc, char** argv)
+  int ceefit_call_spec Run(int argc, char** argv, bool doReleaseStatics)
   {
-    if(CeeFitAllocFunc == NULL)
+/*
+    if(CeeFitAllocFunc == null)
     {
       CeeFitAllocFunc = DefaultAlloc;
     }
 
-    if(CeeFitFreeFunc == NULL)
+    if(CeeFitFreeFunc == null)
     {
       CeeFitFreeFunc = DefaultFree;
     }
-
+*/
     STRING temp;
     int i = -1;
 
@@ -150,21 +202,22 @@ namespace CEEFIT
       }
     }
 
-    return(Run(temp));
+    return(Run(temp, doReleaseStatics));
   }
 
-  int ceefit_call_spec Run(int argc, wchar_t** argv)
+  int ceefit_call_spec Run(int argc, wchar_t** argv, bool doReleaseStatics)
   {
-    if(CeeFitAllocFunc == NULL)
+/*
+    if(CeeFitAllocFunc == null)
     {
       CeeFitAllocFunc = DefaultAlloc;
     }
 
-    if(CeeFitFreeFunc == NULL)
+    if(CeeFitFreeFunc == null)
     {
       CeeFitFreeFunc = DefaultFree;
     }
-
+*/
     STRING temp;
     int i = -1;
 
@@ -182,6 +235,6 @@ namespace CEEFIT
       }
     }
 
-    return(Run(temp));
+    return(Run(temp, doReleaseStatics));
   }
 };

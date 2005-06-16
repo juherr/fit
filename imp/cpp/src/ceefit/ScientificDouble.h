@@ -62,6 +62,8 @@ namespace CEEFIT
 template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>
 {
   public:
+    typedef CEEFIT::FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE> FIELDBASE;
+
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::SCIENTIFICDOUBLE& in)
     {
       out = in.ToString();
@@ -81,23 +83,21 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDB
       }
     }
 
-    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual inline const char* ceefit_call_spec GetType(void) const
     {
-      static CEEFIT::STRING FieldType("CEEFIT::SCIENTIFICDOUBLE");
-
-      return(FieldType);
+      return("CEEFIT::SCIENTIFICDOUBLE");
     }
 
     template<class U> inline FITFIELD<CEEFIT::SCIENTIFICDOUBLE>& operator=(U& rValue)
     {
-      this->FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>::operator=(rValue);
+      this->FIELDBASE::operator=(rValue);
 
       return(*this);
     }
 
     FITFIELD<CEEFIT::SCIENTIFICDOUBLE>& operator=(const CEEFIT::SCIENTIFICDOUBLE& rValue)
     {
-      this->FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>::operator=(rValue);
+      this->FIELDBASE::operator=(rValue);
 
       return(*this);
     }

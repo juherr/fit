@@ -29,7 +29,7 @@ using namespace CEEFIT;
 namespace CEEFAT
 {
 
-  begin_fit_fixture(FAT_PARSEFIXTURE, COLUMNFIXTURE, fat.ParseFixture);
+  begin_namespaced_fit_fixture(CEEFAT, PARSEFIXTURE, COLUMNFIXTURE, fat.ParseFixture);
 
     public:
       fit_var(STRING, Html);
@@ -74,7 +74,7 @@ namespace CEEFAT
 
 		    STRING result;
 		    STRING separator;
-		    while(temp != NULL) 
+		    while(temp != null) 
         {
 			    result += separator;
 			    result += DumpRows(temp->Parts);
@@ -90,7 +90,7 @@ namespace CEEFAT
 
 		    STRING result;
 		    STRING separator;
-		    while (temp != NULL) 
+		    while (temp != null) 
         {
 			    result += separator;
 			    result += DumpCells(temp->Parts);
@@ -106,7 +106,7 @@ namespace CEEFAT
 
 		    STRING result;
 		    STRING separator;
-		    while (temp != NULL) 
+		    while (temp != null) 
         {
           STRING tempText(temp->Text());
 
@@ -153,6 +153,6 @@ namespace CEEFAT
 		    return DumpTables(aParse);		
 	    }
 
-  end_fit_fixture(FAT_PARSEFIXTURE);
+  end_namespaced_fit_fixture(CEEFAT, PARSEFIXTURE);
 
 };

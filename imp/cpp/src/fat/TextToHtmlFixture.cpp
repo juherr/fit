@@ -28,7 +28,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  begin_fit_fixture(FAT_TEXTTOHTMLFIXTURE, COLUMNFIXTURE, fat.TextToHtmlFixture)
+  begin_namespaced_fit_fixture(CEEFAT, TEXTTOHTMLFIXTURE, COLUMNFIXTURE, fat.TextToHtmlFixture)
 
     public:
       fit_var(STRING, Text);
@@ -56,5 +56,5 @@ namespace CEEFAT
         return(this->FIXTURE::Escape(Text));
 	    }
 
-  end_fit_fixture(FAT_TEXTTOHTMLFIXTURE)
+  end_namespaced_fit_fixture(CEEFAT, TEXTTOHTMLFIXTURE)
 };

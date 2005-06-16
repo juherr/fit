@@ -33,4 +33,11 @@
 # define ceefit_call_spec __cdecl
 #endif
 
+namespace CEEFIT
+{
+  // We have to deal with gcc's annoying "warning: passing NULL used for non-pointer converting" by completely removing any 
+  // mention of NULL from the CeeFIT code.  From now on, use only CEEFIT::null when representing the NULL pointer.
+  static const int null=0;
+};
+
 #endif // __TOOLS_MANDATORY_H__

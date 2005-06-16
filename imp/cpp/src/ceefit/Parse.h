@@ -44,28 +44,30 @@ namespace CEEFIT
       PTR<PARSE> Parts;
 
       ceefit_init_spec PARSE(const STRING& aTag, const STRING& aBody, PTR<PARSE>& aParts, PTR<PARSE>& aMore);
-      ceefit_init_spec ~PARSE(void);
+      virtual ceefit_init_spec ~PARSE(void);
       ceefit_init_spec PARSE(const STRING& text, const DYNARRAY<STRING>& tags, int level, int offset);
 
-      void ceefit_call_spec AddToTag(const STRING& text);
-      void ceefit_call_spec AddToBody(const STRING& text);
+      virtual void ceefit_call_spec AddToTag(const STRING& text);
+      virtual void ceefit_call_spec AddToBody(const STRING& text);
 
-      int ceefit_call_spec Size(void);
-      VALUE<PARSE> ceefit_call_spec Last(void);
-      VALUE<PARSE> ceefit_call_spec Leaf(void);
-      VALUE<PARSE> ceefit_call_spec At(int i);
-      VALUE<PARSE> ceefit_call_spec At(int i, int j);
-      VALUE<PARSE> ceefit_call_spec At(int i, int j, int k);
-      STRING ceefit_call_spec Text();
+      virtual int ceefit_call_spec Size(void);
+      virtual VALUE<PARSE> ceefit_call_spec Last(void);
+      virtual VALUE<PARSE> ceefit_call_spec Leaf(void);
+      virtual VALUE<PARSE> ceefit_call_spec At(int i);
+      virtual VALUE<PARSE> ceefit_call_spec At(int i, int j);
+      virtual VALUE<PARSE> ceefit_call_spec At(int i, int j, int k);
+      virtual STRING ceefit_call_spec Text();
 
-      void ceefit_call_spec Print(WRITER* out);
+      virtual void ceefit_call_spec Print(WRITER* out);
 
       static STRING ceefit_call_spec HtmlToText(const STRING& s);
       static STRING ceefit_call_spec Unescape(const STRING& s);
       static STRING ceefit_call_spec CondenseWhitespace(const STRING& s);
 
       static int FootnoteFiles;
-      STRING ceefit_call_spec Footnote(void);
+      virtual STRING ceefit_call_spec Footnote(void);
+
+      virtual bool ceefit_call_spec IsEqual(const PARSE& aParse) const;
 
     private:
       static STRING ceefit_call_spec RemoveNonBreakTags(const STRING& s);
@@ -78,7 +80,7 @@ namespace CEEFIT
       /**
        * <p>Turns the tags wchar_t* array into a DYNARRAY&lt;STRING&gt;</p>
        */
-      static const DYNARRAY<STRING>& ceefit_call_spec GetTagsStrings(void);
+      static const wchar_t** ceefit_call_spec GetTagsStrings(void);
 
     public:
       ceefit_init_spec PARSE(const STRING& text);

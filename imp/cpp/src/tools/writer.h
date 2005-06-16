@@ -65,7 +65,7 @@ namespace CEEFIT
       virtual void ceefit_call_spec Fprint(const wchar_t* format, ...);
       virtual void ceefit_call_spec Close(void);     /**< NOP:  actually doesn't try to close stdout handle */
 
-      virtual STRING ceefit_call_spec ToString(void);
+      virtual STRING ceefit_call_spec ToString(void) const;
 
     private:
       STRINGWRITER& ceefit_call_spec operator=(const STRINGWRITER&);

@@ -31,10 +31,10 @@ namespace CEEFIT
       friend class RUNNER;
 
     public:
-      inline ceefit_init_spec REGISTERFIXTURECLASS<T>(const char* fixtureName, const char* aliasName=NULL) : FIXTUREFACTORY(fixtureName, aliasName)
+      inline ceefit_init_spec REGISTERFIXTURECLASS<T>(const char* fixtureName, const char* aliasName=null) : FIXTUREFACTORY(fixtureName, aliasName)
       {
         // Do not add a fixture that appears in more than once ...
-        if(RUNNER::FindFixtureFactoryByName(fixtureName) == NULL)
+        if(RUNNER::FindFixtureFactoryByName(fixtureName) == null)
         {
           RUNNER::RegisterFixtureFactory(this);
           RUNNER::GetSetCurrentFixtureFactory(this);
@@ -73,7 +73,7 @@ namespace CEEFIT
       friend class RUNNER;
 
     public:
-      inline ceefit_init_spec REGISTERNONFIXTURECLASS<T>(const char* nonFixtureName, const char* aliasName=NULL) : NONFIXTUREFACTORY(nonFixtureName, aliasName)
+      inline ceefit_init_spec REGISTERNONFIXTURECLASS<T>(const char* nonFixtureName, const char* aliasName=null) : NONFIXTUREFACTORY(nonFixtureName, aliasName)
       {
         RUNNER::RegisterNonFixtureFactory(this);
       }
@@ -142,7 +142,7 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
       throw new CEEFIT::EXCEPTION("Cannot GetName on FITFIXTURECONTAINER CELLADAPTER");
     }
 
-    virtual const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual const char* ceefit_call_spec GetType(void) const
     {
       throw new CEEFIT::EXCEPTION("Cannot GetType on FITFIXTURECONTAINER CELLADAPTER");
     }
@@ -157,7 +157,7 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
       throw new CEEFIT::EXCEPTION("Cannot IsField on FITFIXTURECONTAINER CELLADAPTER");
     }
 
-    virtual void ceefit_call_spec NewInstanceParse(::CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, const CEEFIT::STRING& aText)
+    virtual void ceefit_call_spec NewInstanceParse(::CEEFIT::FIXTURE* callParseOn, ::CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, const CEEFIT::STRING& aText)
     {
       throw new CEEFIT::EXCEPTION("Cannot NewInstanceParse on FITFIXTURECONTAINER CELLADAPTER");
     }

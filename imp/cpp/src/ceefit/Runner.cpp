@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT
@@ -120,25 +121,25 @@ namespace CEEFIT
 
   FIXTUREFACTORY* ceefit_call_spec RUNNER::GetSetCurrentFixtureFactory(FIXTUREFACTORY* aFactory, bool clearCurrentFactory)
   {
-    static FIXTUREFACTORY* CurFactory = NULL;
+    static FIXTUREFACTORY* CurFactory = null;
 
     if(clearCurrentFactory)
     {
-      CurFactory = NULL;
+      CurFactory = null;
 
-      return(NULL);
+      return(null);
     }
 
-    if(aFactory != NULL)
+    if(aFactory != null)
     {
       CurFactory = aFactory;
     }
 
-    if(CurFactory == NULL)
+    if(CurFactory == null)
     {
       static REGISTERFIXTURECLASS<FIXTURE> DummyFactory("errorNoCurrentFixtureFound");
 
-      CurFactory = new REGISTERFIXTURECLASS<FIXTURE>("errorNoCurrentFixtureFound");
+      CurFactory = &DummyFactory;
     }
 
     return(CurFactory);
@@ -148,22 +149,22 @@ namespace CEEFIT
   {
     SLINKLIST<FIXTUREFACTORY>& factoryList = GetFixtureFactoryList();
 
-    if(aName == NULL || strlen(aName) == 0)
+    if(aName == null || strlen(aName) == 0)
     {
-      return(NULL);
+      return(null);
     }
 
     FIXTUREFACTORY* aFactory = factoryList.GetHead();
-    while(aFactory != NULL)
+    while(aFactory != null)
     {
-      if(aFactory->GetName() != NULL && !strcmp(aName, aFactory->GetName()))
+      if(aFactory->GetName() != null && !strcmp(aName, aFactory->GetName()))
       {
         return(aFactory);
       }
       aFactory = aFactory->GetNext();
     }
 
-    return(NULL);
+    return(null);
   }
 
   NONFIXTUREFACTORY* ceefit_call_spec RUNNER::FindNonFixtureFactoryByName(const STRING& aName)
@@ -172,20 +173,20 @@ namespace CEEFIT
 
     if(aName.Length() == 0)
     {
-      return(NULL);
+      return(null);
     }
 
     NONFIXTUREFACTORY* aNonFactory = nonFactoryList.GetHead();
-    while(aNonFactory != NULL)
+    while(aNonFactory != null)
     {
-      if(aNonFactory->GetName() != NULL && aName.IsEqual(STRING(aNonFactory->GetName())))
+      if(aNonFactory->GetName() != null && aName.IsEqual(STRING(aNonFactory->GetName())))
       {
         return(aNonFactory);
       }
       aNonFactory = aNonFactory->GetNext();
     }
 
-    return(NULL);
+    return(null);
   }
 
   NONFIXTUREFACTORY* ceefit_call_spec RUNNER::FindNonFixtureFactoryByAlias(const STRING& aAlias)
@@ -194,20 +195,20 @@ namespace CEEFIT
 
     if(aAlias.Length() == 0)
     {
-      return(NULL);
+      return(null);
     }
 
     NONFIXTUREFACTORY* aNonFactory = nonFactoryList.GetHead();
-    while(aNonFactory != NULL)
+    while(aNonFactory != null)
     {
-      if(aNonFactory->GetAlias() != NULL && aAlias.IsEqual(STRING(aNonFactory->GetAlias())))
+      if(aNonFactory->GetAlias() != null && aAlias.IsEqual(STRING(aNonFactory->GetAlias())))
       {
         return(aNonFactory);
       }
       aNonFactory = aNonFactory->GetNext();
     }
 
-    return(NULL);
+    return(null);
   }
 
   void ceefit_call_spec RUNNER::RegisterFixtureFactory(FIXTUREFACTORY* aFixture)
@@ -220,8 +221,8 @@ namespace CEEFIT
     GetNonFixtureFactoryList().AddTail(aNonFixture);
   }
 
-  SLINKLIST<CELLADAPTER>* RUNNER::CurrentTestList = NULL;
-  SLINKLIST<CELLADAPTER>* RUNNER::CurrentFieldList = NULL;
+  SLINKLIST<CELLADAPTER>* RUNNER::CurrentTestList = null;
+  SLINKLIST<CELLADAPTER>* RUNNER::CurrentFieldList = null;
 
   void ceefit_call_spec RUNNER::SetCurrentTestList(SLINKLIST<CELLADAPTER>* aList)
   {
@@ -243,7 +244,7 @@ namespace CEEFIT
     return(CurrentFieldList);
   }
 
-  FIXTURE* RUNNER::FixtureUnderConstruction = NULL;
+  FIXTURE* RUNNER::FixtureUnderConstruction = null;
 
   void ceefit_call_spec RUNNER::SetCurrentFixtureUnderConstruction(FIXTURE* aFixture)
   {
@@ -259,7 +260,7 @@ namespace CEEFIT
   {
     SLINKLIST<CELLADAPTER>* aList = RUNNER::GetCurrentTestList();
 
-    if(aList == NULL)
+    if(aList == null)
     {
       throw new EXCEPTION("No Current Test List");
     }
@@ -274,7 +275,7 @@ namespace CEEFIT
   {
     SLINKLIST<CELLADAPTER>* aList = RUNNER::GetCurrentFieldList();
 
-    if(aList == NULL)
+    if(aList == null)
     {
       throw new EXCEPTION("No Current Field List");
     }
@@ -286,7 +287,7 @@ namespace CEEFIT
   {
     SLINKLIST<CELLADAPTER>* aList = RUNNER::GetCurrentFieldList();
 
-    if(aList == NULL)
+    if(aList == null)
     {
       throw new EXCEPTION("No Current Field List");
     }
@@ -297,7 +298,7 @@ namespace CEEFIT
   {
     SLINKLIST<CELLADAPTER>* aList = RUNNER::GetCurrentTestList();
 
-    if(aList == NULL)
+    if(aList == null)
     {
       throw new EXCEPTION("No Current Test List");
     }

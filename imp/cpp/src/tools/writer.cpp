@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 extern "C"
@@ -35,7 +36,7 @@ namespace CEEFIT
   ceefit_init_spec FILEWRITER::FILEWRITER(const STRING& filePath, bool createFile, unicode_encoding_t& aExpectedEncoding)
   {
     Output = _wfopen(filePath.GetBuffer(), createFile ? L"wb" : L"ab");
-    if(Output == NULL)
+    if(Output == null)
     {
       STRING reason;
 
@@ -55,7 +56,7 @@ namespace CEEFIT
 
   void ceefit_call_spec FILEWRITER::Write(const STRING& aString)
   {
-    if(Output != NULL)
+    if(Output != null)
     {
       StringWriter.Write(aString);
     }
@@ -80,7 +81,7 @@ namespace CEEFIT
 
   void ceefit_call_spec FILEWRITER::Fprint(const wchar_t* format, ...)
   {
-    if(Output != NULL)
+    if(Output != null)
     {
       if(SprintfBuffer.GetSize() == 0)
       {
@@ -116,7 +117,7 @@ namespace CEEFIT
 
   void ceefit_call_spec FILEWRITER::Close()
   {
-    if(Output != NULL)
+    if(Output != null)
     {
       STRING outString(StringWriter.ToString());
       DYNARRAY<unicode_char_t> convertSrcBuffer;
@@ -173,7 +174,7 @@ namespace CEEFIT
       fwrite(&outBuf[0], maxbytesLeft - outbytesLeft, 1, Output);
 
       fclose(Output);
-      Output = NULL;
+      Output = null;
     }
   }
 
@@ -268,7 +269,7 @@ namespace CEEFIT
     IsClosed = true;
   }
 
-  STRING ceefit_call_spec STRINGWRITER::ToString()
+  STRING ceefit_call_spec STRINGWRITER::ToString() const
   {
     return(Output);
   }

@@ -20,15 +20,14 @@
  * @author David Woldrich
  */
 
-#include <limits.h>
-
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 #define lengthof(a)       (sizeof(a) / sizeof((a)[0]))
 
 namespace CEEFIT
 {
-  const wchar_t* PARSE::tags[] = {L"table", L"tr", L"td"};
+  const wchar_t* PARSE::tags[] = {L"table", L"tr", L"td", null};
 
   ceefit_init_spec PARSE::PARSE(const STRING& aTag, const STRING& aBody, PTR<PARSE>& aParts, PTR<PARSE>& aMore)
   {
@@ -43,6 +42,11 @@ namespace CEEFIT
 
   ceefit_init_spec PARSE::~PARSE()
   {
+  }
+
+  bool PARSE::IsEqual(const PARSE& aParse) const
+  {
+    throw new EXCEPTION("PARSE::IsEqual not yet implemented");
   }
 
 	/* Added by Rick Mugridge, Feb 2005, adapted by Dave Woldrich for CeeFIT Apr 2005 */
@@ -123,7 +127,17 @@ namespace CEEFIT
 
   ceefit_init_spec PARSE::PARSE(const STRING& text)
   {
-    Construct(text, GetTagsStrings(), 0, 0);
+    DYNARRAY<STRING> tags;
+    const wchar_t** tagArray = GetTagsStrings();
+
+    int i = 0;
+    while(tagArray[i] != null)
+    {
+      tags.Add(tagArray[i]);
+      i++;
+    }
+
+    Construct(text, tags, 0, 0);
   }
 
   ceefit_init_spec PARSE::PARSE(const STRING& text, const DYNARRAY<STRING>& tags)
@@ -148,21 +162,9 @@ namespace CEEFIT
     return(*this);
   }
 
-  const DYNARRAY<STRING>& ceefit_call_spec PARSE::GetTagsStrings()
+  const wchar_t** ceefit_call_spec PARSE::GetTagsStrings()
   {
-    static DYNARRAY<STRING> stringArray;
-
-    if(stringArray.GetSize() == 0)
-    {
-      int i = -1;
-      int length = lengthof(tags);
-      while(++i < length)
-      {
-        stringArray.Add(tags[i]);
-      }
-    }
-
-    return(stringArray);
+    return(tags);
   }
 
   void ceefit_call_spec PARSE::AddToTag(const STRING& text)
@@ -178,24 +180,24 @@ namespace CEEFIT
 
   int ceefit_call_spec PARSE::Size()
   {
-    return More==NULL ? 1 : More->Size()+1;
+    return More==null ? 1 : More->Size()+1;
   }
 
   VALUE<PARSE> ceefit_call_spec PARSE::Last()
   {
     PARSE* thisParse = this;
 
-    return More==NULL ? VALUE<PARSE>(thisParse) : VALUE<PARSE>(More->Last());
+    return More==null ? VALUE<PARSE>(thisParse) : VALUE<PARSE>(More->Last());
   }
 
   VALUE<PARSE> ceefit_call_spec PARSE::Leaf()
   {
-    return Parts==NULL ? VALUE<PARSE>(this) : VALUE<PARSE>(Parts->Leaf());
+    return Parts==null ? VALUE<PARSE>(this) : VALUE<PARSE>(Parts->Leaf());
   }
 
   VALUE<PARSE> ceefit_call_spec PARSE::At(int i)
   {
-    return (i==0 || More==NULL) ? VALUE<PARSE>(this) : VALUE<PARSE>(More->At(i-1));
+    return (i==0 || More==null) ? VALUE<PARSE>(this) : VALUE<PARSE>(More->At(i-1));
   }
 
   VALUE<PARSE> ceefit_call_spec PARSE::At(int i, int j)
@@ -349,7 +351,7 @@ namespace CEEFIT
   {
     out->Fprint(L"%s", Leader.GetBuffer());
     out->Fprint(L"%s", Tag.GetBuffer());
-    if(Parts != NULL)
+    if(Parts != null)
     {
       Parts->Print(out);
     }
@@ -359,7 +361,7 @@ namespace CEEFIT
     }
     out->Fprint(L"%s", End.GetBuffer());
 
-    if(More != NULL)
+    if(More != null)
     {
       More->Print(out);
     }
@@ -387,7 +389,7 @@ namespace CEEFIT
         STRING fullPath(STRING("Reports/") + html);
 
         WRITER* output = new FILEWRITER(fullPath);
-        if(output == NULL)
+        if(output == null)
         {
           throw new IOEXCEPTION("Create Footnote file operation failed");
         }

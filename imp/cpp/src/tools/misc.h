@@ -38,18 +38,18 @@ namespace CEEFIT
     public:
       inline ceefit_init_spec VOIDTYPE(void) {}
       virtual ceefit_init_spec ~VOIDTYPE(void) {}
-    
+
     private:
       ceefit_init_spec VOIDTYPE(const VOIDTYPE&);
       VOIDTYPE& ceefit_call_spec operator=(const VOIDTYPE&);
   };
 
 # ifdef _MSC_VER
-    typedef __int64 INT64;
-    typedef unsigned __int64 UINT64;
+    typedef __int64 fitINT64;
+    typedef unsigned __int64 UfitINT64;
 # else
-    typedef long long int INT64;
-    typedef unsigned long long int UINT64;
+    typedef long long int fitINT64;
+    typedef unsigned long long int UfitINT64;
 # endif
 };
 

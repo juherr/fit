@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT
@@ -52,16 +53,18 @@ namespace CEEFIT
   double ceefit_call_spec PRIMITIVEFIXTURE::ParseDouble(PTR<PARSE>& cell) 
   {
     double retVal;
-    int returnCount;
 
     STRING cellText(cell->Text());
-    returnCount = swscanf(cellText.GetBuffer(), L"%g", &retVal);
-    if(returnCount == 0 || returnCount == EOF)
+
+    errno = 0;
+    wchar_t* endChar;
+    retVal = wcstod(cellText.GetBuffer(), &endChar);
+    if(errno == ERANGE)
     {
       throw new PARSEEXCEPTION("PRIMITIVEFIXTURE::ParseDouble failed");
     }
   
-    return(retVal);
+    return((double) retVal);
   }
 
   bool ceefit_call_spec PRIMITIVEFIXTURE::ParseBoolean(PTR<PARSE>& cell) 
@@ -138,4 +141,5 @@ namespace CEEFIT
     }
   }
 
+  static ::CEEFIT::REGISTERFIXTURECLASS< PRIMITIVEFIXTURE > PrimitiveFixtureRegistration("CEEFIT::PRIMITIVEFIXTURE", "fit.PrimitiveFixture");
 };

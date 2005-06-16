@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT
@@ -37,72 +38,70 @@ namespace CEEFIT
   // this finds a like named CELLADAPTER in another fixture and reads from it
   void ceefit_call_spec CELLADAPTER::ReadFromFixtureVar(STRING& out, PTR<FIXTURE>& aFixture)
   {    
+    PTR<FIXTURE> targetFixture;
+    PTR<CELLADAPTER> aCell;
     if(this->IsField())
     {
-      int i = -1;
-      int size = aFixture->FieldList.GetSize();
-      while(++i < size)
+      aCell = aFixture->FindField(targetFixture, this->GetName());
+      if(aCell == null) 
       {
-        PTR<CELLADAPTER> aCell(&aFixture->FieldList.Get(i));
-
-        if(::CEEFIT::IsEqual(aCell->GetName(), this->GetName()))
-        {
-          aCell->ReadFromFixtureVar(out);
-          return;
-        }
+        throw new EXCEPTION(STRING("Field not found in other FIXTURE:  ") + this->GetName());
       }
     }
     else
     {
-      int i = -1;
-      int size = aFixture->TestList.GetSize();
-      while(++i < size)
+      aCell = aFixture->FindMethod(targetFixture, this->GetName());
+      if(aCell == null) 
       {
-        PTR<CELLADAPTER> aCell(&aFixture->TestList.Get(i));
-
-        if(::CEEFIT::IsEqual(aCell->GetName(), this->GetName()))
-        {
-          aCell->ReadFromFixtureVar(out);
-          return;
-        }
+        throw new EXCEPTION(STRING("Method not found in other FIXTURE:  ") + this->GetName());
       }
     }
+    aCell->ReadFromFixtureVar(out);
+  }
+
+  void ceefit_call_spec FITTESTBASE::ReadFromFixtureVar(STRING& out, PTR<FIXTURE>& targetFixture)
+  {
+    PTR<CELLADAPTER> outCell;
+
+    this->Invoke(outCell, targetFixture);
+
+    outCell->ReadFromFixtureVar(out);
+  }
+
+  void ceefit_call_spec FITTESTBASE::WriteToFixtureVar(const STRING&)
+  {
+    throw new EXCEPTION("Invalid operation for tests");
+  }
+
+  void ceefit_call_spec FITTESTBASE::ReadFromFixtureVar(STRING&)
+  {
+    throw new EXCEPTION("Invalid operation for tests");
+  }
+
+  void ceefit_call_spec FITTESTBASE::NewInstanceParse(FIXTURE* callParseOn, PTR< CELLADAPTER >& out, const STRING& aText)
+  {
+    throw new EXCEPTION("Cannot perform a new instance parse on function-type cells");
+  }
+
+  ceefit_init_spec FITTESTBASE::FITTESTBASE()
+  {
+    Name = "";
+  }
+
+  ceefit_init_spec FITTESTBASE::~FITTESTBASE()
+  {
+  }
+
+  const STRING& ceefit_call_spec FITTESTBASE::GetName() const
+  {
+    return(Name);
+  }
+
+  void ceefit_call_spec FITTESTBASE::SetName(const STRING& testName)
+  {
+    Name = testName;
   }
 };
-
-void ceefit_call_spec FITTESTBASE::WriteToFixtureVar(const CEEFIT::STRING&)
-{
-  throw new CEEFIT::EXCEPTION("Invalid operation for tests");
-}
-
-void ceefit_call_spec FITTESTBASE::ReadFromFixtureVar(CEEFIT::STRING&)
-{
-  throw new CEEFIT::EXCEPTION("Invalid operation for tests");
-}
-
-void ceefit_call_spec FITTESTBASE::NewInstanceParse(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, const CEEFIT::STRING& aText)
-{
-  throw new CEEFIT::EXCEPTION("Cannot perform a new instance parse on function-type cells");
-}
-
-ceefit_init_spec FITTESTBASE::FITTESTBASE()
-{
-  Name = "";
-}
-
-ceefit_init_spec FITTESTBASE::~FITTESTBASE()
-{
-}
-
-const CEEFIT::STRING& ceefit_call_spec FITTESTBASE::GetName() const
-{
-  return(Name);
-}
-
-void ceefit_call_spec FITTESTBASE::SetName(const CEEFIT::STRING& testName)
-{
-  Name = testName;
-}
 
 namespace CEEFIT
 {

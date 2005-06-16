@@ -25,6 +25,8 @@
 
 namespace CEEFIT
 {
+  class STRING;
+
   /**
    * <p>The base class for all CeeFIT objects</p>
    *
@@ -40,6 +42,8 @@ namespace CEEFIT
       virtual ceefit_init_spec ~OBJECT(void);
       ceefit_init_spec OBJECT(const OBJECT&);
       OBJECT& ceefit_call_spec operator=(const OBJECT&);
+
+      virtual STRING ceefit_call_spec ToString(void) const;
   };
 };
 

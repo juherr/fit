@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT
@@ -71,14 +72,16 @@ namespace CEEFIT
 
   double ceefit_call_spec SCIENTIFICDOUBLE::ParseDouble(const STRING& s) 
   {
-    double aDouble = 0.0;
-    int retVal = swscanf(s.GetBuffer(), L"%g", &aDouble);
-    if(retVal == EOF || retVal == 0) 
+    double aDouble = 0.0f;
+    errno = 0;
+    wchar_t* endChar;
+    aDouble = wcstod(s.GetBuffer(), &endChar);
+    if(errno == ERANGE)
     {
       throw new PARSEEXCEPTION(STRING("Could not parse string to a double:  ") + s);
     }
 
-    return(aDouble);
+    return((double) aDouble);
   }
 
   bool ceefit_call_spec SCIENTIFICDOUBLE::IsNaN(double aDouble) 

@@ -40,7 +40,7 @@ namespace CEEFIT
       ceefit_init_spec COUNTS(void);
       ceefit_init_spec ~COUNTS(void);
 
-      STRING ceefit_call_spec ToString(void);
+      STRING ceefit_call_spec ToString(void) const;
       void ceefit_call_spec Tally(const COUNTS& source);
 
     private:
@@ -54,16 +54,16 @@ namespace CEEFIT
       class RUNTIME : public REFCOUNTED
       {
         public:
-          INT64 start;
-          INT64 elapsed;
+          fitINT64 start;
+          mutable fitINT64 elapsed;
 
           ceefit_init_spec RUNTIME(void);
           virtual ceefit_init_spec ~RUNTIME(void);
 
-          virtual STRING ceefit_call_spec ToString(void);
+          virtual STRING ceefit_call_spec ToString(void) const;
 
         protected:
-          STRING ceefit_call_spec d(INT64 scale);
+          STRING ceefit_call_spec d(fitINT64 scale) const;
 
         private:
           ceefit_init_spec RUNTIME(const RUNTIME&);    /**< Not implemented. do not call */
@@ -78,6 +78,7 @@ namespace CEEFIT
           STRING OutputFile;            /**< The output filename */
           struct _timeb RunDate;        /**< The time (in msecs) that the Fixture was run */
           PTR<RUNTIME> RunElapsedTime;  /**< Tracks elapsed times */
+          PTR<COUNTS> CountsRun;        /**< Counts run, from eg.ExampleTests.java */
 
           ceefit_init_spec SUMMARY(void);
           virtual ceefit_init_spec ~SUMMARY(void);
@@ -88,17 +89,6 @@ namespace CEEFIT
     public:
       PTR<SUMMARY> SummaryObj;
       PTR<COUNTS> CountsObj;
-
-    protected:
-      friend void ceefit_call_spec ::CEEFIT::LinkManualTest(::CEEFIT::FIXTURE* aFixture, FITTESTBASE* fittestManual);
-      friend void ceefit_call_spec ::CEEFIT::LinkManualField(::CEEFIT::FIXTURE* aFixture, CELLADAPTER* fitfieldManual);
-
-    public:
-      SLINKLIST<CELLADAPTER> FieldList;
-      SLINKLIST<CELLADAPTER> TestList;
-
-    private:
-      DYNARRAY< PTR<CELLADAPTER> > DestroyAtFinish;   /**< Manual, dynamically allocated test and field registrations are linked here */
 
     public:
       ceefit_init_spec FIXTURE(void);
@@ -115,7 +105,7 @@ namespace CEEFIT
       virtual void ceefit_call_spec DoCells(PTR<PARSE>& cells);
       virtual void ceefit_call_spec DoCell(PTR<PARSE>& cell, int columnNumber);
 
-    protected:      
+    protected:
       // Witness the Creeping of Scope for Fit 1.1 /////
 
       DYNARRAY<STRING> Args;
@@ -141,7 +131,7 @@ namespace CEEFIT
       VALUE<PARSE> ceefit_call_spec FixtureName(PTR<PARSE>& tables);
 
       // Annotation ////////////////////////////////////
-      
+
       static const char* green;
       static const char* red;
       static const char* gray;
@@ -165,15 +155,15 @@ namespace CEEFIT
       static STRING ceefit_call_spec Camel(const STRING& name);
       virtual void ceefit_call_spec Parse(PTR<CELLADAPTER>& aField, const STRING& s);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, PTR<FIXTURE>& whichFixture);
-      virtual inline void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a) 
+      virtual inline void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a)
       {
-        PTR<FIXTURE> nullFixture(NULL);
+        PTR<FIXTURE> nullFixture(null);
         this->Check(cell, a, nullFixture);
       }
 
     protected:
-      static void ceefit_call_spec CreateFixtureByClassName(PTR<FIXTURE>& out, const STRING& className);  /**< @param out set to NULL if no FIXTURE factory matched className */
-      static void ceefit_call_spec CreateFixtureByAlias(PTR<FIXTURE>& out, const STRING& aAlias);         /**< @param out set to NULL if no FIXTURE factory's alias matched aAlias */
+      static void ceefit_call_spec CreateFixtureByClassName(PTR<FIXTURE>& out, const STRING& className);  /**< @param out set to null if no FIXTURE factory matched className */
+      static void ceefit_call_spec CreateFixtureByAlias(PTR<FIXTURE>& out, const STRING& aAlias);         /**< @param out set to null if no FIXTURE factory's alias matched aAlias */
 
     protected:
       // helpers for DoTables required by CeeFIT
@@ -182,6 +172,52 @@ namespace CEEFIT
     protected:
       FIXTURE& ceefit_call_spec operator=(const FIXTURE&);
       ceefit_init_spec FIXTURE(const FIXTURE&);
+
+      // -------------------------------------------------------
+      // CeeFIT code used to manage static member data lifetimes
+      // -------------------------------------------------------
+    public:
+      /**
+       * <p>If a FIXTURE subclass holds any static information, implement this method and release the statics there</p>
+       *
+       * <p>This method is called in the ::CEEFIT::Run() function after all tables have been processed</p>
+       */
+      virtual void ceefit_call_spec ReleaseStatics(void);
+
+      /**
+       * <p>Returns a pointer to a FIXTURE class that will be the target of FindMethod or FindField</p>
+       *
+       * <p>The default implementation returned a pointer to 'this'</p>
+       */
+      virtual VALUE<FIXTURE> ceefit_call_spec GetTargetClass(void);
+
+      /**
+       * <p>Figure out which CELLADAPTER is bound to the provided method, this is implicitly a zero arg match</p>
+       */
+      virtual VALUE<CELLADAPTER> ceefit_call_spec FindMethod(PTR<FIXTURE>& targetFixture, const STRING& name);
+
+      /**
+       * <p>Figure out which CELLADAPTER is bound to the provided method, number of args must match</p>
+       *
+       * @param errorOnMultipleMatches if true throw exception if multiple methods are found of the same name and same arg count
+       */
+      virtual VALUE<CELLADAPTER> ceefit_call_spec FindMethod(PTR<FIXTURE>& targetFixture, const STRING& name, int numArgs, bool errorOnMultipleMatches=false);
+
+      /**
+       * <p>Figure out which CELLADAPTER is bound to the provided name</p>
+       *
+       * <p>CeeFIT implementation note:  this was pulled up from COLUMNFIXTURE in order to provide generic reflection
+       * facilities to all subclasses</p>
+       */
+      virtual VALUE<CELLADAPTER> ceefit_call_spec FindField(PTR<FIXTURE>& targetFixture, const STRING& name);
+
+    protected:
+      friend void ceefit_call_spec ::CEEFIT::LinkManualTest(::CEEFIT::FIXTURE* aFixture, FITTESTBASE* fittestManual);
+      friend void ceefit_call_spec ::CEEFIT::LinkManualField(::CEEFIT::FIXTURE* aFixture, CELLADAPTER* fitfieldManual);
+
+      DYNARRAY< PTR<CELLADAPTER> > DestroyAtFinish;   /**< Manual, dynamically allocated test and field registrations are linked here */
+      SLINKLIST<CELLADAPTER> FieldList;               /**< Fields */
+      SLINKLIST<CELLADAPTER> TestList;                /**< Methods */
 
     // ----------------------------------------------------------------------------------------------------
     // additional CeeFIT code used to take the place of the Summary HashMap that exists in the Java version
@@ -218,7 +254,7 @@ namespace CEEFIT
       void ceefit_call_spec GetSummaryReport(DYNARRAY<SUMMARYITEM>& reportList);
   };
 
-  INT64 CurrentTimeMillis(void);
+  fitINT64 ceefit_call_spec CurrentTimeMillis(void);
 };
 
 #endif // __CEEFIT_FIXTURE_H__

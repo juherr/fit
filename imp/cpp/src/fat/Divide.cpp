@@ -29,7 +29,7 @@ using namespace CEEFIT;
 namespace CEEFAT
 {
 
-  begin_fit_fixture(FAT_DIVIDE, COLUMNFIXTURE, fat.Divide)
+  begin_namespaced_fit_fixture(CEEFAT, DIVIDE, COLUMNFIXTURE, fat.Divide)
   
     fit_var(int, x);
     fit_var(int, y);
@@ -48,6 +48,6 @@ namespace CEEFAT
       return x/y;
     }
 
-  end_fit_fixture(FAT_DIVIDE);
+  end_namespaced_fit_fixture(CEEFAT, DIVIDE);
 
 };

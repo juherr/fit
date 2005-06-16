@@ -28,7 +28,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  class FAT_STANDARDANNOTATIONFIXTURE : public COLUMNFIXTURE
+  class STANDARDANNOTATIONFIXTURE : public COLUMNFIXTURE
   {
     public:
       STRING OriginalHTML;
@@ -100,7 +100,7 @@ namespace CEEFAT
 		    return STRING("<table border='1'><tr>") + Output() + "</tr></table>";		
 	    }
 	
-      inline ceefit_init_spec FAT_STANDARDANNOTATIONFIXTURE(void)
+      inline ceefit_init_spec STANDARDANNOTATIONFIXTURE(void)
       {   
         OriginalHTML = "Text";
 
@@ -108,18 +108,18 @@ namespace CEEFAT
         RegisterCeefitField(this, "Annotation", Annotation);
         RegisterCeefitField(this, "Text", Text);
 
-        RegisterCeefitTest(this, "Output", &FAT_STANDARDANNOTATIONFIXTURE::Output);
-        RegisterCeefitTest(this, "RenderedOutput", &FAT_STANDARDANNOTATIONFIXTURE::RenderedOutput);
+        RegisterCeefitTest(this, "Output", &STANDARDANNOTATIONFIXTURE::Output);
+        RegisterCeefitTest(this, "RenderedOutput", &STANDARDANNOTATIONFIXTURE::RenderedOutput);
       }
 
-      virtual inline ceefit_init_spec ~FAT_STANDARDANNOTATIONFIXTURE(void)
+      virtual inline ceefit_init_spec ~STANDARDANNOTATIONFIXTURE(void)
       {
       }
 
     private:
-      ceefit_init_spec FAT_STANDARDANNOTATIONFIXTURE(FAT_STANDARDANNOTATIONFIXTURE& afixture);    /**< Not implemented, do not call */
-      FAT_STANDARDANNOTATIONFIXTURE& ceefit_init_spec operator=(FAT_STANDARDANNOTATIONFIXTURE& afixture);   /**< Not implemented, do not call */
+      ceefit_init_spec STANDARDANNOTATIONFIXTURE(STANDARDANNOTATIONFIXTURE& afixture);    /**< Not implemented, do not call */
+      STANDARDANNOTATIONFIXTURE& ceefit_init_spec operator=(STANDARDANNOTATIONFIXTURE& afixture);   /**< Not implemented, do not call */
   };
 
-  static ::CEEFIT::REGISTERFIXTURECLASS< FAT_STANDARDANNOTATIONFIXTURE > StandardAnnotationFixtureRegistration("FAT_STANDARDANNOTATIONFIXTURE", "fat.StandardAnnotationFixture");
+  static ::CEEFIT::REGISTERFIXTURECLASS< STANDARDANNOTATIONFIXTURE > StandardAnnotationFixtureRegistration("CEEFAT::STANDARDANNOTATIONFIXTURE", "fat.StandardAnnotationFixture");
 };

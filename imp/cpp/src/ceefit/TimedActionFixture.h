@@ -37,7 +37,7 @@ namespace CEEFIT
 
       // Utility //////////////////////////////////
 
-      virtual INT64 ceefit_call_spec Time(void);
+      virtual fitINT64 ceefit_call_spec Time(void);
       virtual void ceefit_call_spec td(PTR<PARSE>& out, const STRING& body);
   };
 };

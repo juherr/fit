@@ -30,7 +30,7 @@ namespace CEEFAT
 {
   static const char* RegexSpaceCharacters = "[ \t\n\x0B\f\r]";
 
-  begin_fit_fixture(FAT_FIXTURENAMEFIXTURE, COLUMNFIXTURE, fat.FixtureNameFixture)
+  begin_namespaced_fit_fixture(CEEFAT, FIXTURENAMEFIXTURE, COLUMNFIXTURE, fat.FixtureNameFixture)
   
     public:
 	    fit_var(STRING, Table);
@@ -39,7 +39,7 @@ namespace CEEFAT
 	    VALUE<PARSE> GenerateTableParse(const STRING& table) 
       {
         DYNARRAY<STRING> patternStrArray;
-        patternStrArray.Add(STRING("\n"));
+        patternStrArray.Add("\n");
 
         DYNARRAY<STRING> output;
         table.ArrayRegexPatternSplit(output, patternStrArray, false);
@@ -53,7 +53,7 @@ namespace CEEFAT
       {
 		    if (cellIndex >= cells.GetSize()) 
         {
-          return(VALUE<PARSE>(NULL));
+          return(VALUE<PARSE>(null));
         }
 		    
         PTR<PARSE> cellParses(GenerateCellParses(cells, cellIndex + 1));
@@ -65,13 +65,13 @@ namespace CEEFAT
       {
 		    if (rowIndex >= rows.GetSize()) 
         {
-          return(VALUE<PARSE>(NULL));
+          return(VALUE<PARSE>(null));
         }
 
         DYNARRAY<STRING> patternStrArray;
-        patternStrArray.Add(STRING("\\]"));
+        patternStrArray.Add("\\]");
         patternStrArray.Add(STRING(RegexSpaceCharacters) + "*");
-        patternStrArray.Add(STRING("\\["));
+        patternStrArray.Add("\\[");
         
 		    DYNARRAY<STRING> cells;
         rows[rowIndex].ArrayRegexPatternSplit(cells, patternStrArray, false);
@@ -82,8 +82,8 @@ namespace CEEFAT
 			    int lastCell = cells.GetSize() - 1;
 
           DYNARRAY<STRING> patternStrArray2;
-          patternStrArray2.Add(STRING("\\]"));
-          patternStrArray2.Add(STRING("$"));
+          patternStrArray2.Add("\\]");
+          patternStrArray2.Add("$");
           cells[lastCell] = cells[lastCell].ArrayRegexPatternReplaceAll(patternStrArray2, "");  // strip ending ']' 
 		    }
 		    
@@ -101,11 +101,11 @@ namespace CEEFAT
         STRING result(fixtureNameParse->Text());
 		    if (result.IsEqual("")) 
         {
-          return STRING("(missing)");
+          return "(missing)";
         }
 		    return result;
 	    }	
 	    
-  end_fit_fixture(FAT_FIXTURENAMEFIXTURE)
+  end_namespaced_fit_fixture(CEEFAT, FIXTURENAMEFIXTURE)
 
 };

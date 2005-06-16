@@ -52,14 +52,14 @@
             static inline fixtureType* GetFixtureSubclass(::CEEFIT::FIXTURE* aFixture)                                            \
             {                                                                                                                     \
               extendsType* extendsFixture = dynamic_cast< extendsType* >(aFixture);                                               \
-              if(extendsFixture == NULL)                                                                                          \
+              if(extendsFixture == null)                                                                                          \
               {                                                                                                                   \
                 throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast FIXTURE to ") + #extendsType +  \
                                               " because the types are not compatible.");                                          \
               }                                                                                                                   \
                                                                                                                                   \
               fixtureType* subclassFixture = static_cast< fixtureType* >(extendsFixture);                                         \
-              if(subclassFixture == NULL)                                                                                         \
+              if(subclassFixture == null)                                                                                         \
               {                                                                                                                   \
                 throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast ") + #extendsType + " to " +    \
                                     #fixtureType + " because the types are not compatible.");                                     \
@@ -96,6 +96,82 @@
     };                                                                                                                            \
                                                                                                                                   \
     static ::CEEFIT::REGISTERFIXTURECLASS< fixtureType > fixtureType##_CeeFITFixtureRegistration(#fixtureType, fixtureType::PROVIDEFIXTUREALIAS::GetFixtureAlias());
+
+
+# define begin_namespaced_fit_fixture(namespaceName, fixtureType, extendsType, alias)                                             \
+    class fixtureType : public extendsType                                                                                        \
+    {                                                                                                                             \
+      private:                                                                                                                    \
+        class FIXTUREBEGINBODY                                                                                                    \
+        {                                                                                                                         \
+          public:                                                                                                                 \
+            inline FIXTUREBEGINBODY(void)                                                                                         \
+            {                                                                                                                     \
+              ::CEEFIT::RUNNER::IncInFixtureConstructor();                                                                        \
+            }                                                                                                                     \
+        };                                                                                                                        \
+        FIXTUREBEGINBODY fixtureType##_BeginBody;                                                                                 \
+                                                                                                                                  \
+      public:                                                                                                                     \
+        inline fixtureType(void) {}                                                                                               \
+        inline virtual ~fixtureType(void) {}                                                                                      \
+                                                                                                                                  \
+      private:                                                                                                                    \
+        fixtureType& operator=(const fixtureType&);                                                                               \
+        fixtureType(const fixtureType&);                                                                                          \
+                                                                                                                                  \
+      public:                                                                                                                     \
+        class PROVIDEFIXTUREOBJECTCASTER                                                                                          \
+        {                                                                                                                         \
+          public:                                                                                                                 \
+            static inline fixtureType* GetFixtureSubclass(::CEEFIT::FIXTURE* aFixture)                                            \
+            {                                                                                                                     \
+              extendsType* extendsFixture = dynamic_cast< extendsType* >(aFixture);                                               \
+              if(extendsFixture == null)                                                                                          \
+              {                                                                                                                   \
+                throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast FIXTURE to ") + #extendsType +  \
+                                              " because the types are not compatible.");                                          \
+              }                                                                                                                   \
+                                                                                                                                  \
+              fixtureType* subclassFixture = static_cast< fixtureType* >(extendsFixture);                                         \
+              if(subclassFixture == null)                                                                                         \
+              {                                                                                                                   \
+                throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast ") + #extendsType + " to " +    \
+                                              #namespaceName #fixtureType + " because the types are not compatible.");            \
+              }                                                                                                                   \
+                                                                                                                                  \
+              return(subclassFixture);                                                                                            \
+            }                                                                                                                     \
+        };                                                                                                                        \
+                                                                                                                                  \
+      public:                                                                                                                     \
+        class PROVIDEFIXTUREALIAS                                                                                                 \
+        {                                                                                                                         \
+          public:                                                                                                                 \
+            static inline const char* GetFixtureAlias(void)                                                                       \
+            {                                                                                                                     \
+              return(#alias);                                                                                                     \
+            }                                                                                                                     \
+        };                                                                                                                        \
+                                                                                                                                  \
+      public:
+                                                                                                                                  
+                                                                                                                                  
+# define end_namespaced_fit_fixture(namespaceName, fixtureType)                                                                   \
+      private:                                                                                                                    \
+        class FIXTUREENDBODY                                                                                                      \
+        {                                                                                                                         \
+          public:                                                                                                                 \
+            inline FIXTUREENDBODY(void)                                                                                           \
+            {                                                                                                                     \
+              ::CEEFIT::RUNNER::DecInFixtureConstructor();                                                                        \
+            }                                                                                                                     \
+        };                                                                                                                        \
+        FIXTUREENDBODY fixtureType##_EndBody;                                                                                     \
+    };                                                                                                                            \
+                                                                                                                                  \
+    static ::CEEFIT::REGISTERFIXTURECLASS< fixtureType > fixtureType##_CeeFITFixtureRegistration(#namespaceName "::" #fixtureType, fixtureType::PROVIDEFIXTUREALIAS::GetFixtureAlias());
+
 
 
 # ifdef __GNUC__

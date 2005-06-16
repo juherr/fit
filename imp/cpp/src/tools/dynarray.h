@@ -48,37 +48,26 @@ namespace CEEFIT
       {
         Limit = 0;
         Count = 0;
-        List = NULL;
+        List = null;
       }
-
-      template<class ANYTYPE2> explicit inline ceefit_init_spec DYNARRAY<ANYTYPE>(DYNARRAY<ANYTYPE2>& otherArray)
+/*
+      explicit inline ceefit_init_spec DYNARRAY<ANYTYPE>(DYNARRAY<ANYTYPE>& otherArray)
       {
         Limit = 0;
         Count = 0;
-        List = NULL;
+        List = null;
 
         AddAll(otherArray);
       }
-
-      template<class ANYTYPE2> explicit inline ceefit_init_spec DYNARRAY<ANYTYPE>(const DYNARRAY<ANYTYPE2>& otherArray)
+*/
+      inline ceefit_init_spec DYNARRAY<ANYTYPE>(const DYNARRAY<ANYTYPE>& otherArray)
       {
         Limit = 0;
         Count = 0;
-        List = NULL;
+        List = null;
 
         AddAll(otherArray);
       }
-
-# ifdef __GNUC__
-      explicit inline ceefit_init_spec DYNARRAY<ANYTYPE>(const DYNARRAY<ANYTYPE>& otherArray)
-      {
-        Limit = 0;
-        Count = 0;
-        List = NULL;
-
-        AddAll(otherArray);
-      }
-# endif
 
       template<class ANYTYPE2> inline DYNARRAY<ANYTYPE>& ceefit_call_spec operator=(DYNARRAY<ANYTYPE2>& otherArray)
       {
@@ -134,13 +123,15 @@ namespace CEEFIT
         return(Count);
       }
 
-      virtual inline void ceefit_call_spec Add(ANYTYPE& aItem)
+      virtual inline DYNARRAY<ANYTYPE>& ceefit_call_spec Add(ANYTYPE& aItem)
       {
         if(Limit == Count) 
         {        
           ExtendLimit(GetExtension(1));
         }
         List[Count++] = aItem;
+
+        return(*this);
       }
 
 //#ifdef __GNUC__
@@ -154,7 +145,7 @@ namespace CEEFIT
 //      }
 //#endif
 
-      template<class ANYTYPE2> inline void ceefit_call_spec Add(const ANYTYPE2& aItem)
+      template<class ANYTYPE2> inline DYNARRAY<ANYTYPE>& ceefit_call_spec Add(const ANYTYPE2& aItem)
       {
         if(Limit == Count) 
         {        
@@ -163,6 +154,8 @@ namespace CEEFIT
 
         ANYTYPE& aDest = List[Count++];
         aDest = aItem;
+
+        return(*this);
       }
 
       template<class ANYTYPE2> inline void ceefit_call_spec AddAll(const DYNARRAY<ANYTYPE2>& aCollection)
@@ -212,7 +205,7 @@ namespace CEEFIT
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", aIndex);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::Set(int aIndex, ANYTYPE& aValue):  Index out of bounds", aIndex);
         }
 
         if(aIndex < Count) 
@@ -232,7 +225,7 @@ namespace CEEFIT
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", aIndex);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::Set(int aIndex, ANYTYPE2& aValue):  Index out of bounds", aIndex);
         }
 
         if(aIndex < Count) 
@@ -254,7 +247,7 @@ namespace CEEFIT
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", aIndex);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::Set(int aIndex, const ANYTYPE2& aValue):  Index out of bounds", aIndex);
         }
 
         if(aIndex < Count) 
@@ -276,7 +269,7 @@ namespace CEEFIT
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", aIndex);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::Insert(int aIndex, ANYTYPE& aValue):  Index out of bounds", aIndex);
         }
       
         if(aIndex == Count)
@@ -307,7 +300,7 @@ namespace CEEFIT
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", aIndex);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::Insert(int aIndex, ANYTYPE2& aValue):  Index out of bounds", aIndex);
         }
       
         if(aIndex == Count)
@@ -338,7 +331,7 @@ namespace CEEFIT
         // Validate parameters
         if(aIndex < 0 || aIndex > Count)
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", aIndex);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::Insert(int aIndex, const ANYTYPE2& aValue):  Index out of bounds", aIndex);
         }
       
         if(aIndex == Count)
@@ -378,7 +371,7 @@ namespace CEEFIT
         // Validate parameters
         if(aIndex < 0 || aIndex >= Count)
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", aIndex);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::Remove(int aIndex, int aCountToRemove):  Index out of bounds", aIndex);
         }
 
         if(aCountToRemove <= 0 || (aIndex + aCountToRemove) > Count)
@@ -406,7 +399,7 @@ namespace CEEFIT
         Count = 0;      
         Limit = 0;
         delete [] List;
-        List = NULL;
+        List = null;
       }
 
       virtual inline void ceefit_call_spec Compact(void) 
@@ -419,7 +412,7 @@ namespace CEEFIT
             Limit = Count;
             List = new ANYTYPE[Limit];
       
-            if(oldList != NULL) 
+            if(oldList != null) 
             {
               int i = -1;
               while(++i < Count) 
@@ -441,7 +434,7 @@ namespace CEEFIT
       {
         if(!((index >= 0) && (index < Count)))
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", index);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::operator[](int index):  Index out of bounds", index);
         }
 
         return(List[index]); 
@@ -451,7 +444,7 @@ namespace CEEFIT
       {
         if(!((index >= 0) && (index < Count)))
         {
-          throw new BOUNDSEXCEPTION(L"Index out of bounds", index);
+          throw new BOUNDSEXCEPTION(L"DYNARRAY<ANYTYPE>::operator[](int index) const:  Index out of bounds", index);
         }
 
         return(List[index]); 
@@ -537,7 +530,7 @@ namespace CEEFIT
         Limit += howMany;
         List = new ANYTYPE[Limit];
       
-        if(oldList != NULL) 
+        if(oldList != null) 
         {
           int i = -1;
           while(++i < Count) 

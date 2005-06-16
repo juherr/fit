@@ -23,23 +23,25 @@
  * @author David Woldrich
  */
 
-using namespace CEEFIT;
-
 namespace CEEFAT
 {
-
-  class FAT_TABLE : public CEEFIT::PRIMITIVEFIXTURE
+  class TABLE : public CEEFIT::PRIMITIVEFIXTURE
   {
     public:
-      static PTR<PARSE> Table;
+      static CEEFIT::PTR< CEEFIT::PARSE > Table;
 
-      inline ceefit_init_spec FAT_TABLE(void) {}
-      inline virtual ceefit_init_spec ~FAT_TABLE(void) {}
+      inline ceefit_init_spec TABLE(void) {}
+      inline virtual ceefit_init_spec ~TABLE(void) {}
 
-      virtual void ceefit_call_spec DoRows(PTR<PARSE>& rows);
-      static VALUE<PARSE> ceefit_call_spec Copy(PTR<PARSE>& tree);
+      virtual void ceefit_call_spec DoRows(CEEFIT::PTR< CEEFIT::PARSE >& rows);
+      static CEEFIT::VALUE< CEEFIT::PARSE > ceefit_call_spec Copy(CEEFIT::PTR< CEEFIT::PARSE >& tree);
+
+      virtual void ceefit_call_spec ReleaseStatics(void);
+
+    private:
+      ceefit_init_spec TABLE(const TABLE&);
+      TABLE& ceefit_init_spec operator=(const TABLE&);
   };
-
 };
 
 #endif // __FAT_TABLE_H__

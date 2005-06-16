@@ -24,9 +24,11 @@
  */
 
 // Need to make a FITFIELD for DYNARRAY<int>
-template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public FITFIELDBASE< CEEFIT::DYNARRAY<int> >
+template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<int> >
 {
   public:
+    typedef CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<int> > FIELDBASE;
+
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::DYNARRAY<int>& in)
     {
       CEEFIT::STRING temp;
@@ -49,7 +51,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public FITFIELDBASE< CEEFIT
     {
       CEEFIT::DYNARRAY<CEEFIT::STRING> tokens;
 
-      CEEFIT::TokenizeRespectQuotes(tokens, in, CEEFIT::STRING(","), false);
+      CEEFIT::Tokenize(tokens, in, CEEFIT::STRING(","), false);
 
       out.Reset();
 
@@ -67,16 +69,21 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public FITFIELDBASE< CEEFIT
       return(true);
     }
 
-    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual inline const char* ceefit_call_spec GetType(void) const
     {
-      static CEEFIT::STRING FieldType("DYNARRAY<int>");
-
-      return(FieldType);
+      return("DYNARRAY<int>");
     }
 
     template<class U> inline FITFIELD< CEEFIT::DYNARRAY<int> >& operator=(U& rValue)
     {
-      this->FITFIELDBASE< CEEFIT::DYNARRAY<int> >::operator=(rValue);
+      this->FIELDBASE::operator=(rValue);
+
+      return(*this);
+    }
+
+    FITFIELD< CEEFIT::DYNARRAY<int> >& operator=(const CEEFIT::DYNARRAY<int>& rValue)
+    {
+      this->FIELDBASE::operator=(rValue);
 
       return(*this);
     }
@@ -91,12 +98,13 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public FITFIELDBASE< CEEFIT
 
   private:
     FITFIELD< CEEFIT::DYNARRAY<int> >(const FITFIELD< CEEFIT::DYNARRAY<int> >&);  /**< not implemented, do not call. */
-    //FITFIELD< CEEFIT::DYNARRAY<int> >& operator=(const FITFIELD< CEEFIT::DYNARRAY<int> >&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public FITFIELDBASE< CEEFIT::DYNARRAY<bool> >
+template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<bool> >
 {
   public:
+    typedef CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<bool> > FIELDBASE;
+
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::DYNARRAY<bool>& in)
     {
       CEEFIT::STRING temp;
@@ -119,7 +127,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public FITFIELDBASE< CEEFI
     {
       CEEFIT::DYNARRAY<CEEFIT::STRING> tokens;
 
-      CEEFIT::TokenizeRespectQuotes(tokens, in, CEEFIT::STRING(","), false);
+      CEEFIT::Tokenize(tokens, in, CEEFIT::STRING(","), false);
 
       out.Reset();
 
@@ -133,16 +141,21 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public FITFIELDBASE< CEEFI
       return(true);
     }
 
-    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual inline const char* ceefit_call_spec GetType(void) const
     {
-      static CEEFIT::STRING FieldType("DYNARRAY<bool>");
-
-      return(FieldType);
+      return("DYNARRAY<bool>");
     }
 
     template<class U> inline FITFIELD< CEEFIT::DYNARRAY<bool> >& operator=(U& rValue)
     {
-      this->FITFIELDBASE< CEEFIT::DYNARRAY<bool> >::operator=(rValue);
+      this->FIELDBASE::operator=(rValue);
+
+      return(*this);
+    }
+
+    FITFIELD< CEEFIT::DYNARRAY<bool> >& operator=(const CEEFIT::DYNARRAY<bool>& rValue)
+    {
+      this->FIELDBASE::operator=(rValue);
 
       return(*this);
     }
@@ -160,9 +173,11 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public FITFIELDBASE< CEEFI
     //FITFIELD< CEEFIT::DYNARRAY<bool> >& operator=(const FITFIELD< CEEFIT::DYNARRAY<bool> >&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public FITFIELDBASE< CEEFIT::DYNARRAY<CEEFIT::STRING> >
+template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<CEEFIT::STRING> >
 {
   public:
+    typedef CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<CEEFIT::STRING> > FIELDBASE;
+
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::DYNARRAY<CEEFIT::STRING>& in)
     {
       CEEFIT::STRING temp;
@@ -184,7 +199,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public FITFIELDB
     {
       CEEFIT::DYNARRAY<CEEFIT::STRING> tokens;
 
-      CEEFIT::TokenizeRespectQuotes(tokens, in, CEEFIT::STRING(","), false);
+      CEEFIT::Tokenize(tokens, in, CEEFIT::STRING(","), false);
 
       out.Reset();
 
@@ -196,16 +211,21 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public FITFIELDB
       return(true);
     }
 
-    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual inline const char* ceefit_call_spec GetType(void) const
     {
-      static CEEFIT::STRING FieldType("DYNARRAY<STRING>");
-
-      return(FieldType);
+      return("DYNARRAY<STRING>");
     }
 
     template<class U> inline FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >& operator=(U& rValue)
     {
-      this->FITFIELDBASE< CEEFIT::DYNARRAY<CEEFIT::STRING> >::operator=(rValue);
+      this->FIELDBASE::operator=(rValue);
+
+      return(*this);
+    }
+
+    FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >& operator=(const CEEFIT::DYNARRAY<CEEFIT::STRING>& rValue)
+    {
+      this->FIELDBASE::operator=(rValue);
 
       return(*this);
     }

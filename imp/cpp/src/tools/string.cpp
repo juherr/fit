@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 // Boost includes
@@ -211,7 +212,7 @@ namespace CEEFIT
   {
     Data.Array.Reset();
 
-    if(str == NULL)
+    if(str == null)
     {
       Data.Array.Reserve(1);
       Data.Array[0] = L'\0';
@@ -228,7 +229,7 @@ namespace CEEFIT
   {
     Data.Array.Reset();
 
-    if(str == NULL)
+    if(str == null)
     {
       Data.Array.Reserve(1);
       Data.Array[0] = L'\0';
@@ -339,6 +340,94 @@ namespace CEEFIT
     return(-1);
   }
 
+  int ceefit_call_spec STRING::IndexOf(const wchar_t* aString) const
+  {
+    if(aString == null)
+    {
+      return(-1);
+    }
+    int length = wcslen(aString);
+    if(length == 0)
+    {
+      return(-1);
+    }
+
+    int i = 0;
+    wchar_t bChar;
+
+    while((bChar = Data.Array[i]))
+    {
+      int iPrime = i;
+      int j = 0;
+      wchar_t bCharPrime;
+      wchar_t aChar = aString[j];
+
+      while((bCharPrime = Data.Array[iPrime]))
+      {
+        if(bCharPrime != aChar)
+        {
+          break;
+        }
+
+        j++;
+        aChar = aString[j];
+        if(aChar == L'\0')
+        {
+          return(i);
+        }
+
+        iPrime++;
+      }
+
+      i++;
+    }
+    return(-1);
+  }
+
+  int ceefit_call_spec STRING::IndexOf(const char* aString) const
+  {
+    if(aString == null)
+    {
+      return(-1);
+    }
+    int length = strlen(aString);
+    if(length == 0)
+    {
+      return(-1);
+    }
+
+    int i = 0;
+    wchar_t bChar;
+
+    while((bChar = Data.Array[i]))
+    {
+      int iPrime = i;
+      int j = 0;
+      wchar_t bCharPrime;
+      char aChar = aString[j];
+
+      while((bCharPrime = Data.Array[iPrime]))
+      {
+        if(bCharPrime != aChar)
+        {
+          break;
+        }
+
+        j++;
+        aChar = aString[j];
+        if(aChar == '\0')
+        {
+          return(i);
+        }
+
+        iPrime++;
+      }
+
+      i++;
+    }
+    return(-1);
+  }
+
   int ceefit_call_spec STRING::IndexOf(wchar_t aChar, int fromIndex) const
   {
     int i = fromIndex;
@@ -386,6 +475,92 @@ namespace CEEFIT
         j++;
         aChar = aString.CharAt(j);
         if(aChar == L'\0')
+        {
+          return(i);
+        }
+
+        iPrime++;
+      }
+
+      i++;
+    }
+    return(-1);
+  }
+
+  int ceefit_call_spec STRING::IndexOf(const wchar_t* aString, int fromIndex) const
+  {
+    if(aString == null) 
+    {
+      return(-1);
+    }
+    int length = wcslen(aString);
+    if(length == 0)
+    {
+      return(-1);
+    }
+
+    int i = fromIndex;
+    wchar_t bChar;
+
+    while((bChar = Data.Array[i]))
+    {
+      int iPrime = i;
+      int j = 0;
+      wchar_t bCharPrime;
+      wchar_t aChar = aString[j];
+      while((bCharPrime = Data.Array[iPrime]))
+      {
+        if(bCharPrime != aChar)
+        {
+          break;
+        }
+
+        j++;
+        aChar = aString[j];
+        if(aChar == L'\0')
+        {
+          return(i);
+        }
+
+        iPrime++;
+      }
+
+      i++;
+    }
+    return(-1);
+  }
+
+  int ceefit_call_spec STRING::IndexOf(const char* aString, int fromIndex) const
+  {
+    if(aString == null) 
+    {
+      return(-1);
+    }
+    int length = strlen(aString);
+    if(length == 0)
+    {
+      return(-1);
+    }
+
+    int i = fromIndex;
+    wchar_t bChar;
+
+    while((bChar = Data.Array[i]))
+    {
+      int iPrime = i;
+      int j = 0;
+      wchar_t bCharPrime;
+      char aChar = aString[j];
+      while((bCharPrime = Data.Array[iPrime]))
+      {
+        if(bCharPrime != aChar)
+        {
+          break;
+        }
+
+        j++;
+        aChar = aString[j];
+        if(aChar == '\0')
         {
           return(i);
         }
@@ -538,7 +713,7 @@ namespace CEEFIT
 
       void deallocate(void* __p, size_type)
       {
-        assert(__p != NULL);
+        assert(__p != null);
 
         operator delete(__p);
       }
@@ -641,7 +816,7 @@ namespace CEEFIT
   {
     if(!(startChar >= 0 && endChar >= 0 && startChar <= endChar))
     {
-      throw new BOUNDSEXCEPTION("Index out of bounds.", startChar);
+      throw new BOUNDSEXCEPTION("STRING::Substring(int startChar, int endChar) const:  Index out of bounds", startChar);
     }
     if(!(endChar <= this->Length()))
     {
@@ -671,7 +846,7 @@ namespace CEEFIT
 
     if(!(startChar >= 0))
     {
-      throw new BOUNDSEXCEPTION("Index out of bounds.", startChar);
+      throw new BOUNDSEXCEPTION("STRING::Substring(int startChar) const:  Index out of bounds.", startChar);
     }
     if(!(startChar <= endChar))
     {
@@ -756,10 +931,118 @@ namespace CEEFIT
     return(otherIndex < 0);
   }
 
+  bool ceefit_call_spec STRING::EndsWith(const wchar_t* aString) const
+  {
+    if(aString == null) 
+    {
+      return(true);
+    }
+
+    int thisIndex = Length();
+    int otherIndex = wcslen(aString);
+
+    const wchar_t* thisBuffer = GetBuffer();
+    const wchar_t* otherBuffer = aString;
+
+    if(otherIndex == 0)
+    {
+      return(true);
+    }
+
+    while(thisIndex >= 0 && otherIndex >= 0)
+    {
+      if(thisBuffer[thisIndex] != otherBuffer[otherIndex])
+      {
+        break;
+      }
+      thisIndex--;
+      otherIndex--;
+    }
+
+    return(otherIndex < 0);
+  }
+
+  bool ceefit_call_spec STRING::EndsWith(const char* aString) const
+  {
+    if(aString == null) 
+    {
+      return(true);
+    }
+
+    int thisIndex = Length();
+    int otherIndex = strlen(aString);
+
+    const wchar_t* thisBuffer = GetBuffer();
+    const char* otherBuffer = aString;
+
+    if(otherIndex == 0)
+    {
+      return(true);
+    }
+
+    while(thisIndex >= 0 && otherIndex >= 0)
+    {
+      if(thisBuffer[thisIndex] != otherBuffer[otherIndex])
+      {
+        break;
+      }
+      thisIndex--;
+      otherIndex--;
+    }
+
+    return(otherIndex < 0);
+  }
+
   bool ceefit_call_spec STRING::StartsWith(const STRING& aString) const
   {
     const wchar_t* thisBuffer = GetBuffer();
     const wchar_t* otherBuffer = aString.GetBuffer();
+
+    while(*thisBuffer && *otherBuffer)
+    {
+      if(*thisBuffer != *otherBuffer)
+      {
+        break;
+      }
+      thisBuffer++;
+      otherBuffer++;
+    }
+
+    return(!(*otherBuffer));
+  }
+
+  bool ceefit_call_spec STRING::StartsWith(const wchar_t* aString) const
+  {
+    if(aString == null) 
+    {
+      return(true);
+    }
+
+    const wchar_t* thisBuffer = GetBuffer();
+    const wchar_t* otherBuffer = aString;
+
+    while(*thisBuffer && *otherBuffer)
+    {
+      if(*thisBuffer != *otherBuffer)
+      {
+        break;
+      }
+      thisBuffer++;
+      otherBuffer++;
+    }
+
+    return(!(*otherBuffer));
+  }
+
+  bool ceefit_call_spec STRING::StartsWith(const char* aString) const
+  {
+    if(aString == null) 
+    {
+      return(true);
+    }
+
+    const wchar_t* thisBuffer = GetBuffer();
+    const char* otherBuffer = aString;
 
     while(*thisBuffer && *otherBuffer)
     {
@@ -780,7 +1063,7 @@ namespace CEEFIT
    *
    * Delimiters found inside the double quoted strings are ignored.</p>
    */
-  void ceefit_call_spec TokenizeRespectQuotes(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool doDequotify)
+  void ceefit_call_spec TokenizeRespectQuotes(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool doDequotify, bool delimitersAreTokens)
   {
 	  int i;
 	  STRING tempCopy(inString);
@@ -836,12 +1119,61 @@ namespace CEEFIT
             {
 						  argList.Add(last);
 					  }
+            if(delimitersAreTokens) 
+            {
+              argList.Add(STRING(delimitChar[i]));
+            }
 					  last = cur+1;
 					  break;
 				  }
 				  i++;
 			  }
 		  }
+		  cur++;
+	  }
+	  if(last != cur)
+    {
+		  argList.Add(last);
+	  }
+  }
+
+  /**
+   * <p>This method tokenizes this STRING based on a Delimiter list</p>
+   */
+  void ceefit_call_spec Tokenize(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool delimitersAreTokens)
+  {
+	  int i;
+	  STRING tempCopy(inString);
+    wchar_t* last = tempCopy.GetBuffer();
+	  wchar_t* cur = tempCopy.GetBuffer();
+
+	  if(!(*cur))
+    {
+      return;
+    }
+
+	  while(*cur)
+    {
+			i = 0;
+      const wchar_t* delimitChar = delimitList.GetBuffer();
+			while(delimitChar[i])
+      {
+				if(*cur == delimitChar[i])
+        {
+					*cur = L'\0';
+					if(last != cur)
+          {
+						argList.Add(last);
+					}
+          if(delimitersAreTokens) 
+          {
+            argList.Add(STRING(delimitChar[i]));
+          }
+					last = cur+1;
+					break;
+				}
+				i++;
+			}
 		  cur++;
 	  }
 	  if(last != cur)
@@ -861,7 +1193,7 @@ namespace CEEFIT
 
       wchar_t* tempBuf = temp.GetBuffer();
       wchar_t* aOccurrence = wcsstr(tempBuf+nextStart, patternStr.GetBuffer());
-      if(aOccurrence == NULL)
+      if(aOccurrence == null)
       {
         break;
       }
@@ -930,7 +1262,7 @@ namespace CEEFIT
       {
         if(*curBuf == L'\0') 
         { 
-          return(matchEnd != NULL); // don't fall off the end of the string by accident
+          return(matchEnd != null); // don't fall off the end of the string by accident
         }
         AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
 
@@ -951,10 +1283,10 @@ namespace CEEFIT
       }
       if(*aPattern == L']')
       {
-        return(matchEnd != NULL);
+        return(matchEnd != null);
       }
     }
-    return(matchEnd != NULL);
+    return(matchEnd != null);
   }
 
   static bool RegexMatchOneCharClass(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
@@ -966,7 +1298,7 @@ namespace CEEFIT
     {
       if(*curBuf == L'\0') 
       { 
-        return(matchEnd != NULL); // don't fall off the end of the string by accident
+        return(matchEnd != null); // don't fall off the end of the string by accident
       }
       AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
 
@@ -985,7 +1317,7 @@ namespace CEEFIT
 
       aPattern++;
     }
-    return(matchEnd != NULL);
+    return(matchEnd != null);
   }
 
   static bool RegexMatchZeroOrMore(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
@@ -1039,11 +1371,11 @@ namespace CEEFIT
         AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
 
         // lookahead and see if we match the lookahead
-        if(lookaheadPattern != NULL) 
+        if(lookaheadPattern != null) 
         {
-          wchar_t* lookaheadMatchEnd = NULL;
+          wchar_t* lookaheadMatchEnd = null;
           bool nextMustMatchIfIMatch = false;
-          if(RegexPatternMatch(false, nextMustMatchIfIMatch, curBuf, *lookaheadPattern, NULL, lookaheadMatchEnd, dotAll))
+          if(RegexPatternMatch(false, nextMustMatchIfIMatch, curBuf, *lookaheadPattern, null, lookaheadMatchEnd, dotAll))
           {
             return(true);
           }         
@@ -1075,7 +1407,7 @@ namespace CEEFIT
       {
         if(*curBuf == L'\0') 
         { 
-          return(matchEnd != NULL); // don't fall off the end of the string by accident
+          return(matchEnd != null); // don't fall off the end of the string by accident
         }
 
         AssertIsTrue(*curBuf);      // don't fall off the end of the string by accident
@@ -1089,14 +1421,14 @@ namespace CEEFIT
 
         if(*curBuf != *aPattern)
         {
-          return(matchEnd != NULL);
+          return(matchEnd != null);
         }
         curBuf++;
         aPattern++;
       }
       matchEnd = curBuf;
     }
-    return(matchEnd != NULL);
+    return(matchEnd != null);
   }
 
   static bool RegexMatchOneOrNone(wchar_t* curBuf, const STRING& patternBuf, wchar_t*& matchEnd)
@@ -1110,7 +1442,7 @@ namespace CEEFIT
       {
         if(*curBuf == L'\0') 
         { 
-          if(matchEnd == NULL)
+          if(matchEnd == null)
           {
             matchEnd = startBuf;    // matched none, get out...
           }
@@ -1127,7 +1459,7 @@ namespace CEEFIT
 
         if(*curBuf != *aPattern)
         {
-          if(matchEnd == NULL)
+          if(matchEnd == null)
           {
             matchEnd = startBuf;    // matched none, get out...
           }
@@ -1136,10 +1468,10 @@ namespace CEEFIT
         curBuf++;
         aPattern++;
       }
-      if(matchEnd != NULL)
+      if(matchEnd != null)
       {
-        // we matched more than one, matchEnd != NULL, we were only supposed to match one
-        matchEnd = NULL;
+        // we matched more than one, matchEnd != null, we were only supposed to match one
+        matchEnd = null;
         return(false);
       }
       matchEnd = curBuf;
@@ -1236,16 +1568,16 @@ namespace CEEFIT
 
   static bool RegexPatternMatch(bool atBufferStart, bool& nextMustMatchIfIMatch, wchar_t* curBuf, const STRING& patternBuf, const STRING* lookAheadPattern, wchar_t*& matchEnd, bool dotAll)
   {
-    static STRING brace("[");
-    static STRING star("*");
-    static STRING questionMark("?");
-    static STRING plus("+");
-    static STRING dollarSign("$");
-    static STRING caret("^");
-    static STRING slashEscape("\\");
-    static STRING dot(".");
-    static STRING dotStarQuestionMark(".*?");
-    static STRING questionMarkQuestionMark("??");
+    static char* brace = "[";
+    static char* star = "*";
+    static char* questionMark = "?";
+    static char* plus = "+";
+    static char* dollarSign = "$";
+    static char* caret = "^";
+    static char* slashEscape = "\\";
+    static char* dot = ".";
+    static char* dotStarQuestionMark = ".*?";
+    static char* questionMarkQuestionMark = "??";
 
     STRING tempPatternBuf(patternBuf);
 
@@ -1321,14 +1653,14 @@ namespace CEEFIT
 
     bool atStartOfString = true;
     int startIndex = 0;
-    wchar_t* matchRollback = NULL;
+    wchar_t* matchRollback = null;
 
   restart:
     while(true)
     {
       wchar_t* curStartBuf = temp.GetBuffer() + startIndex;
       wchar_t* curBuf = curStartBuf;
-      wchar_t* firstMatch = NULL;
+      wchar_t* firstMatch = null;
       while(true)
       {
         int i = -1;
@@ -1336,13 +1668,13 @@ namespace CEEFIT
         {
           while(++i < patternStrArray.GetSize())
           {
-            wchar_t* matchEnd = NULL;
+            wchar_t* matchEnd = null;
             bool nextMustMatchIfCurMatches = false; 
             if(RegexPatternMatch(atStartOfString && curBuf == curStartBuf, 
                                  nextMustMatchIfCurMatches,
                                  curBuf, 
                                  patternStrArray.Get(i), 
-                                 (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : NULL,
+                                 (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : null,
                                  matchEnd, 
                                  dotAll))
             {
@@ -1352,10 +1684,10 @@ namespace CEEFIT
               }
               else 
               {
-                matchRollback = NULL;
+                matchRollback = null;
               }
 
-              if(firstMatch == NULL)
+              if(firstMatch == null)
               {
                 firstMatch = curBuf;
                 if(firstMatch > curStartBuf)
@@ -1373,21 +1705,21 @@ namespace CEEFIT
               }
               else
               {
-                if(matchRollback != NULL)
+                if(matchRollback != null)
                 {
                   curBuf = matchRollback;
-                  matchRollback = NULL;
+                  matchRollback = null;
                 }
                 else 
                 {
-                  firstMatch = NULL;
+                  firstMatch = null;
                   break;
                 }
               }
             }
           }
 
-          if(i == patternStrArray.GetSize() && firstMatch != NULL)
+          if(i == patternStrArray.GetSize() && firstMatch != null)
           {
             STRING work;
 
@@ -1426,14 +1758,14 @@ namespace CEEFIT
   {
     STRING temp(*this);
     bool atStartOfString = true;
-    wchar_t* matchRollback = NULL;
+    wchar_t* matchRollback = null;
 
   restart:
     while(true)
     {
       wchar_t* curStartBuf = temp.GetBuffer();
       wchar_t* curBuf = curStartBuf;
-      wchar_t* firstMatch = NULL;
+      wchar_t* firstMatch = null;
       while(true)
       {
         int i = -1;
@@ -1441,13 +1773,13 @@ namespace CEEFIT
         {
           while(++i < patternStrArray.GetSize())
           {
-            wchar_t* matchEnd = NULL;
+            wchar_t* matchEnd = null;
             bool nextMustMatchIfCurMatches = false; 
             if(RegexPatternMatch(atStartOfString && curBuf == curStartBuf, 
                                  nextMustMatchIfCurMatches,
                                  curBuf, 
                                  patternStrArray.Get(i), 
-                                 (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : NULL,
+                                 (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : null,
                                  matchEnd,
                                  dotAll))
             {
@@ -1456,10 +1788,10 @@ namespace CEEFIT
                 matchRollback = curBuf;
               }
               else {
-                matchRollback = NULL;
+                matchRollback = null;
               }
 
-              if(firstMatch == NULL)
+              if(firstMatch == null)
               {
                 firstMatch = curBuf;
                 if(firstMatch > curStartBuf)
@@ -1478,21 +1810,21 @@ namespace CEEFIT
               }
               else
               {
-                if(matchRollback != NULL)
+                if(matchRollback != null)
                 {
                   curBuf = matchRollback;
-                  matchRollback = NULL;
+                  matchRollback = null;
                 }
                 else 
                 {
-                  firstMatch = NULL;
+                  firstMatch = null;
                   break;
                 }
               }
             }
           }
 
-          if(i == patternStrArray.GetSize() && firstMatch != NULL)
+          if(i == patternStrArray.GetSize() && firstMatch != null)
           {
             STRING work;
 

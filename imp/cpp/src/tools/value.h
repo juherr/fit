@@ -49,7 +49,7 @@ namespace CEEFIT
         {
           throw new EXCEPTION("Expected a null pointer for VALUE<T>(int)");
         }
-        Value = NULL;
+        Value = null;
       }
 
       explicit inline VALUE<T>(unsigned int aNull)
@@ -58,7 +58,7 @@ namespace CEEFIT
         {
           throw new EXCEPTION("Expected a null pointer for VALUE<T>(unsigned int)");
         }
-        Value = NULL;
+        Value = null;
       }
 
       template<class U> inline VALUE<T>(VALUE<U>& aValueObj)
@@ -91,7 +91,7 @@ namespace CEEFIT
         {
           throw new EXCEPTION("Expected a null pointer for operator=(int)");
         }
-        Value = NULL;
+        Value = null;
 
         return(*this);
       }
@@ -102,7 +102,7 @@ namespace CEEFIT
         {
           throw new EXCEPTION("Expected a null pointer for operator=(unsigned int)");
         }
-        Value = NULL;
+        Value = null;
 
         return(*this);
       }

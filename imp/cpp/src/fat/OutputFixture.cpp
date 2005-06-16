@@ -28,8 +28,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-
-  begin_fit_fixture(FAT_OUTPUTFIXTURE, COLUMNFIXTURE, fat.OutputFixture);
+  begin_namespaced_fit_fixture(CEEFAT, OUTPUTFIXTURE, COLUMNFIXTURE, fat.OutputFixture)
 
     public:
       fit_var(STRING, Text);
@@ -59,8 +58,8 @@ namespace CEEFAT
       {
         STRING tag("td");
         STRING body("");
-        PTR<PARSE> nullParts(NULL);
-        PTR<PARSE> nullMore(NULL);
+        PTR<PARSE> nullParts(null);
+        PTR<PARSE> nullMore(null);
 
 		    PTR<PARSE> cell(new PARSE(tag, body, nullParts, nullMore));
 		    
@@ -70,6 +69,6 @@ namespace CEEFAT
         return GenerateOutput(cell);
 	    }
 
-  end_fit_fixture(FAT_OUTPUTFIXTURE);    
+  end_namespaced_fit_fixture(CEEFAT, OUTPUTFIXTURE)
 
 };

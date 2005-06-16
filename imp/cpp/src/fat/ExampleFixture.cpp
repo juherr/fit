@@ -28,17 +28,17 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  class FAT_EXAMPLEFIXTURE : public FIXTURE 
+  class EXAMPLEFIXTURE : public FIXTURE 
   {
     public:
-      FAT_EXAMPLEFIXTURE(void) {}
-      virtual ~FAT_EXAMPLEFIXTURE(void) {}
+      EXAMPLEFIXTURE(void) {}
+      virtual ~EXAMPLEFIXTURE(void) {}
 
     private:
-      FAT_EXAMPLEFIXTURE& operator=(const FAT_EXAMPLEFIXTURE&) { return(*this); }
-      FAT_EXAMPLEFIXTURE(const FAT_EXAMPLEFIXTURE&) { }
+      EXAMPLEFIXTURE& operator=(const EXAMPLEFIXTURE&) { return(*this); }
+      EXAMPLEFIXTURE(const EXAMPLEFIXTURE&) { }
   };
 
-  static ::CEEFIT::REGISTERFIXTURECLASS< FAT_EXAMPLEFIXTURE > ExampleFixtureRegistration("FAT_EXAMPLEFIXTURE", "fat.ExampleFixture");
+  static ::CEEFIT::REGISTERFIXTURECLASS< EXAMPLEFIXTURE > ExampleFixtureRegistration("CEEFAT::EXAMPLEFIXTURE", "fat.ExampleFixture");
 };
 

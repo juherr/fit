@@ -23,24 +23,6 @@
 #include "tools/alloc.h"
 #include "ceefit.h"
 
-extern "C"
-{
-  ::CEEFITALLOCFUNC CeeFitAllocFunc = NULL;
-  ::CEEFITFREEFUNC CeeFitFreeFunc = NULL;
-
-  void* ceefit_call_spec DefaultAlloc(size_t numBytes)
-  {
-    return(new unsigned char[numBytes]);
-  }
-
-  void ceefit_call_spec DefaultFree(void* objPtr)
-  {
-    if(objPtr != NULL) {
-      delete [] ((unsigned char*) objPtr);
-    }
-  }
-};
-
 namespace CEEFIT
 {
   ceefit_init_spec OBJECT::OBJECT()
@@ -62,18 +44,21 @@ namespace CEEFIT
 
   void* ceefit_call_spec OBJECT::operator new(size_t numBytes)
   {
-    assert(CeeFitAllocFunc);
-
-    return(CeeFitAllocFunc(numBytes));
+    return(GetCeeFitAllocFunc()(numBytes));
   }
 
   void ceefit_call_spec OBJECT::operator delete(void* aObj)
   {
-    assert(CeeFitFreeFunc);
-
-    if(aObj != NULL)
+    if(aObj != null)
     {
-      CeeFitFreeFunc(aObj);
+      GetCeeFitFreeFunc()(aObj);
     }
+  }
+
+  STRING ceefit_call_spec OBJECT::ToString() const
+  {
+    STRING out;
+    SafeSprintf(out, L"OBJECT @ 0x%x", this);
+    return(out);
   }
 };

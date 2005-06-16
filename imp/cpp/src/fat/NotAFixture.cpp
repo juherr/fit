@@ -28,14 +28,14 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  class FAT_NOTAFIXTURE : public virtual OBJECT
+  class NOTAFIXTURE : public virtual OBJECT
   {
     public:
-      FAT_NOTAFIXTURE(void) {}
-      virtual ~FAT_NOTAFIXTURE(void) {}
-      FAT_NOTAFIXTURE& operator=(const FAT_NOTAFIXTURE&) { return(*this); }
-      FAT_NOTAFIXTURE(const FAT_NOTAFIXTURE&) { }
+      NOTAFIXTURE(void) {}
+      virtual ~NOTAFIXTURE(void) {}
+      NOTAFIXTURE& operator=(const NOTAFIXTURE&) { return(*this); }
+      NOTAFIXTURE(const NOTAFIXTURE&) { }
   };
 
-  static ::CEEFIT::REGISTERNONFIXTURECLASS< FAT_NOTAFIXTURE > FatNotAFixtureRegistration("FAT_NOTAFIXTURE", "fat.NotAFixture");
+  static ::CEEFIT::REGISTERNONFIXTURECLASS< NOTAFIXTURE > FatNotAFixtureRegistration("CEEFAT::NOTAFIXTURE", "fat.NotAFixture");
 };

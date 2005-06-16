@@ -28,13 +28,12 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  begin_fit_fixture(FAT_HTMLTOTEXTFIXTURE, COLUMNFIXTURE, fat.HtmlToTextFixture)
+  begin_namespaced_fit_fixture(CEEFAT, HTMLTOTEXTFIXTURE, COLUMNFIXTURE, fat.HtmlToTextFixture)
 
     public:
       fit_var(STRING, HTML);
 	    
-    private:
-      
+    private:  
       STRING EscapeAscii(const STRING& text) 
       {
         STRING temp(text);
@@ -52,5 +51,5 @@ namespace CEEFAT
         return(EscapeAscii(PARSE::HtmlToText(HTML)));
 	    }
 
-  end_fit_fixture(FAT_HTMLTOTEXTFIXTURE)
+  end_namespaced_fit_fixture(CEEFAT, HTMLTOTEXTFIXTURE)
 };

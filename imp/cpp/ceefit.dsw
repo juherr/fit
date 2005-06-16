@@ -15,7 +15,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "eg"=.\eg\eg.dsp - Package Owner=<4>
+Project: "eg"=.\eg.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -35,6 +35,24 @@ Package=<5>
 
 Package=<4>
 {{{
+}}}
+
+###############################################################################
+
+Project: "fitexamples"=.\fitexamples.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ceefit
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name eg
+    End Project Dependency
 }}}
 
 ###############################################################################

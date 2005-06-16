@@ -32,35 +32,41 @@ extern "C++"
 # ifdef __GNUC__
     void* operator new(std::size_t size) throw (std::bad_alloc)
     {
-      ::CEEFITALLOCFUNC allocFunc = GetCeeFitAllocFunc();
+      void* retVal = GetCeeFitAllocFunc()(size);
 
-      return(allocFunc(size));
+      if(retVal != 0) 
+      {
+        memset(retVal, 0, size);
+      }
+
+      return(retVal);
     }
 
     void operator delete(void* obj) throw()
     {
-      if(obj != NULL)
+      if(obj != CEEFIT::null)
       {
-      ::CEEFITFREEFUNC freeFunc = GetCeeFitFreeFunc();
-
-        freeFunc(obj);
+        GetCeeFitFreeFunc()(obj);
       }
     }
 
     void* operator new[](std::size_t size) throw (std::bad_alloc)
     {
-      ::CEEFITALLOCFUNC allocFunc = GetCeeFitAllocFunc();
+      void* retVal = GetCeeFitAllocFunc()(size);
 
-      return(allocFunc(size));
+      if(retVal != 0) 
+      {
+        memset(retVal, 0, size);
+      }
+
+      return(retVal);
     }
 
     void operator delete[](void* obj) throw()
     {
-      if(obj != NULL)
+      if(obj != CEEFIT::null)
       {
-      ::CEEFITFREEFUNC freeFunc = GetCeeFitFreeFunc();
-
-        freeFunc(obj);
+        GetCeeFitFreeFunc()(obj);
       }
     }
 # endif  

@@ -60,13 +60,13 @@ namespace CEEFIT
     return((int) aValue);
   }
 
-  inline int GetHashCode(INT64& aValue)
+  inline int GetHashCode(fitINT64& aValue)
   {
     int hiSdword = ((int) (aValue >> 32));
     return(((int) aValue) + hiSdword);
   }
 
-  inline int GetHashCode(UINT64& aValue)
+  inline int GetHashCode(UfitINT64& aValue)
   {
     return(((int) aValue) + ((int) (aValue >> 32)));
   }
@@ -78,7 +78,7 @@ namespace CEEFIT
 
   inline int GetHashCode(double& aValue)
   {
-    return(::CEEFIT::GetHashCode((INT64&) aValue));
+    return(::CEEFIT::GetHashCode((fitINT64&) aValue));
   }
 
   inline int GetHashCode(const char* aValue)
@@ -146,160 +146,179 @@ namespace CEEFIT
       inline HASHMAPNODEBASE(const HASHMAPNODEBASE&) {}
       HASHMAPNODEBASE& operator=(const HASHMAPNODEBASE&) { return(*this); }
 
+      virtual const std::type_info& GetKeyType(void) const=0;
       virtual bool IsEqual(HASHMAPNODEBASE& aNode)=0;
       virtual bool IsKeyEqual(HASHMAPNODEBASE& aNode)=0;
+      virtual bool IsKeyEqual(void* aVoidPtr)=0;
       virtual int GetHashCode(void)=0;
+  };
+
+  template<class ANYTYPE> class NODE : public HASHMAPNODEBASE
+  {
+    private:
+      ANYTYPE Value;
+
+    public:
+      virtual inline ~NODE<ANYTYPE>(void) {}
+
+      virtual const std::type_info& GetKeyType(void) const=0;
+
+      template<class ANYTYPE2> NODE<ANYTYPE>(ANYTYPE2& aValue)
+      {
+        Value = aValue;
+      }
+
+      inline NODE<ANYTYPE>& operator=(NODE<ANYTYPE>& aNode)
+      {
+        Value = aNode.Value;
+
+        return(*this);
+      }
+
+      inline ANYTYPE& GetValue(void)
+      {
+        return(Value);
+      }
+
+      inline const ANYTYPE& GetValue(void) const
+      {
+        return(Value);
+      }
+
+      inline void SetValue(ANYTYPE& aValue)
+      {
+        Value = aValue;
+      }
+
+      inline void SetValue(const ANYTYPE& aValue)
+      {
+        Value = aValue;
+      }
+
+      virtual bool IsEqual(HASHMAPNODEBASE& aNode)=0;
+      virtual bool IsKeyEqual(HASHMAPNODEBASE& aNode)=0;
+      virtual bool IsKeyEqual(void* aVoidPtr)=0;
+
+      virtual int GetHashCode(void)=0;
+
+      inline bool IsEqual(PTR<NODE>& aNode)
+      {
+        return(this->IsEqual(*aNode.GetPointer()));
+      }
+
+      inline bool IsKeyEqual(PTR<NODE>& aNode)
+      {
+        return(this->IsEqual(*aNode.GetPointer()));
+      }
+
+    private:
+      NODE<ANYTYPE>(void);
+      NODE<ANYTYPE>(const NODE<ANYTYPE>&);
+  };
+
+  template<class ANYTYPE, class KEYTYPE> class NODEIMPL : public NODE<ANYTYPE>
+  {
+    private:
+      KEYTYPE Key;
+
+    public:
+      const std::type_info& GetKeyType(void) const 
+      {
+        return(typeid(KEYTYPE));
+      }
+
+      inline KEYTYPE& GetKey(void)
+      {
+        return(Key);
+      }
+
+      inline const KEYTYPE& GetKey(void) const
+      {
+        return(Key);
+      }
+
+      inline void SetKey(KEYTYPE& aKey)
+      {
+        Key = aKey;
+      }
+
+      inline void SetKey(const KEYTYPE& aKey)
+      {
+        Key = aKey;
+      }
+
+      inline bool IsKeyEqual(HASHMAPNODEBASE& aNode)
+      {
+        const std::type_info& aNodeKeyType = aNode.GetKeyType();
+        const std::type_info& thisNodeKeyType = this->GetKeyType();
+
+        if(aNodeKeyType == thisNodeKeyType)
+        {
+          return(aNode.IsKeyEqual((void*) &this->GetKey()));
+        }
+        return(false);
+      }
+
+      inline bool IsKeyEqual(void* aVoidPtr)
+      {
+        KEYTYPE* otherKeyPtr = (KEYTYPE*) aVoidPtr;
+
+        return(::CEEFIT::IsEqual(*otherKeyPtr, this->GetKey()));
+      }
+
+      inline bool IsKeyEqual(KEYTYPE& aKey)
+      {
+        return(::CEEFIT::IsEqual(GetKey(), aKey));
+      }
+
+      inline bool IsEqual(HASHMAPNODEBASE& aNode)
+      {
+        NODEIMPL<ANYTYPE, KEYTYPE>* aNodeImpl = dynamic_cast< NODEIMPL<ANYTYPE, KEYTYPE>* >(&aNode);
+        if(aNodeImpl != null)
+        {
+          return(::CEEFIT::IsEqual(aNodeImpl->GetKey(), this->GetKey()) && ::CEEFIT::IsEqual(aNodeImpl->GetValue(), this->GetValue()));
+        }
+        return(false);
+      }
+
+      inline bool IsEqual(KEYTYPE& aKey, ANYTYPE& aValue)
+      {
+        return(::CEEFIT::IsEqual(this->GetKey(), aKey) && ::CEEFIT::IsEqual(this->GetValue(), aValue));
+      }
+
+      inline int GetHashCode(void)
+      {
+        return(::CEEFIT::GetHashCode(Key));
+      }
+
+      inline NODEIMPL<ANYTYPE, KEYTYPE>(void) {}
+      inline ~NODEIMPL<ANYTYPE, KEYTYPE>(void) {}
+
+      inline NODEIMPL<ANYTYPE, KEYTYPE>& operator=(NODEIMPL<ANYTYPE, KEYTYPE>& aNode)
+      {
+        this->NODE::operator=(aNode);
+
+        Key = aNode.Key;
+
+        return(*this);
+      }
+
+      inline NODEIMPL<ANYTYPE, KEYTYPE>(NODEIMPL<ANYTYPE, KEYTYPE>& aNode)
+      {
+        operator=(aNode);
+      }
+
+      inline NODEIMPL<ANYTYPE, KEYTYPE>(KEYTYPE& aKey, ANYTYPE& aValue) : NODE<ANYTYPE>(aValue)
+      {
+        SetKey(aKey);
+      }
   };
 
   template<class ANYTYPE, int listsize=101> struct HASHMAP : public OBJECT
   {
     public:
-      class NODE : public HASHMAPNODEBASE
-      {
-        private:
-          ANYTYPE Value;
 
-        public:
-          virtual inline ~NODE(void) {}
-    
-          template<class ANYTYPE2> NODE(ANYTYPE2& aValue) 
-          { 
-            Value = aValue; 
-          }
-
-          inline NODE& operator=(NODE& aNode)
-          {
-            Value = aNode.Value;
-
-            return(*this);
-          }
-
-          inline ANYTYPE& GetValue(void)
-          {
-            return(Value);
-          }
-
-          inline const ANYTYPE& GetValue(void) const
-          {
-            return(Value);
-          }
-
-          inline void SetValue(ANYTYPE& aValue)
-          {
-            Value = aValue;
-          }
-
-          inline void SetValue(const ANYTYPE& aValue)
-          {
-            Value = aValue;
-          }
-
-          virtual bool IsEqual(HASHMAPNODEBASE& aNode)=0;
-          virtual bool IsKeyEqual(HASHMAPNODEBASE& aNode)=0;
-
-          virtual int GetHashCode(void)=0;
-
-          inline bool IsEqual(PTR<NODE>& aNode)
-          {
-            return(this->IsEqual(*aNode.GetPointer()));
-          }
-
-          inline bool IsKeyEqual(PTR<NODE>& aNode)
-          {
-            return(this->IsEqual(*aNode.GetPointer()));
-          }
-
-        private:
-          NODE(void);
-          NODE(const NODE&);
-      };
-
-    private:
-      template<class KEYTYPE> class NODEIMPL : public NODE
-      {
-        private:
-          KEYTYPE Key;
-
-        public:
-          inline KEYTYPE& GetKey(void)
-          {
-            return(Key);
-          }
-
-          inline const KEYTYPE& GetKey(void) const
-          {
-            return(Key);
-          }
-
-          inline void SetKey(KEYTYPE& aKey)
-          {
-            Key = aKey;
-          }
-
-          inline void SetKey(const KEYTYPE& aKey)
-          {
-            Key = aKey;
-          }
-
-          inline bool IsKeyEqual(HASHMAPNODEBASE& aNode)
-          {
-            NODEIMPL<KEYTYPE>* aNodeImpl = dynamic_cast< NODEIMPL<KEYTYPE>* >(&aNode);
-            if(aNodeImpl != NULL)
-            {
-              return(::CEEFIT::IsEqual(aNodeImpl->GetKey(), GetKey()));
-            }
-            return(false);
-          }
-
-          inline bool IsKeyEqual(KEYTYPE& aKey)
-          {
-            return(::CEEFIT::IsEqual(GetKey(), aKey));
-          }
-
-          inline bool IsEqual(HASHMAPNODEBASE& aNode)
-          {
-            NODEIMPL<KEYTYPE>* aNodeImpl = dynamic_cast< NODEIMPL<KEYTYPE>* >(&aNode);
-            if(aNodeImpl != NULL)
-            {
-              return(::CEEFIT::IsEqual(aNodeImpl->GetKey(), this->GetKey()) && ::CEEFIT::IsEqual(aNodeImpl->GetValue(), this->GetValue()));
-            }
-            return(false);
-          }
-
-          inline bool IsEqual(KEYTYPE& aKey, ANYTYPE& aValue)
-          {
-            return(::CEEFIT::IsEqual(this->GetKey(), aKey) && ::CEEFIT::IsEqual(this->GetValue(), aValue));
-          }
-
-          inline int GetHashCode(void)
-          {
-            return(::CEEFIT::GetHashCode(Key));
-          }
-
-          inline NODEIMPL<KEYTYPE>(void) {}
-          inline ~NODEIMPL<KEYTYPE>(void) {}
-
-          inline NODEIMPL<KEYTYPE>& operator=(NODEIMPL<KEYTYPE>& aNode)
-          {
-            this->NODE::operator=(aNode);
-
-            Key = aNode.Key;
-
-            return(*this);
-          }
-
-          inline NODEIMPL<KEYTYPE>(NODEIMPL<KEYTYPE>& aNode) 
-          { 
-            operator=(aNode); 
-          }
-
-          inline NODEIMPL<KEYTYPE>(KEYTYPE& aKey, ANYTYPE& aValue) : NODE(aValue)
-          { 
-            SetKey(aKey);
-          }
-      };
-
-      DYNARRAY< PTR<NODE> > Array[listsize];
+      DYNARRAY< PTR< NODE<ANYTYPE> > > Array[listsize];
 
       HASHMAP<ANYTYPE, listsize>& operator=(const HASHMAP<ANYTYPE, listsize>& aHash);
       HASHMAP<ANYTYPE, listsize>(const HASHMAP<ANYTYPE, listsize>& aHash);
@@ -307,7 +326,7 @@ namespace CEEFIT
     public:
       inline HASHMAP<ANYTYPE, listsize>(void) {}
       inline ~HASHMAP<ANYTYPE, listsize>(void) {}
-  
+
       inline void Reset(void)
       {
         int i = -1;
@@ -321,11 +340,11 @@ namespace CEEFIT
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;
-    
-        DYNARRAY< PTR<NODE> >& aList = Array[aIndex];
+
+        DYNARRAY< PTR< NODE<ANYTYPE> > >& aList = Array[aIndex];
         if(!allowDuplicates)
         {
-          PTR<NODE> nodePtr(new NODEIMPL<KEYTYPE>(aKey, aValue));          
+          PTR< NODE<ANYTYPE> > nodePtr(new NODEIMPL<ANYTYPE, KEYTYPE>(aKey, aValue));
 
           int i = aList.GetSize();
           while(i--)
@@ -336,14 +355,14 @@ namespace CEEFIT
               return(false);
             }
           }
-          
+
           aList.Add(nodePtr);
         }
-        else 
+        else
         {
           int i = aList.GetSize();
 
-          PTR<NODE> nodePtr(new NODEIMPL<KEYTYPE>(aKey, aValue));
+          PTR< NODE<ANYTYPE> > nodePtr(new NODEIMPL<ANYTYPE, KEYTYPE>(aKey, aValue));
 
           while(i--)
           {
@@ -361,13 +380,13 @@ namespace CEEFIT
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;
-    
-        DYNARRAY< PTR<NODE> >& aList = Array[aIndex];
+
+        DYNARRAY< PTR< NODE<ANYTYPE> > >& aList = Array[aIndex];
         int i = aList.GetSize();
         while(i--)
         {
-          NODEIMPL<KEYTYPE>* aNode = dynamic_cast<NODEIMPL<KEYTYPE>*>(aList[i].GetPointer());
-          if(aNode != NULL)
+          NODEIMPL<ANYTYPE, KEYTYPE>* aNode = dynamic_cast<NODEIMPL<ANYTYPE, KEYTYPE>*>(aList[i].GetPointer());
+          if(aNode != null)
           {
             if(aNode->IsKeyEqual(aKey))
             {
@@ -381,13 +400,13 @@ namespace CEEFIT
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;
-    
-        DYNARRAY< PTR<NODE> >& aList = Array[aIndex];
+
+        DYNARRAY< PTR< NODE<ANYTYPE> > >& aList = Array[aIndex];
         int i = aList.GetSize();
         while(i--)
         {
-          NODEIMPL<KEYTYPE>* aNode = dynamic_cast<NODEIMPL<KEYTYPE>*>(aList[i].GetPointer());
-          if(aNode != NULL)
+          NODEIMPL<KEYTYPE>* aNode = dynamic_cast<NODEIMPL<ANYTYPE, KEYTYPE>*>(aList[i].GetPointer());
+          if(aNode != null)
           {
             if(aNode->IsEqual(aKey, aValue))
             {
@@ -402,13 +421,13 @@ namespace CEEFIT
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;
-    
-        DYNARRAY< PTR<NODE> >& aList = Array[aIndex];
+
+        DYNARRAY< PTR< NODE<ANYTYPE> > >& aList = Array[aIndex];
         int i = aList.GetSize();
         while(i--)
         {
-          NODEIMPL<KEYTYPE>* aNode = dynamic_cast<NODEIMPL<KEYTYPE>*>(aList[i].GetPointer());
-          if(aNode != NULL)
+          NODEIMPL<ANYTYPE, KEYTYPE>* aNode = dynamic_cast<NODEIMPL<ANYTYPE, KEYTYPE>*>(aList[i].GetPointer());
+          if(aNode != null)
           {
             if(aNode->IsKeyEqual(aKey))
             {
@@ -416,7 +435,7 @@ namespace CEEFIT
             }
           }
         }
-        return(NULL);
+        return(null);
       }
 
       /**
@@ -426,31 +445,31 @@ namespace CEEFIT
       {
         int aHash = aNode.GetHashCode();
         int aIndex = aHash % listsize;
-    
-        DYNARRAY< PTR<NODE> >& aList = Array[aIndex];
+
+        DYNARRAY< PTR< NODE<ANYTYPE> > >& aList = Array[aIndex];
         int i = aList.GetSize();
         while(i--)
         {
-          PTR<NODE> bNode(aList[i]);
+          PTR< NODE<ANYTYPE> > bNode(aList[i]);
           if(bNode->IsKeyEqual(aNode))
           {
             return(&bNode->GetValue());
           }
         }
-        return(NULL);
+        return(null);
       }
 
       template<class KEYTYPE> inline void GetAll(const KEYTYPE& aKey, DYNARRAY<ANYTYPE*>& retList)
       {
         int aHash = ::CEEFIT::GetHashCode(aKey);
         int aIndex = aHash % listsize;
-    
-        DYNARRAY< PTR<NODE> >& aList = Array[aIndex];
+
+        DYNARRAY< PTR< NODE<ANYTYPE> > >& aList = Array[aIndex];
         int i = aList.GetSize();
         while(i--)
         {
-          NODEIMPL<KEYTYPE>* aNode = dynamic_cast<NODEIMPL<KEYTYPE>*>(aList[i].GetPointer());
-          if(aNode != NULL)
+          NODEIMPL<ANYTYPE, KEYTYPE>* aNode = dynamic_cast<NODEIMPL<ANYTYPE, KEYTYPE>*>(aList[i].GetPointer());
+          if(aNode != null)
           {
             if(aNode->IsKeyEqual(aKey))
             {
@@ -465,11 +484,11 @@ namespace CEEFIT
         int i = -1;
         while(++i < listsize)
         {
-          DYNARRAY< PTR<NODE> >& aArray = Array[i];
+          DYNARRAY< PTR< NODE<ANYTYPE> > >& aArray = Array[i];
           int j = -1;
           while(++j < aArray.GetSize())
           {
-            PTR<NODE>& aNode = aArray[j];
+            PTR< NODE<ANYTYPE> >& aNode = aArray[j];
             if(out.GetSize() == 0)
             {
               PTR<NODETYPE> outNode(aNode.GetPointer());

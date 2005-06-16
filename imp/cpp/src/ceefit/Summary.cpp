@@ -20,14 +20,14 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 declare_fit_module(Summary);
 
 namespace CEEFIT
 {
-
-  begin_fit_fixture(FIT_SUMMARY, FIXTURE, fit.Summary)
+  begin_namespaced_fit_fixture(CEEFIT, FIT_SUMMARY, FIXTURE, fit.Summary)
 
     protected:
       virtual VALUE<PARSE> tr(PTR<PARSE>& parts, PTR<PARSE>& more)
@@ -42,7 +42,7 @@ namespace CEEFIT
       {
         STRING aTag("td");
         STRING aBody(Info(body));
-        PTR<PARSE> nullParts(NULL);
+        PTR<PARSE> nullParts(null);
 
         return(VALUE<PARSE>(new PARSE(aTag, aBody, nullParts, more)));
       }
@@ -71,7 +71,7 @@ namespace CEEFIT
       {
         if(aIndex < keys.GetSize())
         {
-          PTR<PARSE> nullParse(NULL);
+          PTR<PARSE> nullParse(null);
           PTR<PARSE> valueTd(td(keys[aIndex].Value, nullParse));
           PTR<PARSE> titleTd(td(keys[aIndex].Title, valueTd));
           PTR<PARSE> rowsParse;
@@ -86,7 +86,7 @@ namespace CEEFIT
         }
         else
         {
-          out = (PARSE*) NULL;
+          out = (PARSE*) null;
         }
       }
 
@@ -101,6 +101,5 @@ namespace CEEFIT
         Rows(temp->Parts->More, reportList, 0);
       }
 
-  end_fit_fixture(FIT_SUMMARY);
-
+  end_namespaced_fit_fixture(CEEFIT, FIT_SUMMARY)
 };

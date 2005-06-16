@@ -28,7 +28,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  begin_fit_fixture(FAT_FIXTURELOADFIXTURE, COLUMNFIXTURE, fat.FixtureLoadFixture)
+  begin_namespaced_fit_fixture(CEEFAT, FIXTURELOADFIXTURE, COLUMNFIXTURE, fat.FixtureLoadFixture)
 
     public:
       fit_var(STRING, FixtureName);
@@ -36,11 +36,9 @@ namespace CEEFAT
     private:
       virtual void ceefit_call_spec LoadFixture()
       {
-        PTR<FIXTURE> fixture;
         PTR<FIXTURE> loadedFixture;
         
-        fixture = new FIXTURE();
-        fixture->LoadFixture(loadedFixture, FixtureName);
+        FIXTURE::LoadFixture(loadedFixture, FixtureName);
       }
 	  
     public:
@@ -71,6 +69,6 @@ namespace CEEFAT
         }
 	    }
 	      
-  end_fit_fixture(FAT_FIXTURELOADFIXTURE)
+  end_namespaced_fit_fixture(CEEFAT, FIXTURELOADFIXTURE)
 
 };

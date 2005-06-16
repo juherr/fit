@@ -27,6 +27,7 @@
 
 #include <new>
 #include <assert.h>
+#include <memory.h>
 
 extern "C"
 {
@@ -51,9 +52,13 @@ extern "C++"
 # else
     inline static void* ceefit_call_spec operator new(size_t size)
     {
-      ::CEEFITALLOCFUNC allocFunc = GetCeeFitAllocFunc();
+      void* retVal = GetCeeFitAllocFunc()(size);
 
-      void* retVal = allocFunc(size);
+      if(retVal != 0) 
+      {
+        memset(retVal, 0, size);
+      }
+
       return(retVal);
     }
 # endif
@@ -63,7 +68,7 @@ extern "C++"
 # else
     inline static void ceefit_call_spec operator delete(void* obj)
     {
-      if(obj != NULL)
+      if(obj != 0)
       {
       ::CEEFITFREEFUNC freeFunc = GetCeeFitFreeFunc();
 
@@ -77,9 +82,13 @@ extern "C++"
 # else
     inline static void* ceefit_call_spec operator new[](size_t size)
     {
-      ::CEEFITALLOCFUNC allocFunc = GetCeeFitAllocFunc();
+      void* retVal = GetCeeFitAllocFunc()(size);
 
-      void* retVal = allocFunc(size);
+      if(retVal != 0) 
+      {
+        memset(retVal, 0, size);
+      }
+
       return(retVal);
     }
 # endif
@@ -89,7 +98,7 @@ extern "C++"
 # else
     inline static void ceefit_call_spec operator delete[](void* obj)
     {
-      if(obj != NULL)
+      if(obj != 0)
       {
       ::CEEFITFREEFUNC freeFunc = GetCeeFitFreeFunc();
 

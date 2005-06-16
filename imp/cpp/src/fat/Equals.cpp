@@ -33,7 +33,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  class FAT_EQUALS : public PRIMITIVEFIXTURE
+  class EQUALS : public PRIMITIVEFIXTURE
   {
     public:
       PTR<PARSE> Heads;
@@ -42,11 +42,12 @@ namespace CEEFAT
       PTR<CELLADAPTER> X;
       PTR<CELLADAPTER> Y;
       
-      ceefit_init_spec FAT_EQUALS()
+      ceefit_init_spec EQUALS()
       {
+        // no need to register anything here ... everything in PRIMITIVEFIXTURE is performed through functional extension
       }
 
-      virtual ~FAT_EQUALS()
+      virtual ceefit_init_spec ~EQUALS()
       {
       }
 
@@ -59,7 +60,7 @@ namespace CEEFAT
 
       virtual VALUE<CELLADAPTER> ceefit_call_spec GetType(const STRING& name)
       {
-        CELLADAPTER* type = NULL;
+        CELLADAPTER* type = null;
 
         if(name.IsEqual("boolean"))
         {
@@ -98,7 +99,7 @@ namespace CEEFAT
         {
           type = new FITFIELD< DYNARRAY<STRING> >();
         }
-        if (type == NULL)
+        if (type == null)
         {
           throw new EXCEPTION(STRING("Unimplemented choice ") + name);
         }
@@ -117,37 +118,37 @@ namespace CEEFAT
           {
               case L't':
               {
-                if(Type != NULL)
+                if(Type != null)
                 {
-                  Type = NULL;
+                  Type = null;
                 }
                 Type = GetType(cellText);
                 break;
               }
               case L'x':
               {
-                if(X != NULL)
+                if(X != null)
                 {
-                  X = NULL;
+                  X = null;
                 }
-                if(Type == NULL)
+                if(Type == null)
                 {
                   throw new EXCEPTION("No type available to parse");
-                }
-                Type->NewInstanceParse(X, cellText);
+                }                
+                Type->NewInstanceParse(this, X, cellText);
                 break;
               }
               case L'y':
               {
-                if(Y != NULL)
+                if(Y != null)
                 {
-                  Y = NULL;
+                  Y = null;
                 }
-                if(Type == NULL)
+                if(Type == null)
                 {
                   throw new EXCEPTION("No type available to parse");
                 }
-                Type->NewInstanceParse(Y, cellText);
+                Type->NewInstanceParse(this, Y, cellText);
                 break;
               }
               case L'=':
@@ -155,7 +156,7 @@ namespace CEEFAT
                 STRING aTemp;
                 STRING bTemp;
 
-                if(X == NULL || Y == NULL)
+                if(X == null || Y == null)
                 {
                   throw new EXCEPTION("x and/or y not defined");
                 }
@@ -186,7 +187,7 @@ namespace CEEFAT
 
       virtual void ceefit_call_spec Parse(PTR<CELLADAPTER>& aField, const STRING& s)
       {
-        PRIMITIVEFIXTURE::Parse(aField, s);
+        this->PRIMITIVEFIXTURE::Parse(aField, s);
       }
 
       /*
@@ -208,7 +209,11 @@ namespace CEEFAT
 
         return aTemp;
       }
+
+    private:
+      ceefit_init_spec EQUALS(const EQUALS&);             /**< Not implemented, do not call */
+      EQUALS& ceefit_call_spec operator=(const EQUALS&);  /**< Not implemented, do not call */
   };
 
-  static ::CEEFIT::REGISTERFIXTURECLASS< FAT_EQUALS > FatEqualsFixtureRegistration("FAT_EQUALS", "fat.Equals");
+  static ::CEEFIT::REGISTERFIXTURECLASS< EQUALS > FatEqualsFixtureRegistration("CEEFAT::EQUALS", "fat.Equals");
 };

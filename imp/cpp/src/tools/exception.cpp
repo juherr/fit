@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 #ifdef WIN32
@@ -51,11 +52,9 @@ namespace CEEFIT
     Reason = aReason;
   }
 
-  const STRING& ceefit_call_spec EXCEPTION::GetExceptionTypeName()
+  const char* ceefit_call_spec EXCEPTION::GetExceptionTypeName()
   {
-    static STRING typeName(L"EXCEPTION");
-
-    return(typeName);
+    return("EXCEPTION");
   }
 
   ceefit_init_spec EXCEPTION::EXCEPTION(const STRING& aReason)
@@ -107,11 +106,9 @@ namespace CEEFIT
     SetOffset(aOffset);
   }
 
-  const STRING& ceefit_call_spec PARSEEXCEPTION::GetExceptionTypeName()
+  const char* ceefit_call_spec PARSEEXCEPTION::GetExceptionTypeName()
   {
-    static STRING typeName(L"PARSEEXCEPTION");
-
-    return(typeName);
+    return("PARSEEXCEPTION");
   }
 
   ceefit_init_spec BOUNDSEXCEPTION::BOUNDSEXCEPTION()
@@ -153,11 +150,9 @@ namespace CEEFIT
     SetIndex(aIndex);
   }
 
-  const STRING& ceefit_call_spec BOUNDSEXCEPTION::GetExceptionTypeName()
+  const char* ceefit_call_spec BOUNDSEXCEPTION::GetExceptionTypeName()
   {
-    static STRING typeName(L"BOUNDSEXCEPTION");
-
-    return(typeName);
+    return("BOUNDSEXCEPTION");
   }
 
   ceefit_init_spec IOEXCEPTION::IOEXCEPTION()
@@ -176,11 +171,9 @@ namespace CEEFIT
   {
   }
 
-  const STRING& ceefit_call_spec IOEXCEPTION::GetExceptionTypeName()
+  const char* ceefit_call_spec IOEXCEPTION::GetExceptionTypeName()
   {
-    static STRING typeName(L"IOEXCEPTION");
-
-    return(typeName);
+    return("IOEXCEPTION");
   }
 
   ceefit_init_spec CLASSNOTFOUNDEXCEPTION::CLASSNOTFOUNDEXCEPTION()
@@ -199,11 +192,9 @@ namespace CEEFIT
   {
   }
 
-  const STRING& ceefit_call_spec CLASSNOTFOUNDEXCEPTION::GetExceptionTypeName()
+  const char* ceefit_call_spec CLASSNOTFOUNDEXCEPTION::GetExceptionTypeName()
   {
-    static STRING typeName(L"CLASSNOTFOUNDEXCEPTION");
-
-    return(typeName);
+    return("CLASSNOTFOUNDEXCEPTION");
   }
 
   ceefit_init_spec DIVIDEBYZEROEXCEPTION::DIVIDEBYZEROEXCEPTION()
@@ -222,11 +213,14 @@ namespace CEEFIT
   {
   }
 
-  const STRING& ceefit_call_spec DIVIDEBYZEROEXCEPTION::GetExceptionTypeName()
+  const char* ceefit_call_spec DIVIDEBYZEROEXCEPTION::GetExceptionTypeName()
   {
-    static STRING typeName(L"DIVIDEBYZEROEXCEPTION");
+    return("DIVIDEBYZEROEXCEPTION");
+  }
 
-    return(typeName);
+  void ceefit_call_spec ThrowAssertionNotNullFailed()
+  {
+    throw new EXCEPTION("AssertNotNull failed");
   }
 
   void ceefit_init_spec AssertIsTrueImpl(bool aExpr) 

@@ -57,15 +57,20 @@ namespace CEEFIT
        *
        * <p>If the cell is a function type, then the string returned is the type of the return value for the function.</p>
        */
-      virtual const CEEFIT::STRING& ceefit_call_spec GetType(void) const=0;
+      virtual const char* ceefit_call_spec GetType(void) const=0;
 
       virtual bool ceefit_call_spec IsMethod(void) const=0;
       virtual bool ceefit_call_spec IsField(void) const=0;
 
       /**
+       * <p>Try to cast the object managed by the CELLADAPTER to a FIXTURE</p>
+       */
+      virtual FIXTURE* ceefit_call_spec ToFixture(void)=0;
+
+      /**
        * <p>Creates a new instance of the CELLADAPTER type
        */
-      virtual void ceefit_call_spec NewInstanceParse(PTR<CELLADAPTER>& out, const CEEFIT::STRING& aText)=0;
+      virtual void ceefit_call_spec NewInstanceParse(FIXTURE* callParseOn, PTR<CELLADAPTER>& out, const CEEFIT::STRING& aText)=0;
 
       /**
        * <p>Invoke test fixture method, only function-type cells can be invoked</p>
@@ -86,7 +91,7 @@ namespace CEEFIT
       virtual inline ceefit_init_spec ~CELLADAPTER(void) {}
 
       virtual int ceefit_call_spec GetHashCode(void)=0;
-      virtual bool ceefit_call_spec IsEqual(const CELLADAPTER* aAdapter) const=0;
+      virtual bool ceefit_call_spec IsEqual(const CELLADAPTER& aAdapter) const=0;
 
     protected:
       inline ceefit_init_spec CELLADAPTER(CELLADAPTER&);     /**< not implemented, do not call. */

@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 declare_fit_module(FitActionFixture);
@@ -30,34 +31,19 @@ namespace CEEFIT
 {
   PTR<FIXTURE> ACTIONFIXTURE::Actor;
 
-  // copied from COLUMNFIXTURE
-  VALUE<CELLADAPTER> ceefit_call_spec ACTIONFIXTURE::BindMethod(const STRING& name)
-  {
-    PTR<CELLADAPTER> aTest(TestList.GetHead());
-    while(aTest != NULL)
-    {
-      if(aTest->IsMethod() && aTest->GetName().IsEqual(name))
-      {
-        return(VALUE<CELLADAPTER>(aTest));
-      }
-      aTest = aTest->GetNext();
-    }
-    return(VALUE<CELLADAPTER>(NULL));
-  }
-
   void ceefit_call_spec ACTIONFIXTURE::DoCells(PTR<PARSE>& cells) 
   {
     Cells = cells;
     try 
     {
-      PTR<CELLADAPTER> aAction(BindMethod(Cells->Text()));
+      PTR<FIXTURE> whichFixture;
+      PTR<CELLADAPTER> aAction(FindMethod(whichFixture, Cells->Text()));
 
-      if(aAction != NULL)
+      if(aAction != null)
       {
-        PTR<FIXTURE> thisFixture(this);
         PTR<CELLADAPTER> result;
 
-        aAction->Invoke(result, thisFixture);
+        aAction->Invoke(result, whichFixture);
       }
       else 
       {
@@ -79,68 +65,55 @@ namespace CEEFIT
 
   void ceefit_call_spec ACTIONFIXTURE::Enter() 
   {
-    PTR<CELLADAPTER> aMethod(Method(1));
+    PTR<FIXTURE> targetFixture;
+    PTR<CELLADAPTER> aMethod(Method(targetFixture, 1));
     PTR<CELLADAPTER> aParamAdapter;
 
     dynamic_cast<FITTESTBASE*>(aMethod.GetPointer())->GetParameterAdapter(aParamAdapter, 0);
 
     STRING text(Cells->More->More->Text());
-    aParamAdapter->WriteToFixtureVar(text);
+    this->Parse(aParamAdapter, text);
 
     PTR<CELLADAPTER> result;
-    aMethod->Invoke(result, Actor);   // the arg is stored internal to aMethod and will be passed to the member function of Actor
+    aMethod->Invoke(result, targetFixture);   // the arg is stored internal to aMethod and will be passed to the member function of Actor
   }
 
   void ceefit_call_spec ACTIONFIXTURE::Press() 
   {
+    PTR<FIXTURE> targetFixture;
     PTR<CELLADAPTER> result;
-    Method(0)->Invoke(result, Actor);
+    PTR<CELLADAPTER> methodPtr(Method(targetFixture, 0));
+    
+    methodPtr->Invoke(result, targetFixture);
   }
 
   void ceefit_call_spec ACTIONFIXTURE::Check() 
   {
+    PTR<FIXTURE> targetFixture;
     PTR<CELLADAPTER> result;
+    PTR<CELLADAPTER> methodPtr(Method(targetFixture, 0));
 
-    Method(0)->Invoke(result, Actor);
-    FIXTURE::Check(Cells->More->More, result);
+    methodPtr->Invoke(result, targetFixture);
+    this->FIXTURE::Check(Cells->More->More, result);
   }
 
   // Utility //////////////////////////////////
 
-  CELLADAPTER* ceefit_call_spec ACTIONFIXTURE::Method(int args) 
+  VALUE<CELLADAPTER> ceefit_call_spec ACTIONFIXTURE::Method(PTR<FIXTURE>& targetFixture, int args) 
   {
-    return Method(Camel(Cells->More->Text()), args);
+    return Method(targetFixture, Camel(Cells->More->Text()), args);
   }
 
-  CELLADAPTER* ceefit_call_spec ACTIONFIXTURE::Method(const STRING& test, int args) 
+  VALUE<CELLADAPTER> ceefit_call_spec ACTIONFIXTURE::Method(PTR<FIXTURE>& targetFixture, const STRING& test, int args) 
   {
-    SLINKLIST<CELLADAPTER>& testList = Actor->TestList;
-    FITTESTBASE* result = NULL;
-    PTR<CELLADAPTER> aAdapter(testList.GetHead());
+    VALUE<CELLADAPTER> retVal(Actor->FindMethod(targetFixture, test, args, true));
 
-    while(aAdapter != NULL)
-    {
-      FITTESTBASE* testPtr = dynamic_cast<FITTESTBASE*>(aAdapter.GetPointer());
-      if(aAdapter->GetName().IsEqual(test) && testPtr->GetParameterCount() == args)
-      {
-        if(result == NULL)
-        {
-          result = testPtr;
-        }
-        else 
-        {
-          throw new EXCEPTION("too many implementations");
-        }
-      }
-      aAdapter = aAdapter->GetNext();
-    }
-
-    if(result == NULL)
+    if(retVal == null)
     {
       throw new EXCEPTION("no such method exception");
     }
-
-    return result;
+    
+    return(retVal);
   }
 
   ceefit_init_spec ACTIONFIXTURE::ACTIONFIXTURE()
@@ -154,6 +127,13 @@ namespace CEEFIT
   ceefit_init_spec ACTIONFIXTURE::~ACTIONFIXTURE()
   {
   }
+
+  void ceefit_call_spec ACTIONFIXTURE::ReleaseStatics() 
+  {
+    Actor = null;
+
+    this->FIXTURE::ReleaseStatics();
+  }
   
-  static ::CEEFIT::REGISTERFIXTURECLASS< ACTIONFIXTURE > ActionFixtureRegistration("ACTIONFIXTURE", "fit.ActionFixture");
+  static ::CEEFIT::REGISTERFIXTURECLASS< ACTIONFIXTURE > ActionFixtureRegistration("CEEFIT::ACTIONFIXTURE", "fit.ActionFixture");
 };

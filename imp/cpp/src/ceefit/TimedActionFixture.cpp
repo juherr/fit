@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 // todo
@@ -27,9 +28,9 @@ namespace CEEFIT
 {
   // Traversal ////////////////////////////////
 
-  void TIMEDACTIONFIXTURE::DoTable(PTR<PARSE>& table) 
+  void TIMEDACTIONFIXTURE::DoTable(PTR<PARSE>& table)
   {
-    ACTIONFIXTURE::DoTable(table);  
+    ACTIONFIXTURE::DoTable(table);
 
     PTR<PARSE> lastPart(table->Parts->Parts->Last());
     td(lastPart->More, "time");
@@ -38,14 +39,14 @@ namespace CEEFIT
     td(lastPart->More, "split");
   }
 
-  void TIMEDACTIONFIXTURE::DoCells(PTR<PARSE>& cells) 
+  void TIMEDACTIONFIXTURE::DoCells(PTR<PARSE>& cells)
   {
-    INT64 start = Time();
+    fitINT64 start = Time();
     ACTIONFIXTURE::DoCells(cells);
-    INT64 split = Time() - start;
+    fitINT64 split = Time() - start;
 
-      
-    INT64 temp = split;
+
+    fitINT64 temp = split;
     int hours = temp / 3600000;
     temp = temp % 3600000;
     int minutes = temp / 60000;
@@ -59,11 +60,11 @@ namespace CEEFIT
     td(lastCell->More, STRING(printfOut));
 
     lastCell = cells->Last();
-    if(split < 1000) 
+    if(split < 1000)
     {
       td(lastCell->More, STRING("&nbsp;"));
     }
-    else 
+    else
     {
       sprintf(printfOut, "%g", (((double) split) / 1000.0));
       td(lastCell->More, STRING(printfOut));
@@ -72,14 +73,16 @@ namespace CEEFIT
 
   // Utility //////////////////////////////////
 
-  INT64 TIMEDACTIONFIXTURE::Time() 
+  fitINT64 TIMEDACTIONFIXTURE::Time()
   {
     return CurrentTimeMillis();
   }
 
-  void TIMEDACTIONFIXTURE::td(PTR<PARSE>& out, const STRING& body) 
+  void TIMEDACTIONFIXTURE::td(PTR<PARSE>& out, const STRING& body)
   {
     PTR<PARSE> nullPtr;
     out = new PARSE(STRING("td"), this->Info(body), nullPtr, nullPtr);
   }
+
+  static ::CEEFIT::REGISTERFIXTURECLASS< TIMEDACTIONFIXTURE > ActionFixtureRegistration("CEEFIT::TIMEDACTIONFIXTURE", "fit.TimedActionFixture");
 };

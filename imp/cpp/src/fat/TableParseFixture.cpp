@@ -28,7 +28,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  begin_fit_fixture(FAT_TABLEPARSEFIXTURE, COLUMNFIXTURE, fat.TableParseFixture)
+  begin_namespaced_fit_fixture(CEEFAT, TABLEPARSEFIXTURE, COLUMNFIXTURE, fat.TableParseFixture)
 
     public:
 	    fit_var(STRING, HTML);
@@ -90,5 +90,5 @@ namespace CEEFAT
 		    return(temp->Tag);
 	    }
 
-  end_fit_fixture(FAT_TABLEPARSEFIXTURE)
+  end_namespaced_fit_fixture(CEEFAT, TABLEPARSEFIXTURE)
 };

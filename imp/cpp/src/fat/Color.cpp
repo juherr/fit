@@ -29,7 +29,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  begin_fit_fixture(FAT_COLOR, PRIMITIVEFIXTURE, fat.Color)
+  begin_namespaced_fit_fixture(CEEFAT, COLOR, PRIMITIVEFIXTURE, fat.Color)
 
     public:
       PTR<PARSE> ActualRow;
@@ -52,6 +52,10 @@ namespace CEEFAT
         }
 
         index += pattern.Length();
+        while(text.CharAt(index) == '\'' || text.CharAt(index) == '\"' || iswspace(text.CharAt(index)))
+        {
+          index++;
+        }
         return(Decode(text.Substring(index, index+7)));
       }
 
@@ -69,7 +73,7 @@ namespace CEEFAT
     public:
       virtual void ceefit_call_spec DoRows(PTR<PARSE>& rows)
       {
-        ActualRow = FAT_TABLE::Table->Parts;
+        ActualRow = TABLE::Table->Parts;
         if (rows->Size() != ActualRow->Size())
         {
           throw new EXCEPTION("wrong size table");
@@ -91,6 +95,6 @@ namespace CEEFAT
         Check(cell, Color(temp));
       }
 
-  end_fit_fixture(FAT_COLOR);
+  end_namespaced_fit_fixture(CEEFAT, COLOR)
 
 };

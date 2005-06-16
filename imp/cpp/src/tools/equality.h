@@ -141,22 +141,22 @@ namespace CEEFIT
     return(aValue == bValue);
   }
 
-  inline bool IsEqual(const INT64 aValue, const INT64 bValue)
+  inline bool IsEqual(const fitINT64 aValue, const fitINT64 bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(const INT64& aValue, const ANYTYPE& bValue)
+  template<class ANYTYPE> inline bool IsEqual(const fitINT64& aValue, const ANYTYPE& bValue)
   {
     return(aValue == bValue);
   }
 
-  inline bool IsEqual(const UINT64 aValue, const UINT64 bValue)
+  inline bool IsEqual(const UfitINT64 aValue, const UfitINT64 bValue)
   {
     return(aValue == bValue);
   }
 
-  template<class ANYTYPE> inline bool IsEqual(const UINT64& aValue, const ANYTYPE& bValue)
+  template<class ANYTYPE> inline bool IsEqual(const UfitINT64& aValue, const ANYTYPE& bValue)
   {
     return(aValue == bValue);
   }
@@ -183,11 +183,11 @@ namespace CEEFIT
 
   inline bool IsEqual(const char* aValue, const char* bValue)
   {
-    if(aValue == NULL)
+    if(aValue == null)
     {
-      return(bValue == NULL);
+      return(bValue == null);
     }
-    if(bValue == NULL)
+    if(bValue == null)
     {
       return(false);
     }
@@ -196,11 +196,11 @@ namespace CEEFIT
 
   inline bool IsEqual(const wchar_t* aValue, const wchar_t* bValue)
   {
-    if(aValue == NULL)
+    if(aValue == null)
     {
-      return(bValue == NULL);
+      return(bValue == null);
     }
-    if(bValue == NULL)
+    if(bValue == null)
     {
       return(false);
     }

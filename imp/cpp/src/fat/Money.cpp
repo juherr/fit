@@ -23,6 +23,8 @@
 #include "ceefit.h"
 #include "fat/money.h"
 
+using namespace CEEFIT;
+
 namespace CEEFAT
 {
   MONEY ceefit_call_spec MONEY::ValueOf(const STRING& s)
@@ -49,8 +51,11 @@ namespace CEEFAT
       }
     }
   
-    double temp = 0.0;
-    if(swscanf(stripped.GetBuffer(), L"%g", &temp)!=1)
+    errno = 0;
+    wchar_t* endChar;
+    float temp = (float) wcstod(stripped.GetBuffer(), &endChar);
+
+    if(errno == ERANGE)
     {
       throw new PARSEEXCEPTION("Failed to parse double");
     }

@@ -29,14 +29,14 @@ namespace CEEFIT
       DYNARRAY< PTR<PARSE> > Missing;
       DYNARRAY< PTR<CELLADAPTER> > Surplus;
 
-      typedef HASHMAP< DYNARRAY< PTR<PARSE> > >::NODE PARSE_KEYNODE;
-      typedef HASHMAP< DYNARRAY< PTR<CELLADAPTER> > >::NODE CELL_KEYNODE;
+      typedef NODEIMPL< DYNARRAY< PTR<PARSE> >, PTR<CELLADAPTER> > PARSE_KEYNODE;
+      typedef NODEIMPL< DYNARRAY< PTR<CELLADAPTER> >, PTR<CELLADAPTER> > CELL_KEYNODE;
 
     public:
       virtual void ceefit_call_spec DoRows(PTR<PARSE>& rows);
 
       virtual void ceefit_call_spec Query(DYNARRAY< PTR<CELLADAPTER> >& out)=0;     // get rows to be compared
-      virtual VALUE<CELLADAPTER> ceefit_call_spec GetTargetClass(void)=0;       // get expected type of row
+      virtual VALUE<FIXTURE> ceefit_call_spec GetTargetClass(void)=0;               // get expected type of row
 
     protected:
       virtual void ceefit_call_spec Match(DYNARRAY< PTR<PARSE> >& expected, DYNARRAY< PTR<CELLADAPTER> >& computed, int col);
@@ -58,5 +58,12 @@ namespace CEEFIT
       virtual void ceefit_call_spec BuildRows(PTR<PARSE>& out, DYNARRAY< PTR<CELLADAPTER> >& rows);
       virtual void ceefit_call_spec BuildCells(PTR<PARSE>& out, PTR<CELLADAPTER>& row);
 
+    public:
+      ceefit_init_spec ROWFIXTURE(void);        
+      virtual ceefit_init_spec ~ROWFIXTURE(void);        
+
+    private:
+      ceefit_init_spec ROWFIXTURE(const ROWFIXTURE&);                   /**< Not implemented, do not call */
+      ROWFIXTURE& ceefit_call_spec operator=(const ROWFIXTURE&);        /**< Not implemented, do not call */
   };
 };

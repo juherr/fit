@@ -46,7 +46,7 @@ namespace CEEFIT
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, PTR<FIXTURE>& whichFixture);
       virtual inline void ceefit_call_spec Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a) 
       {
-        PTR<FIXTURE> nullFixture(NULL);
+        PTR<FIXTURE> nullFixture(null);
 
         this->Check(cell, a, nullFixture);
       }
@@ -57,9 +57,6 @@ namespace CEEFIT
     protected:
       // Utility //////////////////////////////////
       virtual void ceefit_call_spec Bind(PTR<PARSE>& heads);
-
-      virtual VALUE<CELLADAPTER> ceefit_call_spec BindMethod(const STRING& name);
-      virtual VALUE<CELLADAPTER> ceefit_call_spec BindField(const STRING& name);
 
       // helpers for DoTables required by CeeFIT
       virtual void ceefit_call_spec DeleteFixture(EXCEPTION*& exceptionThrown);

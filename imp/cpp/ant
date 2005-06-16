@@ -1,0 +1,76 @@
+#!/bin/bash
+# ant doohicky for CeeFIT, I wish I knew how to write shell scripts ... :P  Nah, C++ is bad enough ...
+
+DEBUG_BUILD=-Ddebug.mode=false
+RELEASE_BUILD=-Drelease.mode=false
+DEBUG_ANT_FLAG=
+USE_GPP=
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -h | -help )            shift
+                                echo "Ant script for CeeFIT"
+                                echo "usage:  ant [-debugAnt] [{build.properties overrides}] {ant param(s)}"
+                                echo "           -debugAnt     : Tells ant to print out debugging and"
+                                echo "                           diagnostic information"
+                                echo ""
+                                echo "         build.properties overrides:"
+                                echo "           -fastCompile  : Force ant to build CeeFIT with debugging"
+                                echo "                           information (overrides build.properties)"
+                                echo "           -debug        : Force ant to build CeeFIT with debugging"
+                                echo "                           information (overrides build.properties)"
+                                echo "           -release      : Force ant to build CeeFIT with optimizations"
+                                echo "                           enabled (overrides build.properties)"
+                                echo "           -msvc         : Force ant to build using MSVC compiler and"
+                                echo "                           linker (overrides build.properties)"
+                                echo "           -g++          : Force ant to build using GCC's g++ compiler"
+                                echo "                           and linker (overrides build.properties)"
+                                echo ""
+                                echo "Set GCC_HOME or MSVCDir environment variables set prior to calling"
+                                echo "this script so that Ant knows where to find your C++ compiler."
+                                echo ""
+                                echo "  normal Ant help follows ..."
+                                echo ""
+				bash ./lib/apache-ant-1.6.2/bin/ant -help 
+				exit
+                                ;;
+        -debugAnt )    		shift
+				DEBUG_ANT_FLAG=-debug
+                                ;;
+        -debug )    		shift
+				DEBUG_BUILD=-Ddebug.mode=true
+				RELEASE_BUILD=-Drelease.mode=false
+                                ;;
+        -release )    		shift
+				DEBUG_BUILD=-Ddebug.mode=false
+				RELEASE_BUILD=-Drelease.mode=true
+                                ;;
+        -fastCompile )    	shift
+				DEBUG_BUILD=-Ddebug.mode=false
+				RELEASE_BUILD=-Drelease.mode=false
+                                ;;
+        -msvc )    		shift
+				echo "whachewmeanmang???"
+                                ;;
+        -g++ )    		shift
+				USE_GPP=-Dwhich.compiler=g++ -Dwhich.linker=g++
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     break
+    esac
+    shift
+done
+
+if ["$GCC_HOME" = ""] then
+	echo "You need to set GCC_HOME to where GCC lives before calling Ant"
+	exit 1
+fi
+
+PATH=$GCC_HOME%/bin:$PATH
+INCLUDE=$GCC_HOME/include;$INCLUDE
+LIB=$GCC_HOME/lib;$INCLUDE
+goto runAnt
+
+bash ./lib/apache-ant-1.6.2/bin/ant $DEBUG_ANT_FLAG $DEBUG_BUILD $RELEASE_BUILD $USE_GPP $1 $2 $3 $4 $5 $6 $7 $8 $9

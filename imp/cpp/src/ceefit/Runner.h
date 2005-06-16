@@ -40,12 +40,12 @@ namespace CEEFIT
       SETFIELDINFO<T>(void)
       {
         FIXTURE* aFixture = GetFixtureUnderConstruction();
-        if(aFixture != NULL)
+        if(aFixture != null)
         {
           // T is some class that has a public static GetFieldName() method
           const char* fieldName = T::GetFieldName();
 
-          if((&T::GetField(aFixture)) != NULL)
+          if((&T::GetField(aFixture)) != null)
           {
             SetLastLinkedFieldInfo(fieldName, T::GetField(aFixture));
           }
@@ -85,7 +85,7 @@ namespace CEEFIT
       const char* Alias;
 
     public:
-      ceefit_init_spec FIXTUREFACTORY(const char* aName, const char* aAlias=NULL);
+      ceefit_init_spec FIXTUREFACTORY(const char* aName, const char* aAlias=null);
       virtual ceefit_init_spec ~FIXTUREFACTORY(void);
       virtual const char* ceefit_call_spec GetName(void) const;
       virtual const char* ceefit_call_spec GetAlias(void) const;
@@ -116,7 +116,7 @@ namespace CEEFIT
       const char* Alias;
 
     public:
-      ceefit_init_spec NONFIXTUREFACTORY(const char* aName, const char* aAlias=NULL);
+      ceefit_init_spec NONFIXTUREFACTORY(const char* aName, const char* aAlias=null);
       virtual ceefit_init_spec ~NONFIXTUREFACTORY(void);
       virtual const char* ceefit_call_spec GetName(void) const;
       virtual const char* ceefit_call_spec GetAlias(void) const;
@@ -140,12 +140,12 @@ namespace CEEFIT
       NONFIXTUREFACTORY& operator=(const NONFIXTUREFACTORY&);
   };
 
-  class RUNNER : public virtual OBJECT
+  class RUNNER : public REFCOUNTED
   {
     public:
       static SLINKLIST<FIXTUREFACTORY>& ceefit_call_spec GetFixtureFactoryList(void);
       static SLINKLIST<NONFIXTUREFACTORY>& ceefit_call_spec GetNonFixtureFactoryList(void);
-      static FIXTUREFACTORY* ceefit_call_spec GetSetCurrentFixtureFactory(FIXTUREFACTORY* aFactory=NULL, bool clearCurrentFactory=false);
+      static FIXTUREFACTORY* ceefit_call_spec GetSetCurrentFixtureFactory(FIXTUREFACTORY* aFactory=null, bool clearCurrentFactory=false);
 
       static void ceefit_call_spec SetCurrentTestList(SLINKLIST<CELLADAPTER>* aList);
       static void ceefit_call_spec SetCurrentFieldList(SLINKLIST<CELLADAPTER>* aList);

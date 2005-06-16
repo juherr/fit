@@ -1,93 +1,127 @@
-// Copyright (c) 2002 Cunningham & Cunningham, Inc.
-// Released under the terms of the GNU General Public License version 2 or later.
+/**
+ * <p>This file is part of CeeFIT.</p>
+ *
+ * <p>CeeFIT is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.</p>
+ *
+ * <p>CeeFIT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.</p>
+ *
+ * <p>You should have received a copy of the GNU General Public License
+ * along with CeeFIT; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
+ *
+ * <p>(c)2005 Woldrich, Inc.  <a href="http://www.woldrich.com">http://www.woldrich.com</a></p>
+ *
+ * @author David Woldrich
+ */
 
-package eg.music;
+#include "tools/alloc.h"
+#include "ceefit.h"
+#include "eg/eg.h"
 
-import fit.*;
-import java.util.Date;
+declare_fit_module(MusicSimulator);
 
-class SIMULATOR : public REFCOUNTED 
+using namespace CEEFIT;
+
+namespace EG_MUSIC
 {
-  // This discrete event simulator supports three events
-  // each of which is open coded in the body of the simulator.
+  PTR<SIMULATOR> SIMULATOR::System(new SIMULATOR());
+  fitINT64 SIMULATOR::Time = CurrentTimeMillis();
 
-  protected:
-    static PTR<SIMULATOR> System = new SIMULATOR();
-    static INT64 Time = CurrentTimeMillis();
+  fitINT64 SIMULATOR::NextSearchComplete = 0;
+  fitINT64 SIMULATOR::NextPlayStarted = 0;
+  fitINT64 SIMULATOR::NextPlayComplete = 0;
 
-  public:
-    static INT64 NextSearchComplete = 0;
-    static INT64 NextPlayStarted = 0;
-    static INT64 NextPlayComplete = 0;
+  fitINT64 SIMULATOR::Sooner(fitINT64 soon, fitINT64 event)
+  {
+    return((event > Time && event < soon) ? event : soon);
+  }
 
-  protected:
-    virtual INT64 Sooner(INT64 soon, INT64 event) 
+  fitINT64 SIMULATOR::NextEvent(const fitINT64& bound)
+  {
+    fitINT64 result = bound;
+    result = Sooner(result, NextSearchComplete);
+    result = Sooner(result, NextPlayStarted);
+    result = Sooner(result, NextPlayComplete);
+    return result;
+  }
+
+  void SIMULATOR::Perform()
+  {
+    if(Time == NextSearchComplete)
     {
-      return((event > Time && event < soon) ? event : soon);
+      MUSICLIBRARY::SearchComplete();
     }
-
-    virtual INT64 NextEvent(const INT64& bound) 
+    if(Time == NextPlayStarted)
     {
-      INT64 result = bound;
-      result = Sooner(result, NextSearchComplete);
-      result = Sooner(result, NextPlayStarted);
-      result = Sooner(result, NextPlayComplete);
-      return result;
+      MUSICPLAYER::PlayStarted();
     }
-
-    virtual void Perform(void) 
+    if(Time == NextPlayComplete)
     {
-      if(Time == NextSearchComplete)     
-      {
-        MusicLibrary.SearchComplete();
-      }
-      if(Time == NextPlayStarted)        
-      {
-        MusicPlayer.PlayStarted();
-      }
-      if(Time == NextPlayComplete)       
-      {
-        MusicPlayer.PlayComplete();
-      }
+      MUSICPLAYER::PlayComplete();
     }
+  }
 
-    virtual void advance(const INT64& future) 
+  void SIMULATOR::Advance(const fitINT64& future)
+  {
+    while(Time < future)
     {
-      while(time < future) 
-      {
-        time = NextEvent(future);
-        perform();
-      }
+      Time = NextEvent(future);
+      Perform();
     }
+  }
 
-    static INT64 schedule(const double& seconds)
-    {
-      return(Time + (INT64) (1000.0 * seconds));
-    }
+  fitINT64 SIMULATOR::Schedule(const double& seconds)
+  {
+    return(Time + (fitINT64) (1000.0 * seconds));
+  }
 
-    virtual void Delay(const double& seconds) 
-    {
-      Advance(Schedule(seconds));
-    }
+  void SIMULATOR::Delay(const double& seconds)
+  {
+    Advance(Schedule(seconds));
+  }
 
-  public:
-    void WaitSearchComplete(void) 
-    {
-      Advance(NextSearchComplete);
-    }
+  void SIMULATOR::waitSearchComplete()
+  {
+    Advance(NextSearchComplete);
+  }
 
-    void WaitPlayStarted(void) 
-    {
-      Advance(NextPlayStarted);
-    }
+  void SIMULATOR::waitPlayStarted()
+  {
+    Advance(NextPlayStarted);
+  }
 
-    void WaitPlayComplete(void) 
-    {
-      Advance(NextPlayComplete);
-    }
+  void SIMULATOR::waitPlayComplete()
+  {
+    Advance(NextPlayComplete);
+  }
 
-    void FailLoadJam(void) 
-    {
-      ACTIONFIXTURE::Actor = new Dialog("load jamed", ActionFixture.actor);
-    }
-}
+  void SIMULATOR::failLoadJam()
+  {
+    ACTIONFIXTURE::Actor = new DIALOG(STRING("load jamed"), ACTIONFIXTURE::Actor);
+  }
+
+  SIMULATOR::SIMULATOR()
+  {
+    RegisterCeefitTest(this, "waitSearchComplete", &SIMULATOR::waitSearchComplete);
+    RegisterCeefitTest(this, "waitPlayStarted", &SIMULATOR::waitPlayStarted);
+    RegisterCeefitTest(this, "waitPlayComplete", &SIMULATOR::waitPlayComplete);
+    RegisterCeefitTest(this, "failLoadJam", &SIMULATOR::failLoadJam);
+  }
+
+  SIMULATOR::~SIMULATOR()
+  {
+  }
+
+  void SIMULATOR::ReleaseStatics()
+  {
+    SIMULATOR::System = null;
+  }
+
+  static ::CEEFIT::REGISTERFIXTURECLASS< SIMULATOR > ColumnFixtureRegistration("EG_MUSIC::SIMULATOR", "eg.music.Simulator");
+};

@@ -30,22 +30,22 @@ namespace CEEFIT
     public:
       STRING Input;
       PTR<PARSE> Tables;
-      FIXTURE Fixture;
+      PTR<FIXTURE> Fixture;
       WRITER* Output;
 
       ceefit_init_spec FILERUNNER(void);
-      ceefit_init_spec ~FILERUNNER(void);
+      virtual ceefit_init_spec ~FILERUNNER(void);
 
-      int ceefit_call_spec Run(const DYNARRAY<STRING>& argv);
-      void ceefit_call_spec Process(void);
-      int ceefit_call_spec Args(const DYNARRAY<STRING>& argv);
-      STRING ceefit_call_spec Read(const STRING& inputFilename);
-      int ceefit_call_spec Exit(void);        
-      
+      virtual int ceefit_call_spec Run(const DYNARRAY<STRING>& argv);
+      virtual void ceefit_call_spec Process(void);
+      virtual int ceefit_call_spec Args(const DYNARRAY<STRING>& argv);
+      virtual STRING ceefit_call_spec Read(const STRING& inputFilename);
+      virtual int ceefit_call_spec Exit(void);        
+
     protected:
-      void ceefit_call_spec Exception(EXCEPTION* e);
-      STRING ceefit_call_spec ValidateOutputPath(const STRING& rawOutPath);
-      void ceefit_call_spec ValidateOrCreateDir(const STRING& aDir);
+      virtual void ceefit_call_spec Exception(EXCEPTION* e);
+      virtual STRING ceefit_call_spec ValidateOutputPath(const STRING& rawOutPath);
+      virtual void ceefit_call_spec ValidateOrCreateDir(const STRING& aDir);
 
     private:
       ceefit_init_spec FILERUNNER(const FILERUNNER&);   /**< Not implemented, do not call */

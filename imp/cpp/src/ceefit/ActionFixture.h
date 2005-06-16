@@ -51,10 +51,14 @@ namespace CEEFIT
     protected:
       // Utility //////////////////////////////////
 
-      virtual CELLADAPTER* ceefit_call_spec Method(int args);
-      virtual CELLADAPTER* ceefit_call_spec Method(const STRING& test, int args);
+      virtual VALUE<CELLADAPTER> ceefit_call_spec Method(PTR<FIXTURE>& targetFixture, int args);
+      virtual VALUE<CELLADAPTER> ceefit_call_spec Method(PTR<FIXTURE>& targetFixture, const STRING& test, int args);
 
-      virtual VALUE<CELLADAPTER> ceefit_call_spec BindMethod(const STRING& name);
+      // -------------------------------------------------------
+      // CeeFIT code used to manage static member data lifetimes
+      // -------------------------------------------------------
+    public:
+      virtual void ceefit_call_spec ReleaseStatics(void); 
 
     protected:
       inline ACTIONFIXTURE& ceefit_call_spec operator=(const ACTIONFIXTURE&);

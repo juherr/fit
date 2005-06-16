@@ -270,10 +270,6 @@ SOURCE=.\src\ceefit\ActionFixture.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\src\tools\alloc.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\src\ceefit\celladapter.h
 # End Source File
 # Begin Source File
@@ -332,6 +328,14 @@ SOURCE=.\src\ceefit\TimedActionFixture.h
 # Begin Group "Tools Header Files"
 
 # PROP Default_Filter "*.h"
+# Begin Source File
+
+SOURCE=.\src\tools\alloc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\tools\BufferedFileReader.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\src\tools\dynarray.h
@@ -414,6 +418,10 @@ SOURCE=.\src\tools\alloc.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\tools\BufferedFileReader.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\tools\exception.cpp
 
 !IF  "$(CFG)" == "ceefit - Win32 Release"
@@ -445,6 +453,10 @@ SOURCE=.\src\tools\object.cpp
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\tools\ptr.cpp
 # End Source File
 # Begin Source File
 

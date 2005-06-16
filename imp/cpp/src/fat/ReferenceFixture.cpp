@@ -29,7 +29,7 @@ using namespace CEEFIT;
 namespace CEEFAT
 {
 
-  begin_fit_fixture(FAT_REFERENCEFIXTURE, COLUMNFIXTURE, fat.ReferenceFixture);
+  begin_namespaced_fit_fixture(CEEFAT, REFERENCEFIXTURE, COLUMNFIXTURE, fat.ReferenceFixture)
 
     public:
       fit_var(STRING, Description);
@@ -46,12 +46,12 @@ namespace CEEFAT
         wchar_t ext[_MAX_EXT];
 
         _wfullpath(inputFileFullPath, SummaryObj->InputFile.GetBuffer(), _MAX_PATH);
-        _wsplitpath(inputFileFullPath, drive, dir, NULL, NULL);
+        _wsplitpath(inputFileFullPath, drive, dir, null, null);
 
 		    STRING inputFileName(STRING(drive) + dir + Location);
 
-        _wsplitpath(SummaryObj->OutputFile.GetBuffer(), drive, dir, NULL, NULL);
-        _wsplitpath(Location.GetBuffer(), NULL, otherDir, fname, ext);
+        _wsplitpath(SummaryObj->OutputFile.GetBuffer(), drive, dir, null, null);
+        _wsplitpath(Location.GetBuffer(), null, otherDir, fname, ext);
 
         STRING outDirName(drive);
         DYNARRAY<STRING> argList;
@@ -98,6 +98,6 @@ namespace CEEFAT
 		    }
       }
 
-  end_fit_fixture(FAT_REFERENCEFIXTURE);    
+  end_namespaced_fit_fixture(CEEFAT, REFERENCEFIXTURE)
 
 };

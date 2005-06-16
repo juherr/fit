@@ -28,7 +28,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  class FAT_ANNOTATIONFIXTURE : public COLUMNFIXTURE
+  class ANNOTATIONFIXTURE : public COLUMNFIXTURE
   {
     public:
 	    STRING OriginalHTML;
@@ -73,7 +73,7 @@ namespace CEEFAT
       {
         DYNARRAY<STRING> tagList;
         int i = 0;
-        while(tags[i] != NULL) 
+        while(tags[i] != null) 
         {
           tagList.Add(tags[i]);
           i++;
@@ -114,7 +114,7 @@ namespace CEEFAT
       }
 
     public:
-      STRING ceefit_call_spec ResultingHTML(void) 
+      virtual STRING ceefit_call_spec ResultingHTML(void) 
       {
         PTR<PARSE> table(new PARSE(OriginalHTML));
         PTR<PARSE> row(table->At(0, Row - 1));
@@ -135,21 +135,22 @@ namespace CEEFAT
         if (OverwriteEndTableTag.IsAssigned()) table->End = OverwriteEndTableTag;
         if (AddToTableTag.IsAssigned()) table->AddToTag(StripDelimiters(AddToTableTag));
 
-        static const char* cellFollowingTags[] = {"td", NULL};
+        static const char* cellFollowingTags[] = {"td", null};
         if (AddCellFollowing.IsAssigned()) AddParse(cell, AddCellFollowing, cellFollowingTags);
         if (RemoveFollowingCell.IsAssigned()) RemoveParse(cell);
 
-        static const char* rowFollowingTags[] = {"tr", "td", NULL};
+        static const char* rowFollowingTags[] = {"tr", "td", null};
         if (AddRowFollowing.IsAssigned()) AddParse(row, AddRowFollowing, rowFollowingTags);
         if (RemoveFollowingRow.IsAssigned()) RemoveParse(row);
 
-        static const char* tableFollowingTags[] = {"table", "tr", "td", NULL};
+        static const char* tableFollowingTags[] = {"table", "tr", "td", null};
         if (AddTableFollowing.IsAssigned()) AddParse(table, AddTableFollowing, tableFollowingTags);
 
         return GenerateOutput(table);        
       }
 
-      FAT_ANNOTATIONFIXTURE() {
+      ceefit_init_spec ANNOTATIONFIXTURE(void) 
+      {
         RegisterCeefitField(this, "OriginalHTML", OriginalHTML);
         RegisterCeefitField(this, "Row", Row);
         RegisterCeefitField(this, "Column", Column);
@@ -177,9 +178,17 @@ namespace CEEFAT
 	      
         RegisterCeefitField(this, "AddTableFollowing", AddTableFollowing);
       
-        RegisterCeefitTest(this, "ResultingHTML", &FAT_ANNOTATIONFIXTURE::ResultingHTML);
+        RegisterCeefitTest(this, "ResultingHTML", &ANNOTATIONFIXTURE::ResultingHTML);
       }
+
+      virtual ceefit_init_spec ~ANNOTATIONFIXTURE(void) 
+      {
+      }
+
+    private:
+      ceefit_init_spec ANNOTATIONFIXTURE(const ANNOTATIONFIXTURE&);             /**< Not implemented, do not call */
+      ANNOTATIONFIXTURE& ceefit_call_spec operator=(const ANNOTATIONFIXTURE&);  /**< Not implemented, do not call */
   };
 
-  static ::CEEFIT::REGISTERFIXTURECLASS< FAT_ANNOTATIONFIXTURE > AnnotationFixtureRegistration("FAT_ANNOTATIONFIXTURE", "fat.AnnotationFixture");
+  static ::CEEFIT::REGISTERFIXTURECLASS< ANNOTATIONFIXTURE > AnnotationFixtureRegistration("CEEFAT::ANNOTATIONFIXTURE", "fat.AnnotationFixture");
 };

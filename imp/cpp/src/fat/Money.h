@@ -31,15 +31,15 @@ namespace CEEFAT
       long cents;
 
     public:
-      static MONEY ceefit_call_spec ValueOf(const STRING& s);
+      static MONEY ceefit_call_spec ValueOf(const CEEFIT::STRING& s);
       ceefit_init_spec MONEY(void);
-      ceefit_init_spec MONEY(const STRING& s);
+      ceefit_init_spec MONEY(const CEEFIT::STRING& s);
       virtual ceefit_init_spec ~MONEY(void);
       MONEY& ceefit_call_spec operator=(const MONEY& obj);
       ceefit_init_spec MONEY(const MONEY& obj);
       virtual bool ceefit_call_spec IsEqual(const MONEY& value) const;
       virtual int ceefit_call_spec GetHashCode(void);
-      virtual STRING ceefit_call_spec ToString(void) const;
+      virtual CEEFIT::STRING ceefit_call_spec ToString(void) const;
   };
 
 };
@@ -47,6 +47,8 @@ namespace CEEFAT
 template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT::MONEY>
 {
   public:
+    typedef CEEFIT::FITFIELDBASE<CEEFAT::MONEY> FIELDBASE;
+
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFAT::MONEY& in)
     {
       out = in.ToString();
@@ -66,23 +68,21 @@ template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT:
       }
     }
 
-    virtual inline const CEEFIT::STRING& ceefit_call_spec GetType(void) const
+    virtual inline const char* ceefit_call_spec GetType(void) const
     {
-      static CEEFIT::STRING FieldType("CEEFAT::MONEY");
-
-      return(FieldType);
+      return("CEEFAT::MONEY");
     }
 
     template<class U> inline FITFIELD<CEEFAT::MONEY>& operator=(U& rValue)
     {
-      this->FITFIELDBASE<CEEFAT::MONEY>::operator=(rValue);
+      this->FIELDBASE::operator=(rValue);
 
       return(*this);
     }
 
     FITFIELD<CEEFAT::MONEY>& operator=(const CEEFAT::MONEY& rValue)
     {
-      this->FITFIELDBASE<CEEFAT::MONEY>::operator=(rValue);
+      this->FIELDBASE::operator=(rValue);
 
       return(*this);
     }

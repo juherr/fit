@@ -20,6 +20,7 @@
  * @author David Woldrich
  */
 
+#include "tools/alloc.h"
 #include "ceefit.h"
 
 namespace CEEFIT
@@ -87,13 +88,13 @@ namespace CEEFIT
       {
         Check(cell, a);
       }
-      else if(a == NULL)
+      else if(a == null)
       {
         Ignore(cell);
       }
       else if(a->IsField())
       {
-        a->WriteToFixtureVar(text);
+        this->Parse(a, text);
       }
       else if(a->IsMethod())
       {
@@ -109,7 +110,7 @@ namespace CEEFIT
   void COLUMNFIXTURE::Check(PTR<PARSE>& cell, PTR<CELLADAPTER>& a, PTR<FIXTURE>& target)
   {
     PTR<FIXTURE> temp(target);
-    if(temp == NULL)
+    if(temp == null)
     {
       temp = this;
     }
@@ -149,28 +150,29 @@ namespace CEEFIT
   
   void COLUMNFIXTURE::Bind(PTR<PARSE>& heads)
   {
+    static char* suffix = "()";
+
     ColumnBindings.Reset();
     ColumnBindings.Reserve(heads->Size());
 
     PTR<PARSE> headsPtr(heads);
-    for (int i=0; headsPtr != NULL; i++, headsPtr = headsPtr->More)
+    for (int i=0; headsPtr != null; i++, headsPtr = headsPtr->More)
     {
-      static STRING suffix("()");
-
       STRING name(headsPtr->Text());
       try
       {
+        PTR<FIXTURE> whichFixture;
         if(name.IsEqual(""))
         {
-          ColumnBindings[i] = (CELLADAPTER*) NULL;
+          ColumnBindings[i] = (CELLADAPTER*) null;
         }
         else if(name.EndsWith(suffix))
         {
-          ColumnBindings[i] = BindMethod(name.Substring(0, name.Length() - suffix.Length()));
+          ColumnBindings[i] = FindMethod(whichFixture, name.Substring(0, name.Length() - strlen(suffix)));
         }
         else
         {
-          ColumnBindings[i] = BindField(name);
+          ColumnBindings[i] = FindField(whichFixture, name);
         }
       }
       catch (EXCEPTION* e)
@@ -178,34 +180,7 @@ namespace CEEFIT
         Exception(heads, e);
       }
     }
-
   }
 
-  VALUE<CELLADAPTER> ceefit_call_spec COLUMNFIXTURE::BindMethod(const STRING& name)
-  {
-    PTR<CELLADAPTER> aTest(TestList.GetHead());
-    while(aTest != NULL)
-    {
-      if(aTest->IsMethod() && aTest->GetName().IsEqual(name))
-      {
-        return(VALUE<CELLADAPTER>(aTest));
-      }
-      aTest = aTest->GetNext();
-    }
-    return(VALUE<CELLADAPTER>(NULL));
-  }
-
-  VALUE<CELLADAPTER> ceefit_call_spec COLUMNFIXTURE::BindField(const STRING& name)
-  {
-    PTR<CELLADAPTER> aField(FieldList.GetHead());
-    while(aField != NULL)
-    {
-      if(aField->IsField() && aField->GetName().IsEqual(name))
-      {
-        return(VALUE<CELLADAPTER>(aField));
-      }
-      aField = dynamic_cast<SLINK<CELLADAPTER>*>(aField.GetPointer())->GetNext();
-    }
-    return(VALUE<CELLADAPTER>(NULL));
-  }
+  static ::CEEFIT::REGISTERFIXTURECLASS< COLUMNFIXTURE > ColumnFixtureRegistration("CEEFIT::COLUMNFIXTURE", "fit.ColumnFixture");
 };

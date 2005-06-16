@@ -36,7 +36,7 @@ namespace CEEFIT
     public:
       ceefit_init_spec SLINK<T>(void)
       {
-        Next = NULL;
+        Next = null;
       }
 
       ceefit_init_spec SLINK<T>(SLINK<T>& aSlink)
@@ -83,7 +83,7 @@ namespace CEEFIT
     private:
       inline void ceefit_call_spec ThrowBoundsException(void) const
       {
-        if(GetHead() != NULL)
+        if(GetHead() != null)
         {
           throw new BOUNDSEXCEPTION("SLINKLIST out of bounds.");
         }
@@ -92,13 +92,13 @@ namespace CEEFIT
     public:
 	    inline ceefit_init_spec SLINKLIST(void)
 	    {
-		    Head = NULL;
+		    Head = null;
 	    }
 
       /**
        * Special constructor used in static object environments where object instantiation is not known.
        * In this case, two assumptions are made: 1) As the memory for the object is static, the Head will
-       * always be NULL or initialized to some valid object's pointer.  2) There are no other compiled in
+       * always be null or initialized to some valid object's pointer.  2) There are no other compiled in
        * fields in this simple template class that will make SLINKLIST operate properly before the constructor
        * has been called.
        */
@@ -106,7 +106,7 @@ namespace CEEFIT
       {
         if(clearHead)
         {
-          Head = NULL;
+          Head = null;
         }
       }
 
@@ -130,7 +130,7 @@ namespace CEEFIT
         while(aNode)
         {
           ANYTYPE* nextNode = (dynamic_cast< SLINK<ANYTYPE>* >(aNode))->GetNext();
-          if(nextNode == NULL)
+          if(nextNode == null)
           {
             break;
           }
@@ -145,7 +145,7 @@ namespace CEEFIT
         while(aNode)
         {
           ANYTYPE* nextNode = (dynamic_cast< SLINK<ANYTYPE>* >(aNode))->GetNext();
-          if(nextNode == NULL)
+          if(nextNode == null)
           {
             break;
           }
@@ -193,13 +193,13 @@ namespace CEEFIT
       template<class ANYTYPE2> inline void ceefit_call_spec Add(ANYTYPE2& aItem)
       {
 		    ANYTYPE* aVal = GetHead();
-        if(aVal == NULL)
+        if(aVal == null)
         {
           SetHead(dynamic_cast<ANYTYPE2*>(&aItem));
         }
         else
         {
-          while((dynamic_cast< SLINK<ANYTYPE>* >(aVal))->GetNext() != NULL)
+          while((dynamic_cast< SLINK<ANYTYPE>* >(aVal))->GetNext() != null)
           {
             aVal = (dynamic_cast< SLINK<ANYTYPE>* >(aVal))->GetNext();
           }
@@ -226,11 +226,11 @@ namespace CEEFIT
         }
         else
         {
-          ANYTYPE* previous = NULL;
+          ANYTYPE* previous = null;
           ANYTYPE* current = GetHead();
 
           int i = aIndex;
-          while(i > 0 && (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext() != NULL)
+          while(i > 0 && (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext() != null)
           {
             previous = current;
             current = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
@@ -243,7 +243,7 @@ namespace CEEFIT
           }
 
           (dynamic_cast< SLINK<ANYTYPE>* >(previous))->SetNext(dynamic_cast<ANYTYPE2*>(&aValue));
-          if(current != NULL)  // This if statement maintains the semantics of an Add operation if aIndex was the end of list
+          if(current != null)  // This if statement maintains the semantics of an Add operation if aIndex was the end of list
           {
             (dynamic_cast< SLINK<ANYTYPE2>* >(&aValue))->SetNext(current);
           }
@@ -265,7 +265,7 @@ namespace CEEFIT
        */
       template<class ANYTYPE2> inline void ceefit_call_spec Set(int aIndex, ANYTYPE2& aValue)
       {
-        ANYTYPE* previous = NULL;
+        ANYTYPE* previous = null;
         ANYTYPE* current = GetHead();
 
         if(aIndex < 0)
@@ -274,7 +274,7 @@ namespace CEEFIT
         }
         else if(aIndex == 0)
         {
-          if(current != NULL)
+          if(current != null)
           {
             ANYTYPE* oldNext = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
             (dynamic_cast< SLINK<ANYTYPE2>* >(&aValue))->SetNext(oldNext);
@@ -285,7 +285,7 @@ namespace CEEFIT
         else
         {
           int i = aIndex;
-          while(i > 0 && (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext() != NULL)
+          while(i > 0 && (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext() != null)
           {
             previous = current;
             current = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
@@ -298,7 +298,7 @@ namespace CEEFIT
           }
 
           (dynamic_cast< SLINK<ANYTYPE>* >(previous))->SetNext(&aValue);
-          if(current != NULL)
+          if(current != null)
           {
             (dynamic_cast< SLINK<ANYTYPE2>* >(&aValue))->SetNext((dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext());
           }
@@ -309,13 +309,13 @@ namespace CEEFIT
       {
         ANYTYPE* current = GetHead();
         int remaining = aIndex;
-        while(remaining > 0 && current != NULL)
+        while(remaining > 0 && current != null)
         {
           current = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
           remaining--;
         }
 
-        if(current == NULL)
+        if(current == null)
         {
           ThrowBoundsException();
         }
@@ -327,13 +327,13 @@ namespace CEEFIT
       {
         const ANYTYPE* current = GetHead();
         int remaining = aIndex;
-        while(remaining > 0 && current != NULL)
+        while(remaining > 0 && current != null)
         {
           current = (dynamic_cast< const SLINK<ANYTYPE>* >(current))->GetNext();
           remaining--;
         }
 
-        if(current == NULL)
+        if(current == null)
         {
           ThrowBoundsException();
         }
@@ -343,31 +343,31 @@ namespace CEEFIT
 
       virtual inline void ceefit_call_spec Remove(int aIndex, int aCountToRemove=1)
       {
-        ANYTYPE* previous = NULL;
+        ANYTYPE* previous = null;
         ANYTYPE* current = GetHead();
         int i = aIndex;
-        while(i > 0 && current != NULL)
+        while(i > 0 && current != null)
         {
           previous = current;
           current = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
           i--;
         }
 
-        if(current == NULL)
+        if(current == null)
         {
           ThrowBoundsException();
         }
 
         while(aCountToRemove > 0)
         {
-          if(current == NULL)
+          if(current == null)
           {
             ThrowBoundsException();
           }
 
           ANYTYPE* newNext = (dynamic_cast< SLINK<ANYTYPE>* >(current))->GetNext();
 
-          if(previous != NULL)
+          if(previous != null)
           {
             (dynamic_cast< SLINK<ANYTYPE>* >(previous))->SetNext(newNext);
             previous = current;
@@ -384,7 +384,7 @@ namespace CEEFIT
 
       virtual inline void ceefit_call_spec RemoveAll(void)
       {
-        while(GetHead() != NULL)
+        while(GetHead() != null)
         {
           Remove(0);
         }
@@ -392,15 +392,15 @@ namespace CEEFIT
 
       virtual inline void ceefit_call_spec Reset(void)
       {
-        SetHead(NULL);
+        SetHead(null);
       }
 
       virtual inline void ceefit_call_spec Destroy(void)
       {
         ANYTYPE* aVal = GetHead();
-        SetHead(NULL);
+        SetHead(null);
 
-        while(aVal != NULL)
+        while(aVal != null)
         {
           ANYTYPE* nextVal = (dynamic_cast< SLINK<ANYTYPE>* >(aVal))->GetNext();
           delete aVal;
@@ -410,7 +410,7 @@ namespace CEEFIT
 
 	    virtual inline void ceefit_call_spec RemoveObject(ANYTYPE* aVal)
       {
-        assert(aVal != NULL);
+        assert(aVal != null);
 
 		    ANYTYPE* tracker;
 
@@ -436,19 +436,19 @@ namespace CEEFIT
 					  }
 				  }
 			  }
-			  (dynamic_cast< SLINK<ANYTYPE>* >(aVal))->SetNext(NULL);
+			  (dynamic_cast< SLINK<ANYTYPE>* >(aVal))->SetNext(null);
 	    }
 
       virtual inline void ceefit_call_spec AddHead(ANYTYPE* aVal)
       {
-        assert(aVal != NULL);
+        assert(aVal != null);
 
 		    Insert(0, *aVal);
       }
 
 	    virtual inline void ceefit_call_spec AddTail(ANYTYPE* aVal)
 	    {
-        assert(aVal != NULL);
+        assert(aVal != null);
 
 		    Add(*aVal);
 	    }
