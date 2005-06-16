@@ -254,6 +254,17 @@ namespace CEEFIT
       void ceefit_call_spec GetSummaryReport(DYNARRAY<SUMMARYITEM>& reportList);
   };
 
+  // need to define NewInstanceParse that could not have been until now
+  template<class T> inline void ceefit_call_spec CEEFIT::FITFIELDBASE<T>::NewInstanceParse(CEEFIT::FIXTURE* callParseOn, CEEFIT::PTR< CEEFIT::CELLADAPTER >& out, const CEEFIT::STRING& aText)
+  {
+    CEEFIT::PTR<CEEFIT::CELLADAPTER> returnValue(new FITFIELD<T>());
+
+    callParseOn->Parse(returnValue, aText);
+
+    out = returnValue;
+  }
+
+  // Utility for java-like currentTimeMillis()
   fitINT64 ceefit_call_spec CurrentTimeMillis(void);
 };
 

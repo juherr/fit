@@ -296,7 +296,7 @@ namespace CEEFIT
 
       inline NODEIMPL<ANYTYPE, KEYTYPE>& operator=(NODEIMPL<ANYTYPE, KEYTYPE>& aNode)
       {
-        this->NODE::operator=(aNode);
+        this->NODE<ANYTYPE>::operator=(aNode);
 
         Key = aNode.Key;
 
@@ -405,7 +405,7 @@ namespace CEEFIT
         int i = aList.GetSize();
         while(i--)
         {
-          NODEIMPL<KEYTYPE>* aNode = dynamic_cast<NODEIMPL<ANYTYPE, KEYTYPE>*>(aList[i].GetPointer());
+          NODEIMPL<ANYTYPE, KEYTYPE>* aNode = dynamic_cast<NODEIMPL<ANYTYPE, KEYTYPE>*>(aList[i].GetPointer());
           if(aNode != null)
           {
             if(aNode->IsEqual(aKey, aValue))
