@@ -53,7 +53,7 @@ while [ "$1" != "" ]; do
 				echo "whachewmeanmang???"
                                 ;;
         -g++ )    		shift
-				USE_GPP=-Dwhich.compiler=g++ -Dwhich.linker=g++
+				USE_GPP="-Dwhich.compiler=g++ -Dwhich.linker=g++"
                                 ;;
         -h | --help )           usage
                                 exit
@@ -63,14 +63,16 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if ["$GCC_HOME" = ""] then
-	echo "You need to set GCC_HOME to where GCC lives before calling Ant"
-	exit 1
+if [ "$GCC_HOME" = "" ] 
+then
+	echo "GCC_HOME was not set, setting to /usr"
+	GCC_HOME=/usr
 fi
 
-PATH=$GCC_HOME%/bin:$PATH
-INCLUDE=$GCC_HOME/include;$INCLUDE
-LIB=$GCC_HOME/lib;$INCLUDE
-goto runAnt
+ANT_HOME=./lib/apache-ant-1.6.2
 
-bash ./lib/apache-ant-1.6.2/bin/ant $DEBUG_ANT_FLAG $DEBUG_BUILD $RELEASE_BUILD $USE_GPP $1 $2 $3 $4 $5 $6 $7 $8 $9
+PATH=$GCC_HOME%/bin:$PATH
+INCLUDE=$GCC_HOME/include:$INCLUDE
+LIB=$GCC_HOME/lib:$LIB
+
+bash $ANT_HOME/bin/ant $DEBUG_ANT_FLAG $DEBUG_BUILD $RELEASE_BUILD $USE_GPP $1 $2 $3 $4 $5 $6 $7 $8 $9
