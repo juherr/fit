@@ -78,7 +78,7 @@ namespace CEEFAT
 			    runner.Process();
 			    runner.Exit();
 			    
-			    PTR<COUNTS> counts(runner.Fixture.CountsObj);
+			    PTR<COUNTS> counts(runner.Fixture->CountsObj);
 			    if ((counts->exceptions == 0) && (counts->wrong == 0)) 
           {
 				    return STRING("pass");
