@@ -441,6 +441,10 @@ SOURCE=.\src\tools\failure.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\tools\mandatory.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\tools\object.cpp
 
 !IF  "$(CFG)" == "ceefit - Win32 Release"
