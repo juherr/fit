@@ -43,7 +43,7 @@ cmd /c lib\apache-ant-1.6.2\bin\ant -help
 goto antDone
 
 :debugAnt
-set DEBUG_ANT_FLAG=-debug
+set DEBUG_ANT_FLAG=-debug -Ddebug.ant.flag=true
 shift
 goto doSwitches
 

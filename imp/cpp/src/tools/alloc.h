@@ -29,11 +29,14 @@
 #include <assert.h>
 #include <memory.h>
 
-extern "C"
-{
-  typedef void* (ceefit_call_spec * CEEFITALLOCFUNC)(size_t numBytes);
-  typedef void (ceefit_call_spec * CEEFITFREEFUNC)(void* objPtr);
-};
+#ifdef __GNUC__
+# define fit_size_t std::size_t
+#else
+# define fit_size_t size_t
+#endif
+
+typedef void* (__cdecl * CEEFITALLOCFUNC)(fit_size_t numBytes);
+typedef void (__cdecl * CEEFITFREEFUNC)(void* objPtr);
 
 /**
  * <p>This function must be defined by the user, and must return a non-null alloc function</p>
@@ -48,9 +51,9 @@ extern ::CEEFITFREEFUNC ceefit_call_spec GetCeeFitFreeFunc(void);
 extern "C++"
 {
 # ifdef __GNUC__
-    extern void* operator new(std::size_t) throw (std::bad_alloc);
+    extern void* operator new(fit_size_t) throw (std::bad_alloc);
 # else
-    inline static void* ceefit_call_spec operator new(size_t size)
+    inline static void* ceefit_call_spec operator new(fit_size_t size)
     {
       void* retVal = GetCeeFitAllocFunc()(size);
 
@@ -78,9 +81,9 @@ extern "C++"
 # endif
 
 # ifdef __GNUC__
-    extern void* operator new[](std::size_t) throw (std::bad_alloc);
+    extern void* operator new[](fit_size_t) throw (std::bad_alloc);
 # else
-    inline static void* ceefit_call_spec operator new[](size_t size)
+    inline static void* ceefit_call_spec operator new[](fit_size_t size)
     {
       void* retVal = GetCeeFitAllocFunc()(size);
 

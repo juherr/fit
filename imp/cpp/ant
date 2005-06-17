@@ -35,7 +35,7 @@ while [ "$1" != "" ]; do
 				exit
                                 ;;
         -debugAnt )    		shift
-				DEBUG_ANT_FLAG=-debug
+				DEBUG_ANT_FLAG="-debug -Ddebug.ant.flag=true"
                                 ;;
         -debug )    		shift
 				DEBUG_BUILD=-Ddebug.mode=true

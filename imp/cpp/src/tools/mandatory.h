@@ -1,6 +1,3 @@
-#ifndef __TOOLS_MANDATORY_H__
-#define __TOOLS_MANDATORY_H__
-
 /**
  * <p>Mandatory typedefs and #defines for all CeeFIT classes</p>
  *
@@ -25,16 +22,21 @@
  * @author David Woldrich
  */
 
+#ifndef __TOOLS_MANDATORY_H__
+#define __TOOLS_MANDATORY_H__
+
 #ifdef _MSC_VER
 # define ceefit_init_spec __stdcall
-# define ceefit_call_spec __cdecl
 #else
+// GCC gets pissy if we try to get cute with the initializer call specs, leave as __thiscall for now
 # define ceefit_init_spec
-# define ceefit_call_spec __cdecl
 #endif
+
+#define ceefit_call_spec __cdecl
 
 namespace CEEFIT
 {
+  // Drastic measures ...
   // We have to deal with gcc's annoying "warning: passing NULL used for non-pointer converting" by completely removing any 
   // mention of NULL from the CeeFIT code.  From now on, use only CEEFIT::null when representing the NULL pointer.
   static const int null=0;
