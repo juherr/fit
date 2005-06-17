@@ -169,6 +169,10 @@
 					</else>
 				</if>
 			</then>
+			<else>
+				<property name="os.define" value="NOTWINDOWS"/>
+				<property name="os.is.windows" value="false"/>
+			</else>
 		</if>
 		<if>
 			<equals arg1="${debug.mode}" arg2="true"/>

@@ -126,7 +126,7 @@ namespace CEEFIT
   FIXTURE::SUMMARY& ceefit_call_spec FIXTURE::SUMMARY::operator=(FIXTURE::SUMMARY& aSummary)
   {
     InputFile = aSummary.InputFile;
-    memcpy(&InputUpdate, &aSummary.InputUpdate, sizeof(struct _utimbuf));
+    InputUpdate = aSummary.InputUpdate;
     OutputFile = aSummary.OutputFile;
     memcpy(&RunDate, &aSummary.RunDate, sizeof(struct _timeb));
     RunElapsedTime = aSummary.RunElapsedTime;
