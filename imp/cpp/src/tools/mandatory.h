@@ -27,12 +27,12 @@
 
 #ifdef _MSC_VER
 # define ceefit_init_spec __stdcall
+# define ceefit_call_spec __cdecl
 #else
-// GCC gets pissy if we try to get cute with the initializer call specs, leave as __thiscall for now
+// GCC 4.0 gets pissy if we try to get cute with the call specs, leave these to __thiscall for now
 # define ceefit_init_spec
+# define ceefit_call_spec
 #endif
-
-#define ceefit_call_spec __cdecl
 
 namespace CEEFIT
 {

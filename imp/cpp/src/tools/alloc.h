@@ -35,8 +35,8 @@
 # define fit_size_t size_t
 #endif
 
-typedef void* (__cdecl * CEEFITALLOCFUNC)(fit_size_t numBytes);
-typedef void (__cdecl * CEEFITFREEFUNC)(void* objPtr);
+typedef void* (ceefit_call_spec * CEEFITALLOCFUNC)(fit_size_t numBytes);
+typedef void (ceefit_call_spec * CEEFITFREEFUNC)(void* objPtr);
 
 /**
  * <p>This function must be defined by the user, and must return a non-null alloc function</p>
