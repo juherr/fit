@@ -61,7 +61,11 @@
 #include <sys/stat.h>
 #include <sys/timeb.h>
 #include <fcntl.h>
-#include <io.h>
+#ifndef IO_H_IN_SYS_SUBFOLDER
+# include <io.h>
+#else
+# include <sys/io.h>
+#endif
 #include <math.h>
 
 #include <stdio.h>

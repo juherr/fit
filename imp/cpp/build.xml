@@ -151,6 +151,17 @@
 			</then>
 		</if>
 		<if>
+			<not><equals arg1="${which.compiler}" arg2="msvc"/></not>
+                    <then>
+                          <if>
+                                <available file="${GCC_HOME}/include/sys/io.h"/>
+    		                   <then>
+                                        <property name="io.h.in.sys" value="true"/>
+    		                   </then>
+                          </if>
+                    </then>
+		</if>
+		<if>
 			<os family="windows"/>
 			<then>
 				<property name="os.define" value="_WIN32"/>
@@ -299,6 +310,7 @@
 				<define name="_GLIBCXX_USE_WCHAR_T" value="true" if="using.gcc"/>
 				<define name="_GLIBCPP_USE_WCHAR_T" value="true" if="using.gcc"/>
 				<define name="_GLIBCPP_HAVE_WCTYPE_H" value="true" if="using.gcc"/>
+				<define name="IO_H_IN_SYS_SUBFOLDER" value="true" if="io.h.in.sys"/>
 			</defineset>
 			<includepath>
 				<path>
