@@ -23,6 +23,13 @@
  * @author David Woldrich
  */
 
+// Make sure we map some of the new library calls for gcc to the older names that MSVC6 used
+#ifdef __GNUC__
+# ifndef _wcsicmp
+#   define _wcsicmp wcscasecmp
+# endif
+#endif
+
 namespace CEEFIT
 {
   class STRINGDATA;

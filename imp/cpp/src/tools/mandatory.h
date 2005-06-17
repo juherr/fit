@@ -43,12 +43,10 @@ namespace CEEFIT
 #ifdef __GNUC__
   class NULLTYPE 
   {
-    private:
-      inline ceefit_init_spec NULLTYPE(void) {}
-
     public:
       static NULLTYPE GlobalNull;
 
+      inline ceefit_init_spec NULLTYPE(void) {}
       inline virtual ceefit_init_spec ~NULLTYPE(void) {}
 
       template<class T> inline ceefit_call_spec operator T*(void) const
