@@ -38,9 +38,17 @@ namespace CEEFIT
       friend class PTR<T>;
 
     public:
-      explicit inline VALUE<T>(T* aValue)
-      {      
-        Value = aValue;
+      template<class U> explicit inline VALUE<T>(U* aValue)
+      {              
+        T* castedPointer = null;
+        
+        if(aValue != null)
+        {
+          castedPointer = dynamic_cast<T*>(aValue);
+          AssertIsTrue(castedPointer != null);
+        }
+
+        Value = castedPointer;
       }
 
       explicit inline VALUE<T>(int aNull)
@@ -65,12 +73,7 @@ namespace CEEFIT
       {
         aValueObj.SetValue(Value);
       }
-/*
-      template<class U> explicit inline VALUE<T>(U* aValue)
-      {      
-        Value = aValue;
-      }
-*/
+
       template<class U> inline VALUE<T>(PTR<U>& aPtr)   // set a VALUE from a PTR
       {     
         VALUE<T> aValue(dynamic_cast<T*>(aPtr.GetPointer()));

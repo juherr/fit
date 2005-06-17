@@ -51,7 +51,7 @@ namespace CEEFIT
 
       inline virtual ceefit_init_spec ~NULLTYPE(void) {}
 
-      template<class T> inline ceefit_call_spec operator T*(void) 
+      template<class T> inline ceefit_call_spec operator T*(void) const
       {
         return((T*) (void*) 0);
       }
@@ -61,17 +61,17 @@ namespace CEEFIT
         return((const T*) (const void*) 0);
       }
 
-      inline ceefit_call_spec operator unsigned int(void) 
+      inline ceefit_call_spec operator unsigned int(void) const
       {
         return(0);
       }
 
-      template<class T> inline bool ceefit_call_spec operator==(const T* anyPtr)
+      template<class T> inline bool ceefit_call_spec operator==(T anyPtr) const
       {
         return(anyPtr == 0);
       }
 
-      template<class T> inline bool ceefit_call_spec operator!=(const T* anyPtr)
+      template<class T> inline bool ceefit_call_spec operator!=(T anyPtr) const
       {
         return(anyPtr != 0);
       }
@@ -81,7 +81,7 @@ namespace CEEFIT
       NULLTYPE& ceefit_call_spec operator=(const NULLTYPE&); /**< Not implemented, do not call. */
   };
   
-  static NULLTYPE& null = NULLTYPE::GlobalNull;
+  static const NULLTYPE& null = NULLTYPE::GlobalNull;
 #else
   // this is sufficient for MSVC6
   static const int null = 0;
@@ -89,12 +89,12 @@ namespace CEEFIT
 };
 
 #ifdef __GNUC__
-  template<class T> inline static bool ceefit_call_spec operator==(T* anyPtr, const CEEFIT::NULLTYPE& aNull) 
+  template<class T> inline static bool ceefit_call_spec operator==(T anyPtr, const CEEFIT::NULLTYPE& aNull) 
   {
     return(anyPtr == 0);
   }
 
-  template<class T> inline static bool ceefit_call_spec operator!=(T* anyPtr, const CEEFIT::NULLTYPE& aNull) 
+  template<class T> inline static bool ceefit_call_spec operator!=(T anyPtr, const CEEFIT::NULLTYPE& aNull) 
   {
     return(anyPtr != 0);
   }
