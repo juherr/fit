@@ -66,12 +66,12 @@ done
 if [ "$GCC_HOME" = "" ] 
 then
 	echo "GCC_HOME was not set, setting to /usr"
-	GCC_HOME=/usr
+	export GCC_HOME=/usr
 fi
 
 ANT_HOME=./lib/apache-ant-1.6.2
 
-PATH=$GCC_HOME%/bin:$PATH
+PATH=$GCC_HOME/bin:$PATH
 INCLUDE=$GCC_HOME/include:$INCLUDE
 LIB=$GCC_HOME/lib:$LIB
 
