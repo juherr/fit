@@ -36,6 +36,8 @@ namespace CEEFIT
     this->DecodeInputBuffer(Buffer, totalsRead, fileName, unicode_windows_1252_encoding);
   }
 
+  bool InitedUnicode = false;
+
   void ceefit_call_spec BUFFEREDFILEREADER::DecodeInputBuffer(const DYNARRAY<char>& Buffer, int totalsRead, const STRING& fileName, unicode_encoding_t& expectedEncoding)
   {
     DYNARRAY<unicode_char_t> ConvertBuffer;
@@ -43,7 +45,6 @@ namespace CEEFIT
     const char* src = &Buffer[0];
     unicode_char_t* dest = &ConvertBuffer[0];
 
-    static bool InitedUnicode = false;
     if(InitedUnicode == false)
     {
       unicode_init();
@@ -57,8 +58,8 @@ namespace CEEFIT
       expectedEncoding.init(&privateData);
     }
 
-    size_t inbytesLeft = totalsRead;
-    size_t outcharsLeft = ConvertBuffer.GetSize();
+    fit_size_t inbytesLeft = totalsRead;
+    fit_size_t outcharsLeft = ConvertBuffer.GetSize();
     enum unicode_read_result readResult;
     readResult = expectedEncoding.read(privateData,
                  &src, &inbytesLeft,

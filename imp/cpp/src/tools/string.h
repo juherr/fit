@@ -23,13 +23,6 @@
  * @author David Woldrich
  */
 
-// Make sure we map some of the new library calls and types for gcc to the older names that MSVC6 used
-#ifdef __GNUC__
-# if __GNUC__ > 3
-#   define _wcsicmp wcscasecmp
-# endif
-#endif
-
 namespace CEEFIT
 {
   class STRINGDATA;
@@ -273,6 +266,10 @@ namespace CEEFIT
       ASSIGNHELP<const char* const>(const ASSIGNHELP<const char* const>&);       /**< Not implemented.  Do not call. */
   };
 
+  /**
+   * A helper function written to replace a _wcsicmp that might be missing on the host platform
+   */
+  extern int ceefit_call_spec fit_wcsicmp(const wchar_t* aStr, const wchar_t* bStr);
 };
 
 #endif // __TOOLS_STRING_H__

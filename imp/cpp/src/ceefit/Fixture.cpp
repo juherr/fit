@@ -95,11 +95,11 @@ namespace CEEFIT
     elapsed -= report * scale;
 
     STRING out;
-#   ifdef _MSC_VER
-      SafeSprintf(out, L"%I64i", report);
-#   else
+//#   ifdef _MSC_VER
+//      SafeSprintf(out, L"%I64i", report);
+//#   else
       SafeSprintf(out, L"%lld", report);
-#   endif
+//#   endif
 
     return out;
   }

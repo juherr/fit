@@ -369,12 +369,12 @@ template<> class FITFIELD<bool> : public CEEFIT::FITFIELDBASE<bool>
     inline bool ceefit_call_spec Parse(bool& out, const CEEFIT::STRING& in)
     {
       const wchar_t* aString = in.GetBuffer();
-      if(!_wcsicmp(aString, L"true") || !_wcsicmp(aString, L"yes") || !_wcsicmp(aString, L"1"))
+      if(!CEEFIT::fit_wcsicmp(aString, L"true") || !CEEFIT::fit_wcsicmp(aString, L"yes") || !CEEFIT::fit_wcsicmp(aString, L"1"))
       {
         out = true;
         return(true);
       }
-      else if(!_wcsicmp(aString, L"false") || !_wcsicmp(aString, L"no") || !_wcsicmp(aString, L"0"))
+      else if(!CEEFIT::fit_wcsicmp(aString, L"false") || !CEEFIT::fit_wcsicmp(aString, L"no") || !CEEFIT::fit_wcsicmp(aString, L"0"))
       {
         out = false;
         return(true);
@@ -914,11 +914,11 @@ template<> class FITFIELD< CEEFIT::UfitINT64 > : public CEEFIT::FITFIELDBASE< CE
     {
       CEEFIT::UfitINT64 temp = in;
 
-#     ifdef _MSC_VER
-        CEEFIT::SafeSprintf(out, L"%I64u", temp);
-#     else
+//#     ifdef _MSC_VER
+//        CEEFIT::SafeSprintf(out, L"%I64u", temp);
+//#     else
         CEEFIT::SafeSprintf(out, L"%llu", temp);
-#     endif
+//#     endif
     }
 
     inline bool ceefit_call_spec Parse(CEEFIT::UfitINT64& out, const CEEFIT::STRING& in)
@@ -970,20 +970,20 @@ template<> class FITFIELD< CEEFIT::fitINT64 > : public CEEFIT::FITFIELDBASE< CEE
     {
       CEEFIT::fitINT64 temp = in;
 
-#     ifdef _MSC_VER
-        CEEFIT::SafeSprintf(out, L"%I64i", temp);
-#     else
+//#     ifdef _MSC_VER
+//        CEEFIT::SafeSprintf(out, L"%I64i", temp);
+//#     else
         CEEFIT::SafeSprintf(out, L"%lld", temp);
-#     endif
+//#     endif
     }
 
     inline bool ceefit_call_spec Parse(CEEFIT::fitINT64& out, const CEEFIT::STRING& in)
     {
-#     ifdef _MSC_VER
-        return(swscanf(in.GetBuffer(), L"%I64i", &out)==1);
-#     else
+//#     ifdef _MSC_VER
+//        return(swscanf(in.GetBuffer(), L"%I64i", &out)==1);
+//#     else
         return(swscanf(in.GetBuffer(), L"%lld", &out)==1);
-#     endif
+//#     endif
     }
 
     virtual inline const char* ceefit_call_spec GetType(void) const

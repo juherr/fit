@@ -67,6 +67,12 @@
 #include <string>
 */
 
+extern "C"
+{
+# include "unicode.h"
+# include "convert.h"
+};
+
 namespace CEEFIT
 {
   DYNARRAY<wchar_t> SprintfBuffer;
@@ -185,21 +191,20 @@ namespace CEEFIT
 
   STRING ceefit_call_spec STRING::operator+(const int aValue) const
   {
-    wchar_t intBuffer[32];
+    STRING out;
+    SafeSprintf(out, L"%s%i", this->GetBuffer(), aValue);
 
-    _itow(aValue, intBuffer, 10);
-
-    return((*this) + intBuffer);
+    return(out);
   }
 
   STRING& ceefit_call_spec STRING::operator+=(const int aValue)
   {
-    wchar_t intBuffer[32];
-
-    _itow(aValue, intBuffer, 10);
-
+    STRING out;
+    SafeSprintf(out, L"%s%i", this->GetBuffer(), aValue);
+    (*this) = out;
     Data.AssignedFlag = true;
-    return((*this) += intBuffer);
+
+    return(*this);
   }
 
   void ceefit_call_spec STRING::Set(const STRING& src)
@@ -208,20 +213,59 @@ namespace CEEFIT
     Data.AssignedFlag = true;
   }
 
-  void ceefit_call_spec STRING::SetChar(const char* str)
-  {
-    Data.Array.Reset();
+  extern bool InitedUnicode;
 
-    if(str == null)
+  static void ceefit_call_spec DecodeAsciiBufferTo(DYNARRAY<wchar_t>& aArray, const char* aBuffer)
+  {
+    AssertIsTrue(aBuffer != null);
+    
+    DYNARRAY<unicode_char_t> ConvertBuffer;
+    int numChars = strlen(aBuffer)+1;
+    ConvertBuffer.Reserve(numChars+1);
+    const char* src = aBuffer;
+    unicode_char_t* dest = &ConvertBuffer[0];
+
+    if(InitedUnicode == false)
     {
-      Data.Array.Reserve(1);
-      Data.Array[0] = L'\0';
+      unicode_init();
+
+      InitedUnicode = true;
     }
 
-    int len = strlen(str);
-    Data.Array.Reserve(len + 1);
+    unicode_encoding_t& expectedEncoding = unicode_ascii_encoding;
 
-    swprintf(&Data.Array[0], L"%S", str);
+    void* privateData;
+    if(expectedEncoding.init)
+    {
+      expectedEncoding.init(&privateData);
+    }
+
+    fit_size_t inbytesLeft = numChars;
+    fit_size_t outcharsLeft = ConvertBuffer.GetSize();
+    enum unicode_read_result readResult;
+    readResult = expectedEncoding.read(privateData,
+                 &src, &inbytesLeft,
+                 &dest, &outcharsLeft);
+
+    if(expectedEncoding.destroy)
+    {
+      expectedEncoding.destroy(&privateData);
+    }
+
+    aArray.Reset();
+    aArray.Reserve(numChars);
+    int i = 0;
+    while(ConvertBuffer[i] != 0)
+    {
+      aArray[i] = ConvertBuffer[i];
+      i++;
+    }
+    aArray[i] = L'\0';
+  }
+
+  void ceefit_call_spec STRING::SetChar(const char* str)
+  {
+    DecodeAsciiBufferTo(Data.Array, str);
     Data.AssignedFlag = true;
   }
 
@@ -593,7 +637,7 @@ namespace CEEFIT
     while(i < length)
     {
       wchar_t& aDest = retVal.Data.Array[i];
-      aDest = towlower(this->CharAt(i++));
+      aDest = unicode_tolower(this->CharAt(i++));
     }
     retVal.Data.Array[i] = L'\0';
 
@@ -610,7 +654,7 @@ namespace CEEFIT
     while(i < length)
     {
       wchar_t& aDest = retVal.Data.Array[i];
-      aDest = towupper(this->CharAt(i++));
+      aDest = unicode_toupper(this->CharAt(i++));
     }
     retVal.Data.Array[i] = L'\0';
 
@@ -647,7 +691,7 @@ namespace CEEFIT
     int length = this->Length();
     int lastChar = length;
 
-    while(firstChar < length && iswspace(Data.Array[firstChar]))
+    while(firstChar < length && unicode_isspace(Data.Array[firstChar]))
     {
       firstChar++;
     }
@@ -659,7 +703,7 @@ namespace CEEFIT
       {
         break;
       }
-      if(!iswspace(Data.Array[lastChar]))
+      if(!unicode_isspace(Data.Array[lastChar]))
       {
         break;
       }
@@ -1862,4 +1906,30 @@ namespace CEEFIT
       }
     }
   }
+
+  int ceefit_call_spec fit_wcsicmp(const wchar_t* aStr, const wchar_t* bStr)
+  {
+    AssertIsTrue(aStr != null && bStr != null);
+
+    while(*aStr || *bStr)
+    {
+      if(::unicode_toupper(*aStr) != ::unicode_toupper(*bStr))
+      {
+        break;
+      }
+
+      aStr++;
+      bStr++;
+    }
+
+    if(!*aStr && !*bStr)
+    {
+      return(0);
+    }
+    else
+    {
+      return(*aStr < *bStr ? -1 : 1);
+    }
+  }
+
 };
