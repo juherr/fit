@@ -269,7 +269,8 @@
 			<compiler id="default.compiler.args">
 				<!-- <compilerarg location="mid" value="-print-search-dirs" if="debug.ant.flag"/> -->
 				<!-- <compilerarg location="mid" value="-Winline" if="using.gcc"/> -->
-				<compilerarg location="mid" value="-std=gnu++98" if="using.gcc.on.windows"/>
+				<compilerarg location="mid" value="-std=gnu++98" if="using.gcc"/>
+				<compilerarg location="mid" value="-fpermissive" if="using.gcc"/>
 				<!-- <compilerarg location="mid" value="-fshort-wchar" if="using.gcc"/>-->
 				<!-- <compilerarg location="mid" value="-frepo" if="using.gcc"/> -->
 				<compilerarg location="mid" value="-fkeep-static-consts" if="using.gcc"/>
