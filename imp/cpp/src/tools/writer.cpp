@@ -95,7 +95,7 @@ namespace CEEFIT
         va_list vaList;
         va_start(vaList, format);
 
-        countWritten = _vsnwprintf(&SprintfBuffer[0], SprintfBuffer.GetSize(), format, vaList);
+        countWritten = wine_vsnwprintf(&SprintfBuffer[0], SprintfBuffer.GetSize(), format, vaList);
 
         va_end(vaList);
 
@@ -250,7 +250,7 @@ namespace CEEFIT
       va_list vaList;
       va_start(vaList, format);
 
-      countWritten = _vsnwprintf(&SprintfBuffer[0], SprintfBuffer.GetSize(), format, vaList);
+      countWritten = wine_vsnwprintf(&SprintfBuffer[0], SprintfBuffer.GetSize(), format, vaList);
 
       va_end(vaList);
 

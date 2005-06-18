@@ -510,6 +510,10 @@ SOURCE=.\src\tools\string.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\tools\wcs.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\tools\writer.cpp
 # End Source File
 # End Group

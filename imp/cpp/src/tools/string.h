@@ -23,9 +23,9 @@
  * @author David Woldrich
  */
 
-// Make sure we map some of the new library calls for gcc to the older names that MSVC6 used
+// Make sure we map some of the new library calls and types for gcc to the older names that MSVC6 used
 #ifdef __GNUC__
-# ifndef _wcsicmp
+# if __GNUC__ > 3
 #   define _wcsicmp wcscasecmp
 # endif
 #endif

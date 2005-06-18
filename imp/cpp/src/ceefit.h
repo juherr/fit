@@ -92,6 +92,7 @@
 #include "tools/object.h"
 #include "tools/misc.h"
 #include "tools/string.h"
+#include "tools/wcs.h"          // a module taken from winehq and added to CeeFIT to obtain a working _vsnwprintf for GCC ....
 #include "tools/exception.h"
 #include "tools/failure.h"
 #include "tools/equality.h"

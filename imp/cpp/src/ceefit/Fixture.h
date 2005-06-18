@@ -23,6 +23,13 @@
  * @author David Woldrich
  */
 
+// Make sure we map some of the new library calls and types for gcc to the older names that MSVC6 used
+#ifdef __GNUC__
+# if __GNUC__ > 3
+#   define _timeb timeb
+# endif
+#endif
+
 namespace CEEFIT
 {
   class PARSE;

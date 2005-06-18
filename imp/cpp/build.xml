@@ -267,7 +267,7 @@
 		       optimize="${optimize.parm}" runtime="static" outtype="static" rebuild="false" relentless="false" rtti="true" subsystem="console">
 
 			<compiler id="default.compiler.args">
-				<compilerarg location="mid" value="-print-search-dirs" if="debug.ant.flag"/>
+				<!-- <compilerarg location="mid" value="-print-search-dirs" if="debug.ant.flag"/> -->
 				<!-- <compilerarg location="mid" value="-Winline" if="using.gcc"/> -->
 				<compilerarg location="mid" value="-std=gnu++98" if="using.gcc.on.windows"/>
 				<!-- <compilerarg location="mid" value="-fshort-wchar" if="using.gcc"/>-->
