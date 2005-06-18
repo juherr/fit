@@ -243,8 +243,8 @@ namespace CEEFIT
 
     // todo ... figure out exit codes ...
 
-    STRING countsString(Fixture->Counts());
-    fwprintf(stderr, L"%s", countsString.GetBuffer());
+    //STRING countsString(Fixture->Counts());
+    //fwprintf(stderr, L"%s", countsString.GetBuffer());
     // System.exit(fixture.counts.wrong + fixture.counts.exceptions);
 
     return(1);

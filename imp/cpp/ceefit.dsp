@@ -394,6 +394,10 @@ SOURCE=.\src\tools\value.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\tools\wcs.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\tools\writer.h
 # End Source File
 # End Group

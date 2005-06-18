@@ -218,8 +218,22 @@ namespace CEEFIT
       }
       else
       {
-        // don't want to deal with this
-        throw new EXCEPTION("Unsupported output_stringA call");
+        STRING wideVer(str);
+        int n = wideVer.Length()+1;
+        wchar_t* p = out->buf.W + out->used;
+
+        if( space >= n )
+        {
+          wcscpy(p, wideVer.GetBuffer());
+          out->used += n;
+          return(len);
+        }
+
+        if( space > 0 )
+        {
+          wcsncpy(p, wideVer.GetBuffer(), space);
+        }
+        out->used += n;
       }
       return -1;
   }

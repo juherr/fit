@@ -87,12 +87,12 @@ namespace CEEFIT
 };
 
 #ifdef __GNUC__
-  template<class T> inline static bool ceefit_call_spec operator==(T anyPtr, const CEEFIT::NULLTYPE& aNull) 
+  template<class T> inline static bool ceefit_call_spec operator==(T& anyPtr, const CEEFIT::NULLTYPE& aNull) 
   {
     return(anyPtr == 0);
   }
 
-  template<class T> inline static bool ceefit_call_spec operator!=(T anyPtr, const CEEFIT::NULLTYPE& aNull) 
+  template<class T> inline static bool ceefit_call_spec operator!=(T& anyPtr, const CEEFIT::NULLTYPE& aNull) 
   {
     return(anyPtr != 0);
   }
