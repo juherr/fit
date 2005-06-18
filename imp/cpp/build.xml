@@ -154,7 +154,7 @@
 			<not><equals arg1="${which.compiler}" arg2="msvc"/></not>
                     <then>
                           <if>
-                                <available file="${env.GCC_HOME}/include/sys/io.h"/>
+                                <available file="${env.GCC_INCLUDE}/include/sys/io.h"/>
     		                   <then>
                                         <property name="io.h.in.sys" value="true"/>
     		                   </then>
@@ -200,7 +200,7 @@
 						<equals arg1="${which.compiler}" arg2="c++"/>
 					</or>
 					<then>
-						<property name="stdcpplib.dir" location="${env.GCC_HOME}/lib/debug"/>
+						<property name="stdcpplib.dir" location="${env.GCC_LIB}/debug"/>
 					</then>
 				</if>
 				<if>
@@ -223,7 +223,7 @@
 						<equals arg1="${which.compiler}" arg2="c++"/>
 					</or>
 					<then>
-						<property name="stdcpplib.dir" location="${env.GCC_HOME}/lib"/>
+						<property name="stdcpplib.dir" location="${env.GCC_LIB}"/>
 					</then>
 				</if>
 				<if>
@@ -246,7 +246,7 @@
 						<equals arg1="${which.compiler}" arg2="c++"/>
 					</or>
 					<then>
-						<property name="stdcpplib.dir" location="${env.GCC_HOME}/lib"/>
+						<property name="stdcpplib.dir" location="${env.GCC_LIB}"/>
 					</then>
 				</if>
 				<if>
@@ -269,7 +269,7 @@
 			<compiler id="default.compiler.args">
 				<!-- <compilerarg location="mid" value="-print-search-dirs" if="debug.ant.flag"/> -->
 				<!-- <compilerarg location="mid" value="-Winline" if="using.gcc"/> -->
-				<compilerarg location="mid" value="-std=gnu++98" if="using.gcc"/>
+				<compilerarg location="start" value="-std=gnu++98" if="using.gcc"/>
 				<compilerarg location="mid" value="-fpermissive" if="using.gcc"/>
 				<!-- <compilerarg location="mid" value="-fshort-wchar" if="using.gcc"/>-->
 				<!-- <compilerarg location="mid" value="-frepo" if="using.gcc"/> -->

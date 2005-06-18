@@ -49,9 +49,6 @@ while [ "$1" != "" ]; do
 				DEBUG_BUILD=-Ddebug.mode=false
 				RELEASE_BUILD=-Drelease.mode=false
                                 ;;
-        -msvc )    		shift
-				echo "whachewmeanmang???"
-                                ;;
         -g++ )    		shift
 				USE_GPP="-Dwhich.compiler=g++ -Dwhich.linker=g++"
                                 ;;
@@ -63,16 +60,28 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ "$GCC_HOME" = "" ] 
+if [ "$GCC_INCLUDE" = "" ] 
 then
-	echo "GCC_HOME was not set, setting to /usr"
-	export GCC_HOME=/usr
+	echo "GCC_INCLUDE was not set, setting to /usr/include"
+	export GCC_INCLUDE=/usr/include
+fi
+
+if [ "$GCC_BIN" = "" ] 
+then
+	echo "GCC_BIN was not set, setting to /usr/local/bin"
+	export GCC_BIN=/usr/local/bin
+fi
+
+if [ "$GCC_LIB" = "" ] 
+then
+	echo "GCC_LIB was not set, setting to /usr/lib"
+	export GCC_LIB=/usr/lib
 fi
 
 ANT_HOME=./lib/apache-ant-1.6.2
 
-PATH=$GCC_HOME/bin:$PATH
-INCLUDE=$GCC_HOME/include:$INCLUDE
-LIB=$GCC_HOME/lib:$LIB
+PATH=$GCC_BIN:$PATH
+INCLUDE=$GCC_INCLUDE:$INCLUDE
+LIB=$GCC_LIB:$LIB
 
 bash $ANT_HOME/bin/ant $DEBUG_ANT_FLAG $DEBUG_BUILD $RELEASE_BUILD $USE_GPP $1 $2 $3 $4 $5 $6 $7 $8 $9
