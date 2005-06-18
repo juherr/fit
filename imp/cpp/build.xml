@@ -83,7 +83,7 @@
 				<isset property="which.compiler"/>
 			</not>
 			<then>
-				<property name="which.compiler" value="g++"/>
+				<property name="which.compiler" value="gcc"/>
 			</then>
 		</if>
 		<if>
