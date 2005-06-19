@@ -285,8 +285,22 @@ namespace CEEFIT
       if (drive[0])
         res[0] = drive[0]; /* If given a drive, preserve the letter case */
     }
-    else
+#else
+    if(!dir[0] || (dir[0] != '/' && dir[0] != '\\'))
+    {
+      /* Relative or no directory given */
+      DYNARRAY<char> tempChar;
+      tempChar.Reserve(size+1);
+      getcwd(&tempChar[0], size);
+      
+      STRING tempUni(&tempChar[0]);
+      wcscpy(res, tempUni.GetBuffer());
+      wcscat(res, szbs);
+      if(dir[0])
+        wcscat(res, dir);
+    }
 #endif
+    else
     {
       wcscpy(res,drive);
       wcscpy(res,dir);
