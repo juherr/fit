@@ -404,7 +404,8 @@
 
 			<linker inherit="true" incremental="false" debug="${debug.mode}" name="${which.linker}" map="false" rebuild="false">
 				<libset dir="${output.dir}" libs="fat" type="static" casesensitive="false"/>
-				<libset dir="${output.dir}" libs="ceefit" type="static" casesensitive="false"/>				<syslibset libs="stdc++" type="static" casesensitive="false" if="using.gcc"/>
+				<libset dir="${output.dir}" libs="ceefit" type="static" casesensitive="false"/>
+				<syslibset libs="stdc++" type="static" casesensitive="false" if="using.gcc"/>
 				<!-- <syslibset libs="kernel32,user32,gdi32,winspool,comdlg32,advapi32,shell32,ole32,oleaut32,uuid,odbc32,odbccp32" type="static" casesensitive="false" if="os.is.windows"/> -->
 			</linker>
 		</cc>
