@@ -118,7 +118,11 @@ namespace CEEFIT
       DYNARRAY<char> charBuf;
 
       aDir.GetAsCharArray(charBuf);
+#ifdef WIN32
       if(mkdir(&charBuf[0]) == -1)
+#else
+      if(mkdir(&charBuf[0], S_IRWXO | S_IRWXG | S_IRWXU) == -1)
+#endif
       {
         throw new IOEXCEPTION(STRING("Create folder failed"));
       }
