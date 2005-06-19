@@ -112,27 +112,13 @@ namespace CEEFIT
 
   void ceefit_call_spec FILERUNNER::ValidateOrCreateDir(const STRING& aDir)
   {
-    struct _wfinddata_t findData;
-    memset(&findData, 0, sizeof(struct _wfinddata_t));
-
-    long retVal = _wfindfirst(aDir.GetBuffer(), &findData);
-    if(retVal == -1)
+    PTR<FINDITERATOR> findIterator(fit_FindFiles(aDir));
+    if(!findIterator->HasNext())
     {
-      if(errno == ENOENT)
+      if(_wmkdir(aDir.GetBuffer()) == -1)
       {
-        if(_wmkdir(aDir.GetBuffer()) == -1)
-        {
-          throw new IOEXCEPTION(STRING("Create folder failed"));
-        }
+        throw new IOEXCEPTION(STRING("Create folder failed"));
       }
-      else if(errno == EINVAL)
-      {
-        throw new IOEXCEPTION(STRING("Bad pathspec, search failed:  ") + aDir);
-      }
-    }
-    else
-    {
-      _findclose(retVal);
     }
   }
 
@@ -179,14 +165,10 @@ namespace CEEFIT
     // initialize Summary fields
     Fixture->SummaryObj->InputFile = argv[2];
 
-    struct _wfinddata_t findData;
-    memset(&findData, 0, sizeof(struct _wfinddata_t));
-    long retVal = _wfindfirst(argv[2].GetBuffer(), &findData);
-    if(retVal != -1)
+    PTR<FINDITERATOR> findIterator(fit_FindFiles(argv[2]));
+    if(findIterator->HasNext())
     {
-      Fixture->SummaryObj->InputUpdate = findData.time_write;
-
-      _findclose(retVal);
+      Fixture->SummaryObj->InputUpdate = findIterator->GetNext().LastUpdateTime;
     }
 
     Fixture->SummaryObj->OutputFile = ValidateOutputPath(argv[3]);

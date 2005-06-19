@@ -77,6 +77,28 @@ namespace CEEFIT
 {
   DYNARRAY<wchar_t> SprintfBuffer;
 
+  void ceefit_call_spec STRING::GetAsCharArray(DYNARRAY<char>& out)
+  {
+    wchar_t* unicodeBuf = GetBuffer();
+    out.Reset();
+    out.Reserve(Length()+1);
+
+    int i = 0;
+    while(unicodeBuf[i] != L'\0')
+    {
+      if(unicodeBuf[i] > 255)
+      {
+        out[i] = '_';
+      }
+      else
+      {
+        out[i] = (char) unicodeBuf[i];
+      }
+      i++;
+    }
+    out[i] = '\0';
+  }
+
   void ceefit_call_spec SafeSprintf(STRING& out, const wchar_t* format, ...)
   {
     if(SprintfBuffer.GetSize() == 0)

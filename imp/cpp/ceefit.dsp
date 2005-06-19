@@ -354,6 +354,10 @@ SOURCE=.\src\tools\failure.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\tools\findfiles.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\tools\hashmap.h
 # End Source File
 # Begin Source File
@@ -442,6 +446,10 @@ SOURCE=.\src\tools\exception.cpp
 # Begin Source File
 
 SOURCE=.\src\tools\failure.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\tools\findfiles.cpp
 # End Source File
 # Begin Source File
 

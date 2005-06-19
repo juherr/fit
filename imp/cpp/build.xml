@@ -151,14 +151,15 @@
 			</then>
 		</if>
 		<if>
-			<not><equals arg1="${which.compiler}" arg2="msvc"/></not>
+                    <available file="${env.GCC_INCLUDE}/sys/io.h"/>
                     <then>
-                          <if>
-                                <available file="${env.GCC_INCLUDE}/sys/io.h"/>
-    		                   <then>
-                                        <property name="io.h.in.sys" value="true"/>
-    		                   </then>
-                          </if>
+                            <property name="io.h.in.sys" value="true"/>
+                    </then>
+		</if>
+		<if>
+                    <available file="${env.GCC_INCLUDE}/glob.h"/>
+                    <then>
+                          <property name="glob.h.was.found" value="true"/>
                     </then>
 		</if>
 		<if>
@@ -319,6 +320,7 @@
 				<define name="_GLIBCPP_USE_WCHAR_T" value="true" if="using.gcc"/>
 				<define name="_GLIBCPP_HAVE_WCTYPE_H" value="true" if="using.gcc"/>
 				<define name="IO_H_IN_SYS_SUBFOLDER" value="true" if="io.h.in.sys"/>
+				<define name="USE_GLOB_FOR_FIND" value="true" if="glob.h.was.found"/>
                           <define name="__stdcall" value="__attribute__((__stdcall__))" if="add.callspec.defines"/>
                           <define name="__fastcall" value="__attribute__((__fastcall__))" if="add.callspec.defines"/>
                           <define name="__cdecl" value="__attribute__((__cdecl__))" if="add.callspec.defines"/>

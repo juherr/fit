@@ -66,19 +66,6 @@ namespace CEEFIT
     }
   }
 
-  static void ceefit_call_spec RestoreMsWordSpecialChar(wchar_t* uniBuffer, int aLength, wchar_t matchChar, wchar_t replaceChar)
-  {
-    int i = -1;
-
-    while(++i < aLength)
-    {
-      if(uniBuffer[i] == matchChar)
-      {
-        uniBuffer[i] = replaceChar;
-      }
-    }
-  }
-
   void ceefit_call_spec FILEWRITER::Fprint(const wchar_t* format, ...)
   {
     if(Output != null)

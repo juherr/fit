@@ -156,6 +156,14 @@ namespace CEEFIT
       bool ceefit_call_spec IsEqual(const wchar_t* aString) const;
 
       int ceefit_call_spec GetHashCode(void) const;
+  
+      /**
+       * <p>Not a very exact conversion from unicode to char/ascii.</p>
+       *
+       * <p>Just needed a quick n' dirty way of getting the unicode chars converted back over to ascii.  If
+       * any of the unicode characters are greater-than 255, they are output as underscores.</p>
+       */
+      void ceefit_call_spec GetAsCharArray(DYNARRAY<char>& out);
   };
 
   extern void ceefit_call_spec Tokenize(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool delimitersAreTokens=false);

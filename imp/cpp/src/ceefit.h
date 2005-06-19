@@ -105,6 +105,7 @@
 #include "tools/writer.h"
 #include "tools/BufferedFileReader.h"
 #include "tools/hashmap.h"
+#include "tools/findfiles.h"
 
 // CeeFIT system files
 #include "ceefit/celladapter.h"
