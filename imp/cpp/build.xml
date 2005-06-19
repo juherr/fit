@@ -163,6 +163,12 @@
                     </then>
 		</if>
 		<if>
+                    <available file="${env.GCC_INCLUDE}/glob.h"/>
+                    <then>
+                          <property name="glob.h.was.found" value="true"/>
+                    </then>
+		</if>
+		<if>
 			<os family="windows"/>
 			<then>
 				<property name="os.define" value="_WIN32"/>
@@ -308,6 +314,15 @@
 				<compilerarg location="mid" value="-fenforce-eh-specs" if="using.gcc"/>
 				<compilerarg location="mid" value="-ffor-scope" if="using.gcc"/>
 				<compilerarg location="mid" value="-Wnon-virtual-dtor" if="using.gcc"/>
+				
+				<defineset>
+                                  <define name="IO_H_IN_SYS_SUBFOLDER" value="true" if="io.h.in.sys"/>
+                                  <define name="USE_GLOB_FOR_FIND" value="true" if="glob.h.was.found"/>
+                                  <define name="INCLUDE_STAT_H" value="true" if="stat.h.was.found"/>
+                                  <define name="__stdcall" value="__attribute__((__stdcall__))" if="add.callspec.defines"/>
+                                  <define name="__fastcall" value="__attribute__((__fastcall__))" if="add.callspec.defines"/>
+                                  <define name="__cdecl" value="__attribute__((__cdecl__))" if="add.callspec.defines"/>				
+                          </defineset>
 			</compiler>
 		</cc>
 		
@@ -315,15 +330,14 @@
 		       optimize="${optimize.parm}" objdir="${output.dir}" outfile="${output.dir}/ceefit" outputfileproperty="ceefit.lib.file" runtime="static" outtype="static" rebuild="false" relentless="false" 
 		       rtti="true" subsystem="console">
 			
-			<defineset define="${os.define},${debug.mode.define},_MBCS,_LIB">
+			<defineset>
+				<define name="${os.define}"/>
+				<define name="${debug.mode.define}"/>
+				<define name="_MBCS"/>
+				<define name="_LIB"/>
 				<define name="_GLIBCXX_USE_WCHAR_T" value="true" if="using.gcc"/>
 				<define name="_GLIBCPP_USE_WCHAR_T" value="true" if="using.gcc"/>
 				<define name="_GLIBCPP_HAVE_WCTYPE_H" value="true" if="using.gcc"/>
-				<define name="IO_H_IN_SYS_SUBFOLDER" value="true" if="io.h.in.sys"/>
-				<define name="USE_GLOB_FOR_FIND" value="true" if="glob.h.was.found"/>
-                          <define name="__stdcall" value="__attribute__((__stdcall__))" if="add.callspec.defines"/>
-                          <define name="__fastcall" value="__attribute__((__fastcall__))" if="add.callspec.defines"/>
-                          <define name="__cdecl" value="__attribute__((__cdecl__))" if="add.callspec.defines"/>
 			</defineset>
 			<includepath>
 				<path>
@@ -372,7 +386,11 @@
 		       optimize="${optimize.parm}" objdir="${output.dir}" outfile="${output.dir}/fitspec" outputfileproperty="fitspec.exe.file" runtime="static" outtype="executable" rebuild="false" 
 		       relentless="false" rtti="true" subsystem="console">
 		       
-			<defineset define="${os.define},${debug.mode.define},_MBCS"/>
+			<defineset>
+				<define name="${os.define}"/>
+				<define name="${debug.mode.define}"/>
+				<define name="_MBCS"/>
+			</defineset>
 			<includepath>
 				<path>
 					<pathelement location="src"/>
