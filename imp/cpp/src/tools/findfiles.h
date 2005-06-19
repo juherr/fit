@@ -37,6 +37,7 @@ namespace CEEFIT
       FINDFILEINFO& ceefit_call_spec operator=(const FINDFILEINFO& fileInfo);
       ceefit_init_spec FINDFILEINFO(const FINDFILEINFO& fileInfo);
   };
+};
 
 #ifdef USE_GLOB_FOR_FIND
 # include <sys/types.h>
@@ -44,45 +45,50 @@ namespace CEEFIT
 # include <unistd.h>
 # include <glob.h>  
 
-  class FINDITERATOR : public REFCOUNTED
+  namespace CEEFIT
   {
-    private:
-      char** curItem;
-      struct glob_t globBuffer;
-      bool NoMatches;
+    class FINDITERATOR : public REFCOUNTED
+    {
+      private:
+        char** curItem;
+        ::glob_t globBuffer;
+        bool NoMatches;
 
-    public:
-      ceefit_init_spec FINDITERATOR(const STRING& searchPattern);
-      virtual ceefit_init_spec ~FINDITERATOR(void); 
-      virtual bool ceefit_call_spec HasNext(void);
-      virtual FINDFILEINFO ceefit_call_spec GetNext(void);
+      public:
+        ceefit_init_spec FINDITERATOR(const STRING& searchPattern);
+        virtual ceefit_init_spec ~FINDITERATOR(void); 
+        virtual bool ceefit_call_spec HasNext(void);
+        virtual FINDFILEINFO ceefit_call_spec GetNext(void);
     
-    private:
-      ceefit_init_spec FINDITERATOR(void);
-      ceefit_init_spec FINDITERATOR(const FINDITERATOR&);
-      FINDITERATOR& ceefit_call_spec operator=(const FINDITERATOR&);
+      private:
+        ceefit_init_spec FINDITERATOR(void);
+        ceefit_init_spec FINDITERATOR(const FINDITERATOR&);
+        FINDITERATOR& ceefit_call_spec operator=(const FINDITERATOR&);
+    };
   };
 
 #else
-  class FINDITERATOR : public REFCOUNTED
+  namespace CEEFIT
   {
-    private:
-      long findHandle;
-      bool itemReady;
-      struct _wfinddata_t findData;
+    class FINDITERATOR : public REFCOUNTED
+    {
+      private:
+        long findHandle;
+        bool itemReady;
+        struct _wfinddata_t findData;
 
-    public:
-      ceefit_init_spec FINDITERATOR(const STRING& searchPattern);
-      virtual ceefit_init_spec ~FINDITERATOR(void);
-      virtual bool ceefit_call_spec HasNext(void);
-      virtual FINDFILEINFO ceefit_call_spec GetNext(void);
+      public:
+        ceefit_init_spec FINDITERATOR(const STRING& searchPattern);
+        virtual ceefit_init_spec ~FINDITERATOR(void);
+        virtual bool ceefit_call_spec HasNext(void);
+        virtual FINDFILEINFO ceefit_call_spec GetNext(void);
     
-    private:
-      ceefit_init_spec FINDITERATOR(void);
-      ceefit_init_spec FINDITERATOR(const FINDITERATOR&);
-      FINDITERATOR& ceefit_call_spec operator=(const FINDITERATOR&);
+      private:
+        ceefit_init_spec FINDITERATOR(void);
+        ceefit_init_spec FINDITERATOR(const FINDITERATOR&);
+        FINDITERATOR& ceefit_call_spec operator=(const FINDITERATOR&);
+    };
   };
-
 
 #endif
 
