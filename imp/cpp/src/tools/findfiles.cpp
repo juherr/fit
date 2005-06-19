@@ -77,9 +77,12 @@ namespace CEEFIT
       if(retVal == GLOB_NOMATCH)
       {
         NoMatches = true;
+        return;
       }
-
-      throw new EXCEPTION(STRING("Failed to find:  ") + searchPattern);
+      else
+      {
+        throw new EXCEPTION(STRING("Failed to find:  ") + searchPattern);
+      }
     }
     curItem = globBuffer.gl_pathv;
   }
