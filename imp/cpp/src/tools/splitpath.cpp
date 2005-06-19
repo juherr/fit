@@ -110,8 +110,8 @@ namespace CEEFIT
       ch = path[wcslen(path) - 1];
       if (ch != '/' && ch != '\\')
       {
-        static const wchar_t backslashW[] = {'\\',0};
-        wcscat(path, backslashW);
+        static const wchar_t forwardSlashW[] = {L'/',0};
+        wcscat(path, forwardSlashW);
       }
     }
     if (filename && filename[0])
@@ -134,7 +134,7 @@ namespace CEEFIT
   {
     int dir_flag = 0, root_flag = 0;
     wchar_t *r, *p, *q, *s;
-    wchar_t szbsdot[] = { '\\', '.', 0 };
+    wchar_t szbsdot[] = { '/', '.', 0 };
 
     /* Skip drive */
     if (NULL == (r = wcschr(path, ':')))
@@ -143,8 +143,8 @@ namespace CEEFIT
       ++r;
 
     /* Ignore leading slashes */
-    while ('\\' == *r)
-      if ('\\' == r[1])
+    while ('/' == *r)
+      if ('/' == r[1])
         wcscpy(r, &r[1]);
       else
       {
@@ -152,9 +152,9 @@ namespace CEEFIT
         ++r;
       }
 
-    p = r; /* Change "\\" to "\" */
-    while (NULL != (p = wcschr(p, '\\')))
-      if ('\\' ==  p[1])
+    p = r; /* Change "//" to "/" */
+    while (NULL != (p = wcschr(p, '/')))
+      if ('/' ==  p[1])
         wcscpy(p, &p[1]);
       else
         ++p;
@@ -164,18 +164,18 @@ namespace CEEFIT
       if ('.' == r[1])
       {
         /* Ignore leading ".." */
-        for (p = (r += 2); *p && (*p != '\\'); ++p)
+        for (p = (r += 2); *p && (*p != '/'); ++p)
           ;
       }
       else
       {
-        for (p = r + 1 ;*p && (*p != '\\'); ++p)
+        for (p = r + 1 ;*p && (*p != '/'); ++p)
 	  ;
       }
       wcscpy(r, p + ((*p) ? 1 : 0));
     }
 
-    while ('\\' == path[wcslen(path)-1])   /* Strip last '\\' */
+    while ('/' == path[wcslen(path)-1])   /* Strip last '//' */
     {
       dir_flag = 1;
       path[wcslen(path)-1] = '\0';
@@ -183,7 +183,7 @@ namespace CEEFIT
 
     s = r;
 
-    /* Look for "\." in path */
+    /* Look for "/." in path */
 
     while (NULL != (p = wcsstr(s, szbsdot)))
     {
@@ -193,7 +193,7 @@ namespace CEEFIT
         q = p - 1;
         while (q > r)           /* Backup one level           */
         {
-          if (*q == '\\')
+          if (*q == '/')
             break;
           --q;
         }
@@ -204,7 +204,7 @@ namespace CEEFIT
         }
         else if ('.' != *q)
         {
-          wcscpy(q + ((*q == '\\') ? 1 : 0),
+          wcscpy(q + ((*q == '/') ? 1 : 0),
                   p + 3 + ((*(p + 3)) ? 1 : 0));
           s = q;
         }
@@ -214,7 +214,7 @@ namespace CEEFIT
       {
         /* Execute this section if "." found */
         q = p + 2;
-        for ( ;*q && (*q != '\\'); ++q)
+        for ( ;*q && (*q != '/'); ++q)
           ;
         wcscpy(p, q);
       }
@@ -222,7 +222,7 @@ namespace CEEFIT
 
     if (root_flag)  /* Embedded ".." could have bubbled up to root  */
     {
-      for (p = r; *p && ('.' == *p || '\\' == *p); ++p)
+      for (p = r; *p && ('.' == *p || '/' == *p); ++p)
         ;
       if (r != p)
         wcscpy(r, p);
@@ -230,7 +230,7 @@ namespace CEEFIT
 
     if (dir_flag)
     {
-      wchar_t szbs[] = { '\\', 0 };
+      wchar_t szbs[] = { '/', 0 };
 
       wcscpy(path, szbs);
     }
@@ -249,7 +249,7 @@ namespace CEEFIT
     wchar_t drive[5],dir[fit_MAX_PATH],file[fit_MAX_PATH],ext[fit_MAX_PATH];
     wchar_t res[fit_MAX_PATH];
     size_t len;
-    wchar_t szbs[] = { '\\', 0 };
+    wchar_t szbs[] = { '/', 0 };
 
     res[0] = '\0';
 
@@ -295,6 +295,18 @@ namespace CEEFIT
     wcscat(res,szbs);
     wcscat(res, file);
     wcscat(res, ext);
+
+    // DW:  Replace any backslashes with forward slashes ...
+    int resLen = wcslen(res);
+    int i = -1;
+    while(++i < resLen)
+    {
+      if(res[i] == L'\\')
+      {
+        res[i] = L'/';
+      }
+    }
+
     wmsvcrt_fln_fix(res);
 
     len = wcslen(res);
