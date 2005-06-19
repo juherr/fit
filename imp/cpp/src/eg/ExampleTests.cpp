@@ -34,14 +34,14 @@ namespace EG
   /* (but it should do the same thing...) */
   void EXAMPLETESTS::Run() 
   {
-    wchar_t inputFileFullPath[_MAX_PATH];
-    wchar_t drive[_MAX_DRIVE];
-    wchar_t dir[_MAX_DIR];
-    wchar_t otherDir[_MAX_DIR];
-    wchar_t fname[_MAX_FNAME];
-    wchar_t ext[_MAX_EXT];
+    wchar_t inputFileFullPath[fit_MAX_PATH];
+    wchar_t drive[fit_MAX_DRIVE];
+    wchar_t dir[fit_MAX_DIR];
+    wchar_t otherDir[fit_MAX_DIR];
+    wchar_t fname[fit_MAX_FNAME];
+    wchar_t ext[fit_MAX_EXT];
 
-    fit_wfullpath(inputFileFullPath, SummaryObj->InputFile.GetBuffer(), _MAX_PATH);
+    fit_wfullpath(inputFileFullPath, SummaryObj->InputFile.GetBuffer(), fit_MAX_PATH);
     fit_wsplitpath(inputFileFullPath, drive, dir, null, null);
 
 		STRING inputFileName(STRING(drive) + dir + File);

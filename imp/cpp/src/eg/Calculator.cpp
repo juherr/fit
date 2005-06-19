@@ -24,6 +24,13 @@
 #include "ceefit.h"
 #include "eg/eg.h"
 
+extern "C"
+{
+  // defined in ceefit.lib
+  typedef unsigned int unicode_char_t;
+  extern int __cdecl unicode_isdigit(unicode_char_t c);
+};
+
 declare_fit_module(CalculatorFixture);
 
 using namespace CEEFIT;
@@ -90,10 +97,10 @@ namespace EG
           virtual bool Numeric(const STRING& key) 
           {
             return(key.Length() >= 1 &&
-                    (iswdigit(key.CharAt(0)) ||
+                    (unicode_isdigit(key.CharAt(0)) ||
                         (key.Length() >= 2 &&
                             (key.CharAt(0) == '-' &&
-                                iswdigit(key.CharAt(1))))));
+                                unicode_isdigit(key.CharAt(1))))));
           }
 
           virtual void Push() 

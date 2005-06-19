@@ -25,6 +25,13 @@
 
 declare_fit_module(FatColor);
 
+extern "C"
+{
+  // defined in ceefit.lib
+  typedef unsigned int unicode_char_t;
+  extern int __cdecl unicode_isspace (unicode_char_t c);
+};
+
 using namespace CEEFIT;
 
 namespace CEEFAT
@@ -52,7 +59,7 @@ namespace CEEFAT
         }
 
         index += pattern.Length();
-        while(text.CharAt(index) == '\'' || text.CharAt(index) == '\"' || iswspace(text.CharAt(index)))
+        while(text.CharAt(index) == '\'' || text.CharAt(index) == '\"' || unicode_isspace(text.CharAt(index)))
         {
           index++;
         }

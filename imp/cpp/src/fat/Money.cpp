@@ -21,7 +21,14 @@
  */
 
 #include "ceefit.h"
-#include "fat/money.h"
+#include "fat/Money.h"
+
+extern "C"
+{
+  // defined in ceefit.lib
+  typedef unsigned int unicode_char_t;
+  extern int __cdecl unicode_isdigit(unicode_char_t c);
+};
 
 using namespace CEEFIT;
 
@@ -45,7 +52,7 @@ namespace CEEFAT
     for (int i=0; i < s.Length(); i++) 
     {
       wchar_t c = s.CharAt(i);
-      if(iswdigit(c) || c == '.') 
+      if(unicode_isdigit(c) || c == '.') 
       {
         stripped += c;
       }

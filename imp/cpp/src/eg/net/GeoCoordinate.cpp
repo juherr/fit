@@ -24,6 +24,13 @@
 #include "ceefit.h"
 #include "eg/eg.h"
 
+extern "C"
+{
+  // defined in ceefit.lib
+  typedef unsigned int unicode_char_t;
+  extern int __cdecl unicode_isdigit(unicode_char_t c);
+};
+
 using namespace CEEFIT;
 
 namespace EG_NET
@@ -71,7 +78,7 @@ namespace EG_NET
     {
       STRING token(tokens[j].ToLowercase());
       char ch = token.CharAt(0);
-      if(iswdigit(ch) || ch == '-') 
+      if(unicode_isdigit(ch) || ch == '-') 
       {
         if(swscanf(token.GetBuffer(), L"%f", &n[i]) == 0) 
         {
