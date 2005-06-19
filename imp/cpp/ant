@@ -31,33 +31,32 @@ while [ "$1" != "" ]; do
                                 echo ""
                                 echo "  normal Ant help follows ..."
                                 echo ""
-				bash ./lib/apache-ant-1.6.2/bin/ant -help 
-				exit
+				                        bash ./lib/apache-ant-1.6.2/bin/ant -help 
+				                        exit
                                 ;;
-        -debugAnt )    		shift
-				DEBUG_ANT_FLAG="-debug -Ddebug.ant.flag=true"
+        -debugAnt )    		      shift
+				                        DEBUG_ANT_FLAG="-debug -Ddebug.ant.flag=true"
                                 ;;
-        -debug )    		shift
-				DEBUG_BUILD=-Ddebug.mode=true
-				RELEASE_BUILD=-Drelease.mode=false
+        -debug )    		        shift
+				                        DEBUG_BUILD=-Ddebug.mode=true
+				                        RELEASE_BUILD=-Drelease.mode=false
                                 ;;
-        -release )    		shift
-				DEBUG_BUILD=-Ddebug.mode=false
-				RELEASE_BUILD=-Drelease.mode=true
+        -release )    		      shift
+				                        DEBUG_BUILD=-Ddebug.mode=false
+				                        RELEASE_BUILD=-Drelease.mode=true
                                 ;;
-        -fastCompile )    	shift
-				DEBUG_BUILD=-Ddebug.mode=false
-				RELEASE_BUILD=-Drelease.mode=false
+        -fastCompile )    	    shift
+				                        DEBUG_BUILD=-Ddebug.mode=false
+				                        RELEASE_BUILD=-Drelease.mode=false
                                 ;;
-        -g++ )    		shift
-				USE_GPP="-Dwhich.compiler=g++ -Dwhich.linker=g++"
+        -g++ )    		          shift
+				                        USE_GPP="-Dwhich.compiler=g++ -Dwhich.linker=g++"
                                 ;;
         -h | --help )           usage
                                 exit
                                 ;;
         * )                     break
-    esac
-    shift
+    esac    
 done
 
 if [ "$GCC_INCLUDE" = "" ] 
