@@ -74,8 +74,8 @@ fi
 
 if [ "$GCC_LIB" = "" ] 
 then
-	echo "GCC_LIB was not set, setting to /usr/lib"
-	export GCC_LIB=/usr/lib
+	echo "GCC_LIB was not set, setting to /usr/local/lib"
+	export GCC_LIB=/usr/local/lib
 fi
 
 ANT_HOME=./lib/apache-ant-1.6.2
