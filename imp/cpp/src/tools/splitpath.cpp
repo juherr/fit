@@ -273,7 +273,7 @@ namespace CEEFIT
     fit_wsplitpath(relPath, drive, dir, file, ext);
 
 // drive letters only exist on WIN32
-#ifdef WIN32
+#ifdef _WIN32
     /* Get Directory and drive into 'res' */
     if (!dir[0] || (dir[0] != '/' && dir[0] != '\\'))
     {
