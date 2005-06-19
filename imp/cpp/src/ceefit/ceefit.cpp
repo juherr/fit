@@ -89,7 +89,7 @@ namespace CEEFIT
 
     TokenizeRespectQuotes(argList, cmdLine, delimitList);
 
-    //wprintf(L"%s %s %s %s\n", argList[0].GetBuffer(), argList[1].GetBuffer(), argList[2].GetBuffer(), argList[3].GetBuffer());
+    //printf("%S %S %S %S\n", argList[0].GetBuffer(), argList[1].GetBuffer(), argList[2].GetBuffer(), argList[3].GetBuffer());
 
     if(argList.GetSize() >= 4)
     {
@@ -102,7 +102,7 @@ namespace CEEFIT
         {
           if(argList.GetSize() - i < 3)
           {
-            fwprintf(stderr, L"usage:  %s -CeeFIT <input_file> <output_file>", argList[0].GetBuffer());
+            printf("usage:  %S -CeeFIT <input_file> <output_file>", argList[0].GetBuffer());
             retVal = 2;
           }
 
@@ -130,7 +130,7 @@ namespace CEEFIT
               STRING message;
 
               message = STRING("An unhandled exception occurred:  ") + (e != null ? e->GetReason() : "<unknown reason>");
-              wprintf(L"%s\n", message.GetBuffer());
+              printf("%S\n", message.GetBuffer());
 
               delete e;              
             }
@@ -139,13 +139,13 @@ namespace CEEFIT
               STRING message;
 
               message = STRING("A failure occurred:  ") + (f != null ? f->GetReason() : "<unknown reason>");
-              wprintf(L"%s\n", message.GetBuffer());
+              printf("%S\n", message.GetBuffer());
 
               delete f;              
             }
             catch(...) 
             {
-              wprintf(L"An unknown exception occurred.\n");
+              printf("An unknown exception occurred.\n");
             }
 
             i += 2;   // the while loop increments i for a total of 3...

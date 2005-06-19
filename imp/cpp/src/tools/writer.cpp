@@ -181,7 +181,7 @@ namespace CEEFIT
   {
     if(IsClosed != true)
     {
-      fwprintf(stdout, L"%s", aString.GetBuffer());
+      printf("%S", aString.GetBuffer());
     }
     else
     {

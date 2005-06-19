@@ -54,13 +54,13 @@ namespace CEEFIT
 	  }
 	  catch(EXCEPTION* e)
     {
-      fwprintf(stderr, L"%s\n", e->GetReason().GetBuffer());
+      printf("%S\n", e->GetReason().GetBuffer());
       delete e;
       return(2);
 	  }
     catch(...)
     {
-      fwprintf(stderr, L"Unknown exception caught\n");
+      printf("Unknown exception caught\n");
       return(2);
     }
   }
@@ -165,7 +165,7 @@ namespace CEEFIT
   {
     if(argv.GetSize() != 4)
     {
-      fwprintf(stderr, L"usage:  %s -CeeFIT <input_file> <output_file>", argv[0].GetBuffer());
+      printf("usage:  %S -CeeFIT <input_file> <output_file>", argv[0].GetBuffer());
       return(2);
     }
 
@@ -233,7 +233,7 @@ namespace CEEFIT
     // todo ... figure out exit codes ...
 
     //STRING countsString(Fixture->Counts());
-    //fwprintf(stderr, L"%s", countsString.GetBuffer());
+    //printf("%S", countsString.GetBuffer());
     // System.exit(fixture.counts.wrong + fixture.counts.exceptions);
 
     return(1);

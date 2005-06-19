@@ -587,7 +587,7 @@ namespace CEEFIT
     STRING message;
 
     message = STRING("An unhandled exception occurred:  ") + (e != null ? e->GetReason() : "<unknown reason>");
-    wprintf(L"%s\n", message.GetBuffer());
+    printf("%S\n", message.GetBuffer());
 
     Error(cell, message);
 
@@ -600,7 +600,7 @@ namespace CEEFIT
     STRING message;
 
     message = STRING("A failure occurred:  ") + (f != null ? f->GetReason() : "<unknown reason>");
-    wprintf(L"%s\n", message.GetBuffer());
+    printf("%S\n", message.GetBuffer());
 
     Error(cell, message);
 
