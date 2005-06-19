@@ -258,6 +258,12 @@
 				</if>
 			</else></if></else>
 		</if>
+		<if>
+		        <equals arg1="${using.gcc}" arg2="true"/>
+		        <then>
+		                <property name="add.callspec.defines" value="true"/>
+		        </then>
+		</if>
 		<mkdir dir="${output.dir}"/>
 	</target>
 
@@ -313,6 +319,10 @@
 				<define name="_GLIBCPP_USE_WCHAR_T" value="true" if="using.gcc"/>
 				<define name="_GLIBCPP_HAVE_WCTYPE_H" value="true" if="using.gcc"/>
 				<define name="IO_H_IN_SYS_SUBFOLDER" value="true" if="io.h.in.sys"/>
+				<define name="IO_H_IN_SYS_SUBFOLDER" value="true" if="io.h.in.sys"/>
+                          <define name="__stdcall" value="__attribute__((__stdcall__))" if="add.callspec.defines"/>
+                          <define name="__fastcall" value="__attribute__((__fastcall__))" if="add.callspec.defines"/>
+                          <define name="__cdecl" value="__attribute__((__cdecl__))" if="add.callspec.defines"/>
 			</defineset>
 			<includepath>
 				<path>
