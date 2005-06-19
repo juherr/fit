@@ -116,7 +116,7 @@ namespace CEEFIT
 
   ceefit_init_spec FIXTURE::SUMMARY::SUMMARY()
   {
-    memset(&RunDate, 0, sizeof(struct _timeb));
+    memset(&RunDate, 0, sizeof(struct timeb));
   }
 
   ceefit_init_spec FIXTURE::SUMMARY::~SUMMARY()
@@ -128,7 +128,7 @@ namespace CEEFIT
     InputFile = aSummary.InputFile;
     InputUpdate = aSummary.InputUpdate;
     OutputFile = aSummary.OutputFile;
-    memcpy(&RunDate, &aSummary.RunDate, sizeof(struct _timeb));
+    memcpy(&RunDate, &aSummary.RunDate, sizeof(struct timeb));
     RunElapsedTime = aSummary.RunElapsedTime;
 
     return(*this);

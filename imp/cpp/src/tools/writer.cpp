@@ -35,7 +35,9 @@ namespace CEEFIT
 
   ceefit_init_spec FILEWRITER::FILEWRITER(const STRING& filePath, bool createFile, unicode_encoding_t& aExpectedEncoding)
   {
-    Output = _wfopen(filePath.GetBuffer(), createFile ? L"wb" : L"ab");
+    DYNARRAY<char> charArray;
+    filePath.GetAsCharArray(charArray);
+    Output = fopen(&charArray[0], createFile ? "wb" : "ab");
     if(Output == null)
     {
       STRING reason;

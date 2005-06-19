@@ -131,10 +131,10 @@ namespace CEEFIT
 
   STRING ceefit_call_spec FILERUNNER::ValidateOutputPath(const STRING& rawOutPath)
   {
-    wchar_t drive[_MAX_DRIVE];
-    wchar_t dir[_MAX_DIR];
-    wchar_t fname[_MAX_FNAME];
-    wchar_t ext[_MAX_EXT];
+    wchar_t drive[fit_MAX_DRIVE];
+    wchar_t dir[fit_MAX_DIR];
+    wchar_t fname[fit_MAX_FNAME];
+    wchar_t ext[fit_MAX_EXT];
 
     fit_wsplitpath(rawOutPath.GetBuffer(), drive, dir, fname, ext);
 

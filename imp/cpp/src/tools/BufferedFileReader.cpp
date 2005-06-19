@@ -86,7 +86,9 @@ namespace CEEFIT
 
   ceefit_init_spec BUFFEREDFILEREADER::BUFFEREDFILEREADER(const STRING& fileName)
   {
-    FILE* FileHandle = _wfopen(fileName.GetBuffer(), L"rb");
+    DYNARRAY<char> charArray;
+    fileName.GetAsCharArray(charArray);
+    FILE* FileHandle = fopen(&charArray[0], "rb");
 
     if(FileHandle == null)
     {
