@@ -94,9 +94,12 @@ goto runAnt
 if "%SKIP_GCC%"=="true" goto runAnt
 set GCC_HOME_VAR=%GCC_HOME%
 if "%GCC_HOME_VAR%"=="" goto runAnt
-set PATH=%GCC_HOME%\bin;%PATH%
-set INCLUDE=%GCC_HOME%\include;%INCLUDE%
-set LIB=%GCC_HOME%\lib;%INCLUDE%
+set GCC_INCLUDE=%GCC_HOME%\include
+set GCC_LIB=%GCC_HOME%\lib
+set GCC_BIN=%GCC_HOME%\bin
+set PATH=%GCC_BIN%;%PATH%
+set INCLUDE=%GCC_INCLUDE%;%INCLUDE%
+set LIB=%GCC_LIB%;%INCLUDE%
 goto runAnt
 
 :runAnt
