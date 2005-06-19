@@ -45,13 +45,13 @@ namespace CEEFAT
         wchar_t fname[_MAX_FNAME];
         wchar_t ext[_MAX_EXT];
 
-        _wfullpath(inputFileFullPath, SummaryObj->InputFile.GetBuffer(), _MAX_PATH);
-        _wsplitpath(inputFileFullPath, drive, dir, null, null);
+        fit_wfullpath(inputFileFullPath, SummaryObj->InputFile.GetBuffer(), _MAX_PATH);
+        fit_wsplitpath(inputFileFullPath, drive, dir, null, null);
 
 		    STRING inputFileName(STRING(drive) + dir + Location);
 
-        _wsplitpath(SummaryObj->OutputFile.GetBuffer(), drive, dir, null, null);
-        _wsplitpath(Location.GetBuffer(), null, otherDir, fname, ext);
+        fit_wsplitpath(SummaryObj->OutputFile.GetBuffer(), drive, dir, null, null);
+        fit_wsplitpath(Location.GetBuffer(), null, otherDir, fname, ext);
 
         STRING outDirName(drive);
         DYNARRAY<STRING> argList;

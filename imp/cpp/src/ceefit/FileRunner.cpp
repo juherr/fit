@@ -115,7 +115,10 @@ namespace CEEFIT
     PTR<FINDITERATOR> findIterator(fit_FindFiles(aDir));
     if(!findIterator->HasNext())
     {
-      if(_wmkdir(aDir.GetBuffer()) == -1)
+      DYNARRAY<char> charBuf;
+
+      aDir.GetAsCharArray(charBuf);
+      if(mkdir(&charBuf[0]) == -1)
       {
         throw new IOEXCEPTION(STRING("Create folder failed"));
       }
@@ -129,7 +132,7 @@ namespace CEEFIT
     wchar_t fname[_MAX_FNAME];
     wchar_t ext[_MAX_EXT];
 
-    _wsplitpath(rawOutPath.GetBuffer(), drive, dir, fname, ext);
+    fit_wsplitpath(rawOutPath.GetBuffer(), drive, dir, fname, ext);
 
     STRING outPathName(drive);
     DYNARRAY<STRING> pathParts;

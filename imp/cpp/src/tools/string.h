@@ -163,7 +163,7 @@ namespace CEEFIT
        * <p>Just needed a quick n' dirty way of getting the unicode chars converted back over to ascii.  If
        * any of the unicode characters are greater-than 255, they are output as underscores.</p>
        */
-      void ceefit_call_spec GetAsCharArray(DYNARRAY<char>& out);
+      void ceefit_call_spec GetAsCharArray(DYNARRAY<char>& out) const;
   };
 
   extern void ceefit_call_spec Tokenize(DYNARRAY< STRING >& argList, const STRING& inString, const STRING& delimitList, bool delimitersAreTokens=false);

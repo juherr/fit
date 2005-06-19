@@ -79,7 +79,7 @@ namespace CEEFIT
         NoMatches = true;
       }
 
-      throw new EXCEPTION("Failed to find:  " + searchPattern);
+      throw new EXCEPTION(STRING("Failed to find:  ") + searchPattern);
     }
     curItem = globBuffer.gl_pathv;
   }
@@ -112,7 +112,7 @@ namespace CEEFIT
       throw new BOUNDSEXCEPTION("No more files");
     }
 
-    wp char* retVal = *curItem;
+    const char* retVal = *curItem;
 
     if(retVal == NULL)
     {

@@ -83,7 +83,7 @@ namespace CEEFIT
           STRING InputFile;             /**< The input filename */
           time_t InputUpdate;           /**< The time (in msecs) that the input file was last modified */
           STRING OutputFile;            /**< The output filename */
-          struct _timeb RunDate;        /**< The time (in msecs) that the Fixture was run */
+          struct timeb RunDate;        /**< The time (in msecs) that the Fixture was run */
           PTR<RUNTIME> RunElapsedTime;  /**< Tracks elapsed times */
           PTR<COUNTS> CountsRun;        /**< Counts run, from eg.ExampleTests.java */
 

@@ -77,9 +77,9 @@ namespace CEEFIT
 {
   DYNARRAY<wchar_t> SprintfBuffer;
 
-  void ceefit_call_spec STRING::GetAsCharArray(DYNARRAY<char>& out)
+  void ceefit_call_spec STRING::GetAsCharArray(DYNARRAY<char>& out) const
   {
-    wchar_t* unicodeBuf = GetBuffer();
+    const wchar_t* unicodeBuf = GetBuffer();
     out.Reset();
     out.Reserve(Length()+1);
 

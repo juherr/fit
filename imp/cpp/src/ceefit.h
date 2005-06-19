@@ -67,6 +67,9 @@
 # include <sys/io.h>
 #endif
 #include <math.h>
+#ifdef _MSC_VER
+# include <direct.h>
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -106,6 +109,7 @@
 #include "tools/BufferedFileReader.h"
 #include "tools/hashmap.h"
 #include "tools/findfiles.h"
+#include "tools/splitpath.h"
 
 // CeeFIT system files
 #include "ceefit/celladapter.h"

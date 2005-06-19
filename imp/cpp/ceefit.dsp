@@ -386,6 +386,10 @@ SOURCE=.\src\tools\slink.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\tools\splitpath.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\tools\string.h
 # End Source File
 # Begin Source File
@@ -503,6 +507,10 @@ SOURCE=.\src\tools\registerstatic.cpp
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\src\tools\splitpath.cpp
 # End Source File
 # Begin Source File
 

@@ -225,7 +225,7 @@ namespace CEEFIT
   {
     PTR<FIXTURE> fixture;
 
-    _ftime(&SummaryObj->RunDate);
+    ftime(&SummaryObj->RunDate);
     SummaryObj->RunElapsedTime = new FIXTURE::RUNTIME();
     if(tables != null)
     {
@@ -368,7 +368,7 @@ namespace CEEFIT
   /* old DoTables
   void ceefit_call_spec FIXTURE::DoTables(PTR<PARSE>& tables)
   {
-    _ftime(&SummaryObj->RunDate);
+    ftime(&SummaryObj->RunDate);
     SummaryObj->RunElapsedTime = new FIXTURE::RUNTIME();
 
     PTR<PARSE> temp(tables);
