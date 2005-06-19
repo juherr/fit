@@ -70,7 +70,7 @@ namespace CEEFIT
     DYNARRAY<char> searchChars;
     searchPattern.GetAsCharArray(searchChars);
 
-    memset(&globBuffer, 0, sizeof(struct glob_t));
+    memset(&globBuffer, 0, sizeof(::glob_t));
     int retVal;
     if((retVal = glob(&searchChars[0], 0, NULL, &globBuffer)) != 0)
     {

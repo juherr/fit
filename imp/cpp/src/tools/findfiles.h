@@ -92,6 +92,8 @@ namespace CEEFIT
 
 #endif
 
+namespace CEEFIT
+{
   VALUE<FINDITERATOR> ceefit_call_spec fit_FindFiles(const STRING& searchPattern);
 };
 
