@@ -219,7 +219,7 @@ namespace CEEFIT
       else
       {
         STRING wideVer(str);
-        int n = wideVer.Length()+1;
+        int n = wideVer.Length();
         wchar_t* p = out->buf.W + out->used;
 
         if( space >= n )

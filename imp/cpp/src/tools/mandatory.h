@@ -25,21 +25,20 @@
 #ifndef __TOOLS_MANDATORY_H__
 #define __TOOLS_MANDATORY_H__
 
-#ifdef _MSC_VER
-# define ceefit_init_spec __stdcall
-# define ceefit_call_spec __cdecl
-#else
-# define ceefit_init_spec __stdcall
-# define ceefit_call_spec __cdecl
-#endif
+#define ceefit_init_spec __stdcall
+#define ceefit_call_spec __cdecl
 
 namespace CEEFIT
 {
   // Drastic measures ...
   // We have to deal with gcc's annoying "warning: passing NULL used for non-pointer converting" by completely removing any 
-  // mention of NULL from the CeeFIT code.  From now on, use only CEEFIT::null when representing the NULL pointer.
+  // mention of NULL from the CeeFIT code.  From now on, use only CEEFIT::null when representing the NULL pointer (except
+  // in modified 3rd party code, etc...)
 
-#ifdef __GNUC__
+#if defined(_MSC_VER) && _MSC_VER < 1300
+  // this is sufficient for MSVC6
+  static const int null = 0;
+#else
   class NULLTYPE 
   {
     public:
@@ -63,6 +62,16 @@ namespace CEEFIT
         return(0);
       }
 
+      inline bool ceefit_call_spec operator==(const NULLTYPE& anyPtr) const
+      {
+        return(true);
+      }
+
+      inline bool ceefit_call_spec operator!=(const NULLTYPE& anyPtr) const
+      {
+        return(false);
+      }
+
       template<class T> inline bool ceefit_call_spec operator==(T anyPtr) const
       {
         return(anyPtr == 0);
@@ -79,9 +88,6 @@ namespace CEEFIT
   };
   
   static const NULLTYPE& null = NULLTYPE::GlobalNull;
-#else
-  // this is sufficient for MSVC6
-  static const int null = 0;
 #endif
 };
 
