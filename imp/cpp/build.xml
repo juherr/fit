@@ -427,6 +427,8 @@
               <tarfileset dir="."
                               prefix="fit/imp/cpp"
                               preserveLeadingSlashes="false">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
                   <include name="ant"/>
                   <include name="ant.bat"/>
                   <include name="build.properties.example"/>
@@ -461,6 +463,8 @@
           <zip destfile="CeeFIT-1.1-src.zip">
               <zipfileset dir="."
                               prefix="fit/imp/cpp">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
                   <include name="ant"/>
                   <include name="ant.bat"/>
                   <include name="build.properties.example"/>
@@ -503,6 +507,8 @@
           <zip destfile="CeeFIT-1.1-mingw-win32-bin.zip">
               <zipfileset dir="."
                               prefix="fit/imp/cpp">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
                   <include name="src/**/*.h"/>
                   <include name="Debug/**/*"/>
                   <include name="Release/**/*"/>
@@ -521,11 +527,15 @@
           <zip destfile="CeeFIT-1.1-msvc60-win32-bin.zip">
               <zipfileset dir="."
                               prefix="fit/imp/cpp">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
                   <include name="src/**/*.h"/>
                   <include name="Debug/**/*"/>
                   <include name="Release/**/*"/>
                   <include name="FastCompile/**/*"/>
-                  <exclude name="**/*.o"/>
+                  <exclude name="**/*.obj"/>
+                  <exclude name="**/*.pch"/>
+                  <exclude name="**/*.idb"/>
                   <exclude name="**/history.xml"/>
               </zipfileset>
               <zipfileset dir="../../spec"
@@ -544,6 +554,8 @@
               <tarfileset dir="."
                               prefix="fit/imp/cpp"
                               preserveLeadingSlashes="false">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
                   <include name="src/**/*.h"/>
                   <include name="Debug/**/*"/>
                   <include name="Release/**/*"/>
