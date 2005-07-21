@@ -15,7 +15,7 @@
  * <li>Allow user to declare specializations of FITFIELD so that CeeFIT will parse and emit strings for custom data types.</li>
  * <li>Provide a single &quot;drop-in&quot; header for the user that provides everything needed to build and run CeeFIT tests.</li>
  * <li>Build and run with VC6.0 SP6</li>
- * <li>Build and run with GCC 3.4.1 (and higher, hopefully)</li>
+ * <li>Build and run with GCC 3.4.3 (and higher, hopefully)</li>
  * </ul></p>
  *
  * <p>This file is part of CeeFIT.</p>

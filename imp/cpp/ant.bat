@@ -23,8 +23,8 @@ echo            -debugAnt     : Tells ant to print out debugging and
 echo                            diagnostic information
 echo .
 echo          build.properties overrides:
-echo            -fastCompile  : Force ant to build CeeFIT with debugging
-echo                            information (overrides build.properties)
+echo            -fastCompile  : Force ant to build CeeFIT with no frills
+echo                            (overrides build.properties)
 echo            -debug        : Force ant to build CeeFIT with debugging
 echo                            information (overrides build.properties)
 echo            -release      : Force ant to build CeeFIT with optimizations
@@ -34,8 +34,18 @@ echo                            linker (overrides build.properties)
 echo            -g++          : Force ant to build using GCC's g++ compiler
 echo                            and linker (overrides build.properties)
 echo .
-echo Set GCC_HOME or MSVCDir environment variables set prior to calling
+echo Set C++ compiler-related environment variables prior to calling
 echo ant.bat so that Ant knows where to find your C++ compiler.
+echo .
+echo For GCC, the following variables are expected to be set:
+echo   PATH         :  Should include any tools or executables the build
+echo                   will require.
+echo   GCC_BIN      :  The path to gcc, g++ and other GCC C++ tools.
+echo   GCC_LIB      :  The lib folder containing standard C/C++ libraries
+echo   GCC_INCLUDE  :  The include folder containing standard C/C++ headers 
+echo .
+echo For MSVC, just make sure VCVARS32.bat has been called before calling
+echo ant.
 echo .
 echo   normal Ant help follows ...
 echo . 
@@ -92,11 +102,6 @@ goto runAnt
 
 :NoVC6
 if "%SKIP_GCC%"=="true" goto runAnt
-set GCC_HOME_VAR=%GCC_HOME%
-if "%GCC_HOME_VAR%"=="" goto runAnt
-set GCC_INCLUDE=%GCC_HOME%\include
-set GCC_LIB=%GCC_HOME%\lib
-set GCC_BIN=%GCC_HOME%\bin
 set PATH=%GCC_BIN%;%PATH%
 set INCLUDE=%GCC_INCLUDE%;%INCLUDE%
 set LIB=%GCC_LIB%;%INCLUDE%

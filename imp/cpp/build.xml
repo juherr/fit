@@ -421,5 +421,143 @@
 	
       <target name="all" depends="build,test">
       </target>
-	
+      
+      <target name="make-source-tar">
+          <tar destfile="CeeFIT-1.1-src.tar" longfile="gnu">
+              <tarfileset dir="."
+                              prefix="fit/imp/cpp"
+                              preserveLeadingSlashes="false">              
+                  <include name="ant"/>
+                  <include name="ant.bat"/>
+                  <include name="build.properties.example"/>
+                  <include name="doxyfile"/>
+                  <include name="*.dsp"/>
+                  <include name="*.dsw"/>
+                  <include name="*.dev"/>
+                  <include name="build.xml"/>
+                  <include name="lib/**/*"/>
+                  <exclude name="lib/**/classes/**/*"/>
+                  <include name="src/**/*"/>
+                  <exclude name="**/CVS/**/*"/>
+                  <exclude name="**/.cvsignore"/>
+                  <exclude name="**/icu/**/*"/>                                    
+              </tarfileset>
+              <tarfileset dir="../../spec"
+                              prefix="fit/spec"
+                              preserveLeadingSlashes="false">              
+                  <include name="**/*"/>
+              </tarfileset>
+              <tarfileset dir="../../examples"
+                              prefix="fit/examples"
+                              preserveLeadingSlashes="false">              
+                  <include name="**/*"/>
+              </tarfileset>
+          </tar>
+          <gzip zipfile="CeeFIT-1.1-src.tar.gz" src="CeeFIT-1.1-src.tar"/>
+          <delete file="CeeFIT-1.1-src.tar"/>
+      </target>
+
+      <target name="make-source-zip">
+          <zip destfile="CeeFIT-1.1-src.zip">
+              <zipfileset dir="."
+                              prefix="fit/imp/cpp">              
+                  <include name="ant"/>
+                  <include name="ant.bat"/>
+                  <include name="build.properties.example"/>
+                  <include name="doxyfile"/>
+                  <include name="*.dsp"/>
+                  <include name="*.dsw"/>
+                  <include name="*.dev"/>
+                  <include name="build.xml"/>
+                  <include name="lib/**/*"/>
+                  <exclude name="lib/**/classes/**/*"/>
+                  <exclude name="lib/**/*.jpx*"/>
+                  <exclude name="lib/**/.classpath"/>
+                  <exclude name="lib/**/.project"/>
+                  <include name="src/**/*"/>
+                  <exclude name="**/CVS/**/*"/>
+                  <exclude name="**/.cvsignore"/>
+                  <exclude name="**/icu/**/*"/>                                    
+              </zipfileset>
+              <zipfileset dir="../../spec"
+                              prefix="fit/spec">              
+                  <include name="**/*"/>
+              </zipfileset>
+              <zipfileset dir="../../examples"
+                              prefix="fit/examples">              
+                  <include name="**/*"/>
+              </zipfileset>
+          </zip>
+      </target>
+
+      <target name="make-docs-zip">
+          <zip destfile="CeeFIT-1.1-doxygen.zip">
+              <zipfileset dir="."
+                              prefix="fit/imp/cpp">              
+                  <include name="docs/**/*"/>
+              </zipfileset>
+          </zip>
+      </target>
+
+      <target name="make-mingw-win32-bin-zip">
+          <zip destfile="CeeFIT-1.1-mingw-win32-bin.zip">
+              <zipfileset dir="."
+                              prefix="fit/imp/cpp">              
+                  <include name="src/**/*.h"/>
+                  <include name="Debug/**/*"/>
+                  <include name="Release/**/*"/>
+                  <include name="FastCompile/**/*"/>
+                  <exclude name="**/*.o"/>
+                  <exclude name="**/history.xml"/>
+              </zipfileset>
+              <zipfileset dir="../../spec"
+                              prefix="fit/spec">              
+                  <include name="**/*"/>
+              </zipfileset>
+          </zip>
+      </target>
+
+      <target name="make-msvc60-win32-bin-zip">
+          <zip destfile="CeeFIT-1.1-msvc60-win32-bin.zip">
+              <zipfileset dir="."
+                              prefix="fit/imp/cpp">              
+                  <include name="src/**/*.h"/>
+                  <include name="Debug/**/*"/>
+                  <include name="Release/**/*"/>
+                  <include name="FastCompile/**/*"/>
+                  <exclude name="**/*.o"/>
+                  <exclude name="**/history.xml"/>
+              </zipfileset>
+              <zipfileset dir="../../spec"
+                              prefix="fit/spec">              
+                  <include name="**/*"/>
+              </zipfileset>
+              <zipfileset dir="../../examples"
+                              prefix="fit/examples">              
+                  <include name="**/*"/>
+              </zipfileset>
+          </zip>
+      </target>
+
+      <target name="make-gcc-linux-intel-bin-tar">
+          <tar destfile="CeeFIT-1.1-gcc-linux-intel-bin.tar" longfile="gnu">
+              <tarfileset dir="."
+                              prefix="fit/imp/cpp"
+                              preserveLeadingSlashes="false">              
+                  <include name="src/**/*.h"/>
+                  <include name="Debug/**/*"/>
+                  <include name="Release/**/*"/>
+                  <include name="FastCompile/**/*"/>
+                  <exclude name="**/*.o"/>
+                  <exclude name="**/history.xml"/>
+              </tarfileset>
+              <tarfileset dir="../../spec"
+                              prefix="fit/spec"
+                              preserveLeadingSlashes="false">              
+                  <include name="**/*"/>
+              </tarfileset>
+          </tar>
+          <gzip zipfile="CeeFIT-1.1-gcc-linux-intel-bin.tar.gz" src="CeeFIT-1.1-gcc-linux-intel-bin.tar"/>
+          <delete file="CeeFIT-1.1-gcc-linux-intel-bin.tar"/>
+      </target>
 </project>

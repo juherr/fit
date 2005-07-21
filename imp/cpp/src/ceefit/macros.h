@@ -52,14 +52,14 @@
             static inline fixtureType* GetFixtureSubclass(::CEEFIT::FIXTURE* aFixture)                                            \
             {                                                                                                                     \
               extendsType* extendsFixture = dynamic_cast< extendsType* >(aFixture);                                               \
-              if(extendsFixture == null)                                                                                          \
+              if(extendsFixture == ::CEEFIT::null)                                                                                \
               {                                                                                                                   \
                 throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast FIXTURE to ") + #extendsType +  \
                                               " because the types are not compatible.");                                          \
               }                                                                                                                   \
                                                                                                                                   \
               fixtureType* subclassFixture = static_cast< fixtureType* >(extendsFixture);                                         \
-              if(subclassFixture == null)                                                                                         \
+              if(subclassFixture == ::CEEFIT::null)                                                                               \
               {                                                                                                                   \
                 throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast ") + #extendsType + " to " +    \
                                     #fixtureType + " because the types are not compatible.");                                     \
@@ -127,14 +127,14 @@
             static inline fixtureType* GetFixtureSubclass(::CEEFIT::FIXTURE* aFixture)                                            \
             {                                                                                                                     \
               extendsType* extendsFixture = dynamic_cast< extendsType* >(aFixture);                                               \
-              if(extendsFixture == null)                                                                                          \
+              if(extendsFixture == ::CEEFIT::null)                                                                                \
               {                                                                                                                   \
                 throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast FIXTURE to ") + #extendsType +  \
                                               " because the types are not compatible.");                                          \
               }                                                                                                                   \
                                                                                                                                   \
               fixtureType* subclassFixture = static_cast< fixtureType* >(extendsFixture);                                         \
-              if(subclassFixture == null)                                                                                         \
+              if(subclassFixture == ::CEEFIT::null)                                                                               \
               {                                                                                                                   \
                 throw new ::CEEFIT::EXCEPTION(::CEEFIT::STRING("GetFixtureSubclass failed to cast ") + #extendsType + " to " +    \
                                               #namespaceName #fixtureType + " because the types are not compatible.");            \
