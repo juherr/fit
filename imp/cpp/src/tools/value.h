@@ -74,12 +74,18 @@ namespace CEEFIT
         aValueObj.SetValue(Value);
       }
 
-      template<class U> inline VALUE<T>(PTR<U>& aPtr)   // set a VALUE from a PTR
-      {     
-        VALUE<T> aValue(dynamic_cast<T*>(aPtr.GetPointer()));
-     
-        (*this) = aValue;
-      }
+      // Workaround for gcc 3.3 not compiling the following code that msvc and gcc 3.4 can compile ...
+#     ifdef _MSC_VER
+        template<class U> inline VALUE<T>(PTR<U>& aPtr)    // set a VALUE from a PTR, safe to work inline on MSVC 6.0 even though technically we're calling on a forward declared class
+        {     
+          VALUE<T> aValue(dynamic_cast<T*>(aPtr.GetPointer()));
+
+          (*this) = aValue;
+        }
+#     else
+        template<class U> VALUE<T>(PTR<U>& aPtr);          // set a VALUE from a PTR, this must be defined in PTR.h for gcc 3.3
+#     endif
+
 
       template<class U> inline VALUE<T>& operator=(VALUE<U>& aValue)
       {

@@ -543,6 +543,15 @@ namespace CEEFIT
       }
 
   };
+
+#ifndef _MSC_VER
+  template<class T> template<class U> inline VALUE<T>::VALUE<T>(PTR<U>& aPtr)   // set a VALUE from a PTR
+  {     
+    VALUE<T> aValue(dynamic_cast<T*>(aPtr.GetPointer()));
+
+    (*this) = aValue;
+  }
+#endif
 };
 
 #endif // __TOOLS_PTR_H__
