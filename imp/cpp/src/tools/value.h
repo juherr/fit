@@ -78,14 +78,13 @@ namespace CEEFIT
 #     ifdef _MSC_VER
         template<class U> inline VALUE<T>(PTR<U>& aPtr)    // set a VALUE from a PTR, safe to work inline on MSVC 6.0 even though technically we're calling on a forward declared class
         {     
-          VALUE<T> aValue(dynamic_cast<T*>(aPtr.GetPointer()));
-
-          (*this) = aValue;
+          Value = dynamic_cast<T*>(aPtr.GetPointer());
         }
 #     else
         template<class U> VALUE<T>(PTR<U>& aPtr);          // set a VALUE from a PTR, this must be defined in PTR.h for gcc 3.3
 #     endif
 
+      VALUE<T>(PTR<T>& aPtr);
 
       template<class U> inline VALUE<T>& operator=(VALUE<U>& aValue)
       {

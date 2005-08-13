@@ -204,8 +204,8 @@
       ::CEEFIT::SETFIELDINFO<PROVIDEFIELDINFO_##varName> varName##_SetFitFieldInfo;                                               \
                                                                                                                                   \
     public:                                                
-                                                                                                                                  
-                                                                                                                                  
+
+
 # define fit_test(testName, returnType)                                                                                           \
       friend returnType ceefit_call_spec testName(void);                                                                          \
                                                                                                                                   \
@@ -219,7 +219,6 @@
             return(PROVIDEFIXTUREOBJECTCASTER::GetFixtureSubclass(fixture.GetPointer())->testName());                             \
           }                                                                                                                       \
       };                                                                                                                          \
-      friend class ::FITTEST_AUTO< returnType, PROVIDETESTCALLER_##testName >;                                                    \
                                                                                                                                   \
       ::FITTEST_AUTO< returnType, PROVIDETESTCALLER_##testName > testName##_CeeFITTestRegistration;                               \
                                                                                                                                   \

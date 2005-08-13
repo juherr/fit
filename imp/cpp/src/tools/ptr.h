@@ -541,17 +541,19 @@ namespace CEEFIT
 
 	      return(*this);
       }
-
   };
 
-#ifndef _MSC_VER
-  template<class T> template<class U> inline VALUE<T>::VALUE<T>(PTR<U>& aPtr)   // set a VALUE from a PTR
-  {     
-    VALUE<T> aValue(dynamic_cast<T*>(aPtr.GetPointer()));
-
-    (*this) = aValue;
+  template<class T> inline VALUE<T>::VALUE<T>(PTR<T>& aPtr)
+  {
+    Value = aPtr.GetPointer();
   }
-#endif
+
+# ifndef _MSC_VER
+    template<class T> template<class U> inline VALUE<T>::VALUE<T>(PTR<U>& aPtr)
+    {
+      Value = dynamic_cast<T*>(aPtr.GetPointer());
+    }
+# endif
 };
 
 #endif // __TOOLS_PTR_H__

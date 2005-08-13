@@ -90,8 +90,7 @@ namespace CEEFAT
 		    return result;
 	    }
 
-    public:
-	    fit_test(Output, STRING) 
+      fit_test(Output, STRING) 
       {
         PTR<PARSE> temp(new PARSE(HTML));
 		    

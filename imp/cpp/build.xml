@@ -304,7 +304,7 @@
 				<compilerarg location="mid" value="-mno-3dnow" if="using.gcc.on.intel"/>
 				<compilerarg location="mid" value="-mno-sse" if="using.gcc.on.intel"/>
 				<compilerarg location="mid" value="-mno-sse2" if="using.gcc.on.intel"/>
-				<compilerarg location="mid" value="-mno-sse3" if="using.gcc.on.windows"/>
+				<!-- <compilerarg location="mid" value="-mno-sse3" if="using.gcc.on.windows"/> -->
 				<compilerarg location="mid" value="-minline-all-stringops" unless="is.not.release.mode" if="using.gcc"/>
 				<compilerarg location="mid" value="-fimplicit-inline-templates" unless="is.not.release.mode" if="using.gcc"/>
 				<compilerarg location="mid" value="-fimplicit-templates" unless="is.not.release.mode" if="using.gcc"/>

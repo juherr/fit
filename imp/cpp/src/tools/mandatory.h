@@ -25,9 +25,13 @@
 #ifndef __TOOLS_MANDATORY_H__
 #define __TOOLS_MANDATORY_H__
 
-#define ceefit_init_spec __stdcall
-#define ceefit_call_spec __cdecl
-
+#ifdef _MSC_VER
+# define ceefit_init_spec __stdcall
+# define ceefit_call_spec __cdecl
+#else
+# define ceefit_init_spec
+# define ceefit_call_spec
+#endif
 namespace CEEFIT
 {
   // Drastic measures ...
