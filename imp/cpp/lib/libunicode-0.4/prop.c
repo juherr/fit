@@ -48,33 +48,33 @@
 		       || (Type) == UNICODE_MODIFIER_LETTER \
 		       || (Type) == UNICODE_OTHER_LETTER)
 
-int __cdecl
+int 
 unicode_isalnum (unicode_char_t c)
 {
   int t = TYPE (c);
   return ISDIGIT (t) || ISALPHA (t);
 }
 
-int __cdecl
+int 
 unicode_isalpha (unicode_char_t c)
 {
   int t = TYPE (c);
   return ISALPHA (t);
 }
 
-int __cdecl
+int 
 unicode_iscntrl (unicode_char_t c)
 {
   return TYPE (c) == UNICODE_CONTROL;
 }
 
-int __cdecl
+int 
 unicode_isdigit (unicode_char_t c)
 {
   return TYPE (c) == UNICODE_DECIMAL_NUMBER;
 }
 
-int __cdecl
+int 
 unicode_isgraph (unicode_char_t c)
 {
   int t = TYPE (c);
@@ -86,13 +86,13 @@ unicode_isgraph (unicode_char_t c)
 	  && t != UNICODE_SPACE_SEPARATOR);
 }
 
-int __cdecl
+int 
 unicode_islower (unicode_char_t c)
 {
   return TYPE (c) == UNICODE_LOWERCASE_LETTER;
 }
 
-int __cdecl
+int 
 unicode_isprint (unicode_char_t c)
 {
   int t = TYPE (c);
@@ -103,7 +103,7 @@ unicode_isprint (unicode_char_t c)
 	  && t != UNICODE_SURROGATE);
 }
 
-int __cdecl
+int 
 unicode_ispunct (unicode_char_t c)
 {
   int t = TYPE (c);
@@ -113,7 +113,7 @@ unicode_ispunct (unicode_char_t c)
 	  || t == UNICODE_OPEN_PUNCTUATION);
 }
 
-int __cdecl
+int 
 unicode_isspace (unicode_char_t c)
 {
   int t = TYPE (c);
@@ -121,13 +121,13 @@ unicode_isspace (unicode_char_t c)
 	  || t == UNICODE_PARAGRAPH_SEPARATOR);
 }
 
-int __cdecl
+int 
 unicode_isupper (unicode_char_t c)
 {
   return TYPE (c) == UNICODE_UPPERCASE_LETTER;
 }
 
-int __cdecl
+int 
 unicode_istitle (unicode_char_t c)
 {
   unsigned int i;
@@ -137,7 +137,7 @@ unicode_istitle (unicode_char_t c)
   return 0;
 }
 
-int __cdecl
+int 
 unicode_isxdigit (unicode_char_t c)
 {
   int t = TYPE (c);
@@ -146,7 +146,7 @@ unicode_isxdigit (unicode_char_t c)
 	  || ISDIGIT (t));
 }
 
-int __cdecl
+int 
 unicode_isdefined (unicode_char_t c)
 {
   int t = TYPE (c);
@@ -154,7 +154,7 @@ unicode_isdefined (unicode_char_t c)
 }
 
 /* This function stolen from Markus Kuhn <Markus.Kuhn@cl.cam.ac.uk>.  */
-int __cdecl
+int 
 unicode_iswide (unicode_char_t c)
 {
   if (c < 0x1100)
@@ -170,7 +170,7 @@ unicode_iswide (unicode_char_t c)
 	  || (c >= 0xffe0 && c <= 0xffe6));
 }
 
-unicode_char_t __cdecl
+unicode_char_t 
 unicode_toupper (unicode_char_t c)
 {
   int t = TYPE (c);
@@ -188,7 +188,7 @@ unicode_toupper (unicode_char_t c)
   return c;
 }
 
-unicode_char_t __cdecl
+unicode_char_t 
 unicode_tolower (unicode_char_t c)
 {
   int t = TYPE (c);
@@ -206,7 +206,7 @@ unicode_tolower (unicode_char_t c)
   return c;
 }
 
-unicode_char_t __cdecl
+unicode_char_t 
 unicode_totitle (unicode_char_t c)
 {
   unsigned int i;
@@ -221,7 +221,7 @@ unicode_totitle (unicode_char_t c)
 	  : c);
 }
 
-int __cdecl
+int 
 unicode_digit_value (unicode_char_t c)
 {
   if (TYPE (c) == UNICODE_DECIMAL_NUMBER)
@@ -229,7 +229,7 @@ unicode_digit_value (unicode_char_t c)
   return -1;
 }
 
-int __cdecl
+int 
 unicode_xdigit_value (unicode_char_t c)
 {
   if (c >= 'A' && c <= 'F')
@@ -241,7 +241,7 @@ unicode_xdigit_value (unicode_char_t c)
   return -1;
 }
 
-int __cdecl
+int 
 unicode_type (unicode_char_t c)
 {
   return TYPE (c);

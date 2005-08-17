@@ -29,7 +29,7 @@ extern "C"
 {
   // defined in ceefit.lib
   typedef unsigned int unicode_char_t;
-  extern int __cdecl unicode_isspace (unicode_char_t c);
+  extern int unicode_isspace (unicode_char_t c);
 };
 
 using namespace CEEFIT;

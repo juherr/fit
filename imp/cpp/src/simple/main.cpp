@@ -73,7 +73,7 @@ force_link_fit_module(ExampleMultiply);
 /**
  * <p>The main function for your existing program ...</p>
  */
-int __cdecl main(int argc, char** argv)
+int ceefit_call_spec main(int argc, char** argv)
 {
   int exitCode = 0;
 

@@ -66,14 +66,13 @@ static void ceefit_call_spec FatFree(void* objPtr)
   return(FatFree);
 }
 
-
 /**
  * <p>Main function for the Fit Specification runner</p>
  *
  * <p>By nature of the fact that all the "fat" library modules were forcibly linked above, the CEEFIT::Run call below will
  * have all of the tools needed to successfully run the Fit Specification html files.</p>
  */
-int __cdecl main(int argc, char** argv)
+int ceefit_call_spec main(int argc, char** argv)
 {
 # ifdef _DEBUG
 #   ifdef DUMP_MSVC_MEMORY_LEAKS

@@ -26,21 +26,21 @@
 #include "convert.h"
 #include "utf8.h"
 
-static int __cdecl 
+static int  
 utf8_std_init (void **privp)
 {
   *privp = (void *) 1;
   return 1;
 }
 
-static int __cdecl 
+static int  
 utf8_java_init (void **privp)
 {
   *privp = (void *) 0;
   return 1;
 }
 
-static enum unicode_read_result __cdecl 
+static enum unicode_read_result  
 utf8_read (void *arg,
 	   const char **inbuf,  size_t *inbytesleft,
 	   unicode_char_t **outbuf, size_t *outcharsleft)
@@ -71,7 +71,7 @@ utf8_read (void *arg,
   return unicode_read_ok;
 }
 
-static enum unicode_write_result __cdecl 
+static enum unicode_write_result  
 utf8_write (void *arg, 
 	    unicode_char_t **inbuf,  size_t *incharsleft,
 	    char **outbuf, size_t *outbytesleft)

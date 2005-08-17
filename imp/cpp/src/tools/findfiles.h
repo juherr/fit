@@ -68,6 +68,12 @@ namespace CEEFIT
   };
 
 #else
+# ifndef IO_H_IN_SYS_SUBFOLDER
+#   include <io.h>
+# else
+#   include <sys/io.h>
+# endif
+
   namespace CEEFIT
   {
     class FINDITERATOR : public REFCOUNTED

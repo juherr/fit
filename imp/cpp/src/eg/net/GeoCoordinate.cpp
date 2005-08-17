@@ -28,7 +28,7 @@ extern "C"
 {
   // defined in ceefit.lib
   typedef unsigned int unicode_char_t;
-  extern int __cdecl unicode_isdigit(unicode_char_t c);
+  extern int unicode_isdigit(unicode_char_t c);
 };
 
 using namespace CEEFIT;

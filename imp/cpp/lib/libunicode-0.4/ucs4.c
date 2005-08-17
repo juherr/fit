@@ -24,21 +24,21 @@
 #include "unicode.h"
 #include "convert.h"
 
-static int __cdecl 
+static int  
 ucs4_big_init (void **privp)
 {
   *privp = (void *) 1;
   return 1;
 }
 
-static int __cdecl 
+static int  
 ucs4_little_init (void **privp)
 {
   *privp = (void *) 0;
   return 1;
 }
 
-static int __cdecl 
+static int  
 ucs4_native_init (void **privp)
 {
   int val = 1;
@@ -47,7 +47,7 @@ ucs4_native_init (void **privp)
   return 1;
 }
 
-static enum unicode_read_result __cdecl 
+static enum unicode_read_result  
 ucs4_read (void *bigep, const char **inbuf, size_t *inbytesleft,
 	   unicode_char_t **outbuf, size_t *outcharsleft)
 {
@@ -79,7 +79,7 @@ ucs4_read (void *bigep, const char **inbuf, size_t *inbytesleft,
   return unicode_read_ok;
 }
 
-static enum unicode_write_result __cdecl 
+static enum unicode_write_result  
 ucs4_write (void *arg,
 	    unicode_char_t **inbuf, size_t *incharsleft,
 	    char **outbuf, size_t *outbytesleft)

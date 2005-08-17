@@ -28,21 +28,21 @@
 #define LOW_SURROGATE 0xdc00
 #define LAST_SURROGATE 0xdfff
 
-static int __cdecl 
+static int  
 ucs2_big_init (void **privp)
 {
   *privp = (void *) 1;
   return 1;
 }
 
-static int __cdecl 
+static int  
 ucs2_little_init (void **privp)
 {
   *privp = (void *) 0;
   return 1;
 }
 
-static int __cdecl 
+static int  
 ucs2_native_init (void **privp)
 {
   int p = 1;
@@ -53,7 +53,7 @@ ucs2_native_init (void **privp)
   return 1;
 }
 
-static int __cdecl 
+static int  
 get_one (int bigendian, int off, const char **inbuf)
 {
   int c = 0, i;
@@ -65,7 +65,7 @@ get_one (int bigendian, int off, const char **inbuf)
   return c;
 }
 
-static enum unicode_read_result __cdecl 
+static enum unicode_read_result  
 ucs2_read (void *bigep, const char **inbuf, size_t *inbytesleft,
 	   unicode_char_t **outbuf, size_t *outcharsleft)
 {
@@ -119,7 +119,7 @@ ucs2_read (void *bigep, const char **inbuf, size_t *inbytesleft,
 }
 
 /* Helper function to write a character.  */
-static void __cdecl 
+static void  
 write_one (int ch, int bigendian, char **outbuf)
 {
   int i;
@@ -130,7 +130,7 @@ write_one (int ch, int bigendian, char **outbuf)
     }
 }
 
-static enum unicode_write_result __cdecl 
+static enum unicode_write_result  
 ucs2_write (void *arg,
 	    unicode_char_t **inbuf, size_t *incharsleft,
 	    char **outbuf, size_t *outbytesleft)

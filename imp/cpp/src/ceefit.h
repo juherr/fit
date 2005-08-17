@@ -11,7 +11,7 @@
  * <li>Automatic registration of fixtures, their member variables, and member functions using macro assists.</li>
  * <li>Able to accomodate user's memory allocator/deallocator.</p>
  * <li>Explicitly declare __cdecl or __stdcall on all functions for maximum portability and to override user's default
- * calling convention.</li>
+ * calling convention.  (08/17/05 - modified this goal to only Microsoft environments to be friendlier to Solaris compiler...)</li>
  * <li>Allow user to declare specializations of FITFIELD so that CeeFIT will parse and emit strings for custom data types.</li>
  * <li>Provide a single &quot;drop-in&quot; header for the user that provides everything needed to build and run CeeFIT tests.</li>
  * <li>Build and run with VC6.0 SP6</li>
@@ -56,16 +56,10 @@
 #endif
 
 // Standard C headers
-//#include <sys/utime.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/timeb.h>
 #include <fcntl.h>
-#ifndef IO_H_IN_SYS_SUBFOLDER
-# include <io.h>
-#else
-# include <sys/io.h>
-#endif
 #include <math.h>
 #ifdef _MSC_VER
 # include <direct.h>

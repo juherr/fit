@@ -66,11 +66,10 @@ static void ceefit_call_spec FitExamplesFree(void* objPtr)
   return(FitExamplesFree);
 }
 
-
 /**
  * <p>Main function for the Fit Examples runner</p>
  */
-int __cdecl main(int argc, char** argv)
+int ceefit_call_spec main(int argc, char** argv)
 {
 # ifdef _DEBUG
 #   ifdef DUMP_MSVC_MEMORY_LEAKS

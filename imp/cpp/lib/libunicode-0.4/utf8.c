@@ -30,7 +30,7 @@
 #include "utf8.h"
 
 /* Skip backwards to previous utf8 character.  */
-char * __cdecl
+char * 
 unicode_previous_utf8 (const char *start, const char *p)
 {
   int count = 6;
@@ -45,7 +45,7 @@ unicode_previous_utf8 (const char *start, const char *p)
 /* Skip over a utf8 character.
    Note that P cannot be const because then there is no useful return
    type for this function.  */
-char * __cdecl
+char * 
 unicode_next_utf8 (const char *p)
 {
   if (*p)
@@ -57,7 +57,7 @@ unicode_next_utf8 (const char *p)
 }
 
 /* Return length of a UTF8 string.  */
-int __cdecl
+int 
 unicode_strlen (const char *p, int max)
 {
   int len = 0;
@@ -80,7 +80,7 @@ unicode_strlen (const char *p, int max)
 }
 
 /* Return pointer to the last UTF-8 sequence in a string.  */
-char * __cdecl
+char * 
 unicode_last_utf8 (const char *p)
 {
   const char *start = p;
@@ -93,7 +93,7 @@ unicode_last_utf8 (const char *p)
 }
 
 
-char * __cdecl
+char * 
 unicode_get_utf8 (const char *p, unicode_char_t *result)
 {
   int i, mask = 0, len;
@@ -110,7 +110,7 @@ unicode_get_utf8 (const char *p, unicode_char_t *result)
 
 /* unicode_offset_to_index */
 
-size_t __cdecl
+size_t 
 unicode_offset_to_index(const char *src, int offset)
 {
 	const char *s = src;
@@ -123,7 +123,7 @@ unicode_offset_to_index(const char *src, int offset)
 
 /* unicode_index_to_offset */
 
-size_t __cdecl
+size_t 
 unicode_index_to_offset(const char *src, int index)
 {
 	const char *s = src;
@@ -139,7 +139,7 @@ unicode_index_to_offset(const char *src, int index)
 
 /* unicode_strncpy */
 
-char* __cdecl
+char* 
  unicode_strncpy(char *dest, const char *src, size_t n)
 {
 	const char *s = src;
@@ -153,7 +153,7 @@ char* __cdecl
 	return dest;
 }
 
-static int __cdecl
+static int 
 unicode_get_charset_internal (char **a)
 {
   char *charset = getenv("CHARSET");
@@ -193,7 +193,7 @@ unicode_get_charset_internal (char **a)
 static int utf8_locale_cache = -1;
 static char *utf8_charset_cache = NULL;
 
-int __cdecl
+int 
 unicode_get_charset (char **charset) 
 {
   if (utf8_locale_cache != -1)
@@ -208,7 +208,7 @@ unicode_get_charset (char **charset)
   return utf8_locale_cache;
 }
 
-int __cdecl
+int 
 unicode_string_width(const char *p)
 {
   /* for now, we just pass through to unicode_strlen 
@@ -219,7 +219,7 @@ unicode_string_width(const char *p)
   return unicode_strlen(p, -1);
 }
 
-void __cdecl
+void 
 unicode_pad_string(char *dest, int right, int width, const char *string) 
 {
   char *old_dest = dest;
@@ -246,7 +246,7 @@ unicode_pad_string(char *dest, int right, int width, const char *string)
 
 /* unicode_strchr */
 
-char * __cdecl
+char * 
 unicode_strchr(const char *p, unicode_char_t c)
 {
   char ch[10];

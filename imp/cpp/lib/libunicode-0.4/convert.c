@@ -39,8 +39,8 @@ static unicode_encoding_t *encodings;
 
 
 
-void __cdecl
-unicode_register_encoding (unicode_encoding_t *vec)
+void 
+unicode_register_encoding (unicode_encoding_t *vec)     // dw: removed _cdecl
 {
   vec->next = encodings;
   encodings = vec;
@@ -62,7 +62,7 @@ find_encoding (const char *name)
   return cs;
 }
 
-unicode_iconv_t __cdecl
+unicode_iconv_t 
 unicode_iconv_open (const char *tocode, const char *fromcode)
 {
   unicode_iconv_t r = (unicode_iconv_t) malloc (sizeof (unicode_iconv_i));
@@ -123,7 +123,7 @@ unicode_iconv_open (const char *tocode, const char *fromcode)
   return r;
 }
 
-int __cdecl
+int 
 unicode_iconv_close (unicode_iconv_t cd)
 {
   int r = 0;
@@ -145,7 +145,7 @@ unicode_iconv_close (unicode_iconv_t cd)
   return r;
 }
 
-size_t __cdecl
+size_t 
 unicode_iconv (unicode_iconv_t cd, const char **inbuf, size_t *inbytesleft,
 	       char **outbuf, size_t *outbytesleft)
 {

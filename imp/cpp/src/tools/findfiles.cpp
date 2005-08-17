@@ -138,7 +138,8 @@ namespace CEEFIT
   {
     itemReady = false;
     memset(&findData, 0, sizeof(struct _wfinddata_t));
-    findHandle = _wfindfirst(searchPattern.GetBuffer(), &findData);
+    STRING temp(searchPattern);
+    findHandle = _wfindfirst(temp.GetBuffer(), &findData);
 
     if(findHandle == -1)
     {

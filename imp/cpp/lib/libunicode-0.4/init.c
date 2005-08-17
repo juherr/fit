@@ -24,7 +24,11 @@
 #include "unicode.h"
 #include "convert.h"
 
-void __cdecl 
+#ifdef __cplusplus
+  extern "C" {  
+#endif
+
+void  
 unicode_init (void)
 {
   unicode_register_encoding (&unicode_utf8_encoding);
@@ -59,3 +63,7 @@ unicode_init (void)
   unicode_register_encoding (&unicode_sjis_encoding);
   unicode_register_encoding (&unicode_cp932_encoding);
 }
+
+#ifdef __cplusplus
+  };
+#endif

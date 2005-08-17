@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GR /GX /O2 /Ob2 /I "src" /I "lib\libunicode-0.4" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+# ADD CPP /nologo /Gr /MT /W3 /GR /GX /O2 /Ob2 /I "src" /I "lib\libunicode-0.4" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -518,12 +518,11 @@ SOURCE=.\src\tools\string.cpp
 
 !IF  "$(CFG)" == "ceefit - Win32 Release"
 
-# ADD CPP /Gd
-# SUBTRACT CPP /YX /Yc /Yu
+# ADD CPP /Gr /YX
 
 !ELSEIF  "$(CFG)" == "ceefit - Win32 Debug"
 
-# ADD CPP /Gd /Gm- /Gi- /GR /GX /FR /YX
+# ADD CPP /Gr /Gm /Gi- /GR /GX /FR /YX
 
 !ENDIF 
 
