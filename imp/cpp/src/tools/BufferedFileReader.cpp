@@ -103,7 +103,7 @@ namespace CEEFIT
     while(dataRemaining)
     {
       Buffer.Reserve(readSize);
-      size_t retVal = fread(&Buffer[readPos], 1, readSize, FileHandle);
+      fit_size_t retVal = fread(&Buffer[readPos], 1, readSize, FileHandle);
       if(retVal != readSize && ferror(FileHandle))
       {
         fclose(FileHandle);

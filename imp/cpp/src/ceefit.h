@@ -87,9 +87,27 @@
 #include <limits.h>
 
 #include <typeinfo>
+#include <new>
 
 // Define up-front, mandatory symbols
 #include "tools/mandatory.h"
+
+// Declare what the alloc/free functions should look like
+#ifndef CEEFIT_ALLOC_FUNCS                                  // tombstoned so as not to conflict with alloc.h
+# define CEEFIT_ALLOC_FUNCS
+
+# ifndef _MSC_VER
+#   define fit_size_t std::size_t
+# else
+#   define fit_size_t size_t
+# endif
+
+  extern "C"
+  {
+    typedef void* (ceefit_call_spec * CEEFITALLOCFUNC)(fit_size_t numBytes);
+    typedef void (ceefit_call_spec * CEEFITFREEFUNC)(void* objPtr);
+  };
+#endif
 
 // Tools and Java-like classes
 #include "tools/object.h"
@@ -127,12 +145,6 @@
 #include "ceefit/Parse.h"
 #include "ceefit/ScientificDouble.h"
 #include "ceefit/FileRunner.h"
-
-extern "C"
-{
-  typedef void* (ceefit_call_spec * CEEFITALLOCFUNC)(size_t numBytes);
-  typedef void (ceefit_call_spec * CEEFITFREEFUNC)(void* objPtr);
-};
 
 /**
  * <p>This function must be defined by the user, and must return a non-null alloc function</p>

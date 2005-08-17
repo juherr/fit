@@ -42,7 +42,7 @@ namespace CEEFIT
     return(*this);
   }
 
-  void* ceefit_call_spec OBJECT::operator new(size_t numBytes)
+  void* ceefit_call_spec OBJECT::operator new(fit_size_t numBytes)
   {
     return(GetCeeFitAllocFunc()(numBytes));
   }

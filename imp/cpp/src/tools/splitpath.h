@@ -47,7 +47,7 @@ namespace CEEFIT
    *
    * Unicode version of _fullpath.
    */
-  wchar_t* ceefit_call_spec fit_wfullpath(wchar_t * absPath, const wchar_t* relPath, size_t size);
+  wchar_t* ceefit_call_spec fit_wfullpath(wchar_t * absPath, const wchar_t* relPath, fit_size_t size);
 };
 
 #endif // __TOOLS_SPLITPATH_H__

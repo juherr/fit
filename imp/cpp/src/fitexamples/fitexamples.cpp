@@ -43,7 +43,7 @@ force_link_fit_module(ExampleTestsFixture);
 
 // Define the Alloc and Free functions that CeeFIT should use
 
-static void* ceefit_call_spec FitExamplesAlloc(size_t numBytes)
+static void* ceefit_call_spec FitExamplesAlloc(fit_size_t numBytes)
 {
   return(new unsigned char[numBytes]);
 }

@@ -46,7 +46,7 @@ force_link_fit_module(FatStandardAnnotationFixture);
 
 // Define the Alloc and Free functions that CeeFIT should use
 
-static void* ceefit_call_spec FatAlloc(size_t numBytes)
+static void* ceefit_call_spec FatAlloc(fit_size_t numBytes)
 {
   return(malloc(numBytes));
 }

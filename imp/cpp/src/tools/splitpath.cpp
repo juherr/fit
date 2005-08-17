@@ -241,14 +241,14 @@ namespace CEEFIT
    *
    * Unicode version of _fullpath.
    */
-  wchar_t* ceefit_call_spec fit_wfullpath(wchar_t * absPath, const wchar_t* relPath, size_t size)
+  wchar_t* ceefit_call_spec fit_wfullpath(wchar_t * absPath, const wchar_t* relPath, fit_size_t size)
   {
     if (!absPath)
       throw new EXCEPTION("Expected non null absPath to be passed in");
 
     wchar_t drive[5],dir[fit_MAX_PATH],file[fit_MAX_PATH],ext[fit_MAX_PATH];
     wchar_t res[fit_MAX_PATH];
-    size_t len;
+    fit_size_t len;
     wchar_t szbs[] = { '/', 0 };
 
     res[0] = '\0';
@@ -324,7 +324,7 @@ namespace CEEFIT
     wmsvcrt_fln_fix(res);
 
     len = wcslen(res);
-    if (len >= fit_MAX_PATH || len >= (size_t)size)
+    if (len >= fit_MAX_PATH || len >= (fit_size_t)size)
       return NULL; /* FIXME: errno? */
 
     wcscpy(absPath,res);

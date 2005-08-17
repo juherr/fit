@@ -131,9 +131,9 @@ namespace CEEFIT
 
       unicode_char_t* src = &convertSrcBuffer[0];
       char* dest = &outBuf[0];
-      size_t incharsLeft = convertSrcBuffer.GetSize();
-      size_t outbytesLeft = outBuf.GetSize();
-      size_t maxbytesLeft = outbytesLeft;
+      fit_size_t incharsLeft = convertSrcBuffer.GetSize();
+      fit_size_t outbytesLeft = outBuf.GetSize();
+      fit_size_t maxbytesLeft = outbytesLeft;
 
       memset(dest, 0, outbytesLeft);    // clear the dest buffer
 

@@ -35,7 +35,7 @@ namespace CEEFIT
   class OBJECT
   {
     public:
-      static void* ceefit_call_spec operator new(size_t numBytes);
+      static void* ceefit_call_spec operator new(fit_size_t numBytes);
       static void ceefit_call_spec operator delete(void* aObj);
 
       OBJECT(void);

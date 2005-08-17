@@ -29,8 +29,8 @@
 
 extern "C++"
 {
-# ifdef __GNUC__
-    void* operator new(std::size_t size) throw (std::bad_alloc)
+# ifndef _MSC_VER
+    void* operator new(fit_size_t size) throw (std::bad_alloc)
     {
       void* retVal = GetCeeFitAllocFunc()(size);
 
@@ -50,7 +50,7 @@ extern "C++"
       }
     }
 
-    void* operator new[](std::size_t size) throw (std::bad_alloc)
+    void* operator new[](fit_size_t size) throw (std::bad_alloc)
     {
       void* retVal = GetCeeFitAllocFunc()(size);
 
