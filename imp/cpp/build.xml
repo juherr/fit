@@ -314,6 +314,7 @@
 				<compilerarg location="mid" value="-fenforce-eh-specs" if="using.gcc"/>
 				<compilerarg location="mid" value="-ffor-scope" if="using.gcc"/>
 				<compilerarg location="mid" value="-Wnon-virtual-dtor" if="using.gcc"/>
+				<compilerarg location="mid" value="-Woverloaded-virtual" if="using.gcc"/>
 				
 				<defineset>
                                   <define name="IO_H_IN_SYS_SUBFOLDER" value="true" if="io.h.in.sys"/>

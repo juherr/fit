@@ -122,11 +122,13 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
     CEEFIT::PTR< CEEFIT::FIXTURE > Fixture;
 
   public:
+    using CELLADAPTER::WriteToFixtureVar;
     virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in)
     {
       throw new CEEFIT::EXCEPTION("Cannot WriteToFixtureVar on FITFIXTURECONTAINER CELLADAPTER");
     }
 
+    using CELLADAPTER::ReadFromFixtureVar;
     virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out)
     {
       throw new CEEFIT::EXCEPTION("Cannot ReadFromFixtureVar on FITFIXTURECONTAINER CELLADAPTER");
@@ -162,6 +164,7 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
       throw new CEEFIT::EXCEPTION("Cannot NewInstanceParse on FITFIXTURECONTAINER CELLADAPTER");
     }
 
+    using CELLADAPTER::Invoke;
     virtual void ceefit_call_spec Invoke(::CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, ::CEEFIT::PTR<CEEFIT::FIXTURE>& aFixture)
     {
       throw new CEEFIT::EXCEPTION("Cannot Invoke on FITFIXTURECONTAINER CELLADAPTER");
@@ -179,6 +182,7 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
       return(0);
     }
 
+    using CELLADAPTER::IsEqual;
     virtual bool ceefit_call_spec IsEqual(const CEEFIT::CELLADAPTER* aAdapter) const
     {
       return(false);

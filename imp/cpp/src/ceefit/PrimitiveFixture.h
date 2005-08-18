@@ -40,6 +40,7 @@ namespace CEEFIT
 
       // answer comparisons ///////////////////////
 
+      using FIXTURE::Check;
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, const STRING& value);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, long value);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, double value);

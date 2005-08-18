@@ -46,7 +46,10 @@ namespace CEEFIT
       virtual void ceefit_call_spec Start(void);
       virtual void ceefit_call_spec Enter(void);
       virtual void ceefit_call_spec Press(void);
-      virtual void ceefit_call_spec Check(void);
+      virtual void ceefit_call_spec ActionCheck(void);  // due to overload resolution difficulties that C++ has that java does not,
+                                                        // this method has been renamed from Check() to ActionCheck().
+                                                        // See the constructor in ActionFixture.cpp.  This method is registered
+                                                        // to match with the name "check" to conform with Java Fit.
 
     protected:
       // Utility //////////////////////////////////

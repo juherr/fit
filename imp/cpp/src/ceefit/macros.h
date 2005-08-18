@@ -203,7 +203,8 @@
                                                                                                                                   \
       ::CEEFIT::SETFIELDINFO<PROVIDEFIELDINFO_##varName> varName##_SetFitFieldInfo;                                               \
                                                                                                                                   \
-    public:                                                
+    public:                                                                                                                       \
+      class ENDFITVARMACRO_##varName { private: ENDFITVARMACRO_##varName (void); ENDFITVARMACRO_##varName (ENDFITVARMACRO_##varName &); }
 
 
 # define fit_test(testName, returnType)                                                                                           \

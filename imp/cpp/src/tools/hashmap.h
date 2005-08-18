@@ -180,16 +180,15 @@ namespace CEEFIT
       ANYTYPE Value;
 
     public:
-      virtual inline ~NODE<ANYTYPE>(void) {}
+      virtual inline ~NODE(void) {}
 
       virtual const std::type_info& GetKeyType(void) const=0;
 
-      template<class ANYTYPE2> NODE<ANYTYPE>(ANYTYPE2& aValue)
+      inline NODE(ANYTYPE const & aValue) : Value(aValue)
       {
-        Value = aValue;
       }
 
-      inline NODE<ANYTYPE>& operator=(NODE<ANYTYPE>& aNode)
+      inline NODE& operator=(NODE& aNode)
       {
         Value = aNode.Value;
 
@@ -233,8 +232,8 @@ namespace CEEFIT
       }
 
     private:
-      NODE<ANYTYPE>(void);
-      NODE<ANYTYPE>(const NODE<ANYTYPE>&);
+      NODE(void);
+      NODE(const NODE&);
   };
 
   template<class ANYTYPE, class KEYTYPE> class NODEIMPL : public NODE<ANYTYPE>
@@ -294,7 +293,7 @@ namespace CEEFIT
 
       inline bool IsEqual(HASHMAPNODEBASE& aNode)
       {
-        NODEIMPL<ANYTYPE, KEYTYPE>* aNodeImpl = dynamic_cast< NODEIMPL<ANYTYPE, KEYTYPE>* >(&aNode);
+        NODEIMPL* aNodeImpl = dynamic_cast< NODEIMPL* >(&aNode);
         if(aNodeImpl != null)
         {
           return(::CEEFIT::IsEqual(aNodeImpl->GetKey(), this->GetKey()) && ::CEEFIT::IsEqual(aNodeImpl->GetValue(), this->GetValue()));
@@ -312,10 +311,10 @@ namespace CEEFIT
         return(::CEEFIT::GetHashCode(Key));
       }
 
-      inline NODEIMPL<ANYTYPE, KEYTYPE>(void) {}
-      inline ~NODEIMPL<ANYTYPE, KEYTYPE>(void) {}
+      inline NODEIMPL() {}
+      inline ~NODEIMPL() {}
 
-      inline NODEIMPL<ANYTYPE, KEYTYPE>& operator=(NODEIMPL<ANYTYPE, KEYTYPE>& aNode)
+      inline NODEIMPL& operator=(NODEIMPL& aNode)
       {
         this->NODE<ANYTYPE>::operator=(aNode);
 
@@ -324,16 +323,19 @@ namespace CEEFIT
         return(*this);
       }
 
-      inline NODEIMPL<ANYTYPE, KEYTYPE>(NODEIMPL<ANYTYPE, KEYTYPE>& aNode)
+      inline NODEIMPL(NODEIMPL& aNode)
       {
         operator=(aNode);
       }
 
-      inline NODEIMPL<ANYTYPE, KEYTYPE>(KEYTYPE& aKey, ANYTYPE& aValue) : NODE<ANYTYPE>(aValue)
-      {
-        SetKey(aKey);
-      }
+      NODEIMPL(KEYTYPE& aKey, ANYTYPE& aValue);
   };
+
+  template<class ANYTYPE, class KEYTYPE> inline
+    NODEIMPL<ANYTYPE, KEYTYPE>::NODEIMPL(KEYTYPE& aKey, ANYTYPE& aValue) : NODE<ANYTYPE>(aValue)
+  {
+    SetKey(aKey);
+  }
 
   template<class ANYTYPE, int listsize=101> struct HASHMAP : public OBJECT
   {

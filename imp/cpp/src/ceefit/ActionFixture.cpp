@@ -87,7 +87,7 @@ namespace CEEFIT
     methodPtr->Invoke(result, targetFixture);
   }
 
-  void ceefit_call_spec ACTIONFIXTURE::Check() 
+  void ceefit_call_spec ACTIONFIXTURE::ActionCheck() 
   {
     PTR<FIXTURE> targetFixture;
     PTR<CELLADAPTER> result;
@@ -121,7 +121,7 @@ namespace CEEFIT
     RegisterCeefitTest(this, "start", &ACTIONFIXTURE::Start);
     RegisterCeefitTest(this, "enter", &ACTIONFIXTURE::Enter);
     RegisterCeefitTest(this, "press", &ACTIONFIXTURE::Press);
-    RegisterCeefitTest(this, "check", &ACTIONFIXTURE::Check);
+    RegisterCeefitTest(this, "check", &ACTIONFIXTURE::ActionCheck);
   }
 
   ceefit_init_spec ACTIONFIXTURE::~ACTIONFIXTURE()

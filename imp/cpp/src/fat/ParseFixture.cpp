@@ -29,7 +29,7 @@ using namespace CEEFIT;
 namespace CEEFAT
 {
 
-  begin_namespaced_fit_fixture(CEEFAT, PARSEFIXTURE, COLUMNFIXTURE, fat.ParseFixture);
+  begin_namespaced_fit_fixture(CEEFAT, PARSEFIXTURE, COLUMNFIXTURE, fat.ParseFixture)
 
     public:
       fit_var(STRING, Html);
@@ -145,7 +145,8 @@ namespace CEEFAT
 		    
         return GenerateOutput(aParse);
 	    }
-	    
+
+      using COLUMNFIXTURE::Parse;
   	  fit_test(Parse, STRING) 
       {
         PTR<PARSE> aParse(GenerateParse());
@@ -153,6 +154,6 @@ namespace CEEFAT
 		    return DumpTables(aParse);		
 	    }
 
-  end_namespaced_fit_fixture(CEEFAT, PARSEFIXTURE);
+  end_namespaced_fit_fixture(CEEFAT, PARSEFIXTURE)
 
 };

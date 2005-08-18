@@ -28,7 +28,7 @@ using namespace CEEFIT;
 
 namespace CEEFAT
 {
-  begin_namespaced_fit_fixture(CEEFAT, DOCUMENTPARSEFIXTURE, COLUMNFIXTURE, fat.DocumentParseFixture);
+  begin_namespaced_fit_fixture(CEEFAT, DOCUMENTPARSEFIXTURE, COLUMNFIXTURE, fat.DocumentParseFixture)
     
     public:
       fit_var(STRING, HTML);
@@ -104,6 +104,6 @@ namespace CEEFAT
         return DumpTables(temp);		
 	    }
 	  
-  end_namespaced_fit_fixture(CEEFAT, DOCUMENTPARSEFIXTURE);
+  end_namespaced_fit_fixture(CEEFAT, DOCUMENTPARSEFIXTURE)
 
 };

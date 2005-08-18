@@ -246,7 +246,7 @@ unicode_pad_string(char *dest, int right, int width, const char *string)
 
 /* unicode_strchr */
 
-char * 
+const char * 
 unicode_strchr(const char *p, unicode_char_t c)
 {
   char ch[10];
@@ -297,7 +297,7 @@ unicode_strchr(const char *p, unicode_char_t c)
  * One needs writing.
  */
 
-char *
+const char *
 unicode_strrchr(const char *p, unicode_char_t c)
 {
   char ch[10];

@@ -150,7 +150,7 @@ namespace CEEFIT
   
   void COLUMNFIXTURE::Bind(PTR<PARSE>& heads)
   {
-    static char* suffix = "()";
+    static const char* suffix = "()";
 
     ColumnBindings.Reset();
     ColumnBindings.Reserve(heads->Size());

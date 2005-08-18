@@ -48,6 +48,6 @@ namespace CEEFAT
       return x/y;
     }
 
-  end_namespaced_fit_fixture(CEEFAT, DIVIDE);
+  end_namespaced_fit_fixture(CEEFAT, DIVIDE)
 
 };

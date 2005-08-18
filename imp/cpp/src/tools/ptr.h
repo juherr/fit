@@ -543,13 +543,13 @@ namespace CEEFIT
       }
   };
 
-  template<class T> inline VALUE<T>::VALUE<T>(PTR<T>& aPtr)
+  template<class T> inline VALUE<T>::VALUE(PTR<T>& aPtr)
   {
     Value = aPtr.GetPointer();
   }
 
 # ifndef _MSC_VER
-    template<class T> template<class U> inline VALUE<T>::VALUE<T>(PTR<U>& aPtr)
+    template<class T> template<class U> inline VALUE<T>::VALUE(PTR<U>& aPtr)
     {
       Value = dynamic_cast<T*>(aPtr.GetPointer());
     }

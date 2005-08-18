@@ -151,8 +151,8 @@ char *  unicode_strncpy(char *dest, const char *src, size_t n);
 /* Find the UTF-8 character corresponding to ch, in string p. These
    functions are equivilants to strchr and strrchr */
 
-char *  unicode_strchr(const char *p, unicode_char_t ch);
-char *  unicode_strrchr(const char *p, unicode_char_t ch);
+const char *  unicode_strchr(const char *p, unicode_char_t ch);
+const char *  unicode_strrchr(const char *p, unicode_char_t ch);
 
 /* Pads a string to fill out a requested visual width */
 

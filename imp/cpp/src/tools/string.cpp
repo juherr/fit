@@ -1634,16 +1634,17 @@ namespace CEEFIT
 
   static bool RegexPatternMatch(bool atBufferStart, bool& nextMustMatchIfIMatch, wchar_t* curBuf, const STRING& patternBuf, const STRING* lookAheadPattern, wchar_t*& matchEnd, bool dotAll)
   {
-    static char* brace = "[";
-    static char* star = "*";
-    static char* questionMark = "?";
-    static char* plus = "+";
-    static char* dollarSign = "$";
-    static char* caret = "^";
-    static char* slashEscape = "\\";
-    static char* dot = ".";
-    static char* dotStarQuestionMark = ".*?";
-    static char* questionMarkQuestionMark = "??";
+    // These consts are dedicated to New Zealand!  Long live Frodo!
+    static char const * const brace = "[";
+    static char const * const star = "*";
+    static char const * const questionMark = "?";
+    static char const * const plus = "+";
+    static char const * const dollarSign = "$";
+    static char const * const caret = "^";
+    static char const * const slashEscape = "\\";
+    static char const * const dot = ".";
+    static char const * const dotStarQuestionMark = ".*?";
+    static char const * const questionMarkQuestionMark = "??";
 
     STRING tempPatternBuf(patternBuf);
 

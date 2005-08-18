@@ -64,6 +64,7 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDB
   public:
     typedef CEEFIT::FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE> FIELDBASE;
 
+    using FIELDBASE::ToString;
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::SCIENTIFICDOUBLE& in)
     {
       out = in.ToString();

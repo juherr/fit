@@ -37,6 +37,7 @@ namespace CEEFIT
       const CEEFIT::STRING& ceefit_call_spec GetName(void) const;
       virtual void ceefit_call_spec SetName(const CEEFIT::STRING& testName);
 
+      using CELLADAPTER::Invoke;
       virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, ::CEEFIT::PTR< ::CEEFIT::FIXTURE >& aFixture) { throw new CEEFIT::EXCEPTION("Invoke not implemented for this FITTEST"); }
 
       virtual inline const char* ceefit_call_spec GetType(void) const { throw new CEEFIT::EXCEPTION("GetType not implemented for this FITTEST"); }
@@ -114,6 +115,7 @@ template<class T, class TESTCALLCLASS> class FITTEST_AUTO : public ::CEEFIT::FIT
     {
     }
 
+    using FITTESTBASE::Invoke;
     virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, ::CEEFIT::PTR< ::CEEFIT::FIXTURE >& aFixture)
     {
       FITFIELD<T>* retVal = new FITFIELD<T>();
@@ -465,6 +467,7 @@ template<class FIXTURETYPE, class RETURNTYPE> class FITTEST_MANUAL : public ::CE
     {
     }
 
+    using FITTESTBASE::Invoke;
     virtual inline void ceefit_call_spec Invoke(::CEEFIT::PTR< ::CEEFIT::CELLADAPTER >& out, ::CEEFIT::PTR< ::CEEFIT::FIXTURE >& aFixture)
     {
       CEEFIT::FIXTURESELECTOR<FIXTURETYPE>& fixtureSelector = CEEFIT::FIXTURESELECTOR<FIXTURETYPE>::GetInstance();
