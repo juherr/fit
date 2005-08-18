@@ -40,7 +40,7 @@ namespace CEEFIT
   // in modified 3rd party code, etc...)
 
 #if defined(_MSC_VER) && _MSC_VER < 1300
-  // this is sufficient for MSVC6
+  // this is sufficient for MSVC6, it doesn't like the NULLTYPE business below...
   static const int null = 0;
 #else
   class NULLTYPE 

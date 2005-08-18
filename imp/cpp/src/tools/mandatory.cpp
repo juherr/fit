@@ -22,7 +22,7 @@
 
 #include "tools/mandatory.h"
 
-#ifdef __GNUC__
+#if !(defined(_MSC_VER) && _MSC_VER < 1300)
   namespace CEEFIT
   {
     NULLTYPE NULLTYPE::GlobalNull;

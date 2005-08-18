@@ -100,7 +100,7 @@
   {
     typedef void* (ceefit_call_spec * CEEFITALLOCFUNC)(fit_size_t numBytes);
     typedef void (ceefit_call_spec * CEEFITFREEFUNC)(void* objPtr);
-  };
+  }
 #endif
 
 // Tools and Java-like classes

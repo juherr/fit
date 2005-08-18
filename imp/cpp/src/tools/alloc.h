@@ -38,9 +38,11 @@
 #   define fit_size_t size_t
 # endif
 
-  typedef void* (ceefit_call_spec * CEEFITALLOCFUNC)(fit_size_t numBytes);
-  typedef void (ceefit_call_spec * CEEFITFREEFUNC)(void* objPtr);
-
+  extern "C"
+  {
+    typedef void* (ceefit_call_spec * CEEFITALLOCFUNC)(fit_size_t numBytes);
+    typedef void (ceefit_call_spec * CEEFITFREEFUNC)(void* objPtr);
+  }
 #endif
 
 /**

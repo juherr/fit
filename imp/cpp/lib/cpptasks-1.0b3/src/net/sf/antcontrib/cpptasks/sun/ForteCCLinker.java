@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2001-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
 /**
  * Adapter for Sun (r) Forte(tm) C++ Linker
- * 
+ *
  * @author Curt Arnold
  */
 public final class ForteCCLinker extends AbstractLdLinker {
@@ -51,7 +51,7 @@ public final class ForteCCLinker extends AbstractLdLinker {
             args.addElement("-g");
         }
         if (linkType.isStaticRuntime()) {
-            args.addElement("-static");
+            //args.addElement("-static");
         }
         if (linkType.isSharedLibrary()) {
             args.addElement("-G");
@@ -68,7 +68,7 @@ public final class ForteCCLinker extends AbstractLdLinker {
     }
     /**
      * Returns library path.
-     *  
+     *
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
