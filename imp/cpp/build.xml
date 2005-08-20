@@ -521,6 +521,7 @@
                   <include name="FastCompile/**/*"/>
                   <exclude name="**/*.o"/>
                   <exclude name="**/history.xml"/>
+                  <exclude name="**/dependencies.xml"/>
               </zipfileset>
               <zipfileset dir="../../spec"
                               prefix="fit/spec">              
@@ -543,6 +544,7 @@
                   <exclude name="**/*.pch"/>
                   <exclude name="**/*.idb"/>
                   <exclude name="**/history.xml"/>
+                  <exclude name="**/dependencies.xml"/>
               </zipfileset>
               <zipfileset dir="../../spec"
                               prefix="fit/spec">              
@@ -568,6 +570,7 @@
                   <include name="FastCompile/**/*"/>
                   <exclude name="**/*.o"/>
                   <exclude name="**/history.xml"/>
+                  <exclude name="**/dependencies.xml"/>
               </tarfileset>
               <tarfileset dir="../../spec"
                               prefix="fit/spec"
@@ -592,6 +595,7 @@
                   <include name="FastCompile/**/*"/>
                   <exclude name="**/*.o"/>
                   <exclude name="**/history.xml"/>
+                  <exclude name="**/dependencies.xml"/>
               </tarfileset>
               <tarfileset dir="../../spec"
                               prefix="fit/spec"
@@ -616,6 +620,7 @@
                   <include name="FastCompile/**/*"/>
                   <exclude name="**/*.o"/>
                   <exclude name="**/history.xml"/>
+                  <exclude name="**/dependencies.xml"/>
               </tarfileset>
               <tarfileset dir="../../spec"
                               prefix="fit/spec"
