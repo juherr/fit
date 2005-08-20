@@ -24,7 +24,10 @@
 	
 	<!-- bring in user defined build.properties file (see build.properties.example for ideas) -->
 	<property file="build.properties"/>
-	
+
+      <!-- The name of the current version of CeeFIT -->	
+      <property name="product.name" value="CeeFIT-1.1.1"/>
+      
 	<!-- Bring in the ant-contrib tasks -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
@@ -424,7 +427,7 @@
       </target>
       
       <target name="make-source-tar">
-          <tar destfile="CeeFIT-1.1-src.tar" longfile="gnu">
+          <tar destfile="${product.name}-src.tar" longfile="gnu">
               <tarfileset dir="."
                               prefix="fit/imp/cpp"
                               preserveLeadingSlashes="false">              
@@ -444,6 +447,7 @@
                   <exclude name="**/CVS/**/*"/>
                   <exclude name="**/.cvsignore"/>
                   <exclude name="**/icu/**/*"/>                                    
+                  <exclude name="**/*.zip"/>
               </tarfileset>
               <tarfileset dir="../../spec"
                               prefix="fit/spec"
@@ -456,12 +460,12 @@
                   <include name="**/*"/>
               </tarfileset>
           </tar>
-          <gzip zipfile="CeeFIT-1.1-src.tar.gz" src="CeeFIT-1.1-src.tar"/>
-          <delete file="CeeFIT-1.1-src.tar"/>
+          <gzip zipfile="${product.name}-src.tar.gz" src="${product.name}-src.tar"/>
+          <delete file="${product.name}-src.tar"/>
       </target>
 
       <target name="make-source-zip">
-          <zip destfile="CeeFIT-1.1-src.zip">
+          <zip destfile="${product.name}-src.zip">
               <zipfileset dir="."
                               prefix="fit/imp/cpp">              
                   <include name="LICENSE*"/>
@@ -483,6 +487,7 @@
                   <exclude name="**/CVS/**/*"/>
                   <exclude name="**/.cvsignore"/>
                   <exclude name="**/icu/**/*"/>                                    
+                  <exclude name="**/*.zip"/>
               </zipfileset>
               <zipfileset dir="../../spec"
                               prefix="fit/spec">              
@@ -496,7 +501,7 @@
       </target>
 
       <target name="make-docs-zip">
-          <zip destfile="CeeFIT-1.1-doxygen.zip">
+          <zip destfile="${product.name}-doxygen.zip">
               <zipfileset dir="."
                               prefix="fit/imp/cpp">              
                   <include name="docs/**/*"/>
@@ -505,7 +510,7 @@
       </target>
 
       <target name="make-mingw-win32-bin-zip">
-          <zip destfile="CeeFIT-1.1-mingw-win32-bin.zip">
+          <zip destfile="${product.name}-mingw-win32-bin.zip">
               <zipfileset dir="."
                               prefix="fit/imp/cpp">              
                   <include name="LICENSE*"/>
@@ -525,7 +530,7 @@
       </target>
 
       <target name="make-msvc60-win32-bin-zip">
-          <zip destfile="CeeFIT-1.1-msvc60-win32-bin.zip">
+          <zip destfile="${product.name}-msvc60-win32-bin.zip">
               <zipfileset dir="."
                               prefix="fit/imp/cpp">              
                   <include name="LICENSE*"/>
@@ -551,7 +556,7 @@
       </target>
 
       <target name="make-gcc-linux-intel-bin-tar">
-          <tar destfile="CeeFIT-1.1-gcc-linux-intel-bin.tar" longfile="gnu">
+          <tar destfile="${product.name}-gcc-linux-intel-bin.tar" longfile="gnu">
               <tarfileset dir="."
                               prefix="fit/imp/cpp"
                               preserveLeadingSlashes="false">              
@@ -570,7 +575,55 @@
                   <include name="**/*"/>
               </tarfileset>
           </tar>
-          <gzip zipfile="CeeFIT-1.1-gcc-linux-intel-bin.tar.gz" src="CeeFIT-1.1-gcc-linux-intel-bin.tar"/>
-          <delete file="CeeFIT-1.1-gcc-linux-intel-bin.tar"/>
+          <gzip zipfile="${product.name}-gcc-linux-intel-bin.tar.gz" src="${product.name}-gcc-linux-intel-bin.tar"/>
+          <delete file="${product.name}-gcc-linux-intel-bin.tar"/>
+      </target>
+
+      <target name="make-CC-solaris-intel-bin-tar">
+          <tar destfile="${product.name}-CC-solaris-intel-bin.tar" longfile="gnu">
+              <tarfileset dir="."
+                              prefix="fit/imp/cpp"
+                              preserveLeadingSlashes="false">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
+                  <include name="src/**/*.h"/>
+                  <include name="Debug/**/*"/>
+                  <include name="Release/**/*"/>
+                  <include name="FastCompile/**/*"/>
+                  <exclude name="**/*.o"/>
+                  <exclude name="**/history.xml"/>
+              </tarfileset>
+              <tarfileset dir="../../spec"
+                              prefix="fit/spec"
+                              preserveLeadingSlashes="false">              
+                  <include name="**/*"/>
+              </tarfileset>
+          </tar>
+          <gzip zipfile="${product.name}-CC-solaris-intel-bin.tar.gz" src="${product.name}-CC-solaris-intel-bin.tar"/>
+          <delete file="${product.name}-CC-solaris-intel-bin.tar"/>
+      </target>
+
+      <target name="make-CC-solaris-sparc-bin-tar">
+          <tar destfile="${product.name}-CC-solaris-sparc-bin.tar" longfile="gnu">
+              <tarfileset dir="."
+                              prefix="fit/imp/cpp"
+                              preserveLeadingSlashes="false">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
+                  <include name="src/**/*.h"/>
+                  <include name="Debug/**/*"/>
+                  <include name="Release/**/*"/>
+                  <include name="FastCompile/**/*"/>
+                  <exclude name="**/*.o"/>
+                  <exclude name="**/history.xml"/>
+              </tarfileset>
+              <tarfileset dir="../../spec"
+                              prefix="fit/spec"
+                              preserveLeadingSlashes="false">              
+                  <include name="**/*"/>
+              </tarfileset>
+          </tar>
+          <gzip zipfile="${product.name}-CC-solaris-sparc-bin.tar.gz" src="${product.name}-CC-solaris-sparc-bin.tar"/>
+          <delete file="${product.name}-CC-solaris-sparc-bin.tar"/>
       </target>
 </project>

@@ -22,6 +22,9 @@ import net.sf.antcontrib.cpptasks.CUtil;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 import net.sf.antcontrib.cpptasks.gcc.AbstractLdLinker;
+import net.sf.antcontrib.cpptasks.CCTask;
+import net.sf.antcontrib.cpptasks.types.LibrarySet;
+import net.sf.antcontrib.cpptasks.types.LibraryTypeEnum;
 /**
  * Adapter for Sun (r) Forte(tm) C++ Linker
  *
@@ -66,6 +69,77 @@ public final class ForteCCLinker extends AbstractLdLinker {
          * args.addElement("-xidloff"); }
          */
     }
+
+    // HACK:  copied from AbstractLdLinker by DW and modified to not emit -Bstatic by default
+    public String[] addLibrarySets(CCTask task, LibrarySet[] libsets,
+            Vector preargs, Vector midargs, Vector endargs) {
+        Vector libnames = new Vector();
+        //super.addLibrarySets(task, libsets, preargs, midargs, endargs);  // was a noop in AbstractLdLinker - DW
+        LibraryTypeEnum previousLibraryType = null;
+        for (int i = 0; i < libsets.length; i++) {
+            LibrarySet set = libsets[i];
+            File libdir = set.getDir(null);
+            String[] libs = set.getLibs();
+            if (libdir != null) {
+                    if (set.getType() != null &&
+                                    "framework".equals(set.getType().getValue()) &&
+                                                isDarwin()) {
+                            endargs.addElement("-F" + libdir.getAbsolutePath());
+                    } else {
+                            endargs.addElement("-L" + libdir.getAbsolutePath());
+                    }
+            }
+
+            // HACK:  added by DW to default our library type to static and keep -Bstatic from being emitted
+            if(previousLibraryType == null && set.getType() != null && "static".equals(set.getType().getValue())) {
+                previousLibraryType = set.getType();
+            }
+
+            //
+            //  if there has been a change of library type
+            //
+            if (set.getType() != previousLibraryType) {
+                    if (set.getType() != null && "static".equals(set.getType().getValue())) {
+                            endargs.addElement("-Bstatic");
+                            previousLibraryType = set.getType();
+                    } else {
+                            if (set.getType() == null ||
+                                            !"framework".equals(set.getType().getValue()) ||
+                                                        !isDarwin()) {
+                                    endargs.addElement("-Bdynamic");
+                                    previousLibraryType = set.getType();
+                            }
+                    }
+            }
+            StringBuffer buf = new StringBuffer("-l");
+            if (set.getType() != null &&
+                            "framework".equals(set.getType().getValue()) &&
+                                        isDarwin()) {
+                    buf.setLength(0);
+                    buf.append("-framework ");
+            }
+            int initialLength = buf.length();
+            for (int j = 0; j < libs.length; j++) {
+                //
+                //  reset the buffer to just "-l"
+                //
+                buf.setLength(initialLength);
+                //
+                //  add the library name
+                buf.append(libs[j]);
+                libnames.addElement(libs[j]);
+                //
+                //  add the argument to the list
+                endargs.addElement(buf.toString());
+            }
+        }
+        String rc[] = new String[libnames.size()];
+        for (int i = 0; i < libnames.size(); i++) {
+            rc[i] = (String) libnames.elementAt(i);
+        }
+        return rc;
+    }
+
     /**
      * Returns library path.
      *
