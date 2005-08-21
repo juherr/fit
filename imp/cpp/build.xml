@@ -563,7 +563,7 @@
       </target>
 
       <target name="make-gcc-linux-intel-bin-tar">
-          <tar destfile="${product.name}-gcc-linux-intel-bin.tar" longfile="gnu">
+          <tar destfile="${product.name}-gcc-linux-intel-bin.tar.gz" longfile="gnu" compression="gzip">
               <tarfileset dir="."
                               prefix="fit/imp/cpp"
                               preserveLeadingSlashes="false">              
@@ -583,8 +583,6 @@
                   <include name="**/*"/>
               </tarfileset>
           </tar>
-          <gzip zipfile="${product.name}-gcc-linux-intel-bin.tar.gz" src="${product.name}-gcc-linux-intel-bin.tar"/>
-          <delete file="${product.name}-gcc-linux-intel-bin.tar"/>
       </target>
 
       <target name="make-CC-solaris-intel-bin-tar">
