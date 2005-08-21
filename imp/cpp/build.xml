@@ -564,23 +564,19 @@
 
       <target name="make-gcc-linux-intel-bin-tar">
           <tar destfile="${product.name}-gcc-linux-intel-bin.tar.gz" longfile="gnu" compression="gzip">
-              <tarfileset dir="."
-                              prefix="fit/imp/cpp"
-                              preserveLeadingSlashes="false">              
-                  <include name="./LICENSE*"/>
-                  <include name="./README*"/>
-                  <include name="./src/**/*.h"/>
-                  <include name="./Debug/**/*"/>
-                  <include name="./Release/**/*"/>
-                  <include name="./FastCompile/**/*"/>
-                  <exclude name="./**/*.o"/>
-                  <exclude name="./**/history.xml"/>
-                  <exclude name="./**/dependencies.xml"/>
+              <tarfileset dir="." prefix="fit/imp/cpp">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
+                  <include name="src/**/*.h"/>
+                  <include name="Debug/**"/>
+                  <include name="Release/**"/>
+                  <include name="FastCompile/**"/>
+                  <exclude name="**/*.o"/>
+                  <exclude name="**/history.xml"/>
+                  <exclude name="**/dependencies.xml"/>
               </tarfileset>
-              <tarfileset dir="../../spec"
-                              prefix="fit/spec"
-                              preserveLeadingSlashes="false">              
-                  <include name="./**/*"/>
+              <tarfileset dir="../../spec" prefix="fit/spec">              
+                  <include name="**/*"/>
               </tarfileset>
           </tar>
       </target>
