@@ -38,7 +38,7 @@ while [ "$1" != "" ]; do
                                 echo "  normal Ant help follows ..."
                                 echo ""
 				                        bash $ANT_HOME/bin/ant -help 
-				                        exit
+				                        exit 
                                 ;;
         -debugAnt )    		      shift
 				                        DEBUG_ANT_FLAG="-debug -Ddebug.ant.flag=true"
