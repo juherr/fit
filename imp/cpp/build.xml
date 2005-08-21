@@ -567,20 +567,20 @@
               <tarfileset dir="."
                               prefix="fit/imp/cpp"
                               preserveLeadingSlashes="false">              
-                  <include name="LICENSE*"/>
-                  <include name="README*"/>
-                  <include name="src/**/*.h"/>
-                  <include name="Debug/**/*"/>
-                  <include name="Release/**/*"/>
-                  <include name="FastCompile/**/*"/>
-                  <exclude name="**/*.o"/>
-                  <exclude name="**/history.xml"/>
-                  <exclude name="**/dependencies.xml"/>
+                  <include name="./LICENSE*"/>
+                  <include name="./README*"/>
+                  <include name="./src/**/*.h"/>
+                  <include name="./Debug/**/*"/>
+                  <include name="./Release/**/*"/>
+                  <include name="./FastCompile/**/*"/>
+                  <exclude name="./**/*.o"/>
+                  <exclude name="./**/history.xml"/>
+                  <exclude name="./**/dependencies.xml"/>
               </tarfileset>
               <tarfileset dir="../../spec"
                               prefix="fit/spec"
                               preserveLeadingSlashes="false">              
-                  <include name="**/*"/>
+                  <include name="./**/*"/>
               </tarfileset>
           </tar>
       </target>
