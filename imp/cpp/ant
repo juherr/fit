@@ -6,6 +6,8 @@ RELEASE_BUILD=-Drelease.mode=false
 DEBUG_ANT_FLAG=
 USE_GPP=
 
+ANT_HOME=./lib/apache-ant-1.6.5
+
 while [ "$1" != "" ]; do
     case $1 in
         -h | -help )            shift
@@ -35,7 +37,7 @@ while [ "$1" != "" ]; do
                                 echo ""
                                 echo "  normal Ant help follows ..."
                                 echo ""
-				                        bash ./lib/apache-ant-1.6.5/bin/ant -help 
+				                        bash $ANT_HOME/bin/ant -help 
 				                        exit
                                 ;;
         -debugAnt )    		      shift
@@ -80,8 +82,6 @@ then
 	echo "GCC_LIB was not set, setting to /usr/local/lib"
 	export GCC_LIB=/usr/local/lib
 fi
-
-ANT_HOME=./lib/apache-ant-1.6.5
 
 PATH=$GCC_BIN:$PATH
 INCLUDE=$GCC_INCLUDE:$INCLUDE

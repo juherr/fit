@@ -4,6 +4,8 @@ setlocal
 
 set DEBUG_BUILD=-Ddebug.mode=false
 set RELEASE_BUILD=-Drelease.mode=false
+set oldANT_HOME=%ANT_HOME%
+set ANT_HOME=lib\apache-ant-1.6.5
 
 :doSwitches
 if "%1"=="-help" goto giveHelp
@@ -49,7 +51,7 @@ echo ant.
 echo .
 echo   normal Ant help follows ...
 echo . 
-cmd /c lib\apache-ant-1.6.5\bin\ant -help
+cmd /c %ANT_HOME%\bin\ant -help
 goto antDone
 
 :debugAnt
@@ -108,7 +110,7 @@ set LIB=%GCC_LIB%;%INCLUDE%
 goto runAnt
 
 :runAnt
-cmd /c lib\apache-ant-1.6.5\bin\ant %DEBUG_ANT_FLAG% %DEBUG_BUILD% %RELEASE_BUILD% %USE_MSVC% %USE_GPP% %1 %2 %3 %4 %5 %6 %7 %8 %9
+cmd /c %ANT_HOME%\bin\ant %DEBUG_ANT_FLAG% %DEBUG_BUILD% %RELEASE_BUILD% %USE_MSVC% %USE_GPP% %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 set PATH=%oldPATH%
 set oldPATH=
@@ -125,6 +127,8 @@ set SKIP_MSVC=
 set SKIP_GCC=
 set USE_MSVC=
 set USE_GPP=
+set ANT_HOME=%oldANT_HOME%
+set oldANT_HOME=
 
 :antDone
 
