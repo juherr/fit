@@ -35,7 +35,7 @@ while [ "$1" != "" ]; do
                                 echo ""
                                 echo "  normal Ant help follows ..."
                                 echo ""
-				                        bash ./lib/apache-ant-1.6.2/bin/ant -help 
+				                        bash ./lib/apache-ant-1.6.5/bin/ant -help 
 				                        exit
                                 ;;
         -debugAnt )    		      shift
@@ -81,7 +81,7 @@ then
 	export GCC_LIB=/usr/local/lib
 fi
 
-ANT_HOME=./lib/apache-ant-1.6.2
+ANT_HOME=./lib/apache-ant-1.6.5
 
 PATH=$GCC_BIN:$PATH
 INCLUDE=$GCC_INCLUDE:$INCLUDE

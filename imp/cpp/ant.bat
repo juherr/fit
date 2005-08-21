@@ -49,7 +49,7 @@ echo ant.
 echo .
 echo   normal Ant help follows ...
 echo . 
-cmd /c lib\apache-ant-1.6.2\bin\ant -help
+cmd /c lib\apache-ant-1.6.5\bin\ant -help
 goto antDone
 
 :debugAnt
@@ -108,7 +108,7 @@ set LIB=%GCC_LIB%;%INCLUDE%
 goto runAnt
 
 :runAnt
-cmd /c lib\apache-ant-1.6.2\bin\ant %DEBUG_ANT_FLAG% %DEBUG_BUILD% %RELEASE_BUILD% %USE_MSVC% %USE_GPP% %1 %2 %3 %4 %5 %6 %7 %8 %9
+cmd /c lib\apache-ant-1.6.5\bin\ant %DEBUG_ANT_FLAG% %DEBUG_BUILD% %RELEASE_BUILD% %USE_MSVC% %USE_GPP% %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 set PATH=%oldPATH%
 set oldPATH=

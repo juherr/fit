@@ -430,10 +430,15 @@
           <tar destfile="${product.name}-src.tar" longfile="gnu">
               <tarfileset dir="."
                               prefix="fit/imp/cpp"
+                              preserveLeadingSlashes="false"
+                              mode="777">              
+                  <include name="ant"/>
+              </tarfileset>
+              <tarfileset dir="."
+                              prefix="fit/imp/cpp"
                               preserveLeadingSlashes="false">              
                   <include name="LICENSE*"/>
                   <include name="README*"/>
-                  <include name="ant"/>
                   <include name="ant.bat"/>
                   <include name="build.properties.example"/>
                   <include name="doxyfile"/>
