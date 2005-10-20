@@ -88,6 +88,24 @@ namespace fit {
             }
             return true;
         }
+
+				public virtual string ToString(object o)
+				{
+					if (o is Array) return ArrayToString((Array)o);
+					else return o.ToString();
+				}
+
+			private string ArrayToString(Array a)
+			{
+				string joiner = "";
+				string result = "";
+				foreach(object o in a)
+				{
+					result += joiner + o;
+					joiner = ",";
+				}
+				return result;
+			}
     
         //    // Subclasses ///////////////////////////////
         //

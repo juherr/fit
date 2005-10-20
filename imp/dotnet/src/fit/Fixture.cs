@@ -279,7 +279,7 @@ namespace fit {
             string text = cell.text();
             if (text == "") {
 				try {
-					info(cell, a.get().ToString());
+					info(cell, a.ToString(a.get()));
 				} 
 				catch (Exception) {
 					info(cell, "error");
@@ -290,8 +290,7 @@ namespace fit {
             }
             else if (text == "error") {
                 try {
-                    Object result = a.get();
-                    wrong(cell, result.ToString());
+                    wrong(cell, a.ToString(a.get()));
                 } 
                 catch (MethodAccessException e) {
                     exception (cell, e);
@@ -307,7 +306,7 @@ namespace fit {
                         right(cell);
                     } 
                     else {
-                        wrong(cell, result.ToString());
+                        wrong(cell, a.ToString(a.get()));
                     }
                 } 
                 catch (Exception e) {

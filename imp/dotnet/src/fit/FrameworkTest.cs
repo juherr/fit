@@ -77,9 +77,11 @@ namespace fit
 
 			adapter = TypeAdapter.on(target, typeof(string[]));
 			AssertArraysEqual(new object[] {"1", "2", "3"}, (object[])adapter.parse("1,2,3"), "string[]");
+			Assert.AreEqual("1,2,3", adapter.ToString(new string[] {"1", "2", "3"}));
 
 			adapter = TypeAdapter.on(target, typeof(int[]));
 			AssertArraysEqual(new object[] {1, 2, 3}, (object[])adapter.parse("1,2,3"), "int[]");
+			Assert.AreEqual("1,2,3", adapter.ToString(new int[] {1, 2, 3}));
 
 			MethodInfo twoPi = typeof(TypeAdapterTarget).GetMethod("twoPi");
 			adapter = TypeAdapter.on(target, twoPi);
