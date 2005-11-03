@@ -1,3 +1,33 @@
+Release notes:  CeeFIT version 1.1.1
+David Woldrich
+11/03/2005
+
+This version of CeeFIT resolves the following issues:
+
+  * SCIENTFICDOUBLE was not working properly and some spec tests were 
+    failing.
+  * Custom value objects for fixtures (created using FITFIELD<> 
+    specializations) required an IsEqual() method.  This is no longer 
+    required, and you may now specify how to perform an equality test on your
+    custom value object by extending FITFIELD<> specialization with 
+    CELLEQUITABLE<>.  (See scientificdouble.h for an example of how this is
+    done.)  The website will be updated soon on how this new equality test
+    mechanism works.
+  * HTML comments are now filtered out of input HTML past the first 
+    encountered <body> tag.
+  * Minor code fixes to compare Solaris CC and Linux PPC gcc.
+
+Please visit the official CeeFIT website for The latest information and news
+about CeeFIT:
+
+	http://ceefit.woldrich.com
+
+Thank you for using CeeFIT.
+
+
+============================================================================
+
+
 Release notes:  CeeFIT version 1.1
 David Woldrich
 07/20/2005
