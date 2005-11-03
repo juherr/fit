@@ -58,7 +58,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public CEEFIT::FITFIELDBASE
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<int> > FIELDBASE;
 
-    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::DYNARRAY<int>& in)
+    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::DYNARRAY<int>& in) const
     {
       CEEFIT::STRING temp;
       int i = -1;

@@ -40,14 +40,14 @@ namespace CEEFIT
 
     public:
       virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in)=0;
-      virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out)=0;
+      virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out) const=0;
 
       /**
        * <p>Special variant of ReadFromFixtureVar that allows you to execute on a different FIXTURE.</p>
        *
        * <p>Only used in special cases like RowFixture</p>
        */
-      virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out, PTR<FIXTURE>& aFixture);
+      virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out, PTR<FIXTURE>& aFixture) const;
 
       virtual void ceefit_call_spec SetName(const CEEFIT::STRING& aName)=0;
       virtual const CEEFIT::STRING& ceefit_call_spec GetName(void) const=0;
@@ -77,7 +77,7 @@ namespace CEEFIT
        *
        * @param out PTR<CELLADAPTER> Containing the return value from the fixture test method call.
        */
-      virtual void ceefit_call_spec Invoke(PTR<CELLADAPTER>& out, PTR<FIXTURE>& aFixture)=0;
+      virtual void ceefit_call_spec Invoke(PTR<CELLADAPTER>& out, PTR<FIXTURE>& aFixture) const=0;
 
       /**
        * <p>Invoke test fixture method, where the FIXTURE is supplied by a CELLADAPTER</p>
@@ -85,7 +85,7 @@ namespace CEEFIT
        * @param out PTR<CELLADAPTER> Containing the return value from the fixture test method call.
        * @param aFixture only valid type of CELLADAPTER that can be accepted here is a FITFIXTURECONTAINER
        */
-      virtual void ceefit_call_spec Invoke(PTR<CELLADAPTER>& out, CELLADAPTER* fixtureContainer);
+      virtual void ceefit_call_spec Invoke(PTR<CELLADAPTER>& out, CELLADAPTER* fixtureContainer) const;
 
       inline ceefit_init_spec CELLADAPTER(void) {}
       virtual inline ceefit_init_spec ~CELLADAPTER(void) {}
@@ -98,6 +98,30 @@ namespace CEEFIT
       inline CELLADAPTER& ceefit_call_spec operator=(const CELLADAPTER&);   /**< not implemented, do not call. */
   };
 
+  /**
+   * <p>An interface that, when implemented on a FITFIELD specialization class, indicates that that class can compare with
+   * a target CELLADAPTER of type ANYTYPE</p>
+   *
+   * <p>In CeeFIT 1.1.1 and higher, CELLEQUITABLE replaces the need for the programmer to supply an IsEqual() method on his 
+   * domain objects that are managed by complimentary FITFIELD specializations.  (In other words, the logic to compare domain
+   * objects for equality need not incur into domain objects which may be legacy or otherwise not be modifiable for the 
+   * purposes of CeeFIT testing.)
+   *
+   * <p>See CellIsEqual() for more information on how the objects a CELLADAPTER manages can be made directly comparable</p>
+   */
+  template<class ANYTYPE> class CELLEQUITABLE 
+  {
+    public:
+      /**
+       * <p>Returns true if the object this cell manages equates to another cell's object.</p>
+       *
+       * <p>Any FITFIELD specialization may extend CELLEQUITABLE&lt;T&gt; and hence indicate to the CeeFIT engine
+       * that the specialization defines comparison logic between that specialization and another equitable type.  
+       * If a FITFIELD does not extend a needed CELLEQUITABLE&lt;ANYTYPE&gt; when a comparison between cells is needed, the 
+       * CeeFIT engine will convert both FITFIELD's to STRING's and compare the STRING's for equality instead.<p>
+       */
+      virtual bool ceefit_call_spec CellIsEqual(const CELLEQUITABLE<ANYTYPE>& otherCell) const = 0;
+  };
 };
 
 #endif // __CEEFIT_CELLADAPTER_H__

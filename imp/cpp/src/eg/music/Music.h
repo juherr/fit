@@ -67,7 +67,7 @@ namespace EG_MUSIC
 template<> class FITFIELD< EG_MUSIC::MUSIC > : public CEEFIT::FITFIELDBASE< EG_MUSIC::MUSIC >
 {
   public:
-    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG_MUSIC::MUSIC& in)
+    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG_MUSIC::MUSIC& in) const
     {
       out = in.Dump();
     }

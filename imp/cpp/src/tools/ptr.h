@@ -363,7 +363,7 @@ namespace CEEFIT
 		    return(ActualPointer == aPtr || ObjectIsEqual(aPtr));
 	    }
 
-	    template<class U> inline bool IsEqual(PTR<U>& aPtr)
+	    template<class U> inline bool IsEqual(PTR<U>& aPtr) 
       {
 		    return(ActualPointer == aPtr.ActualPointer || ObjectIsEqual(aPtr.GetPointer()));
 	    }

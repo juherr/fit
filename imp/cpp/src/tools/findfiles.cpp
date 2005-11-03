@@ -20,17 +20,25 @@
  * @author David Woldrich
  */
 
+#ifdef USE_GLOB_FOR_FIND
+
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
+# include <glob.h>  
+
+#else
+
+# ifndef IO_H_IN_SYS_SUBFOLDER
+#   include <io.h>
+# else
+#   include <sys/io.h>
+# endif
+
+#endif
+
 #include "tools/alloc.h"
 #include "ceefit.h"
-
-// You know what?  This is retarded.  Why isn't _wfindfirst / _wfindnext implemented on POSIX?  Why do I have to write this
-// class?  
-
-// And now, an open letter to the president of the POSIX foundation or whatever:
-
-//    You are making me call a function called 'glob()'!!!  WHAT WERE YOU THINKING!?!  You know what, let's name all of POSIX
-//    functions something gross!  How about 'spew()' or 'lung_cheese()'?  Take a note:  findfirst and findnext sound a lot more
-//    professional, if only slightly more readable...
 
 namespace CEEFIT
 {
@@ -63,7 +71,39 @@ namespace CEEFIT
   }
 
 #ifdef USE_GLOB_FOR_FIND
-  FINDITERATOR::FINDITERATOR(const STRING& searchPattern) 
+
+// You know what?  This is retarded.  Why isn't _wfindfirst / _wfindnext implemented on POSIX?  Why do I have to write this
+// class?  
+
+// And now, an open letter to the president of the POSIX foundation or whatever:
+
+//    You are making me call a function called 'glob()'!!!  WHAT WERE YOU THINKING!?!  You know what, let's name all of POSIX
+//    functions something gross!  How about 'spew()' or 'lung_cheese()'?  Take a note:  findfirst and findnext sound a lot more
+//    professional, if only slightly more readable...
+
+  namespace CEEFIT
+  {
+    class FINDITERATORIMPL : public REFCOUNTED
+    {
+      private:
+        char** curItem;
+        ::glob_t globBuffer;
+        bool NoMatches;
+
+      public:
+        ceefit_init_spec FINDITERATORIMPL(const STRING& searchPattern);
+        virtual ceefit_init_spec ~FINDITERATORIMPL(void); 
+        virtual bool ceefit_call_spec HasNext(void);
+        virtual FINDFILEINFO ceefit_call_spec GetNext(void);
+    
+      private:
+        ceefit_init_spec FINDITERATORIMPL(void);
+        ceefit_init_spec FINDITERATORIMPL(const FINDITERATORIMPL&);
+        FINDITERATORIMPL& ceefit_call_spec operator=(const FINDITERATORIMPL&);
+    };
+  };
+  
+  FINDITERATORIMPL::FINDITERATORIMPL(const STRING& searchPattern) 
   {
     NoMatches = false;
 
@@ -72,7 +112,7 @@ namespace CEEFIT
 
     memset(&globBuffer, 0, sizeof(::glob_t));
     int retVal;
-    if((retVal = glob(&searchChars[0], 0, NULL, &globBuffer)) != 0)
+    if((retVal = ::glob(&searchChars[0], 0, NULL, &globBuffer)) != 0)
     {
       if(retVal == GLOB_NOMATCH)
       {
@@ -87,16 +127,16 @@ namespace CEEFIT
     curItem = globBuffer.gl_pathv;
   }
 
-  FINDITERATOR::~FINDITERATOR() 
+  FINDITERATORIMPL::~FINDITERATORIMPL() 
   {
     if(NoMatches)
     {
       return;
     }
-    globfree(&globBuffer);
+    ::globfree(&globBuffer);
   }
 
-  bool FINDITERATOR::HasNext()
+  bool FINDITERATORIMPL::HasNext()
   {
     if(NoMatches)
     {
@@ -108,7 +148,7 @@ namespace CEEFIT
     }
   }
 
-  FINDFILEINFO FINDITERATOR::GetNext()
+  FINDFILEINFO FINDITERATORIMPL::GetNext()
   {
     if(NoMatches)
     {
@@ -134,7 +174,27 @@ namespace CEEFIT
   }
 
 #else
-  FINDITERATOR::FINDITERATOR(const STRING& searchPattern) 
+
+  class FINDITERATORIMPL : public FINDITERATOR
+  {
+    private:
+      long findHandle;
+      bool itemReady;
+      struct _wfinddata_t findData;
+
+    public:
+      ceefit_init_spec FINDITERATORIMPL(const STRING& searchPattern);
+      virtual ceefit_init_spec ~FINDITERATORIMPL(void);
+      virtual bool ceefit_call_spec HasNext(void);
+      virtual FINDFILEINFO ceefit_call_spec GetNext(void);
+  
+    private:
+      ceefit_init_spec FINDITERATORIMPL(void);
+      ceefit_init_spec FINDITERATORIMPL(const FINDITERATORIMPL&);
+      FINDITERATORIMPL& ceefit_call_spec operator=(const FINDITERATORIMPL&);
+  };
+
+  FINDITERATORIMPL::FINDITERATORIMPL(const STRING& searchPattern) 
   {
     itemReady = false;
     memset(&findData, 0, sizeof(struct _wfinddata_t));
@@ -162,7 +222,7 @@ namespace CEEFIT
     }
   }
 
-  FINDITERATOR::~FINDITERATOR()
+  FINDITERATORIMPL::~FINDITERATORIMPL()
   {
     if(findHandle != -1)
     {
@@ -170,7 +230,7 @@ namespace CEEFIT
     }
   }
 
-  bool FINDITERATOR::HasNext()
+  bool FINDITERATORIMPL::HasNext()
   {
     if(itemReady == true)
     {
@@ -190,7 +250,7 @@ namespace CEEFIT
     return(true);
   }
 
-  FINDFILEINFO FINDITERATOR::GetNext()
+  FINDFILEINFO FINDITERATORIMPL::GetNext()
   {
     if(itemReady == false)
     {
@@ -209,6 +269,6 @@ namespace CEEFIT
 
   VALUE<FINDITERATOR> ceefit_call_spec fit_FindFiles(const STRING& searchPattern)
   {
-    return(VALUE<FINDITERATOR>(new FINDITERATOR(searchPattern)));    
+    return(VALUE<FINDITERATOR>(new FINDITERATORIMPL(searchPattern)));    
   }
 };

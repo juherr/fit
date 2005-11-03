@@ -587,7 +587,9 @@ namespace CEEFIT
     STRING message;
 
     message = STRING("An unhandled exception occurred:  ") + (e != null ? e->GetReason() : "<unknown reason>");
-    printf("%S\n", message.GetBuffer());
+#   ifdef _DEBUG
+      printf("%S\n", message.GetBuffer());
+#   endif
 
     Error(cell, message);
 
@@ -600,7 +602,9 @@ namespace CEEFIT
     STRING message;
 
     message = STRING("A failure occurred:  ") + (f != null ? f->GetReason() : "<unknown reason>");
-    printf("%S\n", message.GetBuffer());
+#   ifdef _DEBUG
+      printf("%S\n", message.GetBuffer());
+#   endif
 
     Error(cell, message);
 
@@ -764,36 +768,38 @@ namespace CEEFIT
 
           if(aAdapter->IsField())
           {
-            if(targetPtr == this)
+            // The "callResults" is the field we are comparing
+            if(targetPtr == this) 
             {
-              aAdapter->ReadFromFixtureVar(result);              // result == the value to be compared
+              callResults = aAdapter;
             }
             else
             {
-              aAdapter->ReadFromFixtureVar(result, targetPtr);  // result == the value to be compared
+              PTR<FIXTURE> notNeeded;
+              callResults = targetPtr->FindField(notNeeded, aAdapter->GetName());
+
+              if(callResults == null) 
+              {
+                throw new EXCEPTION(STRING("Field not found in FIXTURE:  ") + aAdapter->GetName());
+              }
             }
 
             aAdapter->NewInstanceParse(targetPtr.GetPointer(), checkValueCell, text);
-
-            checkValueCell->ReadFromFixtureVar(checkValue);   // checkValue == filtered/stringified (check value) cell text
           }
           else // if(aAdapter->IsMethod())
           {
             aAdapter->Invoke(callResults, targetPtr);
             callResults->NewInstanceParse(targetPtr.GetPointer(), checkValueCell, text);
-
-            // load results and checkValue with the parsed/checked STRING's in the cells
-            callResults->ReadFromFixtureVar(result);
-            checkValueCell->ReadFromFixtureVar(checkValue);
           }
 
-          // checkValue must exactly equal result for the test to pass
-          if (checkValue.IsEqual(result))
+          // checkValueCell must exactly equal result for the test to pass
+          if (checkValueCell->IsEqual(*callResults))   // note:  this calls through to CELLCOMPARABLE implementations if available
           {
             Right(cell);
           }
           else
           {
+            callResults->ReadFromFixtureVar(result);
             Wrong(cell, result);
           }
         }

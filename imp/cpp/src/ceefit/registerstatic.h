@@ -129,7 +129,7 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
     }
 
     using CELLADAPTER::ReadFromFixtureVar;
-    virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out)
+    virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out) const
     {
       throw new CEEFIT::EXCEPTION("Cannot ReadFromFixtureVar on FITFIXTURECONTAINER CELLADAPTER");
     }
@@ -165,7 +165,7 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
     }
 
     using CELLADAPTER::Invoke;
-    virtual void ceefit_call_spec Invoke(::CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, ::CEEFIT::PTR<CEEFIT::FIXTURE>& aFixture)
+    virtual void ceefit_call_spec Invoke(::CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, ::CEEFIT::PTR<CEEFIT::FIXTURE>& aFixture) const
     {
       throw new CEEFIT::EXCEPTION("Cannot Invoke on FITFIXTURECONTAINER CELLADAPTER");
     }

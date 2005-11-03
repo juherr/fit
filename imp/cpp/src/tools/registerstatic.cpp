@@ -25,7 +25,7 @@
 
 namespace CEEFIT
 {
-  void ceefit_call_spec CELLADAPTER::Invoke(PTR<CELLADAPTER>& out, CELLADAPTER* fixtureContainer)
+  void ceefit_call_spec CELLADAPTER::Invoke(PTR<CELLADAPTER>& out, CELLADAPTER* fixtureContainer) const
   {
     ::FITFIXTURECONTAINER* aContainer = dynamic_cast< ::FITFIXTURECONTAINER* >(fixtureContainer);
 
@@ -36,7 +36,7 @@ namespace CEEFIT
   }
 
   // this finds a like named CELLADAPTER in another fixture and reads from it
-  void ceefit_call_spec CELLADAPTER::ReadFromFixtureVar(STRING& out, PTR<FIXTURE>& aFixture)
+  void ceefit_call_spec CELLADAPTER::ReadFromFixtureVar(STRING& out, PTR<FIXTURE>& aFixture) const
   {    
     PTR<FIXTURE> targetFixture;
     PTR<CELLADAPTER> aCell;
@@ -59,7 +59,7 @@ namespace CEEFIT
     aCell->ReadFromFixtureVar(out);
   }
 
-  void ceefit_call_spec FITTESTBASE::ReadFromFixtureVar(STRING& out, PTR<FIXTURE>& targetFixture)
+  void ceefit_call_spec FITTESTBASE::ReadFromFixtureVar(STRING& out, PTR<FIXTURE>& targetFixture) const
   {
     PTR<CELLADAPTER> outCell;
 
@@ -73,7 +73,7 @@ namespace CEEFIT
     throw new EXCEPTION("Invalid operation for tests");
   }
 
-  void ceefit_call_spec FITTESTBASE::ReadFromFixtureVar(STRING&)
+  void ceefit_call_spec FITTESTBASE::ReadFromFixtureVar(STRING&) const
   {
     throw new EXCEPTION("Invalid operation for tests");
   }

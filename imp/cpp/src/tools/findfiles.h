@@ -37,66 +37,20 @@ namespace CEEFIT
       FINDFILEINFO& ceefit_call_spec operator=(const FINDFILEINFO& fileInfo);
       ceefit_init_spec FINDFILEINFO(const FINDFILEINFO& fileInfo);
   };
+
+  class FINDITERATOR : public REFCOUNTED
+  {
+    public:
+      virtual inline ceefit_init_spec ~FINDITERATOR(void) {}
+      virtual bool ceefit_call_spec HasNext(void)=0;
+      virtual FINDFILEINFO ceefit_call_spec GetNext(void)=0;
+  
+    protected:
+      inline ceefit_init_spec FINDITERATOR(void) {}
+      inline ceefit_init_spec FINDITERATOR(const FINDITERATOR& aIterator) {}
+      inline FINDITERATOR& ceefit_call_spec operator=(const FINDITERATOR& aIterator) { return(*this); }
+  };
 };
-
-#ifdef USE_GLOB_FOR_FIND
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <unistd.h>
-# include <glob.h>  
-
-  namespace CEEFIT
-  {
-    class FINDITERATOR : public REFCOUNTED
-    {
-      private:
-        char** curItem;
-        ::glob_t globBuffer;
-        bool NoMatches;
-
-      public:
-        ceefit_init_spec FINDITERATOR(const STRING& searchPattern);
-        virtual ceefit_init_spec ~FINDITERATOR(void); 
-        virtual bool ceefit_call_spec HasNext(void);
-        virtual FINDFILEINFO ceefit_call_spec GetNext(void);
-    
-      private:
-        ceefit_init_spec FINDITERATOR(void);
-        ceefit_init_spec FINDITERATOR(const FINDITERATOR&);
-        FINDITERATOR& ceefit_call_spec operator=(const FINDITERATOR&);
-    };
-  };
-
-#else
-# ifndef IO_H_IN_SYS_SUBFOLDER
-#   include <io.h>
-# else
-#   include <sys/io.h>
-# endif
-
-  namespace CEEFIT
-  {
-    class FINDITERATOR : public REFCOUNTED
-    {
-      private:
-        long findHandle;
-        bool itemReady;
-        struct _wfinddata_t findData;
-
-      public:
-        ceefit_init_spec FINDITERATOR(const STRING& searchPattern);
-        virtual ceefit_init_spec ~FINDITERATOR(void);
-        virtual bool ceefit_call_spec HasNext(void);
-        virtual FINDFILEINFO ceefit_call_spec GetNext(void);
-    
-      private:
-        ceefit_init_spec FINDITERATOR(void);
-        ceefit_init_spec FINDITERATOR(const FINDITERATOR&);
-        FINDITERATOR& ceefit_call_spec operator=(const FINDITERATOR&);
-    };
-  };
-
-#endif
 
 namespace CEEFIT
 {

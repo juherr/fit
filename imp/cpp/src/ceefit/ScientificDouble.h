@@ -59,13 +59,13 @@ namespace CEEFIT
   };
 };
 
-template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>
+template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE>, public ::CEEFIT::CELLEQUITABLE<CEEFIT::SCIENTIFICDOUBLE>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE> FIELDBASE;
 
     using FIELDBASE::ToString;
-    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::SCIENTIFICDOUBLE& in)
+    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::SCIENTIFICDOUBLE& in) const
     {
       out = in.ToString();
     }
@@ -82,6 +82,15 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDB
         delete pe;
         return(false);
       }
+    }
+
+    inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<CEEFIT::SCIENTIFICDOUBLE>& otherCell) const 
+    {
+      const FITFIELD<CEEFIT::SCIENTIFICDOUBLE>* otherField = dynamic_cast< const FITFIELD<CEEFIT::SCIENTIFICDOUBLE>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField().IsEqual(otherField->GetField()));
     }
 
     virtual inline const char* ceefit_call_spec GetType(void) const

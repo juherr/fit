@@ -27,6 +27,30 @@
 which.compiler=g++
 
 
+#########################
+# which.linker = a symbolic keyword corresponding to an ant-contrib cpptasks linker engine:
+#   Possible values are:  
+#	gcc 	Gcc Linker
+#	g++ 	G++ Linker
+#	ld 	Ld Linker
+#	ar 	Gcc Librarian
+#	msvc 	Microsoft Linker
+#	bcc 	Borland Linker
+#	df 	Compaq Visual Fortran Linker
+#	icl 	Intel Linker for Windows (IA-32)
+#	ecl 	Intel Linker for Windows (IA-64)
+#	icc 	Intel Linker for Linux (IA-32)
+#	ecc 	Intel Linker for Linux (IA-64)
+#	CC 	Sun ONE Linker
+#	aCC 	HP aC++ Linker
+#	os390 	OS390 Linker
+#	os390batch 	OS390 Linker
+#	os400 	IccLinker
+#	sunc89 	C89 Linker
+#	xlC 	VisualAge Linker
+
+which.linker=g++
+
 
 ########################
 # debug.mode

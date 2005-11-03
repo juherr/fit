@@ -106,11 +106,22 @@ namespace CEEFIT
 
   VALUE<CELLADAPTER> ceefit_call_spec ACTIONFIXTURE::Method(PTR<FIXTURE>& targetFixture, const STRING& test, int args) 
   {
+    if(Actor == null)
+    {
+      throw new EXCEPTION("no ACTIONFIXTURE actor class/object was found");
+    }
+
     VALUE<CELLADAPTER> retVal(Actor->FindMethod(targetFixture, test, args, true));
 
     if(retVal == null)
     {
-      throw new EXCEPTION("no such method exception");
+      STRING aTemp;
+
+      aTemp = "no such method ";
+      aTemp += test;
+      aTemp += " found in actor class";
+
+      throw new EXCEPTION(aTemp);
     }
     
     return(retVal);

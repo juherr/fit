@@ -73,17 +73,6 @@ namespace CEEFIT
 
   int ceefit_call_spec Run(const STRING& cmdLine, bool doReleaseStatics)
   {
-/*
-    if(CeeFitAllocFunc == null)
-    {
-      CeeFitAllocFunc = DefaultAlloc;
-    }
-
-    if(CeeFitFreeFunc == null)
-    {
-      CeeFitFreeFunc = DefaultFree;
-    }
-*/
     DYNARRAY<STRING> argList;
     STRING delimitList(" ");
 

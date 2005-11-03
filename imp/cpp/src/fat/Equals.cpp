@@ -153,19 +153,13 @@ namespace CEEFAT
               }
               case L'=':
               {
-                STRING aTemp;
-                STRING bTemp;
-
                 if(X == null || Y == null)
                 {
                   throw new EXCEPTION("x and/or y not defined");
                 }
 
-                X->ReadFromFixtureVar(aTemp);
-                Y->ReadFromFixtureVar(bTemp);
-
                 FITFIELD<bool> equalityResults;
-                equalityResults = aTemp.IsEqual(bTemp);
+                equalityResults = X->IsEqual(*Y);
 
                 Check(cell, equalityResults);
                 break;

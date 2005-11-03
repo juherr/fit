@@ -45,12 +45,10 @@ namespace CEEFAT
         wchar_t fname[fit_MAX_FNAME];
         wchar_t ext[fit_MAX_EXT];
 
-        //printf("Input file:  %S\n", SummaryObj->InputFile.GetBuffer());
         fit_wfullpath(inputFileFullPath, SummaryObj->InputFile.GetBuffer(), fit_MAX_PATH);
         fit_wsplitpath(inputFileFullPath, drive, dir, null, null);
 
 		    STRING inputFileName(STRING(drive) + dir + Location);
-        //printf("Input full file path:  %S\n", inputFileName.GetBuffer());
 
         fit_wsplitpath(SummaryObj->OutputFile.GetBuffer(), drive, dir, null, null);
         fit_wsplitpath(Location.GetBuffer(), null, otherDir, fname, ext);

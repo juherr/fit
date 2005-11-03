@@ -427,6 +427,7 @@
       </target>
       
       <target name="make-source-tar">
+          <fixcrlf srcdir="." eol="unix" includes="ant,build.properties.example"/>    <!-- make sure that ant has the crlf's turned into just lf's -->
           <tar destfile="${product.name}-src.tar" longfile="gnu">
               <tarfileset dir="."
                               prefix="fit/imp/cpp"

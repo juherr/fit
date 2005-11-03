@@ -50,7 +50,7 @@ template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT:
     typedef CEEFIT::FITFIELDBASE<CEEFAT::MONEY> FIELDBASE;
 
     using FIELDBASE::ToString;
-    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFAT::MONEY& in)
+    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFAT::MONEY& in) const
     {
       out = in.ToString();
     }

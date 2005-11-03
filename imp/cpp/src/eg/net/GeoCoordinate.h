@@ -56,7 +56,7 @@ namespace EG_NET
 template<> class FITFIELD< EG_NET::GEOCOORDINATE > : public CEEFIT::FITFIELDBASE< EG_NET::GEOCOORDINATE >
 {
   public:
-    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG_NET::GEOCOORDINATE& in)
+    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG_NET::GEOCOORDINATE& in) const
     {
       out = in.ToString();
     }

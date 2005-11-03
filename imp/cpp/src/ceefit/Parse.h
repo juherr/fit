@@ -70,6 +70,7 @@ namespace CEEFIT
       virtual bool ceefit_call_spec IsEqual(const PARSE& aParse) const;
 
     private:
+      static STRING RemoveHtmlComments(const STRING& s);
       static STRING ceefit_call_spec RemoveNonBreakTags(const STRING& s);
 	    static STRING ceefit_call_spec UnescapeSmartQuotes(const STRING& s);
 	    static STRING ceefit_call_spec UnescapeEntities(const STRING& s);

@@ -54,13 +54,17 @@ namespace CEEFIT
 	  }
 	  catch(EXCEPTION* e)
     {
-      printf("%S\n", e->GetReason().GetBuffer());
+#     ifdef _DEBUG
+        printf("%S\n", e->GetReason().GetBuffer());
+#     endif
       delete e;
       return(2);
 	  }
     catch(...)
     {
-      printf("Unknown exception caught\n");
+#     ifdef _DEBUG
+        printf("Unknown exception caught\n");
+#     endif
       return(2);
     }
   }
@@ -229,12 +233,6 @@ namespace CEEFIT
       delete Output;
       Output = null;
     }
-
-    // todo ... figure out exit codes ...
-
-    //STRING countsString(Fixture->Counts());
-    //printf("%S", countsString.GetBuffer());
-    // System.exit(fixture.counts.wrong + fixture.counts.exceptions);
 
     return(1);
   }

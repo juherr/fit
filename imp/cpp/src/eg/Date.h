@@ -47,7 +47,7 @@ namespace EG
 template<> class FITFIELD< EG::DATE > : public CEEFIT::FITFIELDBASE< EG::DATE >
 {
   public:
-    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG::DATE& in)
+    inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG::DATE& in) const
     {
       out = in.ToString();
     }
