@@ -163,6 +163,19 @@ namespace CEEFIT
     }
   }
 
+#ifdef _DEBUG
+  extern void ceefit_call_spec AssertIsTrueImpl(bool aExpr, const char* expr, int lineNum, const char* fileName);
+
+# define AssertIsTrue(a) AssertIsTrueTemplate(a, #a, __LINE__, __FILE__)
+
+  template<class ANYTYPE> inline void ceefit_call_spec AssertIsTrueTemplate(const ANYTYPE& aExpr, const char* expr, int lineNum, const char* fileName)
+  {
+    bool aValue = !!aExpr;
+
+    AssertIsTrueImpl(aValue, expr, lineNum, fileName);
+  }
+
+#else
   extern void ceefit_call_spec AssertIsTrueImpl(bool aExpr);
 
   template<class ANYTYPE> inline void ceefit_call_spec AssertIsTrue(const ANYTYPE& aExpr)
@@ -171,6 +184,8 @@ namespace CEEFIT
 
     AssertIsTrueImpl(aValue);
   }
+#endif
+
 };
 
 #endif // __TOOLS_EXCEPTION_H__

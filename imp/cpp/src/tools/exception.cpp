@@ -223,18 +223,27 @@ namespace CEEFIT
     throw new EXCEPTION("AssertNotNull failed");
   }
 
-  void ceefit_call_spec AssertIsTrueImpl(bool aExpr) 
+#ifdef _DEBUG
+  void ceefit_call_spec AssertIsTrueImpl(bool aExpr, const char* exprStr, int lineNum, const char* fileName) 
   {
     if(aExpr != true)
     {
 // uncomment if you want to have debug break in when an assertion fails
-//#     ifdef _DEBUG
 //#       ifdef WIN32
 //          DebugBreak();
 //#       endif        
-//#     endif
+      ;
+      throw new EXCEPTION(STRING("AssertIsTrue failed:  ") + exprStr + ", line " + lineNum + ", file: " + fileName);
+    }
+  }
+#else
+  void ceefit_call_spec AssertIsTrueImpl(bool aExpr) 
+  {
+    if(aExpr != true)
+    {
       throw new EXCEPTION("AssertIsTrue failed");
     }
   }
+#endif
 
 };
