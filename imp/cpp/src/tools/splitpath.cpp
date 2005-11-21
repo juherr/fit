@@ -16,6 +16,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef USE_GLOB_FOR_FIND
+
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
+# include <glob.h>  
+
+#else
+
+# ifndef IO_H_IN_SYS_SUBFOLDER
+#   include <io.h>
+# else
+#   include <sys/io.h>
+# endif
+
+#endif
+
 #include "tools/alloc.h"
 #include "ceefit.h"
 
