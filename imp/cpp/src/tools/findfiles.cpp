@@ -84,26 +84,23 @@ namespace CEEFIT
 //    functions something gross!  How about 'spew()' or 'lung_cheese()'?  Take a note:  findfirst and findnext sound a lot more
 //    professional, if only slightly more readable...
 
-  namespace CEEFIT
+  class FINDITERATORIMPL : public REFCOUNTED
   {
-    class FINDITERATORIMPL : public REFCOUNTED
-    {
-      private:
-        char** curItem;
-        ::glob_t globBuffer;
-        bool NoMatches;
+    private:
+      char** curItem;
+      ::glob_t globBuffer;
+      bool NoMatches;
 
-      public:
-        ceefit_init_spec FINDITERATORIMPL(const STRING& searchPattern);
-        virtual ceefit_dtor_spec ~FINDITERATORIMPL(void); 
-        virtual bool ceefit_call_spec HasNext(void);
-        virtual FINDFILEINFO ceefit_call_spec GetNext(void);
-    
-      private:
-        ceefit_init_spec FINDITERATORIMPL(void);
-        ceefit_init_spec FINDITERATORIMPL(const FINDITERATORIMPL&);
-        FINDITERATORIMPL& ceefit_call_spec operator=(const FINDITERATORIMPL&);
-    };
+    public:
+      ceefit_init_spec FINDITERATORIMPL(const STRING& searchPattern);
+      virtual ceefit_dtor_spec ~FINDITERATORIMPL(void); 
+      virtual bool ceefit_call_spec HasNext(void);
+      virtual FINDFILEINFO ceefit_call_spec GetNext(void);
+  
+    private:
+      ceefit_init_spec FINDITERATORIMPL(void);
+      ceefit_init_spec FINDITERATORIMPL(const FINDITERATORIMPL&);
+      FINDITERATORIMPL& ceefit_call_spec operator=(const FINDITERATORIMPL&);
   };
   
   FINDITERATORIMPL::FINDITERATORIMPL(const STRING& searchPattern) 
