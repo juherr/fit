@@ -41,7 +41,7 @@ namespace CEEFIT
         AssignedFlag = false;
       }
 
-      inline ~STRINGDATA(void)
+      inline ceefit_dtor_spec ~STRINGDATA(void)
       {
       }
 

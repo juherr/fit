@@ -38,7 +38,7 @@ namespace CEEFIT
       ceefit_init_spec SCIENTIFICDOUBLE(double value);
       ceefit_init_spec SCIENTIFICDOUBLE(void);
       ceefit_init_spec SCIENTIFICDOUBLE(const SCIENTIFICDOUBLE&);
-      virtual ceefit_init_spec ~SCIENTIFICDOUBLE(void);
+      virtual ceefit_dtor_spec ~SCIENTIFICDOUBLE(void);
       SCIENTIFICDOUBLE& ceefit_call_spec operator=(const SCIENTIFICDOUBLE& obj);
       SCIENTIFICDOUBLE& ceefit_call_spec operator=(const STRING& obj);
       SCIENTIFICDOUBLE& ceefit_call_spec operator=(const double& obj);
@@ -64,7 +64,7 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDB
   public:
     typedef CEEFIT::FITFIELDBASE<CEEFIT::SCIENTIFICDOUBLE> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::SCIENTIFICDOUBLE& in) const
     {
       out = in.ToString();
@@ -116,7 +116,7 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDB
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<CEEFIT::SCIENTIFICDOUBLE>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<CEEFIT::SCIENTIFICDOUBLE>(void)
     {
     }
 

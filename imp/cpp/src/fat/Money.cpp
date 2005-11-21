@@ -28,7 +28,7 @@ extern "C"
   // defined in ceefit.lib
   typedef unsigned int unicode_char_t;
   extern int unicode_isdigit(unicode_char_t c);
-};
+}
 
 using namespace CEEFIT;
 
@@ -70,7 +70,7 @@ namespace CEEFAT
     cents = (long) (100 * temp);
   }
 
-  ceefit_init_spec MONEY::~MONEY(void) 
+  ceefit_dtor_spec MONEY::~MONEY(void) 
   {
   }
 

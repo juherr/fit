@@ -35,7 +35,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec EXCEPTION(void);
-      virtual ceefit_init_spec ~EXCEPTION(void);
+      virtual ceefit_dtor_spec ~EXCEPTION(void);
 
       virtual STRING& ceefit_call_spec GetReason(void);
       virtual void ceefit_call_spec SetReason(const STRING& aReason);
@@ -62,7 +62,7 @@ namespace CEEFIT
       ceefit_init_spec PARSEEXCEPTION(void);
       ceefit_init_spec PARSEEXCEPTION(const STRING& aString);
       ceefit_init_spec PARSEEXCEPTION(const wchar_t* aString);
-      virtual ceefit_init_spec ~PARSEEXCEPTION(void);
+      virtual ceefit_dtor_spec ~PARSEEXCEPTION(void);
       virtual void ceefit_call_spec SetOffset(int aOffset);
       virtual int ceefit_call_spec GetOffset(void) const;
       ceefit_init_spec PARSEEXCEPTION(const STRING& aString, int aOffset);
@@ -86,7 +86,7 @@ namespace CEEFIT
       ceefit_init_spec BOUNDSEXCEPTION(void);
       ceefit_init_spec BOUNDSEXCEPTION(const STRING& aString);
       ceefit_init_spec BOUNDSEXCEPTION(const wchar_t* aString);
-      virtual ceefit_init_spec ~BOUNDSEXCEPTION(void);
+      virtual ceefit_dtor_spec ~BOUNDSEXCEPTION(void);
       virtual void ceefit_call_spec SetIndex(int aIndex);
       virtual int ceefit_call_spec GetIndex(void) const;
       ceefit_init_spec BOUNDSEXCEPTION(const STRING& aString, int aIndex);
@@ -107,7 +107,7 @@ namespace CEEFIT
       ceefit_init_spec IOEXCEPTION(void);
       ceefit_init_spec IOEXCEPTION(const STRING& aString);
       ceefit_init_spec IOEXCEPTION(const wchar_t* aString);
-      virtual ceefit_init_spec ~IOEXCEPTION(void);
+      virtual ceefit_dtor_spec ~IOEXCEPTION(void);
       virtual const char* ceefit_call_spec GetExceptionTypeName(void);
 
     private:
@@ -124,7 +124,7 @@ namespace CEEFIT
       ceefit_init_spec CLASSNOTFOUNDEXCEPTION(void);
       ceefit_init_spec CLASSNOTFOUNDEXCEPTION(const STRING& aString);
       ceefit_init_spec CLASSNOTFOUNDEXCEPTION(const wchar_t* aString);
-      virtual ceefit_init_spec ~CLASSNOTFOUNDEXCEPTION(void);
+      virtual ceefit_dtor_spec ~CLASSNOTFOUNDEXCEPTION(void);
       virtual const char* ceefit_call_spec GetExceptionTypeName(void);
 
     private:
@@ -141,7 +141,7 @@ namespace CEEFIT
       ceefit_init_spec DIVIDEBYZEROEXCEPTION(void);
       ceefit_init_spec DIVIDEBYZEROEXCEPTION(const STRING& aString);
       ceefit_init_spec DIVIDEBYZEROEXCEPTION(const wchar_t* aString);
-      virtual ceefit_init_spec ~DIVIDEBYZEROEXCEPTION(void);
+      virtual ceefit_dtor_spec ~DIVIDEBYZEROEXCEPTION(void);
       virtual const char* ceefit_call_spec GetExceptionTypeName(void);
 
     private:
@@ -155,7 +155,7 @@ namespace CEEFIT
 
   extern void ceefit_call_spec ThrowAssertionNotNullFailed(void);
 
-  template<class ANYTYPE> inline void ceefit_init_spec AssertNotNull(ANYTYPE* aPtr)
+  template<class ANYTYPE> inline void ceefit_call_spec AssertNotNull(ANYTYPE* aPtr)
   {
     if(aPtr == null)
     {
@@ -163,9 +163,9 @@ namespace CEEFIT
     }
   }
 
-  extern void ceefit_init_spec AssertIsTrueImpl(bool aExpr);
+  extern void ceefit_call_spec AssertIsTrueImpl(bool aExpr);
 
-  template<class ANYTYPE> inline void ceefit_init_spec AssertIsTrue(const ANYTYPE& aExpr)
+  template<class ANYTYPE> inline void ceefit_call_spec AssertIsTrue(const ANYTYPE& aExpr)
   {
     bool aValue = !!aExpr;
 

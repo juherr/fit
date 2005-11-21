@@ -29,7 +29,7 @@ extern "C"
   // defined in ceefit.lib
   typedef unsigned int unicode_char_t;
   extern int unicode_isdigit(unicode_char_t c);
-};
+}
 
 declare_fit_module(CalculatorFixture);
 

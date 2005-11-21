@@ -40,11 +40,11 @@ namespace CEEFIT
       inline MANAGED(void) {}
       inline MANAGED(MANAGED&) {}
       inline MANAGED& operator=(MANAGED&) { return(*this); }
-      virtual inline ~MANAGED(void) {}
+      virtual inline ceefit_dtor_spec ~MANAGED(void) {}
 
     public:
-      virtual void AddRef(void)=0;
-      virtual bool ReleaseRef(bool DoDestroy=true)=0;    
+      virtual void ceefit_call_spec AddRef(void)=0;
+      virtual bool ceefit_call_spec ReleaseRef(bool DoDestroy=true)=0;
   };
 
   extern void ceefit_call_spec ThrowNullArrowPointer(void);
@@ -59,15 +59,15 @@ namespace CEEFIT
       /**
        * Default constructor, initializes the PTR to null
        */
-	    inline PTR<T>(void) 
+	    inline PTR<T>(void)
       {
 		    SetPointer(null);
-	    }	
+	    }
 
       /**
        * Constructor, initializes the PTR with a pointer to some object
        */
-	    explicit inline PTR<T>(const int nullPointer) 
+	    explicit inline PTR<T>(const int nullPointer)
       {
         if(nullPointer != 0)
         {
@@ -77,7 +77,7 @@ namespace CEEFIT
         SetPointer(null);
 	    }
 
-	    explicit inline PTR<T>(const unsigned int nullPointer) 
+	    explicit inline PTR<T>(const unsigned int nullPointer)
       {
         if(nullPointer != 0)
         {
@@ -92,7 +92,7 @@ namespace CEEFIT
        *
        * <p>GCC seemed to need this less optimal version of the function in order to compile some things properly</p>
        */
-      explicit inline PTR<T>(VALUE<T> aValue) 
+      explicit inline PTR<T>(VALUE<T> aValue)
       {
         SetPointer(null);
         aValue.SetPtr(*this);
@@ -103,7 +103,7 @@ namespace CEEFIT
        *
        * <p>GCC seemed to need this less optimal version of the function in order to compile some things properly</p>
        */
-      template<class U> inline PTR<T>(VALUE<U>& aValue) 
+      template<class U> inline PTR<T>(VALUE<U>& aValue)
       {
 		    SetPointer(null);
         aValue.SetPtr(*this);
@@ -112,7 +112,7 @@ namespace CEEFIT
       /**
        * Copy constructor, initializes the PTR with a pointer to some object
        */
-//	    explicit inline PTR<T>(PTR<T>& aSmartPtr) 
+//	    explicit inline PTR<T>(PTR<T>& aSmartPtr)
 //      {
 //		    SetPointer(null);
 //		    operator=(aSmartPtr);
@@ -121,7 +121,7 @@ namespace CEEFIT
       /**
        * Copy constructor, initializes the PTR with a pointer to some object
        */
-	    template<class U> inline PTR<T>(PTR<U>& aSmartPtr) 
+	    template<class U> inline PTR<T>(PTR<U>& aSmartPtr)
       {
 		    SetPointer(null);
 		    operator=(aSmartPtr);
@@ -130,7 +130,7 @@ namespace CEEFIT
       /**
        * Copy constructor, initializes the PTR with a pointer to some object
        */
-	    explicit inline PTR<T>(PTR<T>& aSmartPtr) 
+	    explicit inline PTR<T>(PTR<T>& aSmartPtr)
       {
 		    SetPointer(null);
 		    operator=(aSmartPtr);
@@ -139,7 +139,7 @@ namespace CEEFIT
       /**
        * Initializes the PTR with a pointer to some object
        */
-	    template<class U> explicit inline PTR<T>(U* aPointer) 
+	    template<class U> explicit inline PTR<T>(U* aPointer)
       {
 		    SetPointer(null);
 		    operator=(aPointer);
@@ -148,7 +148,7 @@ namespace CEEFIT
       /**
        * Constructor, initializes the PTR with a value, with optional addref, not for public use
        */
-	    inline PTR<T>(VALUE<T>& aSPtr, bool addRef) 
+	    inline PTR<T>(VALUE<T>& aSPtr, bool addRef)
       {
         if(addRef == true)
         {
@@ -164,7 +164,7 @@ namespace CEEFIT
       /**
        * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
        */
-	    inline PTR<T>& operator=(VALUE<T> aValue) 
+	    inline PTR<T>& operator=(VALUE<T> aValue)
       {
         return(aValue.SetPtr(*this));
 	    }
@@ -172,13 +172,13 @@ namespace CEEFIT
       /**
        * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
        */
-	    template<class U> inline PTR<T>& operator=(VALUE<U>& aValue) 
+	    template<class U> inline PTR<T>& operator=(VALUE<U>& aValue)
       {
         return(aValue.SetPtr(*this));
 	    }
 
 
-	    inline PTR<T>& operator=(const PTR<T>& aSmartPtr) 
+	    inline PTR<T>& operator=(const PTR<T>& aSmartPtr)
       {
 		    return(AssignRef(aSmartPtr.ActualPointer));
 	    }
@@ -186,8 +186,8 @@ namespace CEEFIT
       /**
        * operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to
        */
-	    template<class U> inline PTR<T>& operator=(PTR<U>& aSmartPtr) 
-      {    
+	    template<class U> inline PTR<T>& operator=(PTR<U>& aSmartPtr)
+      {
         if(aSmartPtr != null)
         {
           T* castedPointer = dynamic_cast<T*>(aSmartPtr.GetPointer());
@@ -201,28 +201,42 @@ namespace CEEFIT
         }
 	    }
 
+#     ifdef __BORLANDC__
+        inline PTR<T>& operator=(T* aPointer)
+        {
+          if(aPointer != null)
+          {
+            return(AssignRef(aPointer));
+          }
+          else
+          {
+            return(AssignRef(null));
+          }
+        }
+#     endif
+
       /**
        * operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to
        */
-	    template<class U> inline PTR<T>& operator=(U* aPointer) 
+      template<class U> inline PTR<T>& operator=(U* aPointer)
       {
         if(aPointer != null)
         {
           T* castedPointer = dynamic_cast<T*>(aPointer);
           AssertIsTrue(castedPointer != null);
 
-	  	    return(AssignRef(castedPointer));
+          return(AssignRef(castedPointer));
         }
         else
         {
           return(AssignRef(null));
         }
-	    }
+      }
 
       /**
        * operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to
        */
-//	    inline PTR<T>& operator=(PTR<T>& aSmartPtr) 
+//	    inline PTR<T>& operator=(PTR<T>& aSmartPtr)
 //      {
 //		    return(AssignRef(aSmartPtr.ActualPointer));
 //	    }
@@ -230,7 +244,7 @@ namespace CEEFIT
       /**
        * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
        */
-	    inline PTR<T>& operator=(const int aValue) 
+	    inline PTR<T>& operator=(const int aValue)
       {
         if(aValue != 0)
         {
@@ -242,7 +256,7 @@ namespace CEEFIT
       /**
        * <p>operator= assigns a new pointer value to this PTR and adds a reference to the object pointed to.</p>
        */
-	    inline PTR<T>& operator=(const unsigned int aValue) 
+	    inline PTR<T>& operator=(const unsigned int aValue)
       {
         if(aValue != 0)
         {
@@ -254,9 +268,9 @@ namespace CEEFIT
       /**
        * Destructor, releases the reference to the pointer if any is held
        */
-	    inline ~PTR<T>(void)
+      inline ceefit_dtor_spec ~PTR<T>(void)
       {
-		    if(ActualPointer) 
+		    if(ActualPointer)
         {
 #         ifdef _DEBUG
             bool pointerConsistencyCheck = (dynamic_cast<MANAGED*>(ActualPointer) != null && typeid(T) != typeid(MANAGED));
@@ -271,7 +285,7 @@ namespace CEEFIT
       /**
        * operator! returns true iff the pointer value is null
        */
-	    inline bool operator!(void) const 
+	    inline bool operator!(void) const
       {
 		    return(!ActualPointer);
 	    }
@@ -279,7 +293,7 @@ namespace CEEFIT
       /**
        * operator== returns true if the rvalue in the expression is equivalent to the pointer value stored in this PTR
        */
-	    inline bool operator==(const PTR<T>& aPtr) const 
+	    inline bool operator==(const PTR<T>& aPtr) const
       {
 		    return(ActualPointer == aPtr.ActualPointer);
 	    }
@@ -287,7 +301,7 @@ namespace CEEFIT
       /**
        * IsEqual returns true if the rvalue in the expression is equivalent to the pointer value stored in this PTR
        */
-//	    inline bool IsEqual(const PTR<T>& aPtr) const 
+//	    inline bool IsEqual(const PTR<T>& aPtr) const
 //      {
 //		    return(ActualPointer == aPtr.ActualPointer);
 	    //}
@@ -295,7 +309,7 @@ namespace CEEFIT
       /**
        * operator!= returns true if the rvalue in the expression is not equivalent to the pointer value stored in this PTR
        */
-//	    inline bool operator!=(const PTR<T>& aPtr) const 
+//	    inline bool operator!=(const PTR<T>& aPtr) const
 //      {
 //		    return(ActualPointer != aPtr.ActualPointer);
 //	    }
@@ -303,7 +317,7 @@ namespace CEEFIT
       /**
        * NotEqual returns true if the rvalue in the expression is not equivalent to the pointer value stored in this PTR
        */
-//	    inline bool IsNotEqual(const PTR<T>& aPtr) const 
+//	    inline bool IsNotEqual(const PTR<T>& aPtr) const
 //      {
 //		    return(ActualPointer != aPtr.ActualPointer);
 //	    }
@@ -349,7 +363,7 @@ namespace CEEFIT
       /**
        * operator== returns true if the rvalue in the expression is equivalent to the pointer value stored in this PTR
        */
-	    inline bool operator==(const T* aPtr) const 
+	    inline bool operator==(const T* aPtr) const
       {
 		    return(ActualPointer == aPtr);
 	    }
@@ -363,7 +377,7 @@ namespace CEEFIT
 		    return(ActualPointer == aPtr || ObjectIsEqual(aPtr));
 	    }
 
-	    template<class U> inline bool IsEqual(PTR<U>& aPtr) 
+	    template<class U> inline bool IsEqual(PTR<U>& aPtr)
       {
 		    return(ActualPointer == aPtr.ActualPointer || ObjectIsEqual(aPtr.GetPointer()));
 	    }
@@ -376,7 +390,7 @@ namespace CEEFIT
       /**
        * operator!= returns true if the rvalue in the expression is not equivalent to the pointer value stored in this PTR
        */
-	    inline bool operator!=(const T* aPtr) const 
+	    inline bool operator!=(const T* aPtr) const
       {
 		    return(ActualPointer != aPtr);
 	    }
@@ -406,7 +420,7 @@ namespace CEEFIT
         {
           return(0);
         }
-        else 
+        else
         {
           return(ActualPointer->GetHashCode());
         }
@@ -415,25 +429,25 @@ namespace CEEFIT
       /**
        * operator-> returns the pointer that is stored in this PTR
        */
-	    inline T* operator->(void) 
+	    inline T* operator->(void)
       {
         if(ActualPointer == null)
         {
           ThrowNullArrowPointer();
         }
-		    return(ActualPointer); 
+		    return(ActualPointer);
 	    }
 
       /**
        * operator-> returns the pointer that is stored in this PTR
        */
-	    inline const T* operator->(void) const 
+	    inline const T* operator->(void) const
       {
         if(ActualPointer == null)
         {
           ThrowNullArrowPointer();
         }
-		    return(ActualPointer); 
+		    return(ActualPointer);
 	    }
 
       /**
@@ -441,14 +455,14 @@ namespace CEEFIT
        *
        * <p>It is an error to attempt to perform the operator* on a null PTR.</p>
        */
-	    inline T& operator*(void) 
+	    inline T& operator*(void)
       {
         if(ActualPointer == null)
         {
           ThrowNullStarPointer();
         }
 
-		    return(*ActualPointer); 
+		    return(*ActualPointer);
 	    }
 
       /**
@@ -463,7 +477,7 @@ namespace CEEFIT
           ThrowNullStarPointer();
         }
 
-		    return(*ActualPointer); 
+		    return(*ActualPointer);
 	    }
 
       /**
@@ -483,7 +497,7 @@ namespace CEEFIT
       {
 		    return ActualPointer;
 	    }
-	    
+
     protected:
       /**
        * The pointer to the MANAGED object
@@ -493,17 +507,17 @@ namespace CEEFIT
       /**
        * Force the managed pointer to be set to an object (or null) WITHOUT adding a ref to that object.
        */
-	    inline void SetPointer(T* aPointer) 
+	    inline void SetPointer(T* aPointer)
       {
 #       ifdef _DEBUG
-          if(aPointer != null) 
+          if(aPointer != null)
           {
             AssertIsTrue(dynamic_cast<MANAGED*>(aPointer) != null);
             AssertIsTrue(typeid(T) != typeid(MANAGED));
           }
-#       endif        
+#       endif
 
-		    ActualPointer = aPointer; 
+		    ActualPointer = aPointer;
 	    }
 
       /**
@@ -514,22 +528,22 @@ namespace CEEFIT
       /**
        * Assign the reference using the T's AddRef and ReleaseRef methods.
        */
-      inline PTR<T>& AssignRef(T* aPointer, bool DoDestroy=true) 
+      inline PTR<T>& AssignRef(T* aPointer, bool DoDestroy=true)
       {
 	      T* currentPtrRef = this->ActualPointer;
-        if(currentPtrRef == aPointer) 
+        if(currentPtrRef == aPointer)
         {
 		      return(*this);
 	      }
-	      if(currentPtrRef) 
-        {      
+	      if(currentPtrRef)
+        {
           this->SetPointer(null);
 	      }
-	      if(aPointer) 
+	      if(aPointer)
         {
           this->SetPointer(aPointer);
           MANAGED* aManaged = dynamic_cast<MANAGED*>(aPointer);
-          
+
           AssertNotNull(aManaged);
 
           aManaged->AddRef();
@@ -548,7 +562,7 @@ namespace CEEFIT
     Value = aPtr.GetPointer();
   }
 
-# ifndef _MSC_VER
+# if !(defined(_MSC_VER) || defined(__BORLANDC__))
     template<class T> template<class U> inline VALUE<T>::VALUE(PTR<U>& aPtr)
     {
       Value = dynamic_cast<T*>(aPtr.GetPointer());

@@ -43,7 +43,7 @@ namespace CEEFIT
     public:
       ceefit_init_spec BUFFEREDFILEREADER(const STRING& fileName);
 
-      ceefit_init_spec ~BUFFEREDFILEREADER(void);
+      ceefit_dtor_spec ~BUFFEREDFILEREADER(void);
 
       bool ceefit_call_spec IsEof(void) const;
 

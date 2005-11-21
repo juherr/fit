@@ -88,7 +88,7 @@ namespace CEEFIT
     Name = "";
   }
 
-  ceefit_init_spec FITTESTBASE::~FITTESTBASE()
+  ceefit_dtor_spec FITTESTBASE::~FITTESTBASE()
   {
   }
 

@@ -33,7 +33,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec EXCEPTION::~EXCEPTION()
+  ceefit_dtor_spec EXCEPTION::~EXCEPTION()
   {
   }
 
@@ -82,7 +82,7 @@ namespace CEEFIT
     Offset = 0;
   }
 
-  ceefit_init_spec PARSEEXCEPTION::~PARSEEXCEPTION()
+  ceefit_dtor_spec PARSEEXCEPTION::~PARSEEXCEPTION()
   {
   }
 
@@ -126,7 +126,7 @@ namespace CEEFIT
     Index = 0;
   }
 
-  ceefit_init_spec BOUNDSEXCEPTION::~BOUNDSEXCEPTION()
+  ceefit_dtor_spec BOUNDSEXCEPTION::~BOUNDSEXCEPTION()
   {
   }
 
@@ -167,7 +167,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec IOEXCEPTION::~IOEXCEPTION()
+  ceefit_dtor_spec IOEXCEPTION::~IOEXCEPTION()
   {
   }
 
@@ -188,7 +188,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec CLASSNOTFOUNDEXCEPTION::~CLASSNOTFOUNDEXCEPTION()
+  ceefit_dtor_spec CLASSNOTFOUNDEXCEPTION::~CLASSNOTFOUNDEXCEPTION()
   {
   }
 
@@ -209,7 +209,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec DIVIDEBYZEROEXCEPTION::~DIVIDEBYZEROEXCEPTION()
+  ceefit_dtor_spec DIVIDEBYZEROEXCEPTION::~DIVIDEBYZEROEXCEPTION()
   {
   }
 
@@ -223,7 +223,7 @@ namespace CEEFIT
     throw new EXCEPTION("AssertNotNull failed");
   }
 
-  void ceefit_init_spec AssertIsTrueImpl(bool aExpr) 
+  void ceefit_call_spec AssertIsTrueImpl(bool aExpr) 
   {
     if(aExpr != true)
     {

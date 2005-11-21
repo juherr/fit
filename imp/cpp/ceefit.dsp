@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /Gr /MT /W3 /GR /GX /O2 /Ob2 /I "src" /I "lib\libunicode-0.4" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /Ob2 /I "src" /I "lib\libunicode-0.4" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /Gr /MTd /W3 /Gm /GR /GX /Zi /Od /I "src" /I "lib\libunicode-0.4" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GR /GX /Zi /Od /I "src" /I "lib\libunicode-0.4" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -434,6 +434,10 @@ SOURCE=.\src\tools\BufferedFileReader.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\tools\cfstring.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\tools\exception.cpp
 
 !IF  "$(CFG)" == "ceefit - Win32 Release"
@@ -511,21 +515,6 @@ SOURCE=.\src\tools\registerstatic.cpp
 # Begin Source File
 
 SOURCE=.\src\tools\splitpath.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\src\tools\string.cpp
-
-!IF  "$(CFG)" == "ceefit - Win32 Release"
-
-# ADD CPP /Gr /YX
-
-!ELSEIF  "$(CFG)" == "ceefit - Win32 Debug"
-
-# ADD CPP /Gr /Gm /Gi- /GR /GX /FR /YX
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 

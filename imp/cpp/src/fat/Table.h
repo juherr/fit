@@ -31,7 +31,7 @@ namespace CEEFAT
       static CEEFIT::PTR< CEEFIT::PARSE > Table;
 
       inline ceefit_init_spec TABLE(void) {}
-      inline virtual ceefit_init_spec ~TABLE(void) {}
+      inline virtual ceefit_dtor_spec ~TABLE(void) {}
 
       virtual void ceefit_call_spec DoRows(CEEFIT::PTR< CEEFIT::PARSE >& rows);
       static CEEFIT::VALUE< CEEFIT::PARSE > ceefit_call_spec Copy(CEEFIT::PTR< CEEFIT::PARSE >& tree);

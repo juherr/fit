@@ -40,7 +40,7 @@ namespace CEEFIT
     More = aMore;
   }
 
-  ceefit_init_spec PARSE::~PARSE()
+  ceefit_dtor_spec PARSE::~PARSE()
   {
   }
 
@@ -82,10 +82,8 @@ namespace CEEFIT
 		return startEnd;
 	}
 
-  void ceefit_call_spec PARSE::Construct(const STRING& s, const DYNARRAY<STRING>& tags, int level, int offset)
+  void ceefit_call_spec PARSE::Construct(const STRING& text, const DYNARRAY<STRING>& tags, int level, int offset)
   {
-    STRING text(RemoveHtmlComments(s));                               // just remove HTML comments past the body tag before we start
-    
     STRING lc(text.ToLowercase());
     int startTag = lc.IndexOf(STRING("<")+tags[level]);
     int endTag = lc.IndexOf(STRING(">"), startTag) + 1;
@@ -125,37 +123,6 @@ namespace CEEFIT
       More = new PARSE(Trailer, tags, level, offset+endEnd);
       Trailer.Reset();
     }
-  }
-
-  static const char* HtmlCommentStart ="<!--";
-  static const char* HtmlCommentEnd = "-->";
-
-  STRING PARSE::RemoveHtmlComments(const STRING& s)
-  {
-    STRING temp(s.ToLowercase());
-    int bodyStart = temp.IndexOf(STRING("<") + "body");
-    if(bodyStart < 0)
-    {
-      bodyStart = 0;
-    }
-    
-    STRING retVal(s);
-    int index = 0;    
-
-    while((index = retVal.IndexOf(HtmlCommentStart, bodyStart)) >= 0)
-    {
-      int endIndex = retVal.IndexOf(HtmlCommentEnd, index);
-      if(endIndex >= 0)
-      {
-        retVal = (retVal.Substring(0, index) + retVal.Substring(endIndex + strlen(HtmlCommentEnd)));
-      }
-      else
-      {
-        retVal = retVal.Substring(0, index);
-      }
-    }
-
-    return(retVal);
   }
 
   ceefit_init_spec PARSE::PARSE(const STRING& text)

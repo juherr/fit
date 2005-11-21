@@ -30,7 +30,7 @@ extern "C"
   // defined in ceefit.lib
   typedef unsigned int unicode_char_t;
   extern int unicode_isspace (unicode_char_t c);
-};
+}
 
 using namespace CEEFIT;
 
@@ -68,13 +68,12 @@ namespace CEEFAT
 
       virtual STRING Decode(const STRING& code)
       {
-          return
-              code.IsEqual(FIXTURE::red) ?      "red" :
-              code.IsEqual(FIXTURE::green) ?    "green" :
-              code.IsEqual(FIXTURE::yellow) ?   "yellow" :
-              code.IsEqual(FIXTURE::gray) ?     "gray" :
-              code.IsEqual("#808080") ?        "gray" :
-              code;
+        if(code.IsEqual(FIXTURE::red)) return(STRING("red"));
+        if(code.IsEqual(FIXTURE::green)) return(STRING("green"));
+        if(code.IsEqual(FIXTURE::yellow)) return(STRING("yellow"));
+        if(code.IsEqual(FIXTURE::gray)) return(STRING("gray"));
+        if(code.IsEqual("#808080")) return(STRING("gray"));
+        return(code);
       }
 
     public:

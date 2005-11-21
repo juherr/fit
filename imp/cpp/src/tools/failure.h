@@ -35,7 +35,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec FAILURE(void);
-      virtual ceefit_init_spec ~FAILURE(void);
+      virtual ceefit_dtor_spec ~FAILURE(void);
 
       virtual STRING& ceefit_call_spec GetReason(void);
 
@@ -51,7 +51,7 @@ namespace CEEFIT
   {
     public:
       ceefit_init_spec FITASSERTIONFAILED(const char* aFile, int aLineNumber);
-      virtual ceefit_init_spec ~FITASSERTIONFAILED(void);
+      virtual ceefit_dtor_spec ~FITASSERTIONFAILED(void);
       
     private:
       ceefit_init_spec FITASSERTIONFAILED(void);                          /**< Not implemented.  Do not call. */
@@ -65,7 +65,7 @@ namespace CEEFIT
   {
     public:
       ceefit_init_spec FITFAILED(const char* aFile, int aLineNumber);
-      virtual ceefit_init_spec ~FITFAILED(void);
+      virtual ceefit_dtor_spec ~FITFAILED(void);
 
     private:
       ceefit_init_spec FITFAILED(void);                           /**< Not implemented.  Do not call. */

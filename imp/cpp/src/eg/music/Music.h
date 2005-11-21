@@ -43,7 +43,7 @@ namespace EG_MUSIC
       bool Selected;
 
       ceefit_init_spec MUSIC(void);
-      virtual ceefit_init_spec ~MUSIC(void);
+      virtual ceefit_dtor_spec ~MUSIC(void);
       MUSIC& ceefit_call_spec operator=(const MUSIC& aMusic);
 
       // Accessors ////////////////////////////////
@@ -103,7 +103,7 @@ template<> class FITFIELD< EG_MUSIC::MUSIC > : public CEEFIT::FITFIELDBASE< EG_M
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< EG_MUSIC::MUSIC >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< EG_MUSIC::MUSIC >(void)
     {
     }
 

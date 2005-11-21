@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="Debug\fitexamples.exe"/>
+    <OBJFILES value="Debug\fitexamples.obj Debug\Sqrt.obj Debug\Date.obj Debug\Division.obj 
+      Debug\ExampleTests.obj Debug\Page.obj Debug\Calculator.obj 
+      Debug\Simulator.obj Debug\Dialog.obj Debug\Display.obj Debug\Music.obj 
+      Debug\MusicLibrary.obj Debug\MusicPlayer.obj Debug\Realtime.obj 
+      Debug\Browser.obj Debug\GeoSimulator.obj Debug\GeoCoordinate.obj"/>
+    <RESFILES value="fitexamples.res"/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value="Debug\ceefit.lib"/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value=""/>
+    <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi"/>
+    <PATHCPP value=".;src\fitexamples;src\eg;src\eg\music;src\eg\net"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
+    <MAINSOURCE value="fitexamples.bpf"/>
+    <INCLUDEPATH value="$(BCB)\include;$(BCB)\include\vcl;src\eg\net;src\eg\music;src\eg;..\eg\net;..\eg\music;..\eg;src\fitexamples;src;lib;lib\icu\include"/>
+    <LIBPATH value="$(BCB)\lib\obj;$(BCB)\lib;src\eg\net;src\eg\music;src\eg;..\eg\net;..\eg\music;..\eg;src\fitexamples"/>
+    <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <CFLAG1 value="-Od -Q -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC -tWM -c"/>
+    <PFLAGS value="-N2Debug -N0Debug -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-lDebug -IDebug -D&quot;&quot; -ap -Tpe -x -Gn -v"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0x32.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32mt.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="fitexamples.res" FORMNAME="" UNITNAME="fitexamples.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="fitexamples.bpf" FORMNAME="" UNITNAME="fitexamples" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fitexamples\fitexamples.cpp" FORMNAME="" UNITNAME="fitexamples" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Debug\ceefit.lib" FORMNAME="" UNITNAME="ceefit.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\Sqrt.cpp" FORMNAME="" UNITNAME="Sqrt.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\Date.cpp" FORMNAME="" UNITNAME="Date.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\Division.cpp" FORMNAME="" UNITNAME="Division.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\ExampleTests.cpp" FORMNAME="" UNITNAME="ExampleTests.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\Page.cpp" FORMNAME="" UNITNAME="Page.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\Calculator.cpp" FORMNAME="" UNITNAME="Calculator.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\music\Simulator.cpp" FORMNAME="" UNITNAME="Simulator.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\music\Dialog.cpp" FORMNAME="" UNITNAME="Dialog.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\music\Display.cpp" FORMNAME="" UNITNAME="Display.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\music\Music.cpp" FORMNAME="" UNITNAME="Music.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\music\MusicLibrary.cpp" FORMNAME="" UNITNAME="MusicLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\music\MusicPlayer.cpp" FORMNAME="" UNITNAME="MusicPlayer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\music\Realtime.cpp" FORMNAME="" UNITNAME="Realtime.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\music\Browser.cpp" FORMNAME="" UNITNAME="Browser.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\net\GeoSimulator.cpp" FORMNAME="" UNITNAME="GeoSimulator.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\eg\net\GeoCoordinate.cpp" FORMNAME="" UNITNAME="GeoCoordinate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=4105
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=6
+Item0=$(BCB)\include;$(BCB)\include\vcl;src\eg\net;src\eg\music;src\eg;..\eg\net;..\eg\music;..\eg;src\fitexamples;src;lib;lib\icu\include
+Item1=src\eg\net;src\eg\music;src\eg;..\eg\net;..\eg\music;..\eg;$(BCB)\include;$(BCB)\include\vcl;
+Item2=..\eg\net;..\eg\music;..\eg;$(BCB)\include;$(BCB)\include\vcl;
+Item3=..\eg\net;..\eg\music;..\eg;$(BCB)\include;$(BCB)\include\vcl;
+Item4=..\eg\net;..\eg\music;..\eg;$(BCB)\include;$(BCB)\include\vcl;
+Item5=..\eg\net;..\eg\music;..\eg;$(BCB)\include;$(BCB)\include\vcl;
+
+[HistoryLists\hlLibraryPath]
+Count=1
+Item0=$(BCB)\lib\obj;$(BCB)\lib;src\eg\net;src\eg\music;src\eg;..\eg\net;..\eg\music;..\eg;src\fitexamples
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=3
+Item0=Debug
+Item1=Debug\
+Item2=objs
+
+[HistoryLists\hlFinalOutputDir]
+Count=1
+Item0=Debug\
+
+[HistoryLists\hIBPIOutputDir]
+Count=2
+Item0=Debug
+Item1=Debug\
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=1
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>

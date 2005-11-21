@@ -38,7 +38,7 @@ namespace CEEFIT
       static void* ceefit_call_spec operator new(fit_size_t numBytes);
       static void ceefit_call_spec operator delete(void* aObj);
 
-      OBJECT(void);
+      ceefit_init_spec OBJECT(void);
       virtual ceefit_init_spec ~OBJECT(void);
       ceefit_init_spec OBJECT(const OBJECT&);
       OBJECT& ceefit_call_spec operator=(const OBJECT&);

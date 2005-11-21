@@ -103,15 +103,15 @@ typedef struct unicode_encoding_t
 
   /* Initialize private data.  NULL means no init necessary.  Return 0
      on error.  */
-  int (*init) (void **privp);
+  int (ceefit_call_spec *init) (void **privp);
 
   /* Destroy private data.  NULL means no destroy necessary.  */
-  void (*destroy) (void **privp);
+  void (ceefit_call_spec *destroy) (void **privp);
 
   /* Put output buffer into initial shift state.  If NULL, this
      encoding doesn't use a shift state.  Returns error indicator like
      iconv(); see man page.  */
-  int (*reset) (void *priv, char **outbuf, size_t *outbytesleft);
+  int (ceefit_call_spec *reset) (void *priv, char **outbuf, size_t *outbytesleft);
 
   /* Read some bytes and convert into an array of UCS4 characters.
 
@@ -126,7 +126,7 @@ typedef struct unicode_encoding_t
 
      Return one of the unicode_read_ values.  */
   enum unicode_read_result
-    (*read) (void *priv,
+    (ceefit_call_spec *read) (void *priv,
                      const char     **inbuf,  size_t *inbytesleft,
                      unicode_char_t **outbuf, size_t *outcharsleft);
 
@@ -143,7 +143,7 @@ typedef struct unicode_encoding_t
 
      Return one of the unicode_write_ values.  */
   enum unicode_write_result
-    (*write) (void *priv,
+    (ceefit_call_spec *write) (void *priv,
                       unicode_char_t **inbuf,  size_t *incharsleft,
                       char           **outbuf, size_t *outbytesleft);
 
@@ -151,7 +151,7 @@ typedef struct unicode_encoding_t
   struct unicode_encoding_t *next;
 } unicode_encoding_t;
 
-void unicode_register_encoding (unicode_encoding_t *vec);   // dw: removed _cdecl
+void ceefit_call_spec unicode_register_encoding (unicode_encoding_t *vec);
 
 extern unicode_encoding_t unicode_utf8_encoding;
 extern unicode_encoding_t unicode_ascii_encoding;

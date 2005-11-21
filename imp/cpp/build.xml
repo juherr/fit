@@ -26,7 +26,7 @@
 	<property file="build.properties"/>
 
       <!-- The name of the current version of CeeFIT -->	
-      <property name="product.name" value="CeeFIT-1.1.1"/>
+      <property name="product.name" value="CeeFIT-1.1.2"/>
       
 	<!-- Bring in the ant-contrib tasks -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -146,6 +146,18 @@
 					</then>
 				</if>
 			</then>
+		</if>
+		<if>
+		    <equals arg1="${which.compiler}" arg2="bcc"/>
+		    <then>
+		        <property name="using.bcc" value="true"/>
+		        <if>
+    		            <equals arg1="${debug.mode}" arg2="true"/>
+        			<then>
+        				<property name="using.bcc.debug.mode" value="true"/>
+        			</then>
+		        </if>
+		    </then>
 		</if>
 		<if>
 			<equals arg1="${which.compiler}" arg2="msvc"/>
@@ -268,12 +280,6 @@
 				</if>
 			</else></if></else>
 		</if>
-		<if>
-		        <equals arg1="${using.gcc}" arg2="true"/>
-		        <then>
-		                <property name="add.callspec.defines" value="true"/>
-		        </then>
-		</if>
 		<mkdir dir="${output.dir}"/>
 	</target>
 
@@ -282,17 +288,13 @@
 		<cc debug="${debug.mode}" exceptions="true" failonerror="true" incremental="${incremental.compile}" multithreaded="true" name="${which.compiler}" newenvironment="false"
 		       optimize="${optimize.parm}" runtime="static" outtype="static" rebuild="false" relentless="false" rtti="true" subsystem="console">
 
-			<compiler id="default.compiler.args">
+			<compiler id="c.compiler.args">
 				<!-- <compilerarg location="mid" value="-print-search-dirs" if="debug.ant.flag"/> -->
 				<!-- <compilerarg location="mid" value="-Winline" if="using.gcc"/> -->
-				<compilerarg location="start" value="-std=gnu++98" if="using.gcc"/>
-				<compilerarg location="mid" value="-fpermissive" if="using.gcc"/>
 				<!-- <compilerarg location="mid" value="-fshort-wchar" if="using.gcc"/>-->
 				<!-- <compilerarg location="mid" value="-frepo" if="using.gcc"/> -->
 				<compilerarg location="mid" value="-fkeep-static-consts" if="using.gcc"/>
 				<compilerarg location="mid" value="-fkeep-inline-functions" if="using.gcc"/>
-				<compilerarg location="mid" value="-fconst-strings" if="using.gcc"/>
-				<compilerarg location="mid" value="-ftemplate-depth-255" unless="is.not.release.mode" if="using.gcc"/>
 				<!-- <compilerarg location="mid" value="-ffast-math" if="using.gcc"/> -->
 				<compilerarg location="mid" value="-ftrapping-math" if="using.gcc"/>
 				<compilerarg location="mid" value="-ftrapv" if="using.gcc"/>
@@ -308,25 +310,49 @@
 				<compilerarg location="mid" value="-mno-sse" if="using.gcc.on.intel"/>
 				<compilerarg location="mid" value="-mno-sse2" if="using.gcc.on.intel"/>
 				<!-- <compilerarg location="mid" value="-mno-sse3" if="using.gcc.on.windows"/> -->
-				<compilerarg location="mid" value="-minline-all-stringops" unless="is.not.release.mode" if="using.gcc"/>
-				<compilerarg location="mid" value="-fimplicit-inline-templates" unless="is.not.release.mode" if="using.gcc"/>
-				<compilerarg location="mid" value="-fimplicit-templates" unless="is.not.release.mode" if="using.gcc"/>
 				<compilerarg location="mid" value="-fdefault-inline" unless="is.not.release.mode" if="using.gcc"/>
 				<compilerarg location="mid" value="-fimplement-inlines" unless="is.not.release.mode" if="using.gcc"/>
-				<compilerarg location="mid" value="-felide-constructors" if="using.gcc"/>
-				<compilerarg location="mid" value="-fenforce-eh-specs" if="using.gcc"/>
-				<compilerarg location="mid" value="-ffor-scope" if="using.gcc"/>
-				<compilerarg location="mid" value="-Wnon-virtual-dtor" if="using.gcc"/>
-				<compilerarg location="mid" value="-Woverloaded-virtual" if="using.gcc"/>
 				
 				<defineset>
                                   <define name="IO_H_IN_SYS_SUBFOLDER" value="true" if="io.h.in.sys"/>
                                   <define name="USE_GLOB_FOR_FIND" value="true" if="glob.h.was.found"/>
                                   <define name="INCLUDE_STAT_H" value="true" if="stat.h.was.found"/>
-                                  <define name="__stdcall" value="__attribute__((__stdcall__))" if="add.callspec.defines"/>
-                                  <define name="__fastcall" value="__attribute__((__fastcall__))" if="add.callspec.defines"/>
-                                  <define name="__cdecl" value="__attribute__((__cdecl__))" if="add.callspec.defines"/>				
+                                  <define name="_NO_VCL" if="using.bcc"/>
+                                  <define name="NO_STRICT" if="using.bcc"/>
                           </defineset>
+			</compiler>
+
+			<compiler id="default.compiler.args" extends="c.compiler.args">
+				<compilerarg location="mid" value="-fpermissive" if="using.gcc"/>
+				<compilerarg location="mid" value="-fconst-strings" if="using.gcc"/>
+				<compilerarg location="mid" value="-ftemplate-depth-255" unless="is.not.release.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-minline-all-stringops" unless="is.not.release.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-fimplicit-inline-templates" unless="is.not.release.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-fimplicit-templates" unless="is.not.release.mode" if="using.gcc"/>
+				<compilerarg location="mid" value="-felide-constructors" if="using.gcc"/>
+				<compilerarg location="mid" value="-fenforce-eh-specs" if="using.gcc"/>
+				<compilerarg location="mid" value="-ffor-scope" if="using.gcc"/>
+				<compilerarg location="mid" value="-Wnon-virtual-dtor" if="using.gcc"/>
+				<compilerarg location="mid" value="-Woverloaded-virtual" if="using.gcc"/>
+				<compilerarg location="mid" value="-X-" if="using.bcc"/>                          <!-- enable compiler dependency output? -->
+				<compilerarg location="mid" value="-pr" if="using.bcc"/>                          <!-- pascal calling convention? -->
+				<compilerarg location="mid" value="-a8" if="using.bcc"/>                          <!-- align 8-byte boundaries -->
+				<compilerarg location="mid" value="-b" if="using.bcc"/>                            <!-- make enums int-sized -->
+				<compilerarg location="mid" value="-k" if="using.bcc"/>                            <!-- generate stack frames -->
+				<compilerarg location="mid" value="-vi" if="using.bcc.debug.mode"/>       <!-- turn on source debugging? -->
+				<compilerarg location="mid" value="-s-" if="using.bcc"/>                           <!-- link using the system's incremental linker? -->
+				<compilerarg location="mid" value="-q" if="using.bcc"/>                            <!-- suppress the compiler identification banner -->
+				<compilerarg location="mid" value="-c" if="using.bcc"/>                            <!-- compiler to object file only, do not link -->
+				<compilerarg location="mid" value="-w-8026" if="using.bcc"/>                  <!-- disable annoying warning -->
+				<compilerarg location="mid" value="-w-8027" if="using.bcc"/>                  <!-- disable annoying warning -->  
+				<compilerarg location="mid" value="-w-8022" if="using.bcc"/>                  <!-- disable annoying warning -->
+				<compilerarg location="mid" value="-w-8084" if="using.bcc"/>                  <!-- disable annoying warning -->
+				<compilerarg location="mid" value="-w-8010" if="using.bcc"/>                  <!-- disable annoying warning -->
+				<compilerarg location="mid" value="-w-8013" if="using.bcc"/>                  <!-- disable annoying warning -->
+				<compilerarg location="mid" value="-w-8058" if="using.bcc"/>                  <!-- disable annoying warning -->
+				<compilerarg location="mid" value="-w-par" if="using.bcc"/>                    <!-- disable annoying warning -->
+				<compilerarg location="mid" value="-pc" if="using.bcc"/>                          <!-- use pascall calling convention? -->
+				<compilerarg location="mid" value="-RT" if="using.bcc"/>                          <!-- enable runtime type information -->
 			</compiler>
 		</cc>
 		
@@ -356,6 +382,8 @@
 				<fileset dir="src/tools" casesensitive="false">
 					<include name="**/*.cpp"/>
 				</fileset>
+			</compiler>
+			<compiler inherit="true" name="${which.compiler}" extends="c.compiler.args">
 				<fileset dir="lib/libunicode-0.4" casesensitive="false" unless="using.external.libunicode">
 					<include name="*.c"/>
 					<exclude name="decomp.*"/>
@@ -446,6 +474,11 @@
                   <include name="*.dsp"/>
                   <include name="*.dsw"/>
                   <include name="*.dev"/>
+                  <include name="*.res"/>  <!-- borland c++ builder project file -->
+                  <include name="*.bpr"/>  <!-- borland c++ builder project file -->
+                  <include name="*.bpf"/>  <!-- borland c++ builder project file -->
+                  <include name="*.bpg"/>  <!-- borland c++ builder project file -->
+                  <include name="*.dsk"/>  <!-- borland c++ builder project file -->
                   <include name="build.xml"/>
                   <include name="lib/**/*"/>
                   <exclude name="lib/**/classes/**/*"/>
@@ -483,6 +516,11 @@
                   <include name="*.dsp"/>
                   <include name="*.dsw"/>
                   <include name="*.dev"/>
+                  <include name="*.res"/>  <!-- borland c++ builder project file -->
+                  <include name="*.bpr"/>  <!-- borland c++ builder project file -->
+                  <include name="*.bpf"/>  <!-- borland c++ builder project file -->
+                  <include name="*.bpg"/>  <!-- borland c++ builder project file -->
+                  <include name="*.dsk"/>  <!-- borland c++ builder project file -->
                   <include name="build.xml"/>
                   <include name="lib/**/*"/>
                   <exclude name="lib/**/classes/**/*"/>
@@ -538,6 +576,33 @@
 
       <target name="make-msvc60-win32-bin-zip">
           <zip destfile="${product.name}-msvc60-win32-bin.zip">
+              <zipfileset dir="."
+                              prefix="fit/imp/cpp">              
+                  <include name="LICENSE*"/>
+                  <include name="README*"/>
+                  <include name="src/**/*.h"/>
+                  <include name="Debug/**/*"/>
+                  <include name="Release/**/*"/>
+                  <include name="FastCompile/**/*"/>
+                  <exclude name="**/*.obj"/>
+                  <exclude name="**/*.pch"/>
+                  <exclude name="**/*.idb"/>
+                  <exclude name="**/history.xml"/>
+                  <exclude name="**/dependencies.xml"/>
+              </zipfileset>
+              <zipfileset dir="../../spec"
+                              prefix="fit/spec">              
+                  <include name="**/*"/>
+              </zipfileset>
+              <zipfileset dir="../../examples"
+                              prefix="fit/examples">              
+                  <include name="**/*"/>
+              </zipfileset>
+          </zip>
+      </target>
+
+      <target name="make-bcb6-win32-bin-zip">
+          <zip destfile="${product.name}-bcb6-win32-bin.zip">
               <zipfileset dir="."
                               prefix="fit/imp/cpp">              
                   <include name="LICENSE*"/>

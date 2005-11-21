@@ -30,10 +30,11 @@ namespace CEEFIT
     public:
       STRING FilePath;
       time_t LastUpdateTime;
+      bool IsFolder;
       
       ceefit_init_spec FINDFILEINFO(void);
-      virtual ceefit_init_spec ~FINDFILEINFO(void);
-      ceefit_init_spec FINDFILEINFO(const STRING& filePath, time_t lastUpdated);
+      virtual ceefit_dtor_spec ~FINDFILEINFO(void);
+      ceefit_init_spec FINDFILEINFO(const STRING& filePath, time_t lastUpdated, bool isFolder);
       FINDFILEINFO& ceefit_call_spec operator=(const FINDFILEINFO& fileInfo);
       ceefit_init_spec FINDFILEINFO(const FINDFILEINFO& fileInfo);
   };
@@ -41,7 +42,7 @@ namespace CEEFIT
   class FINDITERATOR : public REFCOUNTED
   {
     public:
-      virtual inline ceefit_init_spec ~FINDITERATOR(void) {}
+      virtual inline ceefit_dtor_spec ~FINDITERATOR(void) {}
       virtual bool ceefit_call_spec HasNext(void)=0;
       virtual FINDFILEINFO ceefit_call_spec GetNext(void)=0;
   

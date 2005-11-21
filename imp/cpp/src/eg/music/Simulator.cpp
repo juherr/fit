@@ -106,7 +106,7 @@ namespace EG_MUSIC
     ACTIONFIXTURE::Actor = new DIALOG(STRING("load jamed"), ACTIONFIXTURE::Actor);
   }
 
-  SIMULATOR::SIMULATOR()
+  ceefit_init_spec SIMULATOR::SIMULATOR()
   {
     RegisterCeefitTest(this, "waitSearchComplete", &SIMULATOR::waitSearchComplete);
     RegisterCeefitTest(this, "waitPlayStarted", &SIMULATOR::waitPlayStarted);
@@ -114,7 +114,7 @@ namespace EG_MUSIC
     RegisterCeefitTest(this, "failLoadJam", &SIMULATOR::failLoadJam);
   }
 
-  SIMULATOR::~SIMULATOR()
+  ceefit_dtor_spec SIMULATOR::~SIMULATOR()
   {
   }
 

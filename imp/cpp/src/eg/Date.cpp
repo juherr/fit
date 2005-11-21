@@ -33,23 +33,23 @@ using namespace CEEFIT;
 
 namespace EG
 {
-  DATE::DATE() 
+  ceefit_init_spec DATE::DATE() 
   {
     Value = (fitINT64) 0;
   }
 
-  DATE::~DATE()
+  ceefit_dtor_spec DATE::~DATE()
   {
   }
 
-  DATE& DATE::operator=(const DATE& aDate)
+  DATE& ceefit_call_spec DATE::operator=(const DATE& aDate)
   {
     Value = aDate.Value;
 
     return(*this);
   }
 
-  DATE::DATE(const DATE& aDate)
+  ceefit_init_spec DATE::DATE(const DATE& aDate)
   {
     Value = aDate.Value;
   }

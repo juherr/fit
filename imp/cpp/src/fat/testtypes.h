@@ -29,7 +29,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public CEEFIT::FITFIELDBASE
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<int> > FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::DYNARRAY<int>& in) const
     {
       CEEFIT::STRING temp;
@@ -93,7 +93,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public CEEFIT::FITFIELDBASE
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::DYNARRAY<int> >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< CEEFIT::DYNARRAY<int> >(void)
     {
     }
 
@@ -106,7 +106,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public CEEFIT::FITFIELDBAS
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<bool> > FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::DYNARRAY<bool>& in) const 
     {
       CEEFIT::STRING temp;
@@ -166,7 +166,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public CEEFIT::FITFIELDBAS
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::DYNARRAY<bool> >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< CEEFIT::DYNARRAY<bool> >(void)
     {
     }
 
@@ -180,7 +180,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public CEEFIT::F
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::DYNARRAY<CEEFIT::STRING> > FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::DYNARRAY<CEEFIT::STRING>& in) const
     {
       CEEFIT::STRING temp;
@@ -237,7 +237,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public CEEFIT::F
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >(void)
     {
     }
 

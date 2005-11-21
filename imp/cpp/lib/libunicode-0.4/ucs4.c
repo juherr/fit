@@ -25,21 +25,21 @@
 #include "convert.h"
 
 static int  
-ucs4_big_init (void **privp)
+ceefit_call_spec ucs4_big_init (void **privp)
 {
   *privp = (void *) 1;
   return 1;
 }
 
 static int  
-ucs4_little_init (void **privp)
+ceefit_call_spec ucs4_little_init (void **privp)
 {
   *privp = (void *) 0;
   return 1;
 }
 
 static int  
-ucs4_native_init (void **privp)
+ceefit_call_spec ucs4_native_init (void **privp)
 {
   int val = 1;
   char *p = (char *) &val;
@@ -48,7 +48,7 @@ ucs4_native_init (void **privp)
 }
 
 static enum unicode_read_result  
-ucs4_read (void *bigep, const char **inbuf, size_t *inbytesleft,
+ceefit_call_spec ucs4_read (void *bigep, const char **inbuf, size_t *inbytesleft,
 	   unicode_char_t **outbuf, size_t *outcharsleft)
 {
   int bigendian = (int) bigep;
@@ -80,7 +80,7 @@ ucs4_read (void *bigep, const char **inbuf, size_t *inbytesleft,
 }
 
 static enum unicode_write_result  
-ucs4_write (void *arg,
+ceefit_call_spec ucs4_write (void *arg,
 	    unicode_char_t **inbuf, size_t *incharsleft,
 	    char **outbuf, size_t *outbytesleft)
 {

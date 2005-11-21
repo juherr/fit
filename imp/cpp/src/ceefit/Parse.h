@@ -44,7 +44,7 @@ namespace CEEFIT
       PTR<PARSE> Parts;
 
       ceefit_init_spec PARSE(const STRING& aTag, const STRING& aBody, PTR<PARSE>& aParts, PTR<PARSE>& aMore);
-      virtual ceefit_init_spec ~PARSE(void);
+      virtual ceefit_dtor_spec ~PARSE(void);
       ceefit_init_spec PARSE(const STRING& text, const DYNARRAY<STRING>& tags, int level, int offset);
 
       virtual void ceefit_call_spec AddToTag(const STRING& text);
@@ -70,7 +70,6 @@ namespace CEEFIT
       virtual bool ceefit_call_spec IsEqual(const PARSE& aParse) const;
 
     private:
-      static STRING RemoveHtmlComments(const STRING& s);
       static STRING ceefit_call_spec RemoveNonBreakTags(const STRING& s);
 	    static STRING ceefit_call_spec UnescapeSmartQuotes(const STRING& s);
 	    static STRING ceefit_call_spec UnescapeEntities(const STRING& s);

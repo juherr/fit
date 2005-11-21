@@ -42,32 +42,35 @@
 
 namespace CEEFIT
 {
-  FINDFILEINFO::FINDFILEINFO() 
+  ceefit_init_spec FINDFILEINFO::FINDFILEINFO() 
   {
   }      
       
-  FINDFILEINFO::~FINDFILEINFO() 
+  ceefit_dtor_spec FINDFILEINFO::~FINDFILEINFO() 
   {
   }
 
-  FINDFILEINFO::FINDFILEINFO(const STRING& filePath, time_t lastUpdated) 
+  ceefit_init_spec FINDFILEINFO::FINDFILEINFO(const STRING& filePath, time_t lastUpdated, bool isFolder) 
   {
     FilePath = filePath;
     LastUpdateTime = lastUpdated;
+    IsFolder = isFolder;
   }
 
-  FINDFILEINFO& FINDFILEINFO::operator=(const FINDFILEINFO& fileInfo) 
+  FINDFILEINFO& ceefit_call_spec FINDFILEINFO::operator=(const FINDFILEINFO& fileInfo) 
   {
     FilePath = fileInfo.FilePath;
     LastUpdateTime = fileInfo.LastUpdateTime;
+    IsFolder = fileInfo.IsFolder;
 
     return(*this);
   }
 
-  FINDFILEINFO::FINDFILEINFO(const FINDFILEINFO& fileInfo) 
+  ceefit_init_spec FINDFILEINFO::FINDFILEINFO(const FINDFILEINFO& fileInfo) 
   {
     FilePath = fileInfo.FilePath;
     LastUpdateTime = fileInfo.LastUpdateTime;
+    IsFolder = fileInfo.IsFolder;
   }
 
 #ifdef USE_GLOB_FOR_FIND
@@ -92,7 +95,7 @@ namespace CEEFIT
 
       public:
         ceefit_init_spec FINDITERATORIMPL(const STRING& searchPattern);
-        virtual ceefit_init_spec ~FINDITERATORIMPL(void); 
+        virtual ceefit_dtor_spec ~FINDITERATORIMPL(void); 
         virtual bool ceefit_call_spec HasNext(void);
         virtual FINDFILEINFO ceefit_call_spec GetNext(void);
     
@@ -170,7 +173,7 @@ namespace CEEFIT
       throw new EXCEPTION("Could not stat to get the last modified date");
     }
 
-    return(FINDFILEINFO(retVal, statVal.st_mtime));
+    return(FINDFILEINFO(retVal, statVal.st_mtime, statVal.st_mode & S_IFMT == S_IFDIR));
   }
 
 #else
@@ -180,11 +183,15 @@ namespace CEEFIT
     private:
       long findHandle;
       bool itemReady;
-      struct _wfinddata_t findData;
+#     if defined(__BORLANDC__)
+        struct _wffblk findData;
+#     else
+        struct _wfinddata_t findData;
+#     endif
 
     public:
       ceefit_init_spec FINDITERATORIMPL(const STRING& searchPattern);
-      virtual ceefit_init_spec ~FINDITERATORIMPL(void);
+      virtual ceefit_dtor_spec ~FINDITERATORIMPL(void);
       virtual bool ceefit_call_spec HasNext(void);
       virtual FINDFILEINFO ceefit_call_spec GetNext(void);
   
@@ -194,12 +201,18 @@ namespace CEEFIT
       FINDITERATORIMPL& ceefit_call_spec operator=(const FINDITERATORIMPL&);
   };
 
-  FINDITERATORIMPL::FINDITERATORIMPL(const STRING& searchPattern) 
+  ceefit_init_spec FINDITERATORIMPL::FINDITERATORIMPL(const STRING& searchPattern) 
   {
     itemReady = false;
-    memset(&findData, 0, sizeof(struct _wfinddata_t));
     STRING temp(searchPattern);
-    findHandle = _wfindfirst(temp.GetBuffer(), &findData);
+
+#   if defined(__BORLANDC__)
+      memset(&findData, 0, sizeof(struct _wffblk));      
+      findHandle = _wfindfirst(temp.GetBuffer(), &findData, FA_RDONLY | FA_HIDDEN | FA_ARCH | FA_SYSTEM | FA_DIREC);
+#   else
+      memset(&findData, 0, sizeof(struct _wfinddata_t));
+      findHandle = _wfindfirst(temp.GetBuffer(), &findData);
+#   endif  
 
     if(findHandle == -1)
     {
@@ -222,7 +235,7 @@ namespace CEEFIT
     }
   }
 
-  FINDITERATORIMPL::~FINDITERATORIMPL()
+  ceefit_dtor_spec FINDITERATORIMPL::~FINDITERATORIMPL()
   {
     if(findHandle != -1)
     {
@@ -230,7 +243,7 @@ namespace CEEFIT
     }
   }
 
-  bool FINDITERATORIMPL::HasNext()
+  bool ceefit_call_spec FINDITERATORIMPL::HasNext()
   {
     if(itemReady == true)
     {
@@ -242,7 +255,11 @@ namespace CEEFIT
       return(false);
     }
 
+# if defined(__BORLANDC__)
+    if(_wfindnext(&findData) != 0)
+# else
     if(_wfindnext(findHandle, &findData) != 0)
+# endif
     {
       return(false);
     }
@@ -250,7 +267,7 @@ namespace CEEFIT
     return(true);
   }
 
-  FINDFILEINFO FINDITERATORIMPL::GetNext()
+  FINDFILEINFO ceefit_call_spec FINDITERATORIMPL::GetNext()
   {
     if(itemReady == false)
     {
@@ -261,8 +278,11 @@ namespace CEEFIT
     }
     
     itemReady = false;
-
-    return(FINDFILEINFO(STRING(findData.name), findData.time_write));
+#   if defined(__BORLANDC__)
+      return(FINDFILEINFO(STRING(findData.ff_name), findData.ff_ftime, (findData.ff_attrib & FA_DIREC) == FA_DIREC));
+#   else
+      return(FINDFILEINFO(STRING(findData.name), findData.time_write, (findData.attrib & _A_SUBDIR) == _A_SUBDIR));
+#   endif
   }
 
 #endif

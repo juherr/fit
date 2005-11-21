@@ -27,16 +27,16 @@ namespace CEEFIT
 {
   void ceefit_call_spec LinkFieldToCurrentFixture(CEEFIT::CELLADAPTER* newField);
 
-  template<class OUTTYPE, class INTYPE> OUTTYPE* ceefit_call_spec safe_dynamic_cast(INTYPE* in) 
-  { 
-    if(in == null) 
+  template<class OUTTYPE, class INTYPE> OUTTYPE* ceefit_call_spec safe_dynamic_cast(INTYPE* in)
+  {
+    if(in == null)
     {
       throw new EXCEPTION("Null pointer exception in safe_dynamic_cast");
     }
 
     OUTTYPE* out = dynamic_cast<OUTTYPE*>(dynamic_cast<CEEFIT::OBJECT*>(in));
 
-    if(out == null) 
+    if(out == null)
     {
       throw new EXCEPTION("dynamic_cast failed to relate INTYPE to OUTTYPE");
     }
@@ -82,7 +82,7 @@ namespace CEEFIT
         LinkFieldToCurrentFixture(this);          // the new CEEFIT::FIXTURE will be located and this will be added to it
       }
 
-      virtual inline ~FITFIELDBASE<T>(void)
+      virtual inline ceefit_dtor_spec ~FITFIELDBASE<T>(void)
       {
         if(FixturePtr != null)
         {
@@ -116,11 +116,11 @@ namespace CEEFIT
         return(true);
       }
 
-      virtual FIXTURE* ceefit_call_spec ToFixture(void) 
-      { 
+      virtual FIXTURE* ceefit_call_spec ToFixture(void)
+      {
         FIXTURE* out = CASTTOFIXTURE<T>::DoCast(Field);
 
-        if(out == null) 
+        if(out == null)
         {
           throw new EXCEPTION("Field is not a FIXTURE type");
         }
@@ -138,7 +138,7 @@ namespace CEEFIT
           {
             FixturePtr = null;    // the reference counting should take over here ...
           }
-          else 
+          else
           {
             delete Field;
           }
@@ -170,7 +170,7 @@ namespace CEEFIT
         return(*Field);
       }
 
-      using CELLADAPTER::Invoke;
+      fit_using_decl(CELLADAPTER::Invoke);
       virtual void ceefit_call_spec Invoke(CEEFIT::PTR< CEEFIT::CELLADAPTER >& out, CEEFIT::PTR<CEEFIT::FIXTURE>& aFixture) const
       {
         throw new CEEFIT::EXCEPTION("You may not call Invoke on a Field-type cell");
@@ -200,12 +200,12 @@ namespace CEEFIT
       {
         public:
           static inline T ceefit_call_spec Resolve(U& rValue)
-          {            
+          {
             return(T(rValue));
           }
       };
 
-      template<class U> class RVAL< FITFIELDBASE<U> >
+      template<class U> class RVAL < FITFIELDBASE<U> >
       {
         public:
           static inline U& ceefit_call_spec Resolve(FITFIELDBASE<U>& rValue)
@@ -235,7 +235,7 @@ namespace CEEFIT
       inline T& ceefit_call_spec operator*(int) { return(*GetField()); }
       inline const T& ceefit_call_spec operator*(int) const { return(*GetField()); }
 
-      using CELLADAPTER::WriteToFixtureVar;
+      fit_using_decl(CELLADAPTER::WriteToFixtureVar);
       inline void ceefit_call_spec WriteToFixtureVar(const STRING& in)
       {
         if(!this->Parse(this->GetField(), in))
@@ -246,13 +246,13 @@ namespace CEEFIT
         }
       }
 
-      using CELLADAPTER::ReadFromFixtureVar;
+      fit_using_decl(CELLADAPTER::ReadFromFixtureVar);
       inline void ceefit_call_spec ReadFromFixtureVar(STRING& out) const
       {
         this->ToString(out, this->GetField());
       }
 
-      using CELLADAPTER::ToString;
+      fit_using_decl(CELLADAPTER::ToString);
       virtual void ceefit_call_spec ToString(STRING& out, const T& in) const=0;
       virtual bool ceefit_call_spec Parse(T& out, const STRING& in)=0;
 
@@ -304,7 +304,7 @@ template<class T> class FITFIELD : public CEEFIT::FITFIELDBASE<T>
       ThrowSpecializationNeededException();
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<T>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<T>(void)
     {
     }
 
@@ -349,13 +349,13 @@ template<> class FITFIELD<void> : public CEEFIT::CELLADAPTER
 
     template<class U> inline FITFIELD<void>& operator=(U& rValue) { throw new CEEFIT::EXCEPTION("Cannot assign to void"); }
     inline ceefit_init_spec FITFIELD<void>(void) {}
-    virtual inline ceefit_init_spec ~FITFIELD<void>(void) {}
+    virtual inline ceefit_dtor_spec ~FITFIELD<void>(void) {}
 
-    using CELLADAPTER::WriteToFixtureVar;
-    using CELLADAPTER::ReadFromFixtureVar;
+    fit_using_decl(CELLADAPTER::WriteToFixtureVar);
+    fit_using_decl(CELLADAPTER::ReadFromFixtureVar);
 
-    virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in) { throw new CEEFIT::EXCEPTION("Cannot assign to void"); }
-    virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out) const { throw new CEEFIT::EXCEPTION("Cannot read from void"); }
+    virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& aIn) { throw new CEEFIT::EXCEPTION("Cannot assign to void"); }
+    virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& aOut) const { throw new CEEFIT::EXCEPTION("Cannot read from void"); }
 
     virtual void ceefit_call_spec SetName(const CEEFIT::STRING& aName) { Name = aName; }
     virtual const CEEFIT::STRING& ceefit_call_spec GetName(void) const { return(Name); }
@@ -364,7 +364,7 @@ template<> class FITFIELD<void> : public CEEFIT::CELLADAPTER
     virtual CEEFIT::FIXTURE* ceefit_call_spec ToFixture(void) { throw new CEEFIT::EXCEPTION("Not a fixture"); }
     virtual void ceefit_call_spec NewInstanceParse(CEEFIT::FIXTURE* callParseOn, CEEFIT::PTR< CEEFIT::CELLADAPTER >& out, const CEEFIT::STRING& aText) { out = new FITFIELD<void>(); }
 
-    using CELLADAPTER::Invoke;
+    fit_using_decl(CELLADAPTER::Invoke);
     virtual void ceefit_call_spec Invoke(CEEFIT::PTR< CEEFIT::CELLADAPTER >& out, CEEFIT::PTR< CEEFIT::FIXTURE >& aFixture) const { throw new CEEFIT::EXCEPTION("Not a method"); }
 
     virtual int ceefit_call_spec GetHashCode() { throw new CEEFIT::EXCEPTION("Cannot get hashcode to void"); }
@@ -379,7 +379,7 @@ template<> class FITFIELD<bool> : public CEEFIT::FITFIELDBASE<bool>
   public:
     typedef CEEFIT::FITFIELDBASE<bool> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const bool& in) const
     {
       CEEFIT::SafeSprintf(out, L"%s", in ? L"true" : L"false");
@@ -424,7 +424,7 @@ template<> class FITFIELD<bool> : public CEEFIT::FITFIELDBASE<bool>
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<bool>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<bool>(void)
     {
     }
 
@@ -437,7 +437,7 @@ template<> class FITFIELD<unsigned char> : public CEEFIT::FITFIELDBASE<unsigned 
   public:
     typedef CEEFIT::FITFIELDBASE<unsigned char> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const unsigned char& in) const
     {
       CEEFIT::SafeSprintf(out, L"%u", (unsigned int) in);
@@ -474,7 +474,7 @@ template<> class FITFIELD<unsigned char> : public CEEFIT::FITFIELDBASE<unsigned 
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<unsigned char>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<unsigned char>(void)
     {
     }
 
@@ -487,7 +487,7 @@ template<> class FITFIELD<signed char> : public CEEFIT::FITFIELDBASE<signed char
   public:
     typedef CEEFIT::FITFIELDBASE<signed char> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const signed char& in) const
     {
       CEEFIT::SafeSprintf(out, L"%C", (signed int) in);
@@ -524,7 +524,7 @@ template<> class FITFIELD<signed char> : public CEEFIT::FITFIELDBASE<signed char
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<signed char>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<signed char>(void)
     {
     }
 
@@ -537,7 +537,7 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
   public:
     typedef CEEFIT::FITFIELDBASE<char> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const char& in) const
     {
       char temp = in;
@@ -575,7 +575,7 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<char>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<char>(void)
     {
     }
 
@@ -589,8 +589,8 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
   {
     public:
       typedef CEEFIT::FITFIELDBASE<unsigned short> FIELDBASE;
- 
-      using FIELDBASE::ToString;
+
+      fit_using_decl(FIELDBASE::ToString);
       inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const unsigned short& in) const
       {
         unsigned int temp = in;
@@ -628,7 +628,7 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
       {
       }
 
-      virtual inline ceefit_init_spec ~FITFIELD<unsigned short>(void)
+      virtual inline ceefit_dtor_spec ~FITFIELD<unsigned short>(void)
       {
       }
 
@@ -642,7 +642,7 @@ template<> class FITFIELD<signed short> : public CEEFIT::FITFIELDBASE<signed sho
   public:
     typedef CEEFIT::FITFIELDBASE<signed short> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const signed short& in) const
     {
       signed int temp = in;
@@ -681,7 +681,7 @@ template<> class FITFIELD<signed short> : public CEEFIT::FITFIELDBASE<signed sho
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<signed short>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<signed short>(void)
     {
     }
 
@@ -694,7 +694,7 @@ template<> class FITFIELD<wchar_t> : public CEEFIT::FITFIELDBASE<wchar_t>
   public:
     typedef CEEFIT::FITFIELDBASE<wchar_t> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const wchar_t& in) const
     {
       wchar_t temp = in;
@@ -730,7 +730,7 @@ template<> class FITFIELD<wchar_t> : public CEEFIT::FITFIELDBASE<wchar_t>
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<wchar_t>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<wchar_t>(void)
     {
     }
 
@@ -743,7 +743,7 @@ template<> class FITFIELD<unsigned int> : public CEEFIT::FITFIELDBASE<unsigned i
   public:
     typedef CEEFIT::FITFIELDBASE<unsigned int> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const unsigned int& in) const
     {
       unsigned int temp = in;
@@ -779,7 +779,7 @@ template<> class FITFIELD<unsigned int> : public CEEFIT::FITFIELDBASE<unsigned i
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<unsigned int>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<unsigned int>(void)
     {
     }
 
@@ -792,7 +792,7 @@ template<> class FITFIELD<signed int> : public CEEFIT::FITFIELDBASE<signed int>
   public:
     typedef CEEFIT::FITFIELDBASE<signed int> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const signed int& in) const
     {
       signed int temp = in;
@@ -828,7 +828,7 @@ template<> class FITFIELD<signed int> : public CEEFIT::FITFIELDBASE<signed int>
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<signed int>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<signed int>(void)
     {
     }
 
@@ -841,7 +841,7 @@ template<> class FITFIELD<unsigned long> : public CEEFIT::FITFIELDBASE<unsigned 
   public:
     typedef CEEFIT::FITFIELDBASE<unsigned long> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const unsigned long& in) const
     {
       unsigned long temp = in;
@@ -877,7 +877,7 @@ template<> class FITFIELD<unsigned long> : public CEEFIT::FITFIELDBASE<unsigned 
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<unsigned long>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<unsigned long>(void)
     {
     }
 
@@ -890,7 +890,7 @@ template<> class FITFIELD<signed long> : public CEEFIT::FITFIELDBASE<signed long
   public:
     typedef CEEFIT::FITFIELDBASE<signed long> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const signed long& in) const
     {
       signed long temp = in;
@@ -926,7 +926,7 @@ template<> class FITFIELD<signed long> : public CEEFIT::FITFIELDBASE<signed long
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<signed long>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<signed long>(void)
     {
     }
 
@@ -939,21 +939,17 @@ template<> class FITFIELD< CEEFIT::UfitINT64 > : public CEEFIT::FITFIELDBASE< CE
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::UfitINT64 > FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::UfitINT64& in) const
     {
       CEEFIT::UfitINT64 temp = in;
 
-//#     ifdef _MSC_VER
-//        CEEFIT::SafeSprintf(out, L"%I64u", temp);
-//#     else
-        CEEFIT::SafeSprintf(out, L"%llu", temp);
-//#     endif
+      CEEFIT::SafeSprintf(out, L"%llu", temp);
     }
 
     inline bool ceefit_call_spec Parse(CEEFIT::UfitINT64& out, const CEEFIT::STRING& in)
     {
-#     ifdef _MSC_VER
+#     if (defined(_MSC_VER) || defined(__BORLANDC__))
         return(swscanf(in.GetBuffer(), L"%I64u", &out)==1);
 #     else
         return(swscanf(in.GetBuffer(), L"%llu", &out)==1);
@@ -983,7 +979,7 @@ template<> class FITFIELD< CEEFIT::UfitINT64 > : public CEEFIT::FITFIELDBASE< CE
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::UfitINT64 >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< CEEFIT::UfitINT64 >(void)
     {
     }
 
@@ -996,25 +992,21 @@ template<> class FITFIELD< CEEFIT::fitINT64 > : public CEEFIT::FITFIELDBASE< CEE
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::fitINT64 > FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFIT::fitINT64& in) const
     {
       CEEFIT::fitINT64 temp = in;
 
-//#     ifdef _MSC_VER
-//        CEEFIT::SafeSprintf(out, L"%I64i", temp);
-//#     else
-        CEEFIT::SafeSprintf(out, L"%lld", temp);
-//#     endif
+      CEEFIT::SafeSprintf(out, L"%lld", temp);
     }
 
     inline bool ceefit_call_spec Parse(CEEFIT::fitINT64& out, const CEEFIT::STRING& in)
     {
-//#     ifdef _MSC_VER
-//        return(swscanf(in.GetBuffer(), L"%I64i", &out)==1);
-//#     else
+#     if (defined(_MSC_VER) || defined(__BORLANDC__))
+        return(swscanf(in.GetBuffer(), L"%I64d", &out)==1);
+#     else
         return(swscanf(in.GetBuffer(), L"%lld", &out)==1);
-//#     endif
+#     endif
     }
 
     virtual inline const char* ceefit_call_spec GetType(void) const
@@ -1040,7 +1032,7 @@ template<> class FITFIELD< CEEFIT::fitINT64 > : public CEEFIT::FITFIELDBASE< CEE
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::fitINT64 >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< CEEFIT::fitINT64 >(void)
     {
     }
 
@@ -1053,7 +1045,7 @@ template<> class FITFIELD<float> : public CEEFIT::FITFIELDBASE<float>, public CE
   public:
     typedef CEEFIT::FITFIELDBASE<float> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const float& in) const
     {
       float temp = in;
@@ -1070,7 +1062,7 @@ template<> class FITFIELD<float> : public CEEFIT::FITFIELDBASE<float>, public CE
       return(errno != ERANGE);
     }
 
-    inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<float>& otherCell) const 
+    inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<float>& otherCell) const
     {
       const FITFIELD<float>* otherField = dynamic_cast< const FITFIELD<float>* >(&otherCell);
 
@@ -1102,7 +1094,7 @@ template<> class FITFIELD<float> : public CEEFIT::FITFIELDBASE<float>, public CE
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<float>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<float>(void)
     {
     }
 
@@ -1115,7 +1107,7 @@ template<> class FITFIELD<double> : public CEEFIT::FITFIELDBASE<double>, public 
   public:
     typedef CEEFIT::FITFIELDBASE<double> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const double& in) const
     {
       double temp = in;
@@ -1131,7 +1123,7 @@ template<> class FITFIELD<double> : public CEEFIT::FITFIELDBASE<double>, public 
       return(errno != ERANGE);
     }
 
-    inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<double>& otherCell) const 
+    inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<double>& otherCell) const
     {
       const FITFIELD<double>* otherField = dynamic_cast< const FITFIELD<double>* >(&otherCell);
 
@@ -1163,7 +1155,7 @@ template<> class FITFIELD<double> : public CEEFIT::FITFIELDBASE<double>, public 
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<double>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<double>(void)
     {
     }
 
@@ -1176,7 +1168,7 @@ template<> class FITFIELD< CEEFIT::STRING > : public CEEFIT::FITFIELDBASE< CEEFI
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::STRING > FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString( CEEFIT::STRING& out, const CEEFIT::STRING& in ) const
     {
       out = in;
@@ -1211,7 +1203,7 @@ template<> class FITFIELD< CEEFIT::STRING > : public CEEFIT::FITFIELDBASE< CEEFI
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<CEEFIT::STRING>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<CEEFIT::STRING>(void)
     {
     }
 

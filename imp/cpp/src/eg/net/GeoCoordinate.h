@@ -35,7 +35,7 @@ namespace EG_NET
       ceefit_init_spec GEOCOORDINATE(const GEOCOORDINATE& aGeoCoord);              
       ceefit_init_spec GEOCOORDINATE(float aLatitude, float aLongitude);
       GEOCOORDINATE& ceefit_call_spec operator=(const GEOCOORDINATE& aGeoCoord);
-      virtual ceefit_init_spec ~GEOCOORDINATE(void);
+      virtual ceefit_dtor_spec ~GEOCOORDINATE(void);
 
       static CEEFIT::VALUE<GEOCOORDINATE> ceefit_call_spec Parse(const CEEFIT::STRING& string);
 
@@ -92,7 +92,7 @@ template<> class FITFIELD< EG_NET::GEOCOORDINATE > : public CEEFIT::FITFIELDBASE
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< EG_NET::GEOCOORDINATE >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< EG_NET::GEOCOORDINATE >(void)
     {
     }
 

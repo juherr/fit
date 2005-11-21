@@ -43,7 +43,7 @@ namespace CEEFIT
     exceptions = 0;
   }
 
-  ceefit_init_spec COUNTS::~COUNTS()
+  ceefit_dtor_spec COUNTS::~COUNTS()
   {
   }
 
@@ -95,11 +95,7 @@ namespace CEEFIT
     elapsed -= report * scale;
 
     STRING out;
-//#   ifdef _MSC_VER
-//      SafeSprintf(out, L"%I64i", report);
-//#   else
-      SafeSprintf(out, L"%lld", report);
-//#   endif
+    SafeSprintf(out, L"%lld", report);
 
     return out;
   }
@@ -110,7 +106,7 @@ namespace CEEFIT
     elapsed = 0;
   }
 
-  ceefit_init_spec FIXTURE::RUNTIME::~RUNTIME()
+  ceefit_dtor_spec FIXTURE::RUNTIME::~RUNTIME()
   {
   }
 
@@ -119,7 +115,7 @@ namespace CEEFIT
     memset(&RunDate, 0, sizeof(struct timeb));
   }
 
-  ceefit_init_spec FIXTURE::SUMMARY::~SUMMARY()
+  ceefit_dtor_spec FIXTURE::SUMMARY::~SUMMARY()
   {
   }
 
@@ -208,7 +204,7 @@ namespace CEEFIT
     return(*this);
   }
 
-  ceefit_init_spec FIXTURE::~FIXTURE(void)
+  ceefit_dtor_spec FIXTURE::~FIXTURE(void)
   {
     SummaryObj = (SUMMARY*) null;
     CountsObj = (COUNTS*) null;
@@ -364,62 +360,6 @@ namespace CEEFIT
   {
     return Args;
   }
-
-  /* old DoTables
-  void ceefit_call_spec FIXTURE::DoTables(PTR<PARSE>& tables)
-  {
-    ftime(&SummaryObj->RunDate);
-    SummaryObj->RunElapsedTime = new FIXTURE::RUNTIME();
-
-    PTR<PARSE> temp(tables);
-
-    while (temp != null)
-    {
-      PTR<PARSE> heading(temp->At(0,0,0));
-      if (heading != null)
-      {
-        try
-        {
-          EXCEPTION* exceptionThrown = null;
-          STRING headingText(heading->Text());
-          PTR<FIXTURE> fixture(LoadFixture(headingText));
-
-          // Step 1:  accumulate fixture Counts
-          fixture->CountsObj = CountsObj;
-
-          // Step 2:  Call DoTable
-          if(exceptionThrown == null)
-          {
-            try
-            {
-              fixture->SummaryObj = SummaryObj;  // copy the fixture summary to the new fixture
-              fixture->DoTable(temp);
-            }
-            catch(EXCEPTION* e)
-            {
-              exceptionThrown = e;
-            }
-          }
-
-          // Step 3:  delete the fixture
-          DeleteFixture(fixture, exceptionThrown);
-
-          if(exceptionThrown)
-          {
-            // rethrow any exception that was thrown ...
-            throw exceptionThrown;
-          }
-        }
-        catch(EXCEPTION* e)
-        {
-          Exception(heading, e);
-        }
-      }
-
-      temp = temp->More;
-    }
-  }
-*/
 
   void ceefit_call_spec FIXTURE::CreateFixtureByClassName(PTR<FIXTURE>& out, const STRING& className)
   {
@@ -586,7 +526,7 @@ namespace CEEFIT
   {
     STRING message;
 
-    message = STRING("An unhandled exception occurred:  ") + (e != null ? e->GetReason() : "<unknown reason>");
+    message = STRING("An unhandled exception occurred:  ") + (e != null ? e->GetReason() : STRING("<unknown reason>"));
 #   ifdef _DEBUG
       printf("%S\n", message.GetBuffer());
 #   endif
@@ -601,7 +541,7 @@ namespace CEEFIT
   {
     STRING message;
 
-    message = STRING("A failure occurred:  ") + (f != null ? f->GetReason() : "<unknown reason>");
+    message = STRING("A failure occurred:  ") + (f != null ? f->GetReason() : STRING("<unknown reason>"));
 #   ifdef _DEBUG
       printf("%S\n", message.GetBuffer());
 #   endif
@@ -809,7 +749,7 @@ namespace CEEFIT
         }
         catch(...)
         {
-          EXCEPTION* systemException = new EXCEPTION("System generated exception or unknown user exception type");
+          EXCEPTION* systemException = new EXCEPTION("System generated exception or unknown user exception type (exceptions thrown from a FIXTURE class should extend CEEFIT::EXCEPTION.)");
 
           Exception(cell, systemException);
         }

@@ -29,7 +29,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec PRIMITIVEFIXTURE::~PRIMITIVEFIXTURE(void)
+  ceefit_dtor_spec PRIMITIVEFIXTURE::~PRIMITIVEFIXTURE(void)
   {
   }
 

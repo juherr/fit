@@ -29,7 +29,7 @@
 
 extern "C++"
 {
-# ifndef _MSC_VER
+# if !(defined(_MSC_VER) || defined(__BORLANDC__))
     void* operator new(fit_size_t size) throw (std::bad_alloc)
     {
       void* retVal = GetCeeFitAllocFunc()(size);

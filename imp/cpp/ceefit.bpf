@@ -1,0 +1,11 @@
+USEUNIT("".\lib\libunicode-0.4\convert.c"");
+USEUNIT("".\lib\libunicode-0.4\init.c"");
+USEUNIT("".\lib\libunicode-0.4\iso8859.c"");
+USEUNIT("".\lib\libunicode-0.4\latin1.c"");
+USEUNIT("".\lib\libunicode-0.4\prop.c"");
+USEUNIT("".\lib\libunicode-0.4\sjis.c"");
+USEUNIT("".\lib\libunicode-0.4\ucs2.c"");
+USEUNIT("".\lib\libunicode-0.4\ucs4.c"");
+USEUNIT("".\lib\libunicode-0.4\utf8.c"");
+USEUNIT("".\lib\libunicode-0.4\utf8conv.c"");
+#define Library

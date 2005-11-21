@@ -43,7 +43,7 @@ namespace EG_MUSIC
     this->Initialize();
   }
 
-  ceefit_init_spec DIALOG::~DIALOG() 
+  ceefit_dtor_spec DIALOG::~DIALOG() 
   {
   }
 

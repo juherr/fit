@@ -71,7 +71,7 @@ extern "C"
 {
 # include "unicode.h"
 # include "convert.h"
-};
+}
 
 namespace CEEFIT
 {
@@ -146,35 +146,41 @@ namespace CEEFIT
 
   bool ceefit_call_spec STRING::IsAssigned(void) const
   {
-    return(Data.AssignedFlag);
+    return(Data->AssignedFlag);
   }
 
-  ceefit_init_spec STRING::STRING() : Data(*(new STRINGDATA()))
+  ceefit_init_spec STRING::STRING()
   {
-    Data.Array.Add(L'\0');
-    Data.AssignedFlag = false;
+    Data = new STRINGDATA();
+    Data->Array.Add(L'\0');
+    Data->AssignedFlag = false;
   }
 
-  ceefit_init_spec STRING::STRING(const STRING& aVal) : Data(*(new STRINGDATA()))
+  ceefit_init_spec STRING::STRING(const STRING& aVal)
   {
+    Data = new STRINGDATA();
     ASSIGNHELP<const STRING>::Assign(*this, aVal);
-    Data.AssignedFlag = true;
+    Data->AssignedFlag = true;
   }
 
-  ceefit_init_spec STRING::STRING(const wchar_t* aVal) : Data(*(new STRINGDATA()))
+  ceefit_init_spec STRING::STRING(const wchar_t* aVal)
   {
+    Data = new STRINGDATA();
     ASSIGNHELP<const wchar_t*>::Assign(*this, aVal);
-    Data.AssignedFlag = true;
+    Data->AssignedFlag = true;
   }
 
-  ceefit_init_spec STRING::STRING(const char* aVal) : Data(*(new STRINGDATA()))
+  ceefit_init_spec STRING::STRING(const char* aVal)
   {
+    Data = new STRINGDATA();
     ASSIGNHELP<const char*>::Assign(*this, aVal);
-    Data.AssignedFlag = true;
+    Data->AssignedFlag = true;
   }
 
-  ceefit_init_spec STRING::STRING(const wchar_t aVal) : Data(*(new STRINGDATA()))
+  ceefit_init_spec STRING::STRING(const wchar_t aVal)
   {
+    Data = new STRINGDATA();
+
     wchar_t tempArray[2];
 
     tempArray[0] = aVal;
@@ -183,11 +189,13 @@ namespace CEEFIT
     const wchar_t* tempPtr = &tempArray[0];
 
     ASSIGNHELP<const wchar_t*>::Assign(*this, tempPtr);
-    Data.AssignedFlag = true;
+    Data->AssignedFlag = true;
   }
 
-  ceefit_init_spec STRING::STRING(const char aVal) : Data(*(new STRINGDATA()))
+  ceefit_init_spec STRING::STRING(const char aVal)
   {
+    Data = new STRINGDATA();
+
     char tempArray[2];
 
     tempArray[0] = aVal;
@@ -196,19 +204,19 @@ namespace CEEFIT
     const char* tempPtr = &tempArray[0];
 
     ASSIGNHELP<const char*>::Assign(*this, tempPtr);
-    Data.AssignedFlag = true;
+    Data->AssignedFlag = true;
   }
 
-  ceefit_init_spec STRING::~STRING()
+  ceefit_dtor_spec STRING::~STRING()
   {
-    delete &Data;
+    delete Data;
   }
 
   void ceefit_call_spec STRING::Reset()
   {
-    Data.Array.Reset();
-    Data.Array.Add(L'\0');
-    Data.AssignedFlag = false;
+    Data->Array.Reset();
+    Data->Array.Add(L'\0');
+    Data->AssignedFlag = false;
   }
 
   STRING ceefit_call_spec STRING::operator+(const int aValue) const
@@ -224,15 +232,15 @@ namespace CEEFIT
     STRING out;
     SafeSprintf(out, L"%s%i", this->GetBuffer(), aValue);
     (*this) = out;
-    Data.AssignedFlag = true;
+    Data->AssignedFlag = true;
 
     return(*this);
   }
 
   void ceefit_call_spec STRING::Set(const STRING& src)
   {
-    Data.Array = src.Data.Array;
-    Data.AssignedFlag = true;
+    Data->Array = src.Data->Array;
+    Data->AssignedFlag = true;
   }
 
   extern bool InitedUnicode;
@@ -240,7 +248,7 @@ namespace CEEFIT
   static void ceefit_call_spec DecodeAsciiBufferTo(DYNARRAY<wchar_t>& aArray, const char* aBuffer)
   {
     AssertIsTrue(aBuffer != null);
-    
+
     DYNARRAY<unicode_char_t> ConvertBuffer;
     int numChars = strlen(aBuffer)+1;
     ConvertBuffer.Reserve(numChars+1);
@@ -287,63 +295,63 @@ namespace CEEFIT
 
   void ceefit_call_spec STRING::SetChar(const char* str)
   {
-    DecodeAsciiBufferTo(Data.Array, str);
-    Data.AssignedFlag = true;
+    DecodeAsciiBufferTo(Data->Array, str);
+    Data->AssignedFlag = true;
   }
 
   void ceefit_call_spec STRING::SetWChar(const wchar_t* str)
   {
-    Data.Array.Reset();
+    Data->Array.Reset();
 
     if(str == null)
     {
-      Data.Array.Reserve(1);
-      Data.Array[0] = L'\0';
+      Data->Array.Reserve(1);
+      Data->Array[0] = L'\0';
     }
 
     int len = wcslen(str);
-    Data.Array.Reserve(len + 1);
+    Data->Array.Reserve(len + 1);
 
     int i = 0;
     int j = 0;
     while(str[j])
     {
-      Data.Array[i++] = str[j++];
+      Data->Array[i++] = str[j++];
     }
-    Data.Array[i] = L'\0';
-    Data.AssignedFlag = true;
+    Data->Array[i] = L'\0';
+    Data->AssignedFlag = true;
   }
 
   void ceefit_call_spec STRING::Append(const STRING& str)
   {
-    int len1 = wcslen(&Data.Array[0]);
-    int len2 = wcslen(&str.Data.Array[0]);
+    int len1 = wcslen(&Data->Array[0]);
+    int len2 = wcslen(&str.Data->Array[0]);
 
     int i = len1;
     int j = 0;
 
     if(len2 > 0)
     {
-      Data.Array.Reserve(len2);
+      Data->Array.Reserve(len2);
 
-      while(str.Data.Array[j])
+      while(str.Data->Array[j])
       {
-        Data.Array[i++] = str.Data.Array[j++];
+        Data->Array[i++] = str.Data->Array[j++];
       }
 
-      Data.Array[i] = L'\0';
+      Data->Array[i] = L'\0';
     }
-    Data.AssignedFlag = true;
+    Data->AssignedFlag = true;
   }
 
   int ceefit_call_spec STRING::Length() const
   {
-    return(wcslen(&Data.Array[0]));
+    return(wcslen(&Data->Array[0]));
   }
 
   wchar_t ceefit_call_spec STRING::CharAt(int index) const
   {
-    return(Data.Array[index]);
+    return(Data->Array[index]);
   }
 
   int ceefit_call_spec STRING::IndexOf(wchar_t aChar) const
@@ -351,7 +359,7 @@ namespace CEEFIT
     int i = 0;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       if(aChar == bChar)
       {
@@ -377,14 +385,14 @@ namespace CEEFIT
     int i = 0;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       int iPrime = i;
       int j = 0;
       wchar_t bCharPrime;
       wchar_t aChar = aString.CharAt(j);
 
-      while((bCharPrime = Data.Array[iPrime]))
+      while((bCharPrime = Data->Array[iPrime]))
       {
         if(bCharPrime != aChar)
         {
@@ -421,14 +429,14 @@ namespace CEEFIT
     int i = 0;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       int iPrime = i;
       int j = 0;
       wchar_t bCharPrime;
       wchar_t aChar = aString[j];
 
-      while((bCharPrime = Data.Array[iPrime]))
+      while((bCharPrime = Data->Array[iPrime]))
       {
         if(bCharPrime != aChar)
         {
@@ -465,14 +473,14 @@ namespace CEEFIT
     int i = 0;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       int iPrime = i;
       int j = 0;
       wchar_t bCharPrime;
       char aChar = aString[j];
 
-      while((bCharPrime = Data.Array[iPrime]))
+      while((bCharPrime = Data->Array[iPrime]))
       {
         if(bCharPrime != aChar)
         {
@@ -499,7 +507,7 @@ namespace CEEFIT
     int i = fromIndex;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       if(aChar == bChar)
       {
@@ -525,13 +533,13 @@ namespace CEEFIT
     int i = fromIndex;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       int iPrime = i;
       int j = 0;
       wchar_t bCharPrime;
       wchar_t aChar = aString.CharAt(j);
-      while((bCharPrime = Data.Array[iPrime]))
+      while((bCharPrime = Data->Array[iPrime]))
       {
         if(bCharPrime != aChar)
         {
@@ -555,7 +563,7 @@ namespace CEEFIT
 
   int ceefit_call_spec STRING::IndexOf(const wchar_t* aString, int fromIndex) const
   {
-    if(aString == null) 
+    if(aString == null)
     {
       return(-1);
     }
@@ -568,13 +576,13 @@ namespace CEEFIT
     int i = fromIndex;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       int iPrime = i;
       int j = 0;
       wchar_t bCharPrime;
       wchar_t aChar = aString[j];
-      while((bCharPrime = Data.Array[iPrime]))
+      while((bCharPrime = Data->Array[iPrime]))
       {
         if(bCharPrime != aChar)
         {
@@ -598,7 +606,7 @@ namespace CEEFIT
 
   int ceefit_call_spec STRING::IndexOf(const char* aString, int fromIndex) const
   {
-    if(aString == null) 
+    if(aString == null)
     {
       return(-1);
     }
@@ -611,13 +619,13 @@ namespace CEEFIT
     int i = fromIndex;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       int iPrime = i;
       int j = 0;
       wchar_t bCharPrime;
       char aChar = aString[j];
-      while((bCharPrime = Data.Array[iPrime]))
+      while((bCharPrime = Data->Array[iPrime]))
       {
         if(bCharPrime != aChar)
         {
@@ -641,27 +649,27 @@ namespace CEEFIT
 
   const wchar_t* ceefit_call_spec STRING::GetBuffer() const
   {
-    return(&(Data.Array[0]));
+    return(&(Data->Array[0]));
   }
 
   wchar_t* ceefit_call_spec STRING::GetBuffer()
   {
-    return(&(Data.Array[0]));
+    return(&(Data->Array[0]));
   }
 
   STRING ceefit_call_spec STRING::ToLowercase() const
   {
     STRING retVal;
-    retVal.Data.Array.Reserve(this->Length());
+    retVal.Data->Array.Reserve(this->Length());
 
     int length = this->Length();
     int i = 0;
     while(i < length)
     {
-      wchar_t& aDest = retVal.Data.Array[i];
+      wchar_t& aDest = retVal.Data->Array[i];
       aDest = unicode_tolower(this->CharAt(i++));
     }
-    retVal.Data.Array[i] = L'\0';
+    retVal.Data->Array[i] = L'\0';
 
     return(retVal);
   }
@@ -669,16 +677,16 @@ namespace CEEFIT
   STRING ceefit_call_spec STRING::ToUppercase() const
   {
     STRING retVal;
-    retVal.Data.Array.Reserve(this->Length());
+    retVal.Data->Array.Reserve(this->Length());
 
     int length = this->Length();
     int i = 0;
     while(i < length)
     {
-      wchar_t& aDest = retVal.Data.Array[i];
+      wchar_t& aDest = retVal.Data->Array[i];
       aDest = unicode_toupper(this->CharAt(i++));
     }
-    retVal.Data.Array[i] = L'\0';
+    retVal.Data->Array[i] = L'\0';
 
     return(retVal);
   }
@@ -686,23 +694,23 @@ namespace CEEFIT
   STRING ceefit_call_spec STRING::Replace(wchar_t matchChar, wchar_t replaceChar) const
   {
     STRING retVal;
-    retVal.Data.Array.Reserve(this->Length());
+    retVal.Data->Array.Reserve(this->Length());
 
     int i = 0;
     wchar_t bChar;
 
-    while((bChar = Data.Array[i]))
+    while((bChar = Data->Array[i]))
     {
       if(matchChar == bChar)
       {
-        retVal.Data.Array[i++] = replaceChar;
+        retVal.Data->Array[i++] = replaceChar;
       }
       else
       {
-        retVal.Data.Array[i++] = bChar;
+        retVal.Data->Array[i++] = bChar;
       }
     }
-    retVal.Data.Array[i] = L'\0';
+    retVal.Data->Array[i] = L'\0';
 
     return(retVal);
   }
@@ -713,7 +721,7 @@ namespace CEEFIT
     int length = this->Length();
     int lastChar = length;
 
-    while(firstChar < length && unicode_isspace(Data.Array[firstChar]))
+    while(firstChar < length && unicode_isspace(Data->Array[firstChar]))
     {
       firstChar++;
     }
@@ -725,7 +733,7 @@ namespace CEEFIT
       {
         break;
       }
-      if(!unicode_isspace(Data.Array[lastChar]))
+      if(!unicode_isspace(Data->Array[lastChar]))
       {
         break;
       }
@@ -827,11 +835,11 @@ namespace CEEFIT
     src = this->GetBuffer();
 
     REGEX regEx(matchStr.GetBuffer(), ::boost::regex_constants::normal);
-    
+
     CPPSTRING retStr;
-    ::boost::re_detail::string_out_iterator< CPPSTRING > i(retStr);    
+    ::boost::re_detail::string_out_iterator< CPPSTRING > i(retStr);
     ::boost::regex_replace(i, src.begin(), src.end(), regEx, replaceStr.GetBuffer());
-    
+
     STRING outStr(&retStr[0]);
     return(outStr);
   }
@@ -894,13 +902,13 @@ namespace CEEFIT
 
     if(startChar != endChar)
     {
-      retVal.Data.Array.Reserve(endChar - startChar);
+      retVal.Data->Array.Reserve(endChar - startChar);
 
       while(startChar < endChar)
       {
-        retVal.Data.Array[i++] = this->Data.Array[startChar++];
+        retVal.Data->Array[i++] = this->Data->Array[startChar++];
       }
-      retVal.Data.Array[i] = L'\0';
+      retVal.Data->Array[i] = L'\0';
     }
 
     return(retVal);
@@ -924,13 +932,13 @@ namespace CEEFIT
 
     if(startChar != endChar)
     {
-      retVal.Data.Array.Reserve(endChar - startChar);
+      retVal.Data->Array.Reserve(endChar - startChar);
 
       while(startChar < endChar)
       {
-        retVal.Data.Array[i++] = this->Data.Array[startChar++];
+        retVal.Data->Array[i++] = this->Data->Array[startChar++];
       }
-      retVal.Data.Array[i] = L'\0';
+      retVal.Data->Array[i] = L'\0';
     }
 
     return(retVal);
@@ -959,13 +967,13 @@ namespace CEEFIT
   {
     int retVal = 0;
     int i = -1;
-    while(++i < this->Data.Array.GetSize())
+    while(++i < this->Data->Array.GetSize())
     {
-      if(this->Data.Array[i] == L'\0')
+      if(this->Data->Array[i] == L'\0')
       {
         break;
       }
-      retVal += this->Data.Array[i];
+      retVal += this->Data->Array[i];
     }
 
     return(retVal);
@@ -999,7 +1007,7 @@ namespace CEEFIT
 
   bool ceefit_call_spec STRING::EndsWith(const wchar_t* aString) const
   {
-    if(aString == null) 
+    if(aString == null)
     {
       return(true);
     }
@@ -1030,7 +1038,7 @@ namespace CEEFIT
 
   bool ceefit_call_spec STRING::EndsWith(const char* aString) const
   {
-    if(aString == null) 
+    if(aString == null)
     {
       return(true);
     }
@@ -1079,7 +1087,7 @@ namespace CEEFIT
 
   bool ceefit_call_spec STRING::StartsWith(const wchar_t* aString) const
   {
-    if(aString == null) 
+    if(aString == null)
     {
       return(true);
     }
@@ -1102,7 +1110,7 @@ namespace CEEFIT
 
   bool ceefit_call_spec STRING::StartsWith(const char* aString) const
   {
-    if(aString == null) 
+    if(aString == null)
     {
       return(true);
     }
@@ -1185,7 +1193,7 @@ namespace CEEFIT
             {
 						  argList.Add(last);
 					  }
-            if(delimitersAreTokens) 
+            if(delimitersAreTokens)
             {
               argList.Add(STRING(delimitChar[i]));
             }
@@ -1231,7 +1239,7 @@ namespace CEEFIT
           {
 						argList.Add(last);
 					}
-          if(delimitersAreTokens) 
+          if(delimitersAreTokens)
           {
             argList.Add(STRING(delimitChar[i]));
           }
@@ -1268,7 +1276,7 @@ namespace CEEFIT
       work.Append(temp.Substring(0, (int) (aOccurrence - tempBuf)));
       work.Append(replaceStr);
       work.Append(temp.Substring(((int) (aOccurrence - tempBuf)) + patternStr.Length()));
-      
+
       temp = work;
     }
 
@@ -1288,8 +1296,8 @@ namespace CEEFIT
 
       while(*aPattern != L']')
       {
-        if(*curBuf == L'\0') 
-        { 
+        if(*curBuf == L'\0')
+        {
           return(true);             // don't fall off the end of the string by accident
         }
         AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
@@ -1326,8 +1334,8 @@ namespace CEEFIT
 
       while(*aPattern != L']')
       {
-        if(*curBuf == L'\0') 
-        { 
+        if(*curBuf == L'\0')
+        {
           return(matchEnd != null); // don't fall off the end of the string by accident
         }
         AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
@@ -1362,8 +1370,8 @@ namespace CEEFIT
 
     while(*aPattern != L']')
     {
-      if(*curBuf == L'\0') 
-      { 
+      if(*curBuf == L'\0')
+      {
         return(matchEnd != null); // don't fall off the end of the string by accident
       }
       AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
@@ -1395,8 +1403,8 @@ namespace CEEFIT
       const wchar_t* aPattern = patternBuf.GetBuffer();
       while(*aPattern != L'*')
       {
-        if(*curBuf == L'\0') 
-        { 
+        if(*curBuf == L'\0')
+        {
           return(true);             // don't fall off the end of the string by accident
         }
         AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
@@ -1430,21 +1438,21 @@ namespace CEEFIT
       const wchar_t* aPattern = patternBuf.GetBuffer();
       while(*aPattern != L'*')
       {
-        if(*curBuf == L'\0') 
-        { 
+        if(*curBuf == L'\0')
+        {
           return(true);             // don't fall off the end of the string by accident
         }
         AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
 
         // lookahead and see if we match the lookahead
-        if(lookaheadPattern != null) 
+        if(lookaheadPattern != null)
         {
           wchar_t* lookaheadMatchEnd = null;
           bool nextMustMatchIfIMatch = false;
           if(RegexPatternMatch(false, nextMustMatchIfIMatch, curBuf, *lookaheadPattern, null, lookaheadMatchEnd, dotAll))
           {
             return(true);
-          }         
+          }
         }
 
         // dot star only goes till end of line
@@ -1471,8 +1479,8 @@ namespace CEEFIT
       const wchar_t* aPattern = patternBuf.GetBuffer();
       while(*aPattern != L'+')
       {
-        if(*curBuf == L'\0') 
-        { 
+        if(*curBuf == L'\0')
+        {
           return(matchEnd != null); // don't fall off the end of the string by accident
         }
 
@@ -1506,8 +1514,8 @@ namespace CEEFIT
       const wchar_t* aPattern = patternBuf.GetBuffer();
       while(*aPattern != L'?')
       {
-        if(*curBuf == L'\0') 
-        { 
+        if(*curBuf == L'\0')
+        {
           if(matchEnd == null)
           {
             matchEnd = startBuf;    // matched none, get out...
@@ -1550,8 +1558,8 @@ namespace CEEFIT
     const wchar_t* aPattern = patternBuf.GetBuffer();
     while(*aPattern != L'\0')
     {
-      if(*curBuf == L'\0') 
-      { 
+      if(*curBuf == L'\0')
+      {
         return(false);            // don't fall off the end of the string by accident
       }
       AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
@@ -1577,8 +1585,8 @@ namespace CEEFIT
     const wchar_t* aPattern = patternBuf.GetBuffer();
     while(*aPattern != L'\0')
     {
-      if(*curBuf == L'\0') 
-      { 
+      if(*curBuf == L'\0')
+      {
         return(false);            // don't fall off the end of the string by accident
       }
       AssertIsTrue(*aPattern);    // don't fall off the end of the string by accident
@@ -1595,11 +1603,11 @@ namespace CEEFIT
           return(false);
         }
       }
-      else 
+      else
       {
-        if(dotAll == false) 
+        if(dotAll == false)
         {
-          if(*curBuf == L'\n' || *curBuf == L'\r') 
+          if(*curBuf == L'\n' || *curBuf == L'\r')
           {
             return(false);
           }
@@ -1654,7 +1662,7 @@ namespace CEEFIT
       nextMustMatchIfIMatch = true;
     }
 
-    if(tempPatternBuf.IsEqual(caret)) 
+    if(tempPatternBuf.IsEqual(caret))
     {
       return(RegexMatchStartOfLine(atBufferStart, curBuf, matchEnd));
     }
@@ -1662,17 +1670,17 @@ namespace CEEFIT
     {
       return(RegexMatchEndOfLine(curBuf, tempPatternBuf, matchEnd));
     }
-    else if(tempPatternBuf.StartsWith(dot)) 
+    else if(tempPatternBuf.StartsWith(dot))
     {
-      if(tempPatternBuf.IsEqual(dot)) 
+      if(tempPatternBuf.IsEqual(dot))
       {
         return(RegexMatchOneAnyNoNewline(curBuf, tempPatternBuf, lookAheadPattern, matchEnd, dotAll));
       }
-      else if(tempPatternBuf.IsEqual(dotStarQuestionMark)) 
+      else if(tempPatternBuf.IsEqual(dotStarQuestionMark))
       {
         return(RegexMatchZeroOrMoreAnyNoNewline(curBuf, tempPatternBuf, lookAheadPattern, matchEnd, dotAll));
       }
-      else 
+      else
       {
         // should never get here
         return(false);
@@ -1688,7 +1696,7 @@ namespace CEEFIT
       {
         return(RegexMatchOneOrMoreCharClass(curBuf, tempPatternBuf, matchEnd));
       }
-      else 
+      else
       {
         return(RegexMatchOneCharClass(curBuf, tempPatternBuf, matchEnd));
       }
@@ -1707,7 +1715,7 @@ namespace CEEFIT
       {
         return(RegexMatchOneOrNone(curBuf, tempPatternBuf, matchEnd));
       }
-      else 
+      else
       {
         return(RegexMatchOne(curBuf, tempPatternBuf, matchEnd));
       }
@@ -1715,8 +1723,9 @@ namespace CEEFIT
   }
 
   STRING ceefit_call_spec STRING::ArrayRegexPatternReplaceAll(const DYNARRAY<STRING>& patternStrArray, const STRING& replaceStr, bool dotAll) const
-  {    
+  {
     STRING temp(*this);
+    STRING* nullString = null;
 
     bool atStartOfString = true;
     int startIndex = 0;
@@ -1736,20 +1745,20 @@ namespace CEEFIT
           while(++i < patternStrArray.GetSize())
           {
             wchar_t* matchEnd = null;
-            bool nextMustMatchIfCurMatches = false; 
-            if(RegexPatternMatch(atStartOfString && curBuf == curStartBuf, 
+            bool nextMustMatchIfCurMatches = false;
+            if(RegexPatternMatch(atStartOfString && curBuf == curStartBuf,
                                  nextMustMatchIfCurMatches,
-                                 curBuf, 
-                                 patternStrArray.Get(i), 
-                                 (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : null,
-                                 matchEnd, 
+                                 curBuf,
+                                 patternStrArray.Get(i),
+                                 (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : nullString,
+                                 matchEnd,
                                  dotAll))
             {
               if(nextMustMatchIfCurMatches)
               {
                 matchRollback = curBuf;
               }
-              else 
+              else
               {
                 matchRollback = null;
               }
@@ -1777,7 +1786,7 @@ namespace CEEFIT
                   curBuf = matchRollback;
                   matchRollback = null;
                 }
-                else 
+                else
                 {
                   firstMatch = null;
                   break;
@@ -1824,6 +1833,7 @@ namespace CEEFIT
   void ceefit_call_spec STRING::ArrayRegexPatternSplit(DYNARRAY<STRING>& out, const DYNARRAY<STRING>& patternStrArray, bool dotAll) const
   {
     STRING temp(*this);
+    STRING* nullString = null;
     bool atStartOfString = true;
     wchar_t* matchRollback = null;
 
@@ -1841,12 +1851,12 @@ namespace CEEFIT
           while(++i < patternStrArray.GetSize())
           {
             wchar_t* matchEnd = null;
-            bool nextMustMatchIfCurMatches = false; 
-            if(RegexPatternMatch(atStartOfString && curBuf == curStartBuf, 
+            bool nextMustMatchIfCurMatches = false;
+            if(RegexPatternMatch(atStartOfString && curBuf == curStartBuf,
                                  nextMustMatchIfCurMatches,
-                                 curBuf, 
-                                 patternStrArray.Get(i), 
-                                 (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : null,
+                                 curBuf,
+                                 patternStrArray.Get(i),
+                                 (i+1) < patternStrArray.GetSize() ? &patternStrArray.Get(i+1) : nullString,
                                  matchEnd,
                                  dotAll))
             {
@@ -1882,7 +1892,7 @@ namespace CEEFIT
                   curBuf = matchRollback;
                   matchRollback = null;
                 }
-                else 
+                else
                 {
                   firstMatch = null;
                   break;

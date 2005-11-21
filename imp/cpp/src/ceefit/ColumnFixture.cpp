@@ -25,17 +25,17 @@
 
 namespace CEEFIT
 {
-  COLUMNFIXTURE::COLUMNFIXTURE()
+  ceefit_init_spec COLUMNFIXTURE::COLUMNFIXTURE()
   {
     HasExecuted = false;
   }
 
-  COLUMNFIXTURE::~COLUMNFIXTURE()
+  ceefit_dtor_spec COLUMNFIXTURE::~COLUMNFIXTURE()
   {
   }
 
   // don't call
-  COLUMNFIXTURE::COLUMNFIXTURE(COLUMNFIXTURE&)
+  ceefit_init_spec COLUMNFIXTURE::COLUMNFIXTURE(COLUMNFIXTURE&)
   {
     throw new EXCEPTION("Unsuppoted constructor");
   }

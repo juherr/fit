@@ -34,7 +34,7 @@ namespace CEEFIT
       WRITER* Output;
 
       ceefit_init_spec FILERUNNER(void);
-      virtual ceefit_init_spec ~FILERUNNER(void);
+      virtual ceefit_dtor_spec ~FILERUNNER(void);
 
       virtual int ceefit_call_spec Run(const DYNARRAY<STRING>& argv);
       virtual void ceefit_call_spec Process(void);
@@ -46,6 +46,8 @@ namespace CEEFIT
       virtual void ceefit_call_spec Exception(EXCEPTION* e);
       virtual STRING ceefit_call_spec ValidateOutputPath(const STRING& rawOutPath);
       virtual void ceefit_call_spec ValidateOrCreateDir(const STRING& aDir);
+
+      static STRING RemoveHtmlComments(const STRING& s);
 
     private:
       ceefit_init_spec FILERUNNER(const FILERUNNER&);   /**< Not implemented, do not call */

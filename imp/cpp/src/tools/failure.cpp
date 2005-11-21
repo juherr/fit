@@ -29,7 +29,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec FAILURE::~FAILURE()
+  ceefit_dtor_spec FAILURE::~FAILURE()
   {
   }
 
@@ -47,7 +47,7 @@ namespace CEEFIT
     }
   }
 
-  ceefit_init_spec FITASSERTIONFAILED::~FITASSERTIONFAILED()
+  ceefit_dtor_spec FITASSERTIONFAILED::~FITASSERTIONFAILED()
   {
   }
 
@@ -60,7 +60,7 @@ namespace CEEFIT
     }
   }
 
-  ceefit_init_spec FITFAILED::~FITFAILED()
+  ceefit_dtor_spec FITFAILED::~FITFAILED()
   {
   }
 };

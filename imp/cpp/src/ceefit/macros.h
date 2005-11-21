@@ -30,7 +30,7 @@
         class FIXTUREBEGINBODY                                                                                                    \
         {                                                                                                                         \
           public:                                                                                                                 \
-            inline FIXTUREBEGINBODY(void)                                                                                         \
+            inline ceefit_init_spec FIXTUREBEGINBODY(void)                                                                        \
             {                                                                                                                     \
               ::CEEFIT::RUNNER::IncInFixtureConstructor();                                                                        \
             }                                                                                                                     \
@@ -38,8 +38,8 @@
         FIXTUREBEGINBODY fixtureType##_BeginBody;                                                                                 \
                                                                                                                                   \
       public:                                                                                                                     \
-        inline fixtureType(void) {}                                                                                               \
-        inline virtual ~fixtureType(void) {}                                                                                      \
+        inline ceefit_init_spec fixtureType(void) {}                                                                              \
+        inline virtual ceefit_dtor_spec ~fixtureType(void) {}                                                                     \
                                                                                                                                   \
       private:                                                                                                                    \
         fixtureType& operator=(const fixtureType&);                                                                               \
@@ -105,7 +105,7 @@
         class FIXTUREBEGINBODY                                                                                                    \
         {                                                                                                                         \
           public:                                                                                                                 \
-            inline FIXTUREBEGINBODY(void)                                                                                         \
+            inline ceefit_init_spec FIXTUREBEGINBODY(void)                                                                        \
             {                                                                                                                     \
               ::CEEFIT::RUNNER::IncInFixtureConstructor();                                                                        \
             }                                                                                                                     \
@@ -113,8 +113,8 @@
         FIXTUREBEGINBODY fixtureType##_BeginBody;                                                                                 \
                                                                                                                                   \
       public:                                                                                                                     \
-        inline fixtureType(void) {}                                                                                               \
-        inline virtual ~fixtureType(void) {}                                                                                      \
+        inline ceefit_init_spec fixtureType(void) {}                                                                              \
+        inline virtual ceefit_dtor_spec ~fixtureType(void) {}                                                                     \
                                                                                                                                   \
       private:                                                                                                                    \
         fixtureType& operator=(const fixtureType&);                                                                               \

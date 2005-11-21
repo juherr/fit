@@ -41,7 +41,7 @@ namespace CEEFIT
         }
       }
 
-      inline ceefit_init_spec ~REGISTERFIXTURECLASS<T>(void)
+      inline ceefit_dtor_spec ~REGISTERFIXTURECLASS<T>(void)
       {
       }
 
@@ -78,7 +78,7 @@ namespace CEEFIT
         RUNNER::RegisterNonFixtureFactory(this);
       }
 
-      inline ceefit_init_spec ~REGISTERNONFIXTURECLASS<T>(void)
+      inline ceefit_dtor_spec ~REGISTERNONFIXTURECLASS<T>(void)
       {
       }
 
@@ -122,13 +122,13 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
     CEEFIT::PTR< CEEFIT::FIXTURE > Fixture;
 
   public:
-    using CELLADAPTER::WriteToFixtureVar;
+    fit_using_decl(CELLADAPTER::WriteToFixtureVar);
     virtual void ceefit_call_spec WriteToFixtureVar(const CEEFIT::STRING& in)
     {
       throw new CEEFIT::EXCEPTION("Cannot WriteToFixtureVar on FITFIXTURECONTAINER CELLADAPTER");
     }
 
-    using CELLADAPTER::ReadFromFixtureVar;
+    fit_using_decl(CELLADAPTER::ReadFromFixtureVar);
     virtual void ceefit_call_spec ReadFromFixtureVar(CEEFIT::STRING& out) const
     {
       throw new CEEFIT::EXCEPTION("Cannot ReadFromFixtureVar on FITFIXTURECONTAINER CELLADAPTER");
@@ -164,7 +164,7 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
       throw new CEEFIT::EXCEPTION("Cannot NewInstanceParse on FITFIXTURECONTAINER CELLADAPTER");
     }
 
-    using CELLADAPTER::Invoke;
+    fit_using_decl(CELLADAPTER::Invoke);
     virtual void ceefit_call_spec Invoke(::CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, ::CEEFIT::PTR<CEEFIT::FIXTURE>& aFixture) const
     {
       throw new CEEFIT::EXCEPTION("Cannot Invoke on FITFIXTURECONTAINER CELLADAPTER");
@@ -175,14 +175,14 @@ class FITFIXTURECONTAINER : public CEEFIT::CELLADAPTER
       Fixture = aFixture;
     }
 
-    virtual inline ceefit_init_spec ~FITFIXTURECONTAINER(void) {}
+    virtual inline ceefit_dtor_spec ~FITFIXTURECONTAINER(void) {}
 
     virtual int ceefit_call_spec GetHashCode(void)
     {
       return(0);
     }
 
-    using CELLADAPTER::IsEqual;
+    fit_using_decl(CELLADAPTER::IsEqual);
     virtual bool ceefit_call_spec IsEqual(const CEEFIT::CELLADAPTER* aAdapter) const
     {
       return(false);

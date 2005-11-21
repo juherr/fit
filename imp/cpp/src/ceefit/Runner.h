@@ -86,7 +86,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec FIXTUREFACTORY(const char* aName, const char* aAlias=null);
-      virtual ceefit_init_spec ~FIXTUREFACTORY(void);
+      virtual ceefit_dtor_spec ~FIXTUREFACTORY(void);
       virtual const char* ceefit_call_spec GetName(void) const;
       virtual const char* ceefit_call_spec GetAlias(void) const;
 
@@ -117,7 +117,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec NONFIXTUREFACTORY(const char* aName, const char* aAlias=null);
-      virtual ceefit_init_spec ~NONFIXTUREFACTORY(void);
+      virtual ceefit_dtor_spec ~NONFIXTUREFACTORY(void);
       virtual const char* ceefit_call_spec GetName(void) const;
       virtual const char* ceefit_call_spec GetAlias(void) const;
 
@@ -172,7 +172,7 @@ namespace CEEFIT
       static void ceefit_call_spec RegisterFixtureFactory(FIXTUREFACTORY* aFixtureFactory);
       static void ceefit_call_spec RegisterNonFixtureFactory(NONFIXTUREFACTORY* aNonFixtureFactory);
 
-      virtual ceefit_init_spec ~RUNNER(void);
+      virtual ceefit_dtor_spec ~RUNNER(void);
 
     protected:
       static SLINKLIST<CELLADAPTER>* CurrentTestList;   /**< During a new FIXTURE construction, this is a pointer to it's TestList */

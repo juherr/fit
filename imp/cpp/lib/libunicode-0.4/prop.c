@@ -49,33 +49,33 @@
 		       || (Type) == UNICODE_OTHER_LETTER)
 
 int 
-unicode_isalnum (unicode_char_t c)
+ceefit_call_spec unicode_isalnum (unicode_char_t c)
 {
   int t = TYPE (c);
   return ISDIGIT (t) || ISALPHA (t);
 }
 
 int 
-unicode_isalpha (unicode_char_t c)
+ceefit_call_spec unicode_isalpha (unicode_char_t c)
 {
   int t = TYPE (c);
   return ISALPHA (t);
 }
 
 int 
-unicode_iscntrl (unicode_char_t c)
+ceefit_call_spec unicode_iscntrl (unicode_char_t c)
 {
   return TYPE (c) == UNICODE_CONTROL;
 }
 
 int 
-unicode_isdigit (unicode_char_t c)
+ceefit_call_spec unicode_isdigit (unicode_char_t c)
 {
   return TYPE (c) == UNICODE_DECIMAL_NUMBER;
 }
 
 int 
-unicode_isgraph (unicode_char_t c)
+ceefit_call_spec unicode_isgraph (unicode_char_t c)
 {
   int t = TYPE (c);
   return (t != UNICODE_CONTROL
@@ -87,13 +87,13 @@ unicode_isgraph (unicode_char_t c)
 }
 
 int 
-unicode_islower (unicode_char_t c)
+ceefit_call_spec unicode_islower (unicode_char_t c)
 {
   return TYPE (c) == UNICODE_LOWERCASE_LETTER;
 }
 
 int 
-unicode_isprint (unicode_char_t c)
+ceefit_call_spec unicode_isprint (unicode_char_t c)
 {
   int t = TYPE (c);
   return (t != UNICODE_CONTROL
@@ -104,7 +104,7 @@ unicode_isprint (unicode_char_t c)
 }
 
 int 
-unicode_ispunct (unicode_char_t c)
+ceefit_call_spec unicode_ispunct (unicode_char_t c)
 {
   int t = TYPE (c);
   return (t == UNICODE_CONNECT_PUNCTUATION || t == UNICODE_DASH_PUNCTUATION
@@ -114,7 +114,7 @@ unicode_ispunct (unicode_char_t c)
 }
 
 int 
-unicode_isspace (unicode_char_t c)
+ceefit_call_spec unicode_isspace (unicode_char_t c)
 {
   int t = TYPE (c);
   return (t == UNICODE_SPACE_SEPARATOR || t == UNICODE_LINE_SEPARATOR
@@ -122,13 +122,13 @@ unicode_isspace (unicode_char_t c)
 }
 
 int 
-unicode_isupper (unicode_char_t c)
+ceefit_call_spec unicode_isupper (unicode_char_t c)
 {
   return TYPE (c) == UNICODE_UPPERCASE_LETTER;
 }
 
 int 
-unicode_istitle (unicode_char_t c)
+ceefit_call_spec unicode_istitle (unicode_char_t c)
 {
   unsigned int i;
   for (i = 0; i < asize (title_table); ++i)
@@ -138,7 +138,7 @@ unicode_istitle (unicode_char_t c)
 }
 
 int 
-unicode_isxdigit (unicode_char_t c)
+ceefit_call_spec unicode_isxdigit (unicode_char_t c)
 {
   int t = TYPE (c);
   return ((c >= 'a' && c <= 'f')
@@ -147,7 +147,7 @@ unicode_isxdigit (unicode_char_t c)
 }
 
 int 
-unicode_isdefined (unicode_char_t c)
+ceefit_call_spec unicode_isdefined (unicode_char_t c)
 {
   int t = TYPE (c);
   return t != UNICODE_UNASSIGNED;
@@ -155,7 +155,7 @@ unicode_isdefined (unicode_char_t c)
 
 /* This function stolen from Markus Kuhn <Markus.Kuhn@cl.cam.ac.uk>.  */
 int 
-unicode_iswide (unicode_char_t c)
+ceefit_call_spec unicode_iswide (unicode_char_t c)
 {
   if (c < 0x1100)
     return 0;
@@ -171,7 +171,7 @@ unicode_iswide (unicode_char_t c)
 }
 
 unicode_char_t 
-unicode_toupper (unicode_char_t c)
+ceefit_call_spec unicode_toupper (unicode_char_t c)
 {
   int t = TYPE (c);
   if (t == UNICODE_LOWERCASE_LETTER)
@@ -189,7 +189,7 @@ unicode_toupper (unicode_char_t c)
 }
 
 unicode_char_t 
-unicode_tolower (unicode_char_t c)
+ceefit_call_spec unicode_tolower (unicode_char_t c)
 {
   int t = TYPE (c);
   if (t == UNICODE_UPPERCASE_LETTER)
@@ -207,7 +207,7 @@ unicode_tolower (unicode_char_t c)
 }
 
 unicode_char_t 
-unicode_totitle (unicode_char_t c)
+ceefit_call_spec unicode_totitle (unicode_char_t c)
 {
   unsigned int i;
   for (i = 0; i < asize (title_table); ++i)
@@ -222,7 +222,7 @@ unicode_totitle (unicode_char_t c)
 }
 
 int 
-unicode_digit_value (unicode_char_t c)
+ceefit_call_spec unicode_digit_value (unicode_char_t c)
 {
   if (TYPE (c) == UNICODE_DECIMAL_NUMBER)
     return ATTTABLE (c >> 8, c & 0xff);
@@ -230,7 +230,7 @@ unicode_digit_value (unicode_char_t c)
 }
 
 int 
-unicode_xdigit_value (unicode_char_t c)
+ceefit_call_spec unicode_xdigit_value (unicode_char_t c)
 {
   if (c >= 'A' && c <= 'F')
     return c - 'A' + 1;
@@ -242,7 +242,7 @@ unicode_xdigit_value (unicode_char_t c)
 }
 
 int 
-unicode_type (unicode_char_t c)
+ceefit_call_spec unicode_type (unicode_char_t c)
 {
   return TYPE (c);
 }

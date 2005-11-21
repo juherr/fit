@@ -42,7 +42,7 @@ namespace EG_NET
     RegisterCeefitTest(this, "nodes", &SIMULATOR::Nodes);
   }
 
-  ceefit_init_spec SIMULATOR::~SIMULATOR()
+  ceefit_dtor_spec SIMULATOR::~SIMULATOR()
   {
   }
 

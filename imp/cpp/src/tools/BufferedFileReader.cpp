@@ -27,7 +27,7 @@ extern "C"
 {
 # include "unicode.h"
 # include "convert.h"
-};
+}
 
 namespace CEEFIT
 {
@@ -90,7 +90,7 @@ namespace CEEFIT
     fileName.GetAsCharArray(charArray);
     FILE* FileHandle = fopen(&charArray[0], "rb");
 
-    if(FileHandle == null)
+    if(FileHandle == 0)   // 11/12/05:  compare to 0 to work with bcc  -dw
     {
       throw new IOEXCEPTION("File error on open");
     }
@@ -107,7 +107,7 @@ namespace CEEFIT
       if(retVal != readSize && ferror(FileHandle))
       {
         fclose(FileHandle);
-        FileHandle = null;
+        FileHandle = 0;   // 11/12/05:  assign 0 to work with bcc  -dw
 
         throw new IOEXCEPTION("File read error");
       }
@@ -118,7 +118,7 @@ namespace CEEFIT
       if(retVal != readSize && feof(FileHandle))
       {
         fclose(FileHandle);
-        FileHandle = null;
+        FileHandle = 0;   // 11/12/05:  assign 0 to work with bcc  -dw
 
         break;
       }
@@ -137,7 +137,7 @@ namespace CEEFIT
     IsClosed = false;
   }
 
-  ceefit_init_spec BUFFEREDFILEREADER::~BUFFEREDFILEREADER(void)
+  ceefit_dtor_spec BUFFEREDFILEREADER::~BUFFEREDFILEREADER(void)
   {
     Close();
   }

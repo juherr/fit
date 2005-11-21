@@ -137,7 +137,7 @@ namespace EG_MUSIC
   {
   }
 
-  ceefit_init_spec MUSICLIBRARY::~MUSICLIBRARY(void)
+  ceefit_dtor_spec MUSICLIBRARY::~MUSICLIBRARY(void)
   {
   }
 

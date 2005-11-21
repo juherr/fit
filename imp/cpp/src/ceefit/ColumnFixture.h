@@ -34,7 +34,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec COLUMNFIXTURE(void);
-      virtual ceefit_init_spec ~COLUMNFIXTURE(void);
+      virtual ceefit_dtor_spec ~COLUMNFIXTURE(void);
 
     public:
       // Traversal ////////////////////////////////

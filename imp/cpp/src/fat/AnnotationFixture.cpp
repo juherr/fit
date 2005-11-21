@@ -181,7 +181,7 @@ namespace CEEFAT
         RegisterCeefitTest(this, "ResultingHTML", &ANNOTATIONFIXTURE::ResultingHTML);
       }
 
-      virtual ceefit_init_spec ~ANNOTATIONFIXTURE(void) 
+      virtual ceefit_dtor_spec ~ANNOTATIONFIXTURE(void) 
       {
       }
 

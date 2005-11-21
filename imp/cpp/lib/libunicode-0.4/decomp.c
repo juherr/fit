@@ -39,7 +39,7 @@
 #define asize(Ary) ((sizeof (Ary)) / sizeof ((Ary)[0]))
 
 /* Compute the canonical ordering of a string in-place.  */
-void 
+void ceefit_call_spec
 unicode_canonical_ordering (unicode_char_t *string,
 			    size_t len)
 {
@@ -77,7 +77,7 @@ unicode_canonical_ordering (unicode_char_t *string,
     }
 }
 
-unicode_char_t * 
+unicode_char_t * ceefit_call_spec
 unicode_canonical_decomposition (unicode_char_t ch,
 				 size_t *result_len)
 {

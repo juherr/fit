@@ -30,7 +30,7 @@ namespace CEEFIT
   /**
    * <p>Values that can be copied into managed pointers</p>
    */
-  template<class T> class VALUE 
+  template<class T> class VALUE
   {
     protected:
       T* Value;
@@ -38,10 +38,17 @@ namespace CEEFIT
       friend class PTR<T>;
 
     public:
+#     ifdef __BORLANDC__
+        explicit inline VALUE<T>(T* aValue)
+        {
+          Value = aValue;
+        }
+#     endif
+
       template<class U> explicit inline VALUE<T>(U* aValue)
-      {              
+      {
         T* castedPointer = null;
-        
+
         if(aValue != null)
         {
           castedPointer = dynamic_cast<T*>(aValue);
@@ -52,8 +59,8 @@ namespace CEEFIT
       }
 
       explicit inline VALUE<T>(int aNull)
-      {      
-        if(aNull != 0) 
+      {
+        if(aNull != 0)
         {
           throw new EXCEPTION("Expected a null pointer for VALUE<T>(int)");
         }
@@ -61,8 +68,8 @@ namespace CEEFIT
       }
 
       explicit inline VALUE<T>(unsigned int aNull)
-      {      
-        if(aNull != 0) 
+      {
+        if(aNull != 0)
         {
           throw new EXCEPTION("Expected a null pointer for VALUE<T>(unsigned int)");
         }
@@ -75,9 +82,9 @@ namespace CEEFIT
       }
 
       // Workaround for gcc 3.3 not compiling the following code that msvc and gcc 3.4 can compile ...
-#     ifdef _MSC_VER
+#     if (defined(_MSC_VER) || defined(__BORLANDC__))
         template<class U> inline VALUE<T>(PTR<U>& aPtr)    // set a VALUE from a PTR, safe to work inline on MSVC 6.0 even though technically we're calling on a forward declared class
-        {     
+        {
           Value = dynamic_cast<T*>(aPtr.GetPointer());
         }
 #     else
@@ -95,7 +102,7 @@ namespace CEEFIT
 
       inline VALUE<T>& operator=(int aNull)
       {
-        if(aNull != 0) 
+        if(aNull != 0)
         {
           throw new EXCEPTION("Expected a null pointer for operator=(int)");
         }
@@ -106,7 +113,7 @@ namespace CEEFIT
 
       inline VALUE<T>& operator=(unsigned int aNull)
       {
-        if(aNull != 0) 
+        if(aNull != 0)
         {
           throw new EXCEPTION("Expected a null pointer for operator=(unsigned int)");
         }
@@ -115,7 +122,7 @@ namespace CEEFIT
         return(*this);
       }
 
-      inline ~VALUE(void) 
+      inline ~VALUE(void)
       {
       }
 
@@ -127,7 +134,7 @@ namespace CEEFIT
       template<class U> inline bool operator!=(const VALUE<U>& aValue) const
       {
         return(Value != aValue.Value);
-      } 
+      }
 
       inline bool operator==(const T* aValue) const
       {
@@ -156,17 +163,17 @@ namespace CEEFIT
        * specify that aPtrTarget should be a PTR<T> ... Please do not call this method unless aPtrTarget is a PTR<T>
        * object.
        */
-      template<class U> inline U& SetPtr(U& aPtrTarget) 
+      template<class U> inline U& SetPtr(U& aPtrTarget)
       {
         return(aPtrTarget = Value);
       }
 
-      template<class U> inline void AtomicSetPtr(U& aPtrTarget) 
+      template<class U> inline void AtomicSetPtr(U& aPtrTarget)
       {
         aPtrTarget.AtomicSet(Value);
       }
 
-      template<class U> inline void SetValue(U*& aValue) 
+      template<class U> inline void SetValue(U*& aValue)
       {
         aValue = dynamic_cast<U*>(Value);
       }

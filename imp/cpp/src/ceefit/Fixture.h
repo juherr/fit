@@ -45,7 +45,7 @@ namespace CEEFIT
       int exceptions;
 
       ceefit_init_spec COUNTS(void);
-      ceefit_init_spec ~COUNTS(void);
+      ceefit_dtor_spec ~COUNTS(void);
 
       STRING ceefit_call_spec ToString(void) const;
       void ceefit_call_spec Tally(const COUNTS& source);
@@ -65,7 +65,7 @@ namespace CEEFIT
           mutable fitINT64 elapsed;
 
           ceefit_init_spec RUNTIME(void);
-          virtual ceefit_init_spec ~RUNTIME(void);
+          virtual ceefit_dtor_spec ~RUNTIME(void);
 
           virtual STRING ceefit_call_spec ToString(void) const;
 
@@ -88,7 +88,7 @@ namespace CEEFIT
           PTR<COUNTS> CountsRun;        /**< Counts run, from eg.ExampleTests.java */
 
           ceefit_init_spec SUMMARY(void);
-          virtual ceefit_init_spec ~SUMMARY(void);
+          virtual ceefit_dtor_spec ~SUMMARY(void);
           SUMMARY& ceefit_call_spec operator=(SUMMARY& aSummary);
           ceefit_init_spec SUMMARY(SUMMARY& aSummary);
       };
@@ -99,7 +99,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec FIXTURE(void);
-      virtual ceefit_init_spec ~FIXTURE(void);
+      virtual ceefit_dtor_spec ~FIXTURE(void);
 
     public:
       // Traversal ////////////////////////////////////
@@ -233,14 +233,14 @@ namespace CEEFIT
       /**
        * Simple key/value pair for reporting summary information about the FIXTURE
        */
-      class SUMMARYITEM
+      class SUMMARYITEM : public OBJECT
       {
         public:
           STRING Title;
           STRING Value;
 
           inline ceefit_init_spec SUMMARYITEM(void) {}
-          inline ceefit_init_spec ~SUMMARYITEM(void) {}
+          inline ceefit_dtor_spec ~SUMMARYITEM(void) {}
           inline SUMMARYITEM& ceefit_call_spec operator=(const SUMMARYITEM& aItem)
           {
             Title = aItem.Title;

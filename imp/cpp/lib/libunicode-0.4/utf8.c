@@ -31,7 +31,7 @@
 
 /* Skip backwards to previous utf8 character.  */
 char * 
-unicode_previous_utf8 (const char *start, const char *p)
+ceefit_call_spec unicode_previous_utf8 (const char *start, const char *p)
 {
   int count = 6;
   for (--p; p > start && count; --p, --count)
@@ -46,7 +46,7 @@ unicode_previous_utf8 (const char *start, const char *p)
    Note that P cannot be const because then there is no useful return
    type for this function.  */
 char * 
-unicode_next_utf8 (const char *p)
+ceefit_call_spec unicode_next_utf8 (const char *p)
 {
   if (*p)
     {
@@ -58,7 +58,7 @@ unicode_next_utf8 (const char *p)
 
 /* Return length of a UTF8 string.  */
 int 
-unicode_strlen (const char *p, int max)
+ceefit_call_spec unicode_strlen (const char *p, int max)
 {
   int len = 0;
   const char *start = p;
@@ -81,7 +81,7 @@ unicode_strlen (const char *p, int max)
 
 /* Return pointer to the last UTF-8 sequence in a string.  */
 char * 
-unicode_last_utf8 (const char *p)
+ceefit_call_spec unicode_last_utf8 (const char *p)
 {
   const char *start = p;
   /* special case for the empty string */
@@ -94,7 +94,7 @@ unicode_last_utf8 (const char *p)
 
 
 char * 
-unicode_get_utf8 (const char *p, unicode_char_t *result)
+ceefit_call_spec unicode_get_utf8 (const char *p, unicode_char_t *result)
 {
   int i, mask = 0, len;
   unsigned char c = (unsigned char) *p;
@@ -111,7 +111,7 @@ unicode_get_utf8 (const char *p, unicode_char_t *result)
 /* unicode_offset_to_index */
 
 size_t 
-unicode_offset_to_index(const char *src, int offset)
+ceefit_call_spec unicode_offset_to_index(const char *src, int offset)
 {
 	const char *s = src;
 	while (offset && *s) {
@@ -124,7 +124,7 @@ unicode_offset_to_index(const char *src, int offset)
 /* unicode_index_to_offset */
 
 size_t 
-unicode_index_to_offset(const char *src, int index)
+ceefit_call_spec unicode_index_to_offset(const char *src, int index)
 {
 	const char *s = src;
 	size_t offset = 0;
@@ -140,7 +140,7 @@ unicode_index_to_offset(const char *src, int index)
 /* unicode_strncpy */
 
 char* 
- unicode_strncpy(char *dest, const char *src, size_t n)
+ ceefit_call_spec unicode_strncpy(char *dest, const char *src, size_t n)
 {
 	const char *s = src;
 	size_t o_n = n;
@@ -154,7 +154,7 @@ char*
 }
 
 static int 
-unicode_get_charset_internal (char **a)
+ceefit_call_spec unicode_get_charset_internal (char **a)
 {
   char *charset = getenv("CHARSET");
 
@@ -194,7 +194,7 @@ static int utf8_locale_cache = -1;
 static char *utf8_charset_cache = NULL;
 
 int 
-unicode_get_charset (char **charset) 
+ceefit_call_spec unicode_get_charset (char **charset) 
 {
   if (utf8_locale_cache != -1)
     {
@@ -209,7 +209,7 @@ unicode_get_charset (char **charset)
 }
 
 int 
-unicode_string_width(const char *p)
+ceefit_call_spec unicode_string_width(const char *p)
 {
   /* for now, we just pass through to unicode_strlen 
    *
@@ -220,7 +220,7 @@ unicode_string_width(const char *p)
 }
 
 void 
-unicode_pad_string(char *dest, int right, int width, const char *string) 
+ceefit_call_spec unicode_pad_string(char *dest, int right, int width, const char *string) 
 {
   char *old_dest = dest;
   strcpy(dest, string);
@@ -247,7 +247,7 @@ unicode_pad_string(char *dest, int right, int width, const char *string)
 /* unicode_strchr */
 
 const char * 
-unicode_strchr(const char *p, unicode_char_t c)
+ceefit_call_spec unicode_strchr(const char *p, unicode_char_t c)
 {
   char ch[10];
   int first, len, i;
@@ -298,7 +298,7 @@ unicode_strchr(const char *p, unicode_char_t c)
  */
 
 const char *
-unicode_strrchr(const char *p, unicode_char_t c)
+ceefit_call_spec unicode_strrchr(const char *p, unicode_char_t c)
 {
   char ch[10];
   int first, len, i;

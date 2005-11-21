@@ -26,38 +26,38 @@
 namespace CEEFIT
 {
   // don't call this
-  REFCOUNTED::REFCOUNTED(const REFCOUNTED&)
+  ceefit_init_spec REFCOUNTED::REFCOUNTED(const REFCOUNTED&)
   {
     assert(false);
   }
 
   // don't call this
-  REFCOUNTED& REFCOUNTED::operator=(const REFCOUNTED&)
+  REFCOUNTED& ceefit_call_spec REFCOUNTED::operator=(const REFCOUNTED&)
   {
     assert(false);
     return(*this);
   }
 
-  REFCOUNTED::REFCOUNTED()
+  ceefit_init_spec REFCOUNTED::REFCOUNTED()
   {
-	  RefCount = 0; 
+	  RefCount = 0;
   }
 
-  REFCOUNTED::~REFCOUNTED()
+  ceefit_dtor_spec REFCOUNTED::~REFCOUNTED()
   {
   }
 
-  int REFCOUNTED::GetRefCount() 
+  int ceefit_call_spec REFCOUNTED::GetRefCount()
   {
-	  return RefCount; 
+	  return RefCount;
   }
 
-  void REFCOUNTED::AddRef() 
-  {	
-	  RefCount++;      
+  void ceefit_call_spec REFCOUNTED::AddRef()
+  {
+	  RefCount++;
   }
 
-  bool REFCOUNTED::ReleaseRef(bool DoDestroy) 
+  bool ceefit_call_spec REFCOUNTED::ReleaseRef(bool DoDestroy)
   {
 	  bool RetVal = false;
 

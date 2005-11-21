@@ -33,7 +33,7 @@ namespace EG_NET
       int NodeCount;
 
       ceefit_init_spec SIMULATOR(void);
-      virtual ceefit_init_spec ~SIMULATOR(void);
+      virtual ceefit_dtor_spec ~SIMULATOR(void);
       virtual void ceefit_call_spec NewCity(void);
       virtual void ceefit_call_spec Ok(void);
       virtual void ceefit_call_spec Cancel(void);
@@ -119,7 +119,7 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public CEEFIT::FITFIELDBASE
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< CEEFIT::DYNARRAY<int> >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< CEEFIT::DYNARRAY<int> >(void)
     {
     }
 

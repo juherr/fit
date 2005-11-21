@@ -81,7 +81,7 @@ namespace EG_MUSIC
     RegisterCeefitTest(this, "press", &REALTIME::Press);
   }
 
-  ceefit_init_spec REALTIME::~REALTIME()
+  ceefit_dtor_spec REALTIME::~REALTIME()
   {
   }
 

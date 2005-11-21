@@ -43,7 +43,7 @@ namespace CEEFIT
     Precision = obj.Precision;
   }
 
-  ceefit_init_spec SCIENTIFICDOUBLE::~SCIENTIFICDOUBLE()
+  ceefit_dtor_spec SCIENTIFICDOUBLE::~SCIENTIFICDOUBLE()
   {
   }
 

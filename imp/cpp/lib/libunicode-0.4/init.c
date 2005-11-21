@@ -29,7 +29,7 @@
 #endif
 
 void  
-unicode_init (void)
+ceefit_call_spec unicode_init (void)
 {
   unicode_register_encoding (&unicode_utf8_encoding);
   unicode_register_encoding (&unicode_java_utf8_encoding);
@@ -65,5 +65,5 @@ unicode_init (void)
 }
 
 #ifdef __cplusplus
-  };
+  }
 #endif

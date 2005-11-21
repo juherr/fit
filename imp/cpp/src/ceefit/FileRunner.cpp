@@ -31,7 +31,7 @@ namespace CEEFIT
     Output = null;
   }
 
-  ceefit_init_spec FILERUNNER::~FILERUNNER()
+  ceefit_dtor_spec FILERUNNER::~FILERUNNER()
   {
   }
 
@@ -69,6 +69,37 @@ namespace CEEFIT
     }
   }
 
+  static const char* HtmlCommentStart ="<!--";
+  static const char* HtmlCommentEnd = "-->";
+
+  STRING FILERUNNER::RemoveHtmlComments(const STRING& s)
+  {
+    STRING temp(s.ToLowercase());
+    int bodyStart = temp.IndexOf(STRING("<") + "body");
+    if(bodyStart < 0)
+    {
+      bodyStart = 0;
+    }
+
+    STRING retVal(s);
+    int index = 0;
+
+    while((index = retVal.IndexOf(HtmlCommentStart, bodyStart)) >= 0)
+    {
+      int endIndex = retVal.IndexOf(HtmlCommentEnd, index);
+      if(endIndex >= 0)
+      {
+        retVal = (retVal.Substring(0, index) + retVal.Substring(endIndex + strlen(HtmlCommentEnd)));
+      }
+      else
+      {
+        retVal = retVal.Substring(0, index);
+      }
+    }
+
+    return(retVal);
+  }
+
   void ceefit_call_spec FILERUNNER::Process()
   {
     try
@@ -85,7 +116,7 @@ namespace CEEFIT
           stringArray.Add("td");
         }
 
-        Tables = new PARSE(Input, stringArray);
+        Tables = new PARSE(RemoveHtmlComments(Input), stringArray);
         Fixture->DoTables(Tables->Parts);
       }
       else
@@ -99,7 +130,7 @@ namespace CEEFIT
           stringArray.Add("td");
         }
 
-        Tables = new PARSE(Input, stringArray);
+        Tables = new PARSE(RemoveHtmlComments(Input), stringArray);
         Fixture->DoTables(Tables);
       }
     }
@@ -128,7 +159,19 @@ namespace CEEFIT
       if(mkdir(&charBuf[0], S_IRWXO | S_IRWXG | S_IRWXU) == -1)
 #endif
       {
-        throw new IOEXCEPTION(STRING("Create folder failed"));
+        if(errno != EEXIST)
+        {
+          throw new IOEXCEPTION(STRING("Create folder failed, errno == ") + errno);
+        }
+      }
+    }
+    else 
+    {
+      FINDFILEINFO findInfo(findIterator->GetNext());
+
+      if(findInfo.IsFolder == false)
+      {
+        throw new EXCEPTION(STRING("Failed to find directory '") + aDir + "', already exists as a file");
       }
     }
   }

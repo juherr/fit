@@ -30,7 +30,7 @@ extern "C"
 {
 # include "unicode.h"
 # include "convert.h"
-};
+}
 
 // This module was taken from the WineHQ sources to be applied to CeeFIT
 // Original copyrights and license terms apply

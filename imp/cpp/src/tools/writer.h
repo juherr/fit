@@ -28,7 +28,7 @@ extern "C"
   struct unicode_encoding_t;
 
   extern struct unicode_encoding_t unicode_windows_1252_encoding;
-};
+}
 
 namespace CEEFIT
 {
@@ -36,7 +36,7 @@ namespace CEEFIT
   {
     public:
       inline ceefit_init_spec WRITER(void) {}
-      virtual inline ceefit_init_spec ~WRITER(void) {}
+      virtual inline ceefit_dtor_spec ~WRITER(void) {}
 
       virtual void ceefit_call_spec Write(const STRING& aString)=0;
       virtual void ceefit_call_spec Fprint(const wchar_t* format, ...)=0;
@@ -59,7 +59,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec STRINGWRITER(void);
-      virtual ceefit_init_spec ~STRINGWRITER(void);
+      virtual ceefit_dtor_spec ~STRINGWRITER(void);
 
       virtual void ceefit_call_spec Write(const STRING& aString);
       virtual void ceefit_call_spec Fprint(const wchar_t* format, ...);
@@ -88,8 +88,14 @@ namespace CEEFIT
        * @param filePath file path to open
        * @param createFile true = create the file (or truncate it if it already exists), false = append to end of existing file (or create if it does not exist)
        */
-      ceefit_init_spec FILEWRITER(const STRING& filePath, bool createFile=true, unicode_encoding_t& aExpectedEncoding = unicode_windows_1252_encoding);
-      virtual ceefit_init_spec ~FILEWRITER(void);
+      ceefit_init_spec FILEWRITER(const STRING& filePath, bool createFile=true);
+
+      /**
+       * @param filePath file path to open
+       * @param createFile true = create the file (or truncate it if it already exists), false = append to end of existing file (or create if it does not exist)
+       */
+      ceefit_init_spec FILEWRITER(const STRING& filePath, unicode_encoding_t& aExpectedEncoding, bool createFile=true);
+      virtual ceefit_dtor_spec ~FILEWRITER(void);
 
       virtual void ceefit_call_spec Write(const STRING& aString);
       virtual void ceefit_call_spec Fprint(const wchar_t* format, ...);
@@ -98,6 +104,8 @@ namespace CEEFIT
     private:
       FILEWRITER& ceefit_call_spec operator=(const FILEWRITER&);
       ceefit_init_spec FILEWRITER(const FILEWRITER&);
+
+      void ceefit_call_spec Init(const STRING& filePath, unicode_encoding_t& aExpectedEncoding, bool createFile);
   };
 
   /**
@@ -110,7 +118,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec OUTWRITER(void);
-      virtual ceefit_init_spec ~OUTWRITER(void);
+      virtual ceefit_dtor_spec ~OUTWRITER(void);
 
       virtual void ceefit_call_spec Write(const STRING& aString);
       virtual void ceefit_call_spec Fprint(const wchar_t* format, ...);

@@ -43,7 +43,7 @@ namespace EG_MUSIC
 
     public:
       ceefit_init_spec REALTIME(void);
-      virtual ceefit_init_spec ~REALTIME(void);
+      virtual ceefit_dtor_spec ~REALTIME(void);
 
     private:
       ceefit_init_spec REALTIME(const REALTIME&);

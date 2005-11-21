@@ -49,21 +49,21 @@ static context cp932_context = {
 };
 
 static int  
-sjis_init (void **privp)
+ceefit_call_spec sjis_init (void **privp)
 {
   *privp = &sjis_context;
   return 1;
 }
 
 static int  
-cp932_init (void **privp)
+ceefit_call_spec cp932_init (void **privp)
 {
   *privp = &cp932_context;
   return 1;
 }
 
 static enum unicode_read_result  
-sjis_read (void *arg, const char **inbuf, size_t *inbytesleft,
+ceefit_call_spec sjis_read (void *arg, const char **inbuf, size_t *inbytesleft,
 	   unicode_char_t **outbuf, size_t *outcharsleft)
 {
   unsigned int c1, c2;
@@ -111,7 +111,7 @@ sjis_read (void *arg, const char **inbuf, size_t *inbytesleft,
 }
 
 static enum unicode_write_result  
-sjis_write (void *arg,
+ceefit_call_spec sjis_write (void *arg,
 	    unicode_char_t **inbuf, size_t *incharsleft,
 	    char **outbuf, size_t *outbytesleft)
 {

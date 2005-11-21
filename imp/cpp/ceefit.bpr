@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="Debug\ceefit.lib"/>
+    <OBJFILES value="Debug\ActionFixture.obj Debug\ceefit.obj Debug\ColumnFixture.obj 
+      Debug\FileRunner.obj Debug\Fixture.obj Debug\Parse.obj 
+      Debug\PrimitiveFixture.obj Debug\RowFixture.obj Debug\Runner.obj 
+      Debug\ScientificDouble.obj Debug\Summary.obj Debug\TimedActionFixture.obj 
+      Debug\alloc.obj Debug\BufferedFileReader.obj Debug\exception.obj 
+      Debug\failure.obj Debug\findfiles.obj Debug\mandatory.obj Debug\object.obj 
+      Debug\ptr.obj Debug\refcounted.obj Debug\registerstatic.obj 
+      Debug\splitpath.obj Debug\wcs.obj Debug\writer.obj Debug\utf8conv.obj 
+      Debug\decomp.obj Debug\init.obj Debug\iso8859.obj Debug\latin1.obj 
+      Debug\prop.obj Debug\sjis.obj Debug\ucs2.obj Debug\ucs4.obj Debug\utf8.obj 
+      Debug\convert.obj Debug\cfstring.obj"/>
+    <RESFILES value=""/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value=""/>
+    <PACKAGES value=""/>
+    <PATHCPP value=".;src\ceefit;src\tools;lib\libunicode-0.4"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="TLib"/>
+    <USERDEFINES value="WIN32;_DEBUG;_MBCS;_LIB"/>
+    <SYSDEFINES value="_NO_VCL;NO_STRICT"/>
+    <MAINSOURCE value="ceefit.bpf"/>
+    <INCLUDEPATH value="src\tools;src\ceefit;src;lib\libunicode-0.4;$(BCB)\include"/>
+    <LIBPATH value="&quot;lib\libunicode-0.4&quot;;src\tools;src\ceefit;$(BCB)\lib"/>
+    <WARNINGS value="-w-8026 -w-8027 -w-8022 -w-8084 -w-8010 -w-8013 -w-8058 -w-par"/>
+    <LISTFILE value=""/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I$(BCB)\include"/>
+    <CFLAG1 value="-Od -Q -w -X- -r- -pr -a8 -b -k -y -v -vi- -s- -q -tWM -Isrc 
+      -Ilib\libunicode-0.4 -c -w-8026 -w-8027 -w-8022 -w-8084 -w-8010 -w-8013 
+      -w-8058 -w-par"/>
+    <PFLAGS value="-N2Debug -N0Debug -$YD -$W -$O- -$A8"/>
+    <RFLAGS value="/l 0x409 /d &quot;_DEBUG&quot; /i$(BCB)\include;$(BCB)\include\mfc"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-lDebug /P1024"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="$(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES)"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="ceefit.bpf" FORMNAME="" UNITNAME="ceefit" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\ActionFixture.cpp" FORMNAME="" UNITNAME="ActionFixture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\ceefit.cpp" FORMNAME="" UNITNAME="ceefit" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\ColumnFixture.cpp" FORMNAME="" UNITNAME="ColumnFixture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\FileRunner.cpp" FORMNAME="" UNITNAME="FileRunner" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\Fixture.cpp" FORMNAME="" UNITNAME="Fixture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\Parse.cpp" FORMNAME="" UNITNAME="Parse" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\PrimitiveFixture.cpp" FORMNAME="" UNITNAME="PrimitiveFixture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\RowFixture.cpp" FORMNAME="" UNITNAME="RowFixture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\Runner.cpp" FORMNAME="" UNITNAME="Runner" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\ScientificDouble.cpp" FORMNAME="" UNITNAME="ScientificDouble" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\Summary.cpp" FORMNAME="" UNITNAME="Summary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\ceefit\TimedActionFixture.cpp" FORMNAME="" UNITNAME="TimedActionFixture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\alloc.cpp" FORMNAME="" UNITNAME="alloc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\BufferedFileReader.cpp" FORMNAME="" UNITNAME="BufferedFileReader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\exception.cpp" FORMNAME="" UNITNAME="exception" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\failure.cpp" FORMNAME="" UNITNAME="failure" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\findfiles.cpp" FORMNAME="" UNITNAME="findfiles" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\mandatory.cpp" FORMNAME="" UNITNAME="mandatory" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\object.cpp" FORMNAME="" UNITNAME="object" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\ptr.cpp" FORMNAME="" UNITNAME="ptr" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\refcounted.cpp" FORMNAME="" UNITNAME="refcounted" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\registerstatic.cpp" FORMNAME="" UNITNAME="registerstatic" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\splitpath.cpp" FORMNAME="" UNITNAME="splitpath" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\wcs.cpp" FORMNAME="" UNITNAME="wcs" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\writer.cpp" FORMNAME="" UNITNAME="writer" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\utf8conv.c" FORMNAME="" UNITNAME="utf8conv.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\decomp.c" FORMNAME="" UNITNAME="decomp.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\init.c" FORMNAME="" UNITNAME="init.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\iso8859.c" FORMNAME="" UNITNAME="iso8859.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\latin1.c" FORMNAME="" UNITNAME="latin1.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\prop.c" FORMNAME="" UNITNAME="prop.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\sjis.c" FORMNAME="" UNITNAME="sjis.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\ucs2.c" FORMNAME="" UNITNAME="ucs2.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\ucs4.c" FORMNAME="" UNITNAME="ucs4.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\utf8.c" FORMNAME="" UNITNAME="utf8.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lib\libunicode-0.4\convert.c" FORMNAME="" UNITNAME="convert.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\tools\cfstring.cpp" FORMNAME="" UNITNAME="cfstring" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <FILES>
+    <FILE type="override" value="src\ceefit\TimedActionFixture.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\ColumnFixture.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\ActionFixture.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\Fixture.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\PrimitiveFixture.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\Parse.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\FileRunner.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\tools\registerstatic.cpp" translator="Auto">
+      <CFLAG1 value=" "/>
+    </FILE>
+    <FILE type="override" value="src\tools\exception.cpp" translator="Auto">
+      <CFLAG1 value=" -s- -RT -x"/>
+    </FILE>
+    <FILE type="override" value="src\tools\refcounted.cpp" translator="Auto">
+      <CFLAG1 value=" "/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\ceefit.cpp" translator="Auto">
+      <CFLAG1 value=" -v"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\ScientificDouble.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\tools\object.cpp" translator="Auto">
+      <CFLAG1 value=" "/>
+    </FILE>
+    <FILE type="override" value="src\tools\alloc.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\Summary.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+    <FILE type="override" value="src\ceefit\RowFixture.cpp" translator="Auto">
+      <CFLAG1 value=" -pc -s- -RT -x -v"/>
+    </FILE>
+  </FILES>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1033
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=14
+Item0=src\tools;src\ceefit;src;lib\libunicode-0.4;$(BCB)\include
+Item1=src;lib\libunicode-0.4;$(BCB)\include
+Item2=lib\libunicode-0.4;src\tools;src\ceefit;src;$(BCB)\include
+Item3=lib\libunicode-0.4;src\ceefit;src;src\tools;$(BCB)\include
+Item4=lib\libunicode-0.4;src\ceefit;src;$(BCB)\include;src\tools
+Item5=$(BCB)\include;src\tools;lib\libunicode-0.4;src\ceefit;src
+Item6=src\tools;lib\libunicode-0.4;src\ceefit;src;$(BCB)\include;$(BCB)\include\vcl
+Item7=lib\libunicode-0.4;src\ceefit;src;$(BCB)\include;$(BCB)\include\vcl
+Item8=lib\libunicode-0.4;src\tools;src\ceefit;src;$(BCB)\include;$(BCB)\include\vcl
+Item9=lib\libunicode-0.4;src\tools;src\ceefit;$(BCB)\include;$(BCB)\include\mfc;$(BCB)\include\atl;$(BCB)\include\vcl;src;
+Item10=src\tools;src\ceefit;$(BCB)\include;$(BCB)\include\mfc;$(BCB)\include\atl;$(BCB)\include\vcl;src;
+Item11=src\tools;src\ceefit;$(BCB)\include;$(BCB)\include\mfc;$(BCB)\include\atl;$(BCB)\include\vcl;src
+Item12=src\tools;src\ceefit;$(BCB)\include;$(BCB)\include\mfc;$(BCB)\include\atl;$(BCB)\include\vcl;src\ceefit\src
+Item13=src\tools;src\ceefit;$(BCB)\include;$(BCB)\include\mfc;$(BCB)\include\atl;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=6
+Item0=lib\libunicode-0.4;src\tools;src\ceefit;$(BCB)\lib
+Item1=src\tools;lib\libunicode-0.4;src\ceefit;$(BCB)\lib;$(BCB)\lib\psdk
+Item2=lib\libunicode-0.4;src\ceefit;$(BCB)\lib;$(BCB)\lib\psdk
+Item3=lib\libunicode-0.4;src\tools;src\ceefit;$(BCB)\lib;$(BCB)\lib\psdk
+Item4=lib\libunicode-0.4;src\tools;src\ceefit;$(BCB)\lib;$(DEBUGLIBPATH);$(BCB)\lib\psdk
+Item5=src\tools;src\ceefit;$(BCB)\lib;$(DEBUGLIBPATH);$(BCB)\lib\psdk
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=WIN32;_DEBUG;_MBCS;_LIB
+
+[HistoryLists\hlIntOutputDir]
+Count=1
+Item0=Debug
+
+[HistoryLists\hlFinalOutputDir]
+Count=1
+Item0=Debug\
+
+[HistoryLists\hIBPIOutputDir]
+Count=2
+Item0=Debug
+Item1=Debug\
+
+[HistoryLists\hlTlibPageSize]
+Count=3
+Item0=0x0400
+Item1=0x0020
+Item2=0x0010
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=1
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>

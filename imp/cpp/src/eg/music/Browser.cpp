@@ -160,7 +160,7 @@ namespace EG_MUSIC
     RegisterCeefitTest(this, "remaining", &BROWSER::remaining);
   }
 
-  ceefit_init_spec BROWSER::~BROWSER()
+  ceefit_dtor_spec BROWSER::~BROWSER()
   {
   }
 

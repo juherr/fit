@@ -30,7 +30,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec FIXTUREFACTORY::~FIXTUREFACTORY()
+  ceefit_dtor_spec FIXTUREFACTORY::~FIXTUREFACTORY()
   {
   }
 
@@ -48,7 +48,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec NONFIXTUREFACTORY::~NONFIXTUREFACTORY()
+  ceefit_dtor_spec NONFIXTUREFACTORY::~NONFIXTUREFACTORY()
   {
   }
 
@@ -102,7 +102,7 @@ namespace CEEFIT
   {
   }
 
-  ceefit_init_spec RUNNER::~RUNNER()
+  ceefit_dtor_spec RUNNER::~RUNNER()
   {
   }
 

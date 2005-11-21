@@ -31,12 +31,12 @@ namespace CEEFAT
   class EXAMPLEFIXTURE : public FIXTURE 
   {
     public:
-      EXAMPLEFIXTURE(void) {}
-      virtual ~EXAMPLEFIXTURE(void) {}
+      ceefit_init_spec EXAMPLEFIXTURE(void) {}
+      virtual ceefit_dtor_spec ~EXAMPLEFIXTURE(void) {}
 
     private:
-      EXAMPLEFIXTURE& operator=(const EXAMPLEFIXTURE&) { return(*this); }
-      EXAMPLEFIXTURE(const EXAMPLEFIXTURE&) { }
+      EXAMPLEFIXTURE& ceefit_call_spec operator=(const EXAMPLEFIXTURE&) { return(*this); }
+      ceefit_init_spec EXAMPLEFIXTURE(const EXAMPLEFIXTURE&) { }
   };
 
   static ::CEEFIT::REGISTERFIXTURECLASS< EXAMPLEFIXTURE > ExampleFixtureRegistration("CEEFAT::EXAMPLEFIXTURE", "fat.ExampleFixture");

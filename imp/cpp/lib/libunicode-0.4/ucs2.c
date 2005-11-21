@@ -29,21 +29,21 @@
 #define LAST_SURROGATE 0xdfff
 
 static int  
-ucs2_big_init (void **privp)
+ceefit_call_spec ucs2_big_init (void **privp)
 {
   *privp = (void *) 1;
   return 1;
 }
 
 static int  
-ucs2_little_init (void **privp)
+ceefit_call_spec ucs2_little_init (void **privp)
 {
   *privp = (void *) 0;
   return 1;
 }
 
 static int  
-ucs2_native_init (void **privp)
+ceefit_call_spec ucs2_native_init (void **privp)
 {
   int p = 1;
   char *q = (char *) &p;
@@ -54,7 +54,7 @@ ucs2_native_init (void **privp)
 }
 
 static int  
-get_one (int bigendian, int off, const char **inbuf)
+ceefit_call_spec get_one (int bigendian, int off, const char **inbuf)
 {
   int c = 0, i;
   for (i = 0; i < 2; ++i)
@@ -66,7 +66,7 @@ get_one (int bigendian, int off, const char **inbuf)
 }
 
 static enum unicode_read_result  
-ucs2_read (void *bigep, const char **inbuf, size_t *inbytesleft,
+ceefit_call_spec ucs2_read (void *bigep, const char **inbuf, size_t *inbytesleft,
 	   unicode_char_t **outbuf, size_t *outcharsleft)
 {
   int bigendian = (int) bigep;

@@ -34,7 +34,7 @@ namespace CEEFAT
       static MONEY ceefit_call_spec ValueOf(const CEEFIT::STRING& s);
       ceefit_init_spec MONEY(void);
       ceefit_init_spec MONEY(const CEEFIT::STRING& s);
-      virtual ceefit_init_spec ~MONEY(void);
+      virtual ceefit_dtor_spec ~MONEY(void);
       MONEY& ceefit_call_spec operator=(const MONEY& obj);
       ceefit_init_spec MONEY(const MONEY& obj);
       virtual bool ceefit_call_spec IsEqual(const MONEY& value) const;
@@ -49,7 +49,7 @@ template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT:
   public:
     typedef CEEFIT::FITFIELDBASE<CEEFAT::MONEY> FIELDBASE;
 
-    using FIELDBASE::ToString;
+    fit_using_decl(FIELDBASE::ToString);
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const CEEFAT::MONEY& in) const
     {
       out = in.ToString();
@@ -92,7 +92,7 @@ template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT:
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD<CEEFAT::MONEY>(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD<CEEFAT::MONEY>(void)
     {
     }
 

@@ -23,31 +23,6 @@
 #include "tools/alloc.h"
 #include "ceefit.h"
 
-//extern "C"
-//{
-  /**
-   * <p>Calls the default system operator new on numBytes.</p>
-   *
-   * <p>::operator new(numBytes) is called.</p>
-   *
-   * @param numBytes number of bytes that should be allocated.
-   */
-//  extern void* ceefit_call_spec DefaultAlloc(size_t numBytes);
-
-  /**
-   * <p>Calls the default system operator delete on objPtr.</p>
-   *
-   * <p>::operator delete(objPtr) is called.</p>
-   *
-   * @param objPtr pointer to the object that should be freed.
-   */
-//  extern void ceefit_call_spec DefaultFree(void* objPtr);
-
-
-//  extern ::CEEFITALLOCFUNC CeeFitAllocFunc;     /**< Alloc function that either points to DefaultAlloc or user specified func */
-//  extern ::CEEFITFREEFUNC CeeFitFreeFunc;       /**< Free function that either points to DefaultFree or user specified func */
-//};
-
 force_link_fit_module(FitActionFixture);
 
 namespace CEEFIT
@@ -118,7 +93,7 @@ namespace CEEFIT
             {
               STRING message;
 
-              message = STRING("An unhandled exception occurred:  ") + (e != null ? e->GetReason() : "<unknown reason>");
+              message = STRING("An unhandled exception occurred:  ") + (e != null ? e->GetReason() : STRING("<unknown reason>"));
               printf("%S\n", message.GetBuffer());
 
               delete e;              
@@ -127,7 +102,7 @@ namespace CEEFIT
             {
               STRING message;
 
-              message = STRING("A failure occurred:  ") + (f != null ? f->GetReason() : "<unknown reason>");
+              message = STRING("A failure occurred:  ") + (f != null ? f->GetReason() : STRING("<unknown reason>"));
               printf("%S\n", message.GetBuffer());
 
               delete f;              
@@ -159,17 +134,6 @@ namespace CEEFIT
 
   int ceefit_call_spec Run(int argc, char** argv, bool doReleaseStatics)
   {
-/*
-    if(CeeFitAllocFunc == null)
-    {
-      CeeFitAllocFunc = DefaultAlloc;
-    }
-
-    if(CeeFitFreeFunc == null)
-    {
-      CeeFitFreeFunc = DefaultFree;
-    }
-*/
     STRING temp;
     int i = -1;
 
@@ -196,17 +160,6 @@ namespace CEEFIT
 
   int ceefit_call_spec Run(int argc, wchar_t** argv, bool doReleaseStatics)
   {
-/*
-    if(CeeFitAllocFunc == null)
-    {
-      CeeFitAllocFunc = DefaultAlloc;
-    }
-
-    if(CeeFitFreeFunc == null)
-    {
-      CeeFitFreeFunc = DefaultFree;
-    }
-*/
     STRING temp;
     int i = -1;
 

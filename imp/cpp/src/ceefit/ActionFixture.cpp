@@ -135,7 +135,7 @@ namespace CEEFIT
     RegisterCeefitTest(this, "check", &ACTIONFIXTURE::ActionCheck);
   }
 
-  ceefit_init_spec ACTIONFIXTURE::~ACTIONFIXTURE()
+  ceefit_dtor_spec ACTIONFIXTURE::~ACTIONFIXTURE()
   {
   }
 

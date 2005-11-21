@@ -37,14 +37,14 @@ namespace CEEFIT
   {
     public:
       inline ceefit_init_spec VOIDTYPE(void) {}
-      virtual ceefit_init_spec ~VOIDTYPE(void) {}
+      virtual ceefit_dtor_spec ~VOIDTYPE(void) {}
 
     private:
       ceefit_init_spec VOIDTYPE(const VOIDTYPE&);
       VOIDTYPE& ceefit_call_spec operator=(const VOIDTYPE&);
   };
 
-# ifdef _MSC_VER
+# if (defined(_MSC_VER) || defined(__BORLANDC__))
     typedef __int64 fitINT64;
     typedef unsigned __int64 UfitINT64;
 # else

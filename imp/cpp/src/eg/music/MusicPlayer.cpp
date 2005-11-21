@@ -40,7 +40,7 @@ namespace EG_MUSIC
     if(Paused == 0) 
     {
       MUSIC::Status = "loading";
-      double seconds = ((m->ToString().IsEqual(Playing != null ? Playing->ToString() : "null")) ? 0.3 : 2.5);
+      double seconds = ((m->ToString().IsEqual(Playing != null ? Playing->ToString() : STRING("null"))) ? 0.3 : 2.5);
       SIMULATOR::NextPlayStarted = SIMULATOR::Schedule(seconds);
     } 
     else 
@@ -118,7 +118,7 @@ namespace EG_MUSIC
   {
   }
 
-  ceefit_init_spec MUSICPLAYER::~MUSICPLAYER() 
+  ceefit_dtor_spec MUSICPLAYER::~MUSICPLAYER() 
   {
   }
 

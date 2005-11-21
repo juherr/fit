@@ -53,7 +53,7 @@ namespace EG_MUSIC
       ceefit_init_spec MUSICLIBRARY(void);
 
     public:
-      ceefit_init_spec ~MUSICLIBRARY(void);
+      ceefit_dtor_spec ~MUSICLIBRARY(void);
 
       void ceefit_call_spec ReleaseStatics(void);
 

@@ -57,7 +57,7 @@ namespace EG_MUSIC
     RegisterCeefitTest(this, "time", &MUSIC::Time);
   }
 
-  ceefit_init_spec MUSIC::~MUSIC()
+  ceefit_dtor_spec MUSIC::~MUSIC()
   {
   }
 

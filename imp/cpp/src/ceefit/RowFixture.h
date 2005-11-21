@@ -50,7 +50,8 @@ namespace CEEFIT
       virtual void ceefit_call_spec Bin(HASHMAP< DYNARRAY< PTR<CELLADAPTER> > >& map, PTR<CELLADAPTER>& key, PTR<CELLADAPTER>& row);
       virtual void ceefit_call_spec Union(DYNARRAY< PTR<HASHMAPNODEBASE> >& out, DYNARRAY< PTR<PARSE_KEYNODE> >& a, DYNARRAY< PTR<CELL_KEYNODE> >& b);
 
-      using COLUMNFIXTURE::Check;
+      fit_using_decl(COLUMNFIXTURE::Check);
+
       virtual void ceefit_call_spec Check (DYNARRAY< PTR<PARSE> >& eList, DYNARRAY< PTR<CELLADAPTER> >& cList);
 
       virtual void ceefit_call_spec Mark(PTR<PARSE>& rows, const STRING& message);
@@ -60,8 +61,8 @@ namespace CEEFIT
       virtual void ceefit_call_spec BuildCells(PTR<PARSE>& out, PTR<CELLADAPTER>& row);
 
     public:
-      ceefit_init_spec ROWFIXTURE(void);        
-      virtual ceefit_init_spec ~ROWFIXTURE(void);        
+      ceefit_init_spec ROWFIXTURE(void);
+      virtual ceefit_dtor_spec ~ROWFIXTURE(void);
 
     private:
       ceefit_init_spec ROWFIXTURE(const ROWFIXTURE&);                   /**< Not implemented, do not call */

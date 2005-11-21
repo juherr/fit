@@ -32,7 +32,7 @@ namespace EG
 
     public:
       ceefit_init_spec DATE(void);
-      virtual ceefit_init_spec ~DATE(void);
+      virtual ceefit_dtor_spec ~DATE(void);
       DATE& ceefit_call_spec operator=(const DATE& aDate);
       ceefit_init_spec DATE(const DATE& aDate);
 
@@ -82,7 +82,7 @@ template<> class FITFIELD< EG::DATE > : public CEEFIT::FITFIELDBASE< EG::DATE >
     {
     }
 
-    virtual inline ceefit_init_spec ~FITFIELD< EG::DATE >(void)
+    virtual inline ceefit_dtor_spec ~FITFIELD< EG::DATE >(void)
     {
     }
 

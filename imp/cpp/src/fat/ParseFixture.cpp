@@ -146,7 +146,7 @@ namespace CEEFAT
         return GenerateOutput(aParse);
 	    }
 
-      using COLUMNFIXTURE::Parse;
+      fit_using_decl(COLUMNFIXTURE::Parse);
   	  fit_test(Parse, STRING) 
       {
         PTR<PARSE> aParse(GenerateParse());

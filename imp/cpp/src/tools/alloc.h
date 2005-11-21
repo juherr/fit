@@ -32,7 +32,7 @@
 #ifndef CEEFIT_ALLOC_FUNCS
 # define CEEFIT_ALLOC_FUNCS
 
-# ifndef _MSC_VER
+# if !(defined(_MSC_VER) || defined(__BORLANDC__))
 #   define fit_size_t std::size_t
 # else
 #   define fit_size_t size_t
@@ -57,7 +57,7 @@ extern ::CEEFITFREEFUNC ceefit_call_spec GetCeeFitFreeFunc(void);
 
 extern "C++"
 {
-# ifndef _MSC_VER
+# if !(defined(_MSC_VER) || defined(__BORLANDC__))
     extern void* operator new(fit_size_t) throw (std::bad_alloc);
 # else
     inline static void* ceefit_call_spec operator new(fit_size_t size)
@@ -73,7 +73,7 @@ extern "C++"
     }
 # endif
 
-# ifndef _MSC_VER
+# if !(defined(_MSC_VER) || defined(__BORLANDC__))
     extern void operator delete(void*) throw();
 # else
     inline static void ceefit_call_spec operator delete(void* obj)
@@ -87,7 +87,7 @@ extern "C++"
     }
 # endif
 
-# ifndef _MSC_VER
+# if !(defined(_MSC_VER) || defined(__BORLANDC__))
     extern void* operator new[](fit_size_t) throw (std::bad_alloc);
 # else
     inline static void* ceefit_call_spec operator new[](fit_size_t size)
@@ -103,7 +103,7 @@ extern "C++"
     }
 # endif
 
-# ifndef _MSC_VER
+# if !(defined(_MSC_VER) || defined(__BORLANDC__))
     extern void operator delete[](void*) throw();
 # else
     inline static void ceefit_call_spec operator delete[](void* obj)

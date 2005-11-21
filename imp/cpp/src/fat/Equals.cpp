@@ -47,7 +47,7 @@ namespace CEEFAT
         // no need to register anything here ... everything in PRIMITIVEFIXTURE is performed through functional extension
       }
 
-      virtual ceefit_init_spec ~EQUALS()
+      virtual ceefit_dtor_spec ~EQUALS()
       {
       }
 

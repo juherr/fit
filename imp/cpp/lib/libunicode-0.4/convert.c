@@ -29,6 +29,11 @@
 #include "convert.h"
 
 #ifndef EILSEQ
+# ifndef EBADMSG
+// Wow, Borland's errno.h didn't even have EBADMSG!  Just throw in EBADF, not sure what else we can do...
+#   define EBADMSG EBADF
+# endif
+
 /* On some systems, like SunOS, EILSEQ is not defined.  On those
    systems we use EBADMSG instead.  */
 #  define EILSEQ EBADMSG
@@ -37,17 +42,15 @@
 /* Linked list of all character sets.  */
 static unicode_encoding_t *encodings;
 
-
-
 void 
-unicode_register_encoding (unicode_encoding_t *vec)     // dw: removed _cdecl
+ceefit_call_spec unicode_register_encoding (unicode_encoding_t *vec)     // dw: removed _cdecl
 {
   vec->next = encodings;
   encodings = vec;
 }
 
 static unicode_encoding_t *
-find_encoding (const char *name)
+ceefit_call_spec find_encoding (const char *name)
 {
   unicode_encoding_t *cs;
   for (cs = encodings; cs; cs = cs->next)
@@ -63,7 +66,7 @@ find_encoding (const char *name)
 }
 
 unicode_iconv_t 
-unicode_iconv_open (const char *tocode, const char *fromcode)
+ceefit_call_spec unicode_iconv_open (const char *tocode, const char *fromcode)
 {
   unicode_iconv_t r = (unicode_iconv_t) malloc (sizeof (unicode_iconv_i));
   if (r == NULL)
@@ -124,7 +127,7 @@ unicode_iconv_open (const char *tocode, const char *fromcode)
 }
 
 int 
-unicode_iconv_close (unicode_iconv_t cd)
+ceefit_call_spec unicode_iconv_close (unicode_iconv_t cd)
 {
   int r = 0;
 
@@ -146,7 +149,7 @@ unicode_iconv_close (unicode_iconv_t cd)
 }
 
 size_t 
-unicode_iconv (unicode_iconv_t cd, const char **inbuf, size_t *inbytesleft,
+ceefit_call_spec unicode_iconv (unicode_iconv_t cd, const char **inbuf, size_t *inbytesleft,
 	       char **outbuf, size_t *outbytesleft)
 {
   size_t count = 0;

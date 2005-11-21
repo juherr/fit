@@ -35,7 +35,7 @@ namespace CEEFIT
 
     public:
       ceefit_init_spec ACTIONFIXTURE(void);
-      virtual ceefit_init_spec ~ACTIONFIXTURE(void);
+      virtual ceefit_dtor_spec ~ACTIONFIXTURE(void);
 
       // Traversal ////////////////////////////////
 

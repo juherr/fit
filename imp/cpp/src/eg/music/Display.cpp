@@ -51,11 +51,11 @@ namespace EG_MUSIC
     this->ROWFIXTURE::Parse(out, s);
   }
 
-  DISPLAY::DISPLAY(void)
+  ceefit_init_spec DISPLAY::DISPLAY(void)
   {
   }
 
-  DISPLAY::~DISPLAY(void)
+  ceefit_dtor_spec DISPLAY::~DISPLAY(void)
   {
   }
 

@@ -27,13 +27,23 @@ extern "C"
 {
 # include "unicode.h"
 # include "convert.h"
-};
+}
 
 namespace CEEFIT
 {
   extern DYNARRAY<wchar_t> SprintfBuffer;
 
-  ceefit_init_spec FILEWRITER::FILEWRITER(const STRING& filePath, bool createFile, unicode_encoding_t& aExpectedEncoding)
+  ceefit_init_spec FILEWRITER::FILEWRITER(const STRING& filePath, bool createFile)
+  {
+    Init(filePath, unicode_windows_1252_encoding, createFile);
+  }
+
+  ceefit_init_spec FILEWRITER::FILEWRITER(const STRING& filePath, unicode_encoding_t& aExpectedEncoding, bool createFile)
+  {
+    Init(filePath, aExpectedEncoding, createFile);
+  }
+
+  void ceefit_call_spec FILEWRITER::Init(const STRING& filePath, unicode_encoding_t& aExpectedEncoding, bool createFile)
   {
     DYNARRAY<char> charArray;
     filePath.GetAsCharArray(charArray);
@@ -43,15 +53,15 @@ namespace CEEFIT
       STRING reason;
 
       reason = STRING("Failed to open file for writing:  ") + filePath;
-      
-      throw new IOEXCEPTION(reason);    
+
+      throw new IOEXCEPTION(reason);
     }
 
     ExpectedEncoding = &aExpectedEncoding;
     OutFilepath = filePath;
   }
 
-  ceefit_init_spec FILEWRITER::~FILEWRITER()
+  ceefit_dtor_spec FILEWRITER::~FILEWRITER()
   {
     Close();
   }
@@ -114,7 +124,7 @@ namespace CEEFIT
       int srcLen = outString.Length();
       wchar_t* srcWchar = outString.GetBuffer();
       convertSrcBuffer.Reserve(srcLen);
-      
+
       int i = -1;
       while(++i < srcLen)
       {
@@ -141,7 +151,7 @@ namespace CEEFIT
       {
         ExpectedEncoding->reset(privateData, (char**) &dest, &outbytesLeft);
       }
-      
+
       enum unicode_write_result writeResult;
       writeResult = ExpectedEncoding->write(privateData, &src, &incharsLeft, &dest, &outbytesLeft);
 
@@ -154,7 +164,7 @@ namespace CEEFIT
       {
         STRING reason;
 
-        reason = STRING("Failed to write output file ") + OutFilepath.GetBuffer() + " using " + ExpectedEncoding->names[0] + " encoding."; 
+        reason = STRING("Failed to write output file ") + OutFilepath.GetBuffer() + " using " + ExpectedEncoding->names[0] + " encoding.";
 
         // must have hit a bad character, die monster die!
         throw new IOEXCEPTION(reason);
@@ -172,7 +182,7 @@ namespace CEEFIT
     IsClosed = false;
   }
 
-  ceefit_init_spec OUTWRITER::~OUTWRITER()
+  ceefit_dtor_spec OUTWRITER::~OUTWRITER()
   {
     Close();
   }
@@ -215,7 +225,7 @@ namespace CEEFIT
     IsClosed = false;
   }
 
-  ceefit_init_spec STRINGWRITER::~STRINGWRITER()
+  ceefit_dtor_spec STRINGWRITER::~STRINGWRITER()
   {
     Close();
   }

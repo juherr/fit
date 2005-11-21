@@ -29,7 +29,7 @@ extern "C"
   // defined in ceefit.lib
   typedef unsigned int unicode_char_t;
   extern int unicode_isdigit(unicode_char_t c);
-};
+}
 
 using namespace CEEFIT;
 
@@ -61,7 +61,7 @@ namespace EG_NET
     return(*this);
   }
 
-  ceefit_init_spec GEOCOORDINATE::~GEOCOORDINATE() 
+  ceefit_dtor_spec GEOCOORDINATE::~GEOCOORDINATE() 
   {
   }
 

@@ -36,7 +36,7 @@ namespace EG_MUSIC
       virtual void ceefit_call_spec Parse(CEEFIT::PTR<CEEFIT::CELLADAPTER>& out, const CEEFIT::STRING& s);
 
       ceefit_init_spec DISPLAY(void);
-      virtual ceefit_init_spec ~DISPLAY(void);
+      virtual ceefit_dtor_spec ~DISPLAY(void);
 
     private:
       DISPLAY& ceefit_call_spec operator=(const DISPLAY&);

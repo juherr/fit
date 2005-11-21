@@ -31,20 +31,20 @@ namespace CEEFIT
 	    int RefCount;
 
     public:
-	    REFCOUNTED(void);
-	    virtual ~REFCOUNTED(void);
+	    ceefit_init_spec REFCOUNTED(void);
+	    virtual ceefit_dtor_spec ~REFCOUNTED(void);
 
     protected:
-      virtual int GetRefCount(void);
-      virtual void AddRef(void);
-	    virtual bool ReleaseRef(bool DoDestroy=true);
+      virtual int ceefit_call_spec GetRefCount(void);
+      virtual void ceefit_call_spec AddRef(void);
+	    virtual bool ceefit_call_spec ReleaseRef(bool DoDestroy=true);
 
     protected:
 	    // don't call this
-	    REFCOUNTED(const REFCOUNTED& aRef);
+	    ceefit_init_spec REFCOUNTED(const REFCOUNTED& aRef);
 
 	    // don't call this
-	    REFCOUNTED& operator=(const REFCOUNTED& aRef);
+	    REFCOUNTED& ceefit_call_spec operator=(const REFCOUNTED& aRef);
   };
 };
 

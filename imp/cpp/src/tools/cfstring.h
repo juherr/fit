@@ -46,7 +46,7 @@ namespace CEEFIT
       void ceefit_call_spec Reset(void);  /**< Reset internal buffer to empty string */
 
     private:
-      STRINGDATA& Data;     /**< STRING needs a DYNARRAY before we have that class declared ... this is a way to get around that problem */
+      STRINGDATA* Data;     /**< STRING needs a DYNARRAY before we have that class declared ... this is a way to get around that problem */
 
     public:
       ceefit_init_spec STRING(void);
@@ -56,12 +56,7 @@ namespace CEEFIT
       ceefit_init_spec STRING(const char aVal);
       ceefit_init_spec STRING(const wchar_t aVal);
 
-//      template<class ANYTYPE> inline ceefit_init_spec STRING(ANYTYPE aVal) : Data(InitStringData())
-//      {
-//        ASSIGNHELP<ANYTYPE>::Assign(*this, aVal);
-//      }
-
-      ceefit_init_spec ~STRING(void);
+      ceefit_dtor_spec ~STRING(void);
 
       inline STRING& ceefit_call_spec operator=(const STRING& aVal)
       {

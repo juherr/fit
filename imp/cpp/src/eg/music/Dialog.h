@@ -39,7 +39,7 @@ namespace EG_MUSIC
 
     public:
       ceefit_init_spec DIALOG(void);
-      virtual ceefit_init_spec ~DIALOG(void);
+      virtual ceefit_dtor_spec ~DIALOG(void);
 
     private:
       void ceefit_call_spec Initialize(void);

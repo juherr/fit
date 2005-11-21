@@ -2,7 +2,7 @@
 //
 // config.h just so that the build finishes
 
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) || defined(__BORLANDC__))
 # define bcopy memmove
 # define strcasecmp strcmpi
 #endif

@@ -55,7 +55,7 @@ namespace CEEFIT
         return(*this);
       }
 
-      inline virtual ceefit_init_spec ~SLINK<T>(void)
+      inline virtual ceefit_dtor_spec ~SLINK<T>(void)
       {
       }
 
@@ -110,7 +110,7 @@ namespace CEEFIT
         }
       }
 
-	    virtual inline ceefit_init_spec ~SLINKLIST(void)
+	    virtual inline ceefit_dtor_spec ~SLINKLIST(void)
 	    {
 	    }
 

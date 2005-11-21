@@ -112,7 +112,7 @@ namespace CEEFAT
         RegisterCeefitTest(this, "RenderedOutput", &STANDARDANNOTATIONFIXTURE::RenderedOutput);
       }
 
-      virtual inline ceefit_init_spec ~STANDARDANNOTATIONFIXTURE(void)
+      virtual inline ceefit_dtor_spec ~STANDARDANNOTATIONFIXTURE(void)
       {
       }
 

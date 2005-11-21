@@ -31,10 +31,10 @@ namespace CEEFAT
   class NOTAFIXTURE : public virtual OBJECT
   {
     public:
-      NOTAFIXTURE(void) {}
-      virtual ~NOTAFIXTURE(void) {}
-      NOTAFIXTURE& operator=(const NOTAFIXTURE&) { return(*this); }
-      NOTAFIXTURE(const NOTAFIXTURE&) { }
+      ceefit_init_spec NOTAFIXTURE(void) {}
+      virtual ceefit_dtor_spec ~NOTAFIXTURE(void) {}
+      NOTAFIXTURE& ceefit_call_spec operator=(const NOTAFIXTURE&) { return(*this); }
+      ceefit_init_spec NOTAFIXTURE(const NOTAFIXTURE&) { }
   };
 
   static ::CEEFIT::REGISTERNONFIXTURECLASS< NOTAFIXTURE > FatNotAFixtureRegistration("CEEFAT::NOTAFIXTURE", "fat.NotAFixture");

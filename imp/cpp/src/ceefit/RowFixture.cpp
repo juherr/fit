@@ -25,11 +25,11 @@
 
 namespace CEEFIT
 {
-  ROWFIXTURE::ROWFIXTURE()
+  ceefit_init_spec ROWFIXTURE::ROWFIXTURE()
   {
   }
 
-  ROWFIXTURE::~ROWFIXTURE()
+  ceefit_dtor_spec ROWFIXTURE::~ROWFIXTURE()
   {
   }
 
@@ -374,9 +374,6 @@ namespace CEEFIT
           row->ReadFromFixtureVar(rowVal);
 
           PTR<FIXTURE> targetPtr(row->ToFixture());          
-
-//          PTR<CELLADAPTER> temp;         
-//          a->NewInstanceParse(targetPtr.GetPointer(), temp, rowVal);
 
           STRING columnVal;
           a->ReadFromFixtureVar(columnVal, targetPtr);

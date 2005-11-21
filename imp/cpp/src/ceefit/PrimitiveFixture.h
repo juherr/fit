@@ -30,7 +30,7 @@ namespace CEEFIT
   {
     public:
       ceefit_init_spec PRIMITIVEFIXTURE(void);
-      virtual ceefit_init_spec ~PRIMITIVEFIXTURE(void);
+      virtual ceefit_dtor_spec ~PRIMITIVEFIXTURE(void);
 
       // format converters ////////////////////////
 
@@ -40,7 +40,7 @@ namespace CEEFIT
 
       // answer comparisons ///////////////////////
 
-      using FIXTURE::Check;
+      fit_using_decl(FIXTURE::Check);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, const STRING& value);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, long value);
       virtual void ceefit_call_spec Check(PTR<PARSE>& cell, double value);

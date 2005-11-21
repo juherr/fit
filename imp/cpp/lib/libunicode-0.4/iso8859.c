@@ -46,126 +46,126 @@
 #include "iso/georgian-ps.h"
 
 static int  
-iso8859_2_init (void **privp)
+ceefit_call_spec iso8859_2_init (void **privp)
 {
   *privp = (void *) iso8859_2_table;
   return 1;
 }
 
 static int  
-iso8859_3_init (void **privp)
+ceefit_call_spec iso8859_3_init (void **privp)
 {
   *privp = (void *) iso8859_3_table;
   return 1;
 }
 
 static int  
-iso8859_4_init (void **privp)
+ceefit_call_spec iso8859_4_init (void **privp)
 {
   *privp = (void *) iso8859_4_table;
   return 1;
 }
 
 static int  
-iso8859_5_init (void **privp)
+ceefit_call_spec iso8859_5_init (void **privp)
 {
   *privp = (void *) iso8859_5_table;
   return 1;
 }
 
 static int  
-iso8859_6_init (void **privp)
+ceefit_call_spec iso8859_6_init (void **privp)
 {
   *privp = (void *) iso8859_6_table;
   return 1;
 }
 
 static int  
-iso8859_7_init (void **privp)
+ceefit_call_spec iso8859_7_init (void **privp)
 {
   *privp = (void *) iso8859_7_table;
   return 1;
 }
 
 static int  
-iso8859_8_init (void **privp)
+ceefit_call_spec iso8859_8_init (void **privp)
 {
   *privp = (void *) iso8859_8_table;
   return 1;
 }
 
 static int  
-iso8859_9_init (void **privp)
+ceefit_call_spec iso8859_9_init (void **privp)
 {
   *privp = (void *) iso8859_9_table;
   return 1;
 }
 
 static int  
-iso8859_10_init (void **privp)
+ceefit_call_spec iso8859_10_init (void **privp)
 {
   *privp = (void *) iso8859_10_table;
   return 1;
 }
 
 static int  
-iso8859_14_init (void **privp)
+ceefit_call_spec iso8859_14_init (void **privp)
 {
   *privp = (void *) iso8859_14_table;
   return 1;
 }
 
 static int  
-iso8859_15_init (void **privp)
+ceefit_call_spec iso8859_15_init (void **privp)
 {
   *privp = (void *) iso8859_15_table;
   return 1;
 }
 
 static int  
-windows_1252_init (void **privp)
+ceefit_call_spec windows_1252_init (void **privp)
 {
   *privp = (void *) windows_1252_table;
   return 1;
 }
 
 static int  
-koi8_r_init (void **privp)
+ceefit_call_spec koi8_r_init (void **privp)
 {
   *privp = (void *) koi8_r_table;
   return 1;
 }
 
 static int  
-koi8_u_init (void **privp)
+ceefit_call_spec koi8_u_init (void **privp)
 {
   *privp = (void *) koi8_u_table;
   return 1;
 }
 
 static int  
-tis_620_init (void **privp)
+ceefit_call_spec tis_620_init (void **privp)
 {
   *privp = (void *) tis_620_table;
   return 1;
 }
 
 static int  
-armscii_8_init (void **privp)
+ceefit_call_spec armscii_8_init (void **privp)
 {
   *privp = (void *) armscii_8_table;
   return 1;
 }
 
 static int  
-georgian_academy_init (void **privp)
+ceefit_call_spec georgian_academy_init (void **privp)
 {
   *privp = (void *) georgian_academy_table;
   return 1;
 }
 
 static int  
-georgian_ps_init (void **privp)
+ceefit_call_spec georgian_ps_init (void **privp)
 {
   *privp = (void *) georgian_ps_table;
   return 1;
@@ -173,7 +173,7 @@ georgian_ps_init (void **privp)
 
 
 static enum unicode_read_result  
-iso8859_read (void *arg, const char **inbuf, size_t *inbytesleft,
+ceefit_call_spec iso8859_read (void *arg, const char **inbuf, size_t *inbytesleft,
 	      unicode_char_t **outbuf, size_t *outcharsleft)
 {
   while (*inbytesleft > 0 && *outcharsleft > 0)
@@ -204,7 +204,7 @@ iso8859_read (void *arg, const char **inbuf, size_t *inbytesleft,
 }
 
 static enum unicode_write_result  
-iso8859_write (void *arg,
+ceefit_call_spec iso8859_write (void *arg,
 	       unicode_char_t **inbuf, size_t *incharsleft,
 	       char **outbuf, size_t *outbytesleft)
 {

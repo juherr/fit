@@ -151,7 +151,7 @@ namespace EG
     }
   }
 
-  EXAMPLETESTS::EXAMPLETESTS() 
+  ceefit_init_spec EXAMPLETESTS::EXAMPLETESTS() 
   {
     RunCounts = new COUNTS();
 
@@ -172,7 +172,7 @@ namespace EG
     RegisterCeefitTest(this, "exceptions", &EXAMPLETESTS::Exceptions);
   }
 
-  EXAMPLETESTS::~EXAMPLETESTS()
+  ceefit_dtor_spec EXAMPLETESTS::~EXAMPLETESTS()
   {
   }
 

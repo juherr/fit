@@ -163,7 +163,7 @@ namespace CEEFIT
   {
     public:
       inline HASHMAPNODEBASE(void) {}
-      virtual inline ~HASHMAPNODEBASE(void) {}
+      virtual inline ceefit_dtor_spec ~HASHMAPNODEBASE(void) {}
       inline HASHMAPNODEBASE(const HASHMAPNODEBASE&) {}
       HASHMAPNODEBASE& operator=(const HASHMAPNODEBASE&) { return(*this); }
 
@@ -180,15 +180,15 @@ namespace CEEFIT
       ANYTYPE Value;
 
     public:
-      virtual inline ~NODE(void) {}
+      virtual inline ceefit_dtor_spec ~NODE<ANYTYPE>(void) {}
 
       virtual const std::type_info& GetKeyType(void) const=0;
 
-      inline NODE(ANYTYPE const & aValue) : Value(aValue)
+      inline NODE<ANYTYPE>(ANYTYPE const & aValue) : Value(aValue)
       {
       }
 
-      inline NODE& operator=(NODE& aNode)
+      inline NODE<ANYTYPE>& operator=(NODE<ANYTYPE>& aNode)
       {
         Value = aNode.Value;
 
@@ -221,19 +221,19 @@ namespace CEEFIT
 
       virtual int GetHashCode(void)=0;
 
-      inline bool IsEqual(PTR<NODE>& aNode)
+      inline bool IsEqual(PTR< NODE<ANYTYPE> >& aNode)
       {
         return(this->IsEqual(*aNode.GetPointer()));
       }
 
-      inline bool IsKeyEqual(PTR<NODE>& aNode)
+      inline bool IsKeyEqual(PTR< NODE<ANYTYPE> >& aNode)
       {
         return(this->IsEqual(*aNode.GetPointer()));
       }
 
     private:
-      NODE(void);
-      NODE(const NODE&);
+      NODE<ANYTYPE>(void);
+      NODE<ANYTYPE>(const NODE<ANYTYPE>&);
   };
 
   template<class ANYTYPE, class KEYTYPE> class NODEIMPL : public NODE<ANYTYPE>
@@ -311,8 +311,8 @@ namespace CEEFIT
         return(::CEEFIT::GetHashCode(Key));
       }
 
-      inline NODEIMPL() {}
-      inline ~NODEIMPL() {}
+      inline ceefit_init_spec NODEIMPL() {}
+      inline ceefit_dtor_spec ~NODEIMPL() {}
 
       inline NODEIMPL& operator=(NODEIMPL& aNode)
       {
@@ -347,8 +347,8 @@ namespace CEEFIT
       HASHMAP<ANYTYPE, listsize>(const HASHMAP<ANYTYPE, listsize>& aHash);
 
     public:
-      inline HASHMAP<ANYTYPE, listsize>(void) {}
-      inline ~HASHMAP<ANYTYPE, listsize>(void) {}
+      inline ceefit_init_spec HASHMAP<ANYTYPE, listsize>(void) {}
+      inline ceefit_dtor_spec ~HASHMAP<ANYTYPE, listsize>(void) {}
 
       inline void Reset(void)
       {

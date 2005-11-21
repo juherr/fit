@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="Debug\fat.lib"/>
+    <OBJFILES value="Debug\TextToHtmlFixture.obj Debug\Color.obj Debug\Divide.obj 
+      Debug\DocumentParseFixture.obj Debug\Equals.obj Debug\ExampleFixture.obj 
+      Debug\FixtureLoadFixture.obj Debug\FixtureNameFixture.obj 
+      Debug\HtmlToTextFixture.obj Debug\Money.obj Debug\NotAFixture.obj 
+      Debug\OutputFixture.obj Debug\ParseFixture.obj Debug\ReferenceFixture.obj 
+      Debug\StandardAnnotationFixture.obj Debug\Table.obj 
+      Debug\TableParseFixture.obj Debug\testtypes.obj Debug\AnnotationFixture.obj"/>
+    <RESFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <PACKAGES value=""/>
+    <PATHCPP value=".;src\fat"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <LINKER value="TLib"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="NO_STRICT"/>
+    <MAINSOURCE value="fat.bpf"/>
+    <INCLUDEPATH value="$(BCB)\include;src;src\fat"/>
+    <LIBPATH value="src\fat;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+    <LISTFILE value=""/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <CFLAG1 value="-Od -Q -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c -tW -tWM"/>
+    <PFLAGS value="-N2Debug -N0Debug -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-lDebug /P256"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="$(OBJFILES)"/>
+    <ALLLIB value=""/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="fat.bpf" FORMNAME="" UNITNAME="fat" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\TextToHtmlFixture.cpp" FORMNAME="" UNITNAME="TextToHtmlFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\Color.cpp" FORMNAME="" UNITNAME="Color.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\Divide.cpp" FORMNAME="" UNITNAME="Divide.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\DocumentParseFixture.cpp" FORMNAME="" UNITNAME="DocumentParseFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\Equals.cpp" FORMNAME="" UNITNAME="Equals.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\ExampleFixture.cpp" FORMNAME="" UNITNAME="ExampleFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\FixtureLoadFixture.cpp" FORMNAME="" UNITNAME="FixtureLoadFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\FixtureNameFixture.cpp" FORMNAME="" UNITNAME="FixtureNameFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\HtmlToTextFixture.cpp" FORMNAME="" UNITNAME="HtmlToTextFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\Money.cpp" FORMNAME="" UNITNAME="Money.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\NotAFixture.cpp" FORMNAME="" UNITNAME="NotAFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\OutputFixture.cpp" FORMNAME="" UNITNAME="OutputFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\ParseFixture.cpp" FORMNAME="" UNITNAME="ParseFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\ReferenceFixture.cpp" FORMNAME="" UNITNAME="ReferenceFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\StandardAnnotationFixture.cpp" FORMNAME="" UNITNAME="StandardAnnotationFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\Table.cpp" FORMNAME="" UNITNAME="Table.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\TableParseFixture.cpp" FORMNAME="" UNITNAME="TableParseFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\testtypes.cpp" FORMNAME="" UNITNAME="testtypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="src\fat\AnnotationFixture.cpp" FORMNAME="" UNITNAME="AnnotationFixture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=4105
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=5
+Item0=$(BCB)\include;src;src\fat
+Item1=src\fat;$(BCB)\include;$(BCB)\include\vcl;
+Item2=$(BCB)\include;$(BCB)\include\vcl;
+Item3=$(BCB)\include;$(BCB)\include\vcl;
+Item4=$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=2
+Item0=src\fat;$(BCB)\lib\obj;$(BCB)\lib
+Item1=$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=3
+Item0=Debug
+Item1=Debug\
+Item2=objs
+
+[HistoryLists\hlFinalOutputDir]
+Count=1
+Item0=Debug\
+
+[HistoryLists\hIBPIOutputDir]
+Count=2
+Item0=Debug
+Item1=Debug\
+
+[HistoryLists\hlTlibPageSize]
+Count=2
+Item0=0x0100
+Item1=0x0010
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=1
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>

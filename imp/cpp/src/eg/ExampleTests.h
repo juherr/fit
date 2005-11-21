@@ -41,7 +41,7 @@ namespace EG
 
     public:
       ceefit_init_spec EXAMPLETESTS(void); 
-      virtual ceefit_init_spec ~EXAMPLETESTS(void);
+      virtual ceefit_dtor_spec ~EXAMPLETESTS(void);
       virtual void ceefit_call_spec Run(void); 
       virtual int ceefit_call_spec Right(void); 
       virtual int ceefit_call_spec Wrong(void); 

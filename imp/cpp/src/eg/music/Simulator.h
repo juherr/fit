@@ -58,7 +58,7 @@ namespace EG_MUSIC
       virtual void ceefit_call_spec failLoadJam(void);
 
       ceefit_init_spec SIMULATOR(void);
-      virtual ceefit_init_spec ~SIMULATOR(void);
+      virtual ceefit_dtor_spec ~SIMULATOR(void);
 
       void ceefit_call_spec ReleaseStatics(void);
 

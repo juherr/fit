@@ -25,21 +25,21 @@
 #include "convert.h"
 
 static int  
-latin1_init (void **privp)
+ceefit_call_spec latin1_init (void **privp)
 {
   *privp = (void *) 0xff;
   return 1;
 }
 
 static int  
-ascii_init (void **privp)
+ceefit_call_spec ascii_init (void **privp)
 {
   *privp = (void *) 0x7f;
   return 1;
 }
 
 static enum unicode_read_result  
-latin1_read (void *arg, const char **inbuf, size_t *inbytesleft,
+ceefit_call_spec latin1_read (void *arg, const char **inbuf, size_t *inbytesleft,
 	     unicode_char_t **outbuf, size_t *outcharsleft)
 {
   while (*inbytesleft > 0 && *outcharsleft > 0)
@@ -61,7 +61,7 @@ latin1_read (void *arg, const char **inbuf, size_t *inbytesleft,
 }
 
 static enum unicode_write_result  
-latin1_write (void *arg,
+ceefit_call_spec latin1_write (void *arg,
 	      unicode_char_t **inbuf, size_t *incharsleft,
 	      char **outbuf, size_t *outbytesleft)
 {

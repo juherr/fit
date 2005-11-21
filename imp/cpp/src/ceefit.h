@@ -41,7 +41,7 @@
  */
 
 // This ceremonial good juju hand waving is dedicated to my homey:  Bill Gates ...
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) && !defined(__BORLANDC__))
 # pragma inline_recursion(on)
 # pragma inline_depth(255)
 # pragma warning(disable : 4786)
@@ -61,7 +61,7 @@
 #include <sys/timeb.h>
 #include <fcntl.h>
 #include <math.h>
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) || defined(__BORLANDC__))
 # include <direct.h>
 #endif
 
@@ -90,7 +90,7 @@
 #ifndef CEEFIT_ALLOC_FUNCS                                  // tombstoned so as not to conflict with alloc.h
 # define CEEFIT_ALLOC_FUNCS
 
-# ifndef _MSC_VER
+# if !(defined(_MSC_VER) || defined(__BORLANDC__))
 #   define fit_size_t std::size_t
 # else
 #   define fit_size_t size_t
@@ -106,7 +106,7 @@
 // Tools and Java-like classes
 #include "tools/object.h"
 #include "tools/misc.h"
-#include "tools/string.h"
+#include "tools/cfstring.h"     // renamed from string.h to work with Borland C++ Builder 11/21/05
 #include "tools/wcs.h"          // a module taken from winehq and added to CeeFIT to obtain a working _vsnwprintf for GCC ....
 #include "tools/exception.h"
 #include "tools/failure.h"

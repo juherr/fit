@@ -33,13 +33,16 @@ namespace CEEFIT
    */ 
   template<class ANYTYPE> class DYNARRAY : public virtual OBJECT
   {
+    public:
+      typedef ANYTYPE _ANYTYPE;   // Borland C++ builder loses its mind on some uses of ANYTYPE here, this is a kludge-o-rama!  Thanks to Mark Vejvoda for the tip.  DW 11/09/05
+
     protected:
       int Limit;        /**< DYNARRAY potential element limit */
       int Count;        /**< DYNARRAY element count */
-      ANYTYPE* List;    /**< DYNARRAY ANYTYPE list (ANYTYPE == generic type) */
+      _ANYTYPE* List;   /**< DYNARRAY ANYTYPE list (ANYTYPE == generic type) */
 
     public:
-      virtual inline ~DYNARRAY<ANYTYPE>(void)
+      virtual inline ceefit_dtor_spec ~DYNARRAY<ANYTYPE>(void)
       {
         Reset();
       }
@@ -152,7 +155,7 @@ namespace CEEFIT
           ExtendLimit(GetExtension(1));
         }
 
-        ANYTYPE& aDest = List[Count++];
+        _ANYTYPE& aDest = List[Count++];
         aDest = aItem;
 
         return(*this);
@@ -408,9 +411,9 @@ namespace CEEFIT
         {  
           if(Limit > 0 && Count < Limit) 
           {
-            ANYTYPE* oldList = List;
+            _ANYTYPE* oldList = List;
             Limit = Count;
-            List = new ANYTYPE[Limit];
+            List = new _ANYTYPE[Limit];
       
             if(oldList != null) 
             {
@@ -526,9 +529,9 @@ namespace CEEFIT
           throw new BOUNDSEXCEPTION(L"howMany <= 0", howMany);
         }
 
-        ANYTYPE* oldList = List;
+        _ANYTYPE* oldList = List;
         Limit += howMany;
-        List = new ANYTYPE[Limit];
+        List = new _ANYTYPE[Limit];
       
         if(oldList != null) 
         {
