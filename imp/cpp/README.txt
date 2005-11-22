@@ -4,37 +4,39 @@ David Woldrich
 
 This version of CeeFIT has the following changes:
 
-  * Borland C++ Builder on Windows builder is now a supported platform.  The Ant
-    script was updated and BCB project files have been included to build with Borland
-    C++ Builder 6.0 and higher.
+  * Borland C++ Builder on Windows builder is now a supported platform (and 
+    perhaps Linux as well?).  The Ant script was updated and BCB project files
+    have been included to build with Borland C++ Builder 6.0 and higher.
 
   * Callspec macros were slightly cleaned up for Borland C++ and Visual C++ 
-    6.0 compilers (callspec macros are disabled on all other platforms and compilers 
-    currently.)
+    6.0 compilers (callspec macros are disabled on all other platforms and
+    compilers currently.)
     
   * There are now three callspec types that CeeFIT defines:
     
       - ceefit_init_spec : all constructors should get this callspec
-      - ceefit_dtor_spec : all destructors should get this callspec (except 
-        for OBJECT::~OBJECT)
-      - ceefit_call_spec : operator= and all other methods should get this callspec
+      - ceefit_dtor_spec : all destructors should get this callspec (except for
+                           OBJECT::~OBJECT)
+      - ceefit_call_spec : operator= and all other methods should get this 
+                           callspec
     
     ceefit_dtor_spec was added to reconcile a problem with VC6 getting confused 
-    about destructor callspecs on some classes that originally derived from OBJECT
-    (which is all classes in Core CeeFIT.)  ceefit_dtor_spec macro defines 
+    about destructor callspecs on some classes that originally derived from 
+    OBJECT (which is all classes in Core CeeFIT.)  ceefit_dtor_spec macro defines
     to blank on VC6 to eliminate the confusion.
     
-    As a general reminder, if you intend your C++ code to be portable across compilers 
-    that include Borland or Microsoft, please make sure to implement one of the 
-    three callspecs mentioned above on all Fit-related classes you create.
+    As a general reminder, if you intend your C++ code to be portable across 
+    compilers that include Borland or Microsoft, please make sure to implement
+    one of the three callspecs mentioned above on all Fit-related classes you
+    create.
   
   * using declarations in some classes were causing internal compiler 
     errors in Borland C++ Builder.  These using declarations were added 
-    to make Solaris CC builds happy, and whereas VC6 tended to ignore these, they 
-    needed to be commented completely on BCC for builds of CeeFIT to complete.
-    A new macro has been added to CeeFIT.h in mandatory.h called ceefit_using_decl(a)
-    which is equates to "using a" on all platforms other than VC and 
-    BCC.
+    to make Solaris CC builds happy, and whereas VC6 tended to ignore these, 
+    they needed to be commented completely on BCC for builds of CeeFIT to 
+    complete.  A new macro has been added to CeeFIT.h in mandatory.h called 
+    ceefit_using_decl(a) which is equates to "using a" on all platforms other 
+    than VC and BCC.
     
   * Renamed string.cpp/.h to cfstring.cpp/.h so that builds would succeed with 
     Borland C++ Builder compiler.  It was seeing #include "tools/string.h"
@@ -52,7 +54,7 @@ about CeeFIT:
 Thank you for using CeeFIT.
 
 
-============================================================================
+================================================================================
 
 
 Release notes:  CeeFIT version 1.1.1
