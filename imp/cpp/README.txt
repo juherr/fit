@@ -40,6 +40,10 @@ This version of CeeFIT has the following changes:
     Borland C++ Builder compiler.  It was seeing #include "tools/string.h"
     and getting that confused with the standard library string.h.
 
+  * Broke the UNIX build of CeeFIT on 1.1.1?!  All file searches died with an 
+    AssertTrueFailed.  (*sigh*)  This is now fixed, Linux/unix builds should now
+    work and pass spec tests.
+
 Please visit the official CeeFIT website for The latest information and news
 about CeeFIT:
 
