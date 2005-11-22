@@ -338,6 +338,10 @@ SOURCE=.\src\tools\BufferedFileReader.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\src\tools\cfstring.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\src\tools\dynarray.h
 # End Source File
 # Begin Source File
@@ -387,10 +391,6 @@ SOURCE=.\src\tools\slink.h
 # Begin Source File
 
 SOURCE=.\src\tools\splitpath.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\src\tools\string.h
 # End Source File
 # Begin Source File
 

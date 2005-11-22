@@ -84,7 +84,7 @@ namespace CEEFIT
 //    functions something gross!  How about 'spew()' or 'lung_cheese()'?  Take a note:  findfirst and findnext sound a lot more
 //    professional, if only slightly more readable...
 
-  class FINDITERATORIMPL : public REFCOUNTED
+  class FINDITERATORIMPL : public FINDITERATOR
   {
     private:
       char** curItem;
@@ -170,7 +170,7 @@ namespace CEEFIT
       throw new EXCEPTION("Could not stat to get the last modified date");
     }
 
-    return(FINDFILEINFO(retVal, statVal.st_mtime, statVal.st_mode & S_IFMT == S_IFDIR));
+    return(FINDFILEINFO(retVal, statVal.st_mtime, statVal.st_mode & S_IFDIR == S_IFDIR));
   }
 
 #else
