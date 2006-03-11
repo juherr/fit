@@ -26,7 +26,7 @@
 	<property file="build.properties"/>
 
       <!-- The name of the current version of CeeFIT -->	
-      <property name="product.name" value="CeeFIT-1.1.2"/>
+      <property name="product.name" value="CeeFIT-1.1.3"/>
       
 	<!-- Bring in the ant-contrib tasks -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -329,7 +329,7 @@
 				<compilerarg location="mid" value="-minline-all-stringops" unless="is.not.release.mode" if="using.gcc"/>
 				<compilerarg location="mid" value="-fimplicit-inline-templates" unless="is.not.release.mode" if="using.gcc"/>
 				<compilerarg location="mid" value="-fimplicit-templates" unless="is.not.release.mode" if="using.gcc"/>
-				<compilerarg location="mid" value="-felide-constructors" if="using.gcc"/>
+				<!--<compilerarg location="mid" value="-felide-constructors" if="using.gcc"/> -->
 				<compilerarg location="mid" value="-fenforce-eh-specs" if="using.gcc"/>
 				<compilerarg location="mid" value="-ffor-scope" if="using.gcc"/>
 				<compilerarg location="mid" value="-Wnon-virtual-dtor" if="using.gcc"/>
@@ -351,7 +351,7 @@
 				<compilerarg location="mid" value="-w-8013" if="using.bcc"/>                  <!-- disable annoying warning -->
 				<compilerarg location="mid" value="-w-8058" if="using.bcc"/>                  <!-- disable annoying warning -->
 				<compilerarg location="mid" value="-w-par" if="using.bcc"/>                    <!-- disable annoying warning -->
-				<compilerarg location="mid" value="-pc" if="using.bcc"/>                          <!-- use pascall calling convention? -->
+				<compilerarg location="mid" value="-pc" if="using.bcc"/>                          <!-- use pascal calling convention? -->
 				<compilerarg location="mid" value="-RT" if="using.bcc"/>                          <!-- enable runtime type information -->
 			</compiler>
 		</cc>
@@ -451,6 +451,34 @@
               </exec>
       </target>
 	
+	<!-- This target exercises the antfit jar for ceefit -->
+	<target name="test-ceefit-fitant-call" depends="build">
+    	    <taskdef name="fit" classname="com.cmdev.fit.ant.FitTask">
+		<classpath>
+		      <!-- If you downloaded the source to CeeFIT and are not working off of CVS, you will see the jars you need in the CeeFIT lib folder -->
+			<fileset dir="lib" casesensitive="false">
+				<include name="antfit.jar"/>
+				<include name="fit.jar"/>
+			</fileset>
+		      <!-- If you are building your ant and antfit jars, you will see them in the respective ../ant and ../java folders -->
+			<fileset dir="../ant" casesensitive="false">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="../java" casesensitive="false">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>    	        
+    	    </taskdef>
+    	    
+    	    <fit platform="cpp" executable="FastCompile/fitspec" destdir="output">
+    	        <arg value="-testarg1"/>
+    	        <arg value="-testarg2"/>
+    	        <fileset dir="../../spec">
+                    <include name="index.html"/>
+                </fileset>
+    	    </fit>
+	</target>
+	
       <target name="all" depends="build,test">
       </target>
       
@@ -492,6 +520,16 @@
                               prefix="fit/spec"
                               preserveLeadingSlashes="false">              
                   <include name="**/*"/>
+              </tarfileset>
+              <tarfileset dir="../java"
+                              prefix="fit/imp/cpp/lib"
+                              preserveLeadingSlashes="false">              
+                  <include name="fit.jar"/>
+              </tarfileset>
+              <tarfileset dir="../ant"
+                              prefix="fit/imp/cpp/lib"
+                              preserveLeadingSlashes="false">              
+                  <include name="antfit.jar"/>
               </tarfileset>
               <tarfileset dir="../../examples"
                               prefix="fit/examples"
@@ -536,6 +574,14 @@
               <zipfileset dir="../../spec"
                               prefix="fit/spec">              
                   <include name="**/*"/>
+              </zipfileset>
+              <zipfileset dir="../java"
+                              prefix="fit/imp/cpp/lib">              
+                  <include name="fit.jar"/>
+              </zipfileset>
+              <zipfileset dir="../ant"
+                              prefix="fit/imp/cpp/lib">              
+                  <include name="antfit.jar"/>
               </zipfileset>
               <zipfileset dir="../../examples"
                               prefix="fit/examples">              

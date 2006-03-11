@@ -80,6 +80,19 @@ int ceefit_call_spec main(int argc, char** argv)
 #   endif
 # endif
 
+  int i = 0;
+  while(++i < argc) 
+  {
+    if(strcmp(argv[i], "-CeeFIT"))
+    {
+      printf("fitspec runner:  Detected parameter before seeing \"-CeeFIT\" that will be ignored:  %s\n", argv[i]);
+    }
+    else 
+    {
+      break;
+    }
+  }
+
   int retVal = CEEFIT::Run(argc, argv);
 
   if(retVal == 0)

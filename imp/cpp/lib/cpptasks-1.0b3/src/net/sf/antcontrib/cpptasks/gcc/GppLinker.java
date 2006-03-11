@@ -20,6 +20,7 @@ import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.CCTask;
 import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.PlatformConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.CaptureStreamHandler;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
@@ -42,8 +43,15 @@ public class GppLinker extends AbstractLdLinker {
     private static String[] linkerOptions = new String[]{"-bundle", "-dylib",
             "-dynamic", "-dynamiclib", "-nostartfiles", "-nostdlib",
             "-prebind", "-s", "-static", "-shared", "-symbolic", "-Xlinker"};
-    private static final GppLinker instance = new GppLinker("gcc", objFiles,
-            discardFiles, "", "", false, null);
+    private static final GppLinker instance =
+      new GppLinker(
+        "gcc",
+        objFiles,
+        discardFiles,
+        "",
+        PlatformConfiguration.getExecuteableSuffix(),
+        false,
+        null);
     private static final GppLinker machDllLinker = new GppLinker("gcc",
             objFiles, discardFiles, "lib", ".dylib", false, null);
     private static final GppLinker machPluginLinker = new GppLinker("gcc",

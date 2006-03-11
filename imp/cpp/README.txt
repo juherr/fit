@@ -1,12 +1,46 @@
+Release notes:  CeeFIT version 1.1.3
+David Woldrich
+03/11/2006
+
+This version of CeeFIT has the following changes:
+
+  * Antfit has been updated to include support for CeeFIT as an alternative 
+    to the default (Java).  The sources to antfit are available separately 
+    via SourceForge CVS and are not provided as part of the CeeFIT source 
+    package.
+
+  * CeeFIT sources now ship with pre-built fit.jar and antfit.jar to make 
+    running CeeFIT with Ant scripts easier.
+
+  * Upgraded build.xml to exercise Antfit with new CeeFIT extensions.
+
+  * The CeeFIT website has two new pages:
+      - Added an Antfit help page to the website to provide usage information 
+        for CeeFIT users.
+      - Started a Support Email Transcripts page to share email support 
+        information.  Once there are enough of these, a FAQ section will be 
+        developed.
+
+Please visit the official CeeFIT website for The latest information and news
+about CeeFIT:
+
+	http://ceefit.woldrich.com
+
+Thank you for using CeeFIT.
+
+
+================================================================================
+
+
 Release notes:  CeeFIT version 1.1.2
 David Woldrich
 11/21/2005
 
 This version of CeeFIT has the following changes:
 
-  * Borland C++ Builder on Windows builder is now a supported platform (and 
-    perhaps Linux as well?).  The Ant script was updated and BCB project files
-    have been included to build with Borland C++ Builder 6.0 and higher.
+  * Borland C++ Builder on Windows is now a supported platform (and perhaps on
+    Linux as well?).  The Ant script was updated and BCB project files
+    were included to build with Borland C++ Builder 6.0 and higher.
 
   * Callspec macros were slightly cleaned up for Borland C++ and Visual C++ 
     6.0 compilers (callspec macros are disabled on all other platforms and

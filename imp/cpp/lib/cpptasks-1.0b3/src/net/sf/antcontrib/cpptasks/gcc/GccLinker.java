@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright 2002-2004 The Ant-Contrib project
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,11 +19,12 @@ import java.io.File;
 import java.util.Vector;
 
 import net.sf.antcontrib.cpptasks.CUtil;
+import net.sf.antcontrib.cpptasks.PlatformConfiguration;
 import net.sf.antcontrib.cpptasks.compiler.LinkType;
 import net.sf.antcontrib.cpptasks.compiler.Linker;
 /**
  * Adapter for the GCC linker
- * 
+ *
  * @author Adam Murdoch
  */
 public class GccLinker extends AbstractLdLinker {
@@ -39,8 +40,15 @@ public class GccLinker extends AbstractLdLinker {
     private static final GccLinker dllLinker = new GccLinker("gcc", objFiles,
             discardFiles, "lib", ".so", false, new GccLinker("gcc", objFiles,
                     discardFiles, "lib", ".so", true, null));
-    private static final GccLinker instance = new GccLinker("gcc", objFiles,
-            discardFiles, "", "", false, null);
+    private static final GccLinker instance =
+		new GccLinker(
+         "gcc",
+         objFiles,
+         discardFiles,
+         "",
+         PlatformConfiguration.getExecuteableSuffix(),
+         false,
+         null);
     private static final GccLinker machBundleLinker = new GccLinker("gcc",
             objFiles, discardFiles, "lib", ".bundle", false, null);
     private static final GccLinker machDllLinker = new GccLinker("gcc",
@@ -69,7 +77,7 @@ public class GccLinker extends AbstractLdLinker {
     /**
      * Allows drived linker to decorate linker option. Override by GccLinker to
      * prepend a "-Wl," to pass option to through gcc to linker.
-     * 
+     *
      * @param buf
      *            buffer that may be used and abused in the decoration process,
      *            must not be null.
@@ -116,7 +124,7 @@ public class GccLinker extends AbstractLdLinker {
     }
     /**
      * Returns library path.
-     *  
+     *
      */
     public File[] getLibraryPath() {
         if (libDirs == null) {
