@@ -12,7 +12,8 @@ This version of CeeFIT has the following changes:
   * CeeFIT sources now ship with pre-built fit.jar and antfit.jar to make 
     running CeeFIT with Ant scripts easier.
 
-  * Upgraded build.xml to exercise Antfit with new CeeFIT extensions.
+  * Upgraded build.xml to exercise Antfit with new CeeFIT extensions.  Minor
+    changes to fitspec.cpp to facilitate antfit testing.
 
   * The CeeFIT website has two new pages:
       - Added an Antfit help page to the website to provide usage information 
