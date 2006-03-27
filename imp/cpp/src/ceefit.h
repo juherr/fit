@@ -153,6 +153,39 @@ extern ::CEEFITFREEFUNC ceefit_call_spec GetCeeFitFreeFunc(void);
 namespace CEEFIT
 {
   /**
+   * <p>CEEFIT::Run() RESULTS
+   */
+  class RESULTS
+  {
+    private:
+      int Right;                  /**< Number of CeeFIT tests that were right */
+      int Wrong;                  /**< Number of CeeFIT tests that were wrong */
+      int Ignores;                /**< Number of CeeFIT tests that were ignored */
+      int Exceptions;             /**< Number of CeeFIT tests that threw uncaught exceptions */
+      wchar_t CountsSummary[256]; /**< Counts summary string as reported by the FILERUNNER's FIXTURE object */
+
+    public:
+      inline RESULTS(void) { Right = 0; Wrong = 0; Ignores = 0; Exceptions = 0; CountsSummary[0] = L'\0'; }
+      inline ~RESULTS(void) {}
+
+      inline void SetRight(int right) { Right = right; }                                /**< Set the number of CeeFIT tests that were right */
+      inline void SetWrong(int wrong) { Wrong = wrong; }                                /**< Set the number of CeeFIT tests that were wrong */
+      inline void SetIgnores(int ignores) { Ignores = ignores; }                        /**< Set the number of CeeFIT tests that were ignored */
+      inline void SetExceptions(int exceptions) { Exceptions = exceptions; }            /**< Set the number of CeeFIT tests that threw exceptions */
+      void SetCountsSummary(const wchar_t* resultsStr);                                 /**< Set the CEEFIT::Run() counts string summary */
+
+      inline int GetRight(void) const { return(Right); }                                /**< Get the number of CeeFIT tests that were right */
+      inline int GetWrong(void) const { return(Wrong); }                                /**< Get the number of CeeFIT tests that were wrong */
+      inline int GetIgnores(void) const { return(Ignores); }                            /**< Get the number of CeeFIT tests that were ignored */
+      inline int GetExceptions(void) const { return(Exceptions); }                      /**< Get the number of CeeFIT tests that threw exceptions */
+      inline const wchar_t* GetCountsSummary(void) const { return(&CountsSummary[0]); } /**< Get the CEEFIT::Run() counts string summary */
+
+    private:
+      RESULTS(const RESULTS&);                 /**< Not implemented, do not call */
+      RESULTS& operator=(const RESULTS&);      /**< Not implemented, do not call */
+  };
+
+  /**
    * <p>Run the CeeFIT tests on an input file and write to an output file.</p>
    *
    * <p>The first parameter of argv must exactly match -CeeFIT in order for FIT tests to run.  Following -CeeFIT,
@@ -176,6 +209,11 @@ namespace CEEFIT
   extern int ceefit_call_spec Run(int argc, char** argv, bool doReleaseStatics=true);
 
   /**
+   * <p>Same as Run() above that takes unicode char main style command line.</p>
+   */
+  extern int ceefit_call_spec Run(int argc, wchar_t** argv, bool doReleaseStatics=true);
+
+  /**
    * <p>Same as Run() above that takes WinMain style command line.</p>
    */
   extern int ceefit_call_spec Run(const char* cmdLine, bool doReleaseStatics=true);
@@ -184,6 +222,45 @@ namespace CEEFIT
    * <p>Same as Run() above that takes WinMainW style command line (unicode string.)</p>
    */
   extern int ceefit_call_spec Run(const wchar_t* wideCmdLine, bool doReleaseStatics=true);
+
+  /**
+   * <p>Run the CeeFIT tests on an input file and write to an output file.</p>
+   *
+   * <p>The first parameter of argv must exactly match -CeeFIT in order for FIT tests to run.  Following -CeeFIT,
+   * the next two parameters are expected to be an input file and an output file.  When Run() completes, it will
+   * return a 1 if all tests pass and a 2 if one or more tests failed.  The calling program should exit
+   * immediately, returning the exit code that Run() returns.</p>
+   *
+   * <p>If the -CeeFIT parameter is not detected on the passed command line, Run() will return 0 and the program should be allowed
+   * to execute normally.<p>
+   *
+   * <p>Upon successfully opening the input file, CeeFIT will attempt to create an output file.  If the output file's specified folder
+   * path does not already exist, CeeFIT attempts to create the folder tree.</p>
+   *
+   * @param argc The argc passed from main()
+   * @param argv The argv passed from main().  Pathspecs that contain spaces are expected to be surrounded with double quotes
+   *             ('\"') by the caller.
+   * @param outResults A RESULTS object that will be populated with the outputs of the CeeFIT run.
+   * @param doReleaseStatics If true, static references in FIXTURE's will be released at the end of the CeeFIT run.
+   * @return 0 if no -CeeFIT parameter was detected and no action was taken, 1 if -CeeFIT parameter was detected and all tests pass,
+   *         2 if -CeeFIT parameter was detected and one or more tests had a failure or error.
+   */
+  extern int ceefit_call_spec Run(int argc, char** argv, RESULTS& outResults, bool doReleaseStatics=true);
+
+  /**
+   * <p>Same as Run() above that returns RESULTS that takes unicode char main style command line.</p>
+   */
+  extern int ceefit_call_spec Run(int argc, wchar_t** argv, RESULTS& outResults, bool doReleaseStatics=true);
+
+  /**
+   * <p>Same as Run() above that returns RESULTS that takes WinMain style command line.</p>
+   */
+  extern int ceefit_call_spec Run(const char* cmdLine, RESULTS& outResults, bool doReleaseStatics=true);
+
+  /**
+   * <p>Same as Run() above that returns RESULTS that takes WinMainW style command line (unicode string.)</p>
+   */
+  extern int ceefit_call_spec Run(const wchar_t* wideCmdLine, RESULTS& outResults, bool doReleaseStatics=true);
 };
 
 #endif // __CEEFIT_H__

@@ -44,7 +44,7 @@ namespace EG
   };
 };
 
-template<> class FITFIELD< EG::DATE > : public CEEFIT::FITFIELDBASE< EG::DATE >
+template<> class FITFIELD< EG::DATE > : public CEEFIT::FITFIELDBASE< EG::DATE >, public CEEFIT::CELLEQUITABLE< EG::DATE >
 {
   public:
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG::DATE& in) const
@@ -69,6 +69,15 @@ template<> class FITFIELD< EG::DATE > : public CEEFIT::FITFIELDBASE< EG::DATE >
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("EG::DATE");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE< EG::DATE >& otherCell) const
+    {
+      const FITFIELD< EG::DATE >* otherField = dynamic_cast< const FITFIELD< EG::DATE >* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField().IsEqual(otherField->GetField()));
     }
 
     template<class U> inline FITFIELD< EG::DATE >& operator=(U& rValue)

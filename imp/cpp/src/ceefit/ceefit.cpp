@@ -46,7 +46,16 @@ namespace CEEFIT
     }
   }
 
-  int ceefit_call_spec Run(const STRING& cmdLine, bool doReleaseStatics)
+  void RESULTS::SetCountsSummary(const wchar_t* resultsStr)
+  {
+    if(resultsStr != null)
+    {
+      wcsncpy(&CountsSummary[0], resultsStr, 255);
+      CountsSummary[255] = L'\0';
+    }
+  }
+
+  int ceefit_call_spec Run(const STRING& cmdLine, RESULTS& outResults, bool doReleaseStatics)
   {
     DYNARRAY<STRING> argList;
     STRING delimitList(" ");
@@ -112,6 +121,18 @@ namespace CEEFIT
               printf("An unknown exception occurred.\n");
             }
 
+            // New 03/25/06 DW - Communicate results to caller before fileRunner is dereferenced
+            if(fileRunner != null && fileRunner->Fixture != null && fileRunner->Fixture->CountsObj != null)
+            {              
+              outResults.SetRight(fileRunner->Fixture->CountsObj->right);
+              outResults.SetWrong(fileRunner->Fixture->CountsObj->wrong);
+              outResults.SetIgnores(fileRunner->Fixture->CountsObj->ignores);
+              outResults.SetExceptions(fileRunner->Fixture->CountsObj->exceptions);
+
+              STRING countsString(fileRunner->Fixture->Counts());
+              outResults.SetCountsSummary(countsString.GetBuffer());
+            }
+
             i += 2;   // the while loop increments i for a total of 3...
           }
         }
@@ -124,15 +145,36 @@ namespace CEEFIT
 
   int ceefit_call_spec Run(const wchar_t* wideCmdLine, bool doReleaseStatics)
   {
-    return(Run(STRING(wideCmdLine), doReleaseStatics));
+    RESULTS dummyResults;
+
+    return(Run(STRING(wideCmdLine), dummyResults, doReleaseStatics));
+  }
+
+  int ceefit_call_spec Run(const wchar_t* wideCmdLine, RESULTS& outResults, bool doReleaseStatics)
+  {
+    return(Run(STRING(wideCmdLine), outResults, doReleaseStatics));
   }
 
   int ceefit_call_spec Run(const char* cmdLine, bool doReleaseStatics)
   {
-    return(Run(STRING(cmdLine), doReleaseStatics));
+    RESULTS dummyResults;
+
+    return(Run(STRING(cmdLine), dummyResults, doReleaseStatics));
+  }
+
+  int ceefit_call_spec Run(const char* cmdLine, RESULTS& outResults, bool doReleaseStatics)
+  {
+    return(Run(STRING(cmdLine), outResults, doReleaseStatics));
   }
 
   int ceefit_call_spec Run(int argc, char** argv, bool doReleaseStatics)
+  {
+    RESULTS dummyResults;
+
+    return(Run(argc, argv, dummyResults, doReleaseStatics));
+  }
+
+  int ceefit_call_spec Run(int argc, char** argv, RESULTS& outResults, bool doReleaseStatics)
   {
     STRING temp;
     int i = -1;
@@ -155,10 +197,19 @@ namespace CEEFIT
       }
     }
 
-    return(Run(temp, doReleaseStatics));
+    RESULTS dummyResults;
+
+    return(Run(temp, outResults, doReleaseStatics));
   }
 
   int ceefit_call_spec Run(int argc, wchar_t** argv, bool doReleaseStatics)
+  {
+    RESULTS dummyResults;
+
+    return(Run(argc, argv, dummyResults, doReleaseStatics));
+  }
+
+  int ceefit_call_spec Run(int argc, wchar_t** argv, RESULTS& outResults, bool doReleaseStatics)
   {
     STRING temp;
     int i = -1;
@@ -177,6 +228,6 @@ namespace CEEFIT
       }
     }
 
-    return(Run(temp, doReleaseStatics));
+    return(Run(temp, outResults, doReleaseStatics));
   }
 };

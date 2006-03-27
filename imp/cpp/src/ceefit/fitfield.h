@@ -374,7 +374,7 @@ template<> class FITFIELD<void> : public CEEFIT::CELLADAPTER
     ceefit_init_spec FITFIELD<void>(const FITFIELD<void>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<bool> : public CEEFIT::FITFIELDBASE<bool>
+template<> class FITFIELD<bool> : public CEEFIT::FITFIELDBASE<bool>, public CEEFIT::CELLEQUITABLE<bool>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<bool> FIELDBASE;
@@ -406,6 +406,15 @@ template<> class FITFIELD<bool> : public CEEFIT::FITFIELDBASE<bool>
       return("bool");
     }
 
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<bool>& otherCell) const
+    {
+      const FITFIELD<bool>* otherField = dynamic_cast< const FITFIELD<bool>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
+    }
+
     template<class U> inline FITFIELD<bool>& operator=(U& rValue)
     {
       this->FIELDBASE::operator=(rValue);
@@ -432,7 +441,7 @@ template<> class FITFIELD<bool> : public CEEFIT::FITFIELDBASE<bool>
     ceefit_init_spec FITFIELD<bool>(const FITFIELD<bool>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<unsigned char> : public CEEFIT::FITFIELDBASE<unsigned char>
+template<> class FITFIELD<unsigned char> : public CEEFIT::FITFIELDBASE<unsigned char>, public CEEFIT::CELLEQUITABLE<unsigned char>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<unsigned char> FIELDBASE;
@@ -454,6 +463,15 @@ template<> class FITFIELD<unsigned char> : public CEEFIT::FITFIELDBASE<unsigned 
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("unsigned char");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<unsigned char>& otherCell) const
+    {
+      const FITFIELD<unsigned char>* otherField = dynamic_cast< const FITFIELD<unsigned char>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<unsigned char>& operator=(U& rValue)
@@ -482,7 +500,7 @@ template<> class FITFIELD<unsigned char> : public CEEFIT::FITFIELDBASE<unsigned 
     ceefit_init_spec FITFIELD<unsigned char>(const FITFIELD<unsigned char>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<signed char> : public CEEFIT::FITFIELDBASE<signed char>
+template<> class FITFIELD<signed char> : public CEEFIT::FITFIELDBASE<signed char>, public CEEFIT::CELLEQUITABLE<signed char>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<signed char> FIELDBASE;
@@ -504,6 +522,15 @@ template<> class FITFIELD<signed char> : public CEEFIT::FITFIELDBASE<signed char
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("signed char");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<signed char>& otherCell) const
+    {
+      const FITFIELD<signed char>* otherField = dynamic_cast< const FITFIELD<signed char>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<signed char>& operator=(U& rValue)
@@ -532,7 +559,7 @@ template<> class FITFIELD<signed char> : public CEEFIT::FITFIELDBASE<signed char
     ceefit_init_spec FITFIELD<signed char>(const FITFIELD<signed char>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
+template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>, public CEEFIT::CELLEQUITABLE<char>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<char> FIELDBASE;
@@ -555,6 +582,15 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("char");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<char>& otherCell) const
+    {
+      const FITFIELD<char>* otherField = dynamic_cast< const FITFIELD<char>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<char>& operator=(U& rValue)
@@ -585,7 +621,7 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
 
 # ifdef __GNUC__
   // does unsigned short differ from wchar_t on GCC??
-  template<> class FITFIELD<unsigned short> : public CEEFIT::FITFIELDBASE<unsigned short>
+  template<> class FITFIELD<unsigned short> : public CEEFIT::FITFIELDBASE<unsigned short>, public CEEFIT::CELLEQUITABLE<unsigned short>
   {
     public:
       typedef CEEFIT::FITFIELDBASE<unsigned short> FIELDBASE;
@@ -608,6 +644,15 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
       virtual inline const char* ceefit_call_spec GetType(void) const
       {
         return("unsigned short");
+      }
+
+      virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<unsigned short>& otherCell) const
+      {
+        const FITFIELD<unsigned short>* otherField = dynamic_cast< const FITFIELD<unsigned short>* >(&otherCell);
+
+        CEEFIT::AssertNotNull(otherField);
+
+        return(this->GetField() == otherField->GetField());
       }
 
       template<class U> inline FITFIELD<unsigned short>& operator=(U& rValue)
@@ -637,7 +682,7 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>
   };
 # endif
 
-template<> class FITFIELD<signed short> : public CEEFIT::FITFIELDBASE<signed short>
+template<> class FITFIELD<signed short> : public CEEFIT::FITFIELDBASE<signed short>, public CEEFIT::CELLEQUITABLE<signed short>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<signed short> FIELDBASE;
@@ -661,6 +706,15 @@ template<> class FITFIELD<signed short> : public CEEFIT::FITFIELDBASE<signed sho
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("signed short");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<signed short>& otherCell) const
+    {
+      const FITFIELD<signed short>* otherField = dynamic_cast< const FITFIELD<signed short>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<signed short>& operator=(U& rValue)
@@ -689,7 +743,7 @@ template<> class FITFIELD<signed short> : public CEEFIT::FITFIELDBASE<signed sho
     ceefit_init_spec FITFIELD<signed short>(const FITFIELD<signed short>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<wchar_t> : public CEEFIT::FITFIELDBASE<wchar_t>
+template<> class FITFIELD<wchar_t> : public CEEFIT::FITFIELDBASE<wchar_t>, public CEEFIT::CELLEQUITABLE<wchar_t>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<wchar_t> FIELDBASE;
@@ -710,6 +764,15 @@ template<> class FITFIELD<wchar_t> : public CEEFIT::FITFIELDBASE<wchar_t>
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("wchar_t");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<wchar_t>& otherCell) const
+    {
+      const FITFIELD<wchar_t>* otherField = dynamic_cast< const FITFIELD<wchar_t>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<wchar_t>& operator=(U& rValue)
@@ -738,7 +801,7 @@ template<> class FITFIELD<wchar_t> : public CEEFIT::FITFIELDBASE<wchar_t>
     ceefit_init_spec FITFIELD<wchar_t>(const FITFIELD<wchar_t>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<unsigned int> : public CEEFIT::FITFIELDBASE<unsigned int>
+template<> class FITFIELD<unsigned int> : public CEEFIT::FITFIELDBASE<unsigned int>, public CEEFIT::CELLEQUITABLE<unsigned int>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<unsigned int> FIELDBASE;
@@ -759,6 +822,15 @@ template<> class FITFIELD<unsigned int> : public CEEFIT::FITFIELDBASE<unsigned i
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("unsigned int");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<unsigned int>& otherCell) const
+    {
+      const FITFIELD<unsigned int>* otherField = dynamic_cast< const FITFIELD<unsigned int>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<unsigned int>& operator=(U& rValue)
@@ -787,7 +859,7 @@ template<> class FITFIELD<unsigned int> : public CEEFIT::FITFIELDBASE<unsigned i
     ceefit_init_spec FITFIELD<unsigned int>(const FITFIELD<unsigned int>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<signed int> : public CEEFIT::FITFIELDBASE<signed int>
+template<> class FITFIELD<signed int> : public CEEFIT::FITFIELDBASE<signed int>, public CEEFIT::CELLEQUITABLE<signed int>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<signed int> FIELDBASE;
@@ -808,6 +880,15 @@ template<> class FITFIELD<signed int> : public CEEFIT::FITFIELDBASE<signed int>
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("signed int");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<signed int>& otherCell) const
+    {
+      const FITFIELD<signed int>* otherField = dynamic_cast< const FITFIELD<signed int>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<signed int>& operator=(U& rValue)
@@ -836,7 +917,7 @@ template<> class FITFIELD<signed int> : public CEEFIT::FITFIELDBASE<signed int>
     ceefit_init_spec FITFIELD<signed int>(const FITFIELD<signed int>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<unsigned long> : public CEEFIT::FITFIELDBASE<unsigned long>
+template<> class FITFIELD<unsigned long> : public CEEFIT::FITFIELDBASE<unsigned long>, public CEEFIT::CELLEQUITABLE<unsigned long>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<unsigned long> FIELDBASE;
@@ -857,6 +938,15 @@ template<> class FITFIELD<unsigned long> : public CEEFIT::FITFIELDBASE<unsigned 
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("unsigned long");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<unsigned long>& otherCell) const
+    {
+      const FITFIELD<unsigned long>* otherField = dynamic_cast< const FITFIELD<unsigned long>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<unsigned long>& operator=(U& rValue)
@@ -885,7 +975,7 @@ template<> class FITFIELD<unsigned long> : public CEEFIT::FITFIELDBASE<unsigned 
     ceefit_init_spec FITFIELD<unsigned long>(const FITFIELD<unsigned long>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD<signed long> : public CEEFIT::FITFIELDBASE<signed long>
+template<> class FITFIELD<signed long> : public CEEFIT::FITFIELDBASE<signed long>, public CEEFIT::CELLEQUITABLE<signed long>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<signed long> FIELDBASE;
@@ -906,6 +996,15 @@ template<> class FITFIELD<signed long> : public CEEFIT::FITFIELDBASE<signed long
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("signed long");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<signed long>& otherCell) const
+    {
+      const FITFIELD<signed long>* otherField = dynamic_cast< const FITFIELD<signed long>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD<signed long>& operator=(U& rValue)
@@ -934,7 +1033,7 @@ template<> class FITFIELD<signed long> : public CEEFIT::FITFIELDBASE<signed long
     ceefit_init_spec FITFIELD<signed long>(const FITFIELD<signed long>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD< CEEFIT::UfitINT64 > : public CEEFIT::FITFIELDBASE< CEEFIT::UfitINT64 >
+template<> class FITFIELD< CEEFIT::UfitINT64 > : public CEEFIT::FITFIELDBASE< CEEFIT::UfitINT64 >, public CEEFIT::CELLEQUITABLE< CEEFIT::UfitINT64 >
 {
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::UfitINT64 > FIELDBASE;
@@ -959,6 +1058,15 @@ template<> class FITFIELD< CEEFIT::UfitINT64 > : public CEEFIT::FITFIELDBASE< CE
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("CEEFIT::UfitINT64");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE< CEEFIT::UfitINT64 >& otherCell) const
+    {
+      const FITFIELD< CEEFIT::UfitINT64 >* otherField = dynamic_cast< const FITFIELD< CEEFIT::UfitINT64 >* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD< CEEFIT::UfitINT64 >& operator=(U& rValue)
@@ -987,7 +1095,7 @@ template<> class FITFIELD< CEEFIT::UfitINT64 > : public CEEFIT::FITFIELDBASE< CE
     ceefit_init_spec FITFIELD< CEEFIT::UfitINT64 >(const FITFIELD< CEEFIT::UfitINT64 >&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD< CEEFIT::fitINT64 > : public CEEFIT::FITFIELDBASE< CEEFIT::fitINT64 >
+template<> class FITFIELD< CEEFIT::fitINT64 > : public CEEFIT::FITFIELDBASE< CEEFIT::fitINT64 >, public CEEFIT::CELLEQUITABLE< CEEFIT::fitINT64 >
 {
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::fitINT64 > FIELDBASE;
@@ -1012,6 +1120,15 @@ template<> class FITFIELD< CEEFIT::fitINT64 > : public CEEFIT::FITFIELDBASE< CEE
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("CEEFIT::fitINT64");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE< CEEFIT::fitINT64 >& otherCell) const
+    {
+      const FITFIELD< CEEFIT::fitINT64 >* otherField = dynamic_cast< const FITFIELD< CEEFIT::fitINT64 >* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField() == otherField->GetField());
     }
 
     template<class U> inline FITFIELD< CEEFIT::fitINT64 >& operator=(U& rValue)
@@ -1163,7 +1280,7 @@ template<> class FITFIELD<double> : public CEEFIT::FITFIELDBASE<double>, public 
     ceefit_init_spec FITFIELD<double>(const FITFIELD<double>&);  /**< not implemented, do not call. */
 };
 
-template<> class FITFIELD< CEEFIT::STRING > : public CEEFIT::FITFIELDBASE< CEEFIT::STRING >
+template<> class FITFIELD< CEEFIT::STRING > : public CEEFIT::FITFIELDBASE< CEEFIT::STRING >, public CEEFIT::CELLEQUITABLE< CEEFIT::STRING >
 {
   public:
     typedef CEEFIT::FITFIELDBASE< CEEFIT::STRING > FIELDBASE;
@@ -1183,6 +1300,15 @@ template<> class FITFIELD< CEEFIT::STRING > : public CEEFIT::FITFIELDBASE< CEEFI
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("CEEFIT::STRING");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE< CEEFIT::STRING >& otherCell) const
+    {
+      const FITFIELD< CEEFIT::STRING >* otherField = dynamic_cast< const FITFIELD< CEEFIT::STRING >* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField().IsEqual(otherField->GetField()));
     }
 
     template<class U> inline FITFIELD<CEEFIT::STRING>& operator=(U& rValue)

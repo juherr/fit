@@ -28,6 +28,7 @@
 
 #include "icu/include/unicode/utypes.h"
 #include "icu/include/unicode/datefmt.h"
+#include "icu/include/unicode/smpdtfmt.h"
 
 using namespace CEEFIT;
 
@@ -61,10 +62,20 @@ namespace EG
 
   STRING DATE::ToString() const 
   {
-    DateFormat* dateFormat = DateFormat::createDateTimeInstance(DateFormat::SHORT, DateFormat::SHORT);
+    UErrorCode errorCode = U_ZERO_ERROR;
+
+    UnicodeString formatSpec(L"d/M/yy K:mm a");
+    SimpleDateFormat dateFormat(formatSpec, errorCode);
+    if(U_FAILURE(errorCode))
+    {
+      STRING reason;
+      SafeSprintf(reason, L"Failed to get a SimpleDateFormat for format() in DATE::ToString, reason (%i):  %S", errorCode, u_errorName(errorCode));
+      throw new PARSEEXCEPTION(reason);
+    }
+
     UnicodeString unicodeString;
 
-    const UChar* uChar = dateFormat->format((UDate) Value, unicodeString).getBuffer();
+    const UChar* uChar = dateFormat.format((UDate) Value, unicodeString).getBuffer();
     STRING retVal;
     int i = -1;
     while(++i < unicodeString.length())
@@ -72,24 +83,33 @@ namespace EG
       retVal += uChar[i];
     }
 
-    delete dateFormat;
-
     return(retVal);        
   }
 
   void DATE::Parse(const STRING& aString) 
   {
-    DateFormat* dateFormat = DateFormat::createDateTimeInstance(DateFormat::SHORT, DateFormat::SHORT);
-    UnicodeString unicodeString(aString.GetBuffer());
-    UErrorCode errorCode;
-    UDate uDate = dateFormat->parse(unicodeString, errorCode);
+    UErrorCode errorCode = U_ZERO_ERROR;
+
+    UnicodeString formatSpec(L"d/M/yy K:mm a");
+    SimpleDateFormat dateFormat(formatSpec, errorCode);
     if(U_FAILURE(errorCode))
     {
-      throw new PARSEEXCEPTION("Parse exceptionm in MUSIC::Parse");
+      STRING reason;
+      SafeSprintf(reason, L"Failed to get a SimpleDateFormat for parse() in Date::Parse, reason (%i):  %S", errorCode, u_errorName(errorCode));
+      throw new PARSEEXCEPTION(reason);
     }
 
-    delete dateFormat;
-    Value = (fitINT64) (long) uDate;
+    UnicodeString unicodeString(aString.GetBuffer());
+    UDate uDate = dateFormat.parse(unicodeString, errorCode);
+    if(U_FAILURE(errorCode))
+    {
+      STRING reason;
+      SafeSprintf(reason, L"Parse exception in MUSIC::Parse, reason (%i):  %S", errorCode, u_errorName(errorCode));
+      throw new PARSEEXCEPTION("Parse exception in MUSIC::Parse");
+    }
+
+    //delete dateFormat;
+    Value = (fitINT64) uDate;
   }
 
   bool DATE::IsEqual(const DATE& aDate) const
