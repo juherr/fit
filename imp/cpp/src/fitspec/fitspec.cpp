@@ -93,7 +93,8 @@ int ceefit_call_spec main(int argc, char** argv)
     }
   }
 
-  int retVal = CEEFIT::Run(argc, argv);
+  CEEFIT::RESULTS runResults;
+  int retVal = CEEFIT::Run(argc, argv, runResults);
 
   if(retVal == 0)
   {
@@ -101,6 +102,10 @@ int ceefit_call_spec main(int argc, char** argv)
     printf("Description:  Runs the CeeFIT libraries with all \"fat\" modules linked in.  This\n");
     printf("              program is suitable for running the Fit Specification.  Failures in\n");
     printf("              running the spec indicate that this version of CeeFIT is out of date.\n\n");
+  }
+  else
+  {
+    printf("%S\n", runResults.GetCountsSummary());
   }
 
   return(0);

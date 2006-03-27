@@ -72,7 +72,7 @@ namespace EG_MUSIC
     return MUSICLIBRARY::Looking->Year;
   }
 
-  double ceefit_call_spec BROWSER::time() 
+  MUSIC_DOUBLE ceefit_call_spec BROWSER::time() 
   {
     return MUSICLIBRARY::Looking->Time();
   }

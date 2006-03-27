@@ -111,12 +111,12 @@ namespace CEEFIT
         return(*dynArray);
       }
 
-      virtual inline ANYTYPE& ceefit_call_spec Get(int aIndex)
+      inline ANYTYPE& ceefit_call_spec Get(int aIndex)
       {
         return(operator[](aIndex));
       }
 
-      virtual inline const ANYTYPE& ceefit_call_spec Get(int aIndex) const
+      inline const ANYTYPE& ceefit_call_spec Get(int aIndex) const
       {
         return(operator[](aIndex));
       }
@@ -163,43 +163,45 @@ namespace CEEFIT
 
       template<class ANYTYPE2> inline void ceefit_call_spec AddAll(const DYNARRAY<ANYTYPE2>& aCollection)
       {
-        int aSize = aCollection.GetSize();
+        int collSize = aCollection.GetSize();
 
-        if(aSize == 0)
+        if(collSize == 0)
         {
           return;
         }
 
-        if(Limit <= (Count + aSize)) 
+        if(Limit <= (Count + collSize)) 
         {
-          ExtendLimit(GetExtension(Count + aSize - Limit));
+          ExtendLimit(GetExtension(Count + collSize - Limit));
         }
 
         int i = -1;
-        while(++i < aCollection.GetSize())
+        const ANYTYPE2* collList = &aCollection[0];
+        while(++i < collSize)
         {
-          List[Count++] = aCollection[i];
+          List[Count++] = collList[i];
         }
       }
 
       template<class ANYTYPE2> inline void ceefit_call_spec AddAll(DYNARRAY<ANYTYPE2>& aCollection)
       {
-        int aSize = aCollection.GetSize();
+        int collSize = aCollection.GetSize();
 
-        if(aSize == 0)
+        if(collSize == 0)
         {
           return;
         }
 
-        if(Limit <= (Count + aSize)) 
+        if(Limit <= (Count + collSize)) 
         {
-          ExtendLimit(GetExtension(Count + aSize - Limit));
+          ExtendLimit(GetExtension(Count + collSize - Limit));
         }
 
         int i = -1;
-        while(++i < aCollection.GetSize())
+        ANYTYPE2* collList = &aCollection[0];
+        while(++i < collSize)
         {
-          List[Count++] = aCollection[i];
+          List[Count++] = collList[i];
         }
       }
 
@@ -433,7 +435,7 @@ namespace CEEFIT
         }
       }
 
-      virtual inline ANYTYPE& ceefit_call_spec operator[](int index) 
+      inline ANYTYPE& ceefit_call_spec operator[](int index) 
       {
         if(!((index >= 0) && (index < Count)))
         {
@@ -443,7 +445,7 @@ namespace CEEFIT
         return(List[index]); 
       }
 
-      virtual inline const ANYTYPE& ceefit_call_spec operator[](int index) const
+      inline const ANYTYPE& ceefit_call_spec operator[](int index) const
       {
         if(!((index >= 0) && (index < Count)))
         {

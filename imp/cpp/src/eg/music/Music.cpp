@@ -24,6 +24,9 @@
 #include "ceefit.h"
 #include "eg/eg.h"
 
+#include "icu/include/unicode/utypes.h"
+#include "icu/include/unicode/decimfmt.h"
+
 declare_fit_module(MusicClass);
 
 using namespace CEEFIT;
@@ -83,16 +86,18 @@ namespace EG_MUSIC
     return(STRING() + TrackNumber + " of " + TrackCount);
   }
 
-  double ceefit_call_spec MUSIC::Time()
+  MUSIC_DOUBLE ceefit_call_spec MUSIC::Time()
   {
     double result = (Seconds / 0.6);
     if(Seconds >= 0)
     {
-      return(floor(result + 0.5) / 100.0);
+      MUSIC_DOUBLE retVal(floor(result + 0.5) / 100.0);
+      return(retVal);
     }
     else
     {
-      return(ceil(result + 0.5) / 100.0);
+      MUSIC_DOUBLE retVal(ceil(result + 0.5) / 100.0);
+      return(retVal);
     }
   }
 
@@ -165,6 +170,33 @@ namespace EG_MUSIC
     out += Title + "\t" + Artist + "\t" + Album + "\t" + Genre + "\t" + numberParts + "\t" + dateString;
 
     return(out);
+  }
+
+  CEEFIT::STRING ceefit_call_spec MUSIC_DOUBLE::ToString(void) const
+  {        
+    UErrorCode errorCode = U_ZERO_ERROR;
+    DecimalFormat decimalFormat(errorCode);
+    decimalFormat.setMinimumFractionDigits(2);
+
+    UnicodeString temp;
+    const UChar* uChar = decimalFormat.format(this->GetDouble(), temp).getBuffer();
+    
+    CEEFIT::STRING retVal;
+    int i = -1;
+    while(++i < temp.length())
+    {
+      retVal += uChar[i];
+    }
+
+    return(retVal);        
+  }
+  
+  bool ceefit_call_spec MUSIC_DOUBLE::Parse(const CEEFIT::STRING& in) 
+  {
+    errno = 0;
+    wchar_t* endChar;
+    this->SetDouble(wcstod(in.GetBuffer(), &endChar));
+    return(errno != ERANGE);
   }
 
   static ::CEEFIT::REGISTERFIXTURECLASS< MUSIC > MusicRegistration("EG_MUSIC::MUSIC", "eg.music.Music");

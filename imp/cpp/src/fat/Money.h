@@ -44,7 +44,7 @@ namespace CEEFAT
 
 };
 
-template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT::MONEY>
+template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT::MONEY>, CEEFIT::CELLEQUITABLE<CEEFAT::MONEY>
 {
   public:
     typedef CEEFIT::FITFIELDBASE<CEEFAT::MONEY> FIELDBASE;
@@ -72,6 +72,15 @@ template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT:
     virtual inline const char* ceefit_call_spec GetType(void) const
     {
       return("CEEFAT::MONEY");
+    }
+
+    virtual inline bool ceefit_call_spec CellIsEqual(const CEEFIT::CELLEQUITABLE<CEEFAT::MONEY>& otherCell) const
+    {
+      const FITFIELD<CEEFAT::MONEY>* otherField = dynamic_cast< const FITFIELD<CEEFAT::MONEY>* >(&otherCell);
+
+      CEEFIT::AssertNotNull(otherField);
+
+      return(this->GetField().IsEqual(otherField->GetField()));
     }
 
     template<class U> inline FITFIELD<CEEFAT::MONEY>& operator=(U& rValue)

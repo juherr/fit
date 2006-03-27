@@ -41,7 +41,7 @@ namespace EG_MUSIC
       virtual CEEFIT::STRING ceefit_call_spec artist(void);
       virtual CEEFIT::STRING ceefit_call_spec album(void);
       virtual int ceefit_call_spec year(void);
-      virtual double ceefit_call_spec time(void);
+      virtual MUSIC_DOUBLE ceefit_call_spec time(void);
       virtual CEEFIT::STRING ceefit_call_spec track(void);
 
       // Search Buttons ///////////////////////////

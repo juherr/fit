@@ -77,13 +77,18 @@ int ceefit_call_spec main(int argc, char** argv)
 #   endif
 # endif
 
-  int retVal = CEEFIT::Run(argc, argv);
+  CEEFIT::RESULTS runResults;
+  int retVal = CEEFIT::Run(argc, argv, runResults);
 
   if(retVal == 0)
   {
     printf("\nUsage:  %s -CeeFIT <inputFile> <outputFile>\n", argc > 0 ? argv[0] : "fitspec");
     printf("Description:  Runs the CeeFIT libraries with all \"example\" modules linked in.  This\n");
     printf("              program is suitable for running the Fit Examples.\n\n");
+  }
+  else
+  {
+    printf("%S\n", runResults.GetCountsSummary());
   }
 
   return(0);
