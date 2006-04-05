@@ -1,3 +1,102 @@
+Release notes:  CeeFIT version 1.1.4
+David Woldrich
+04/05/2006
+
+  * Based on a user request, added 3 new overloads for CEEFIT::Run() to support 
+    returning run results to the caller, modified fitspec.cpp and
+    fitexamples.cpp to print out the run results string.  See ceefit.h for more
+    details.
+
+    With these changes, you can now print out the "x right, y wrong, z ignored, 
+    w exceptions" string in the same format that Java's fit.FileRunner does.
+    You should also use the results numeric values to calculate an exit code for
+    your program (for example, if exceptions + wrong > 0, you should return a
+    non-zero error code from your test executable.)  This will make it possible
+    to use CeeFIT programs in an automated testing environment, where the exit
+    code is used to help compute a pass/fail result for the overall test run.
+ 
+  * Extended CELLEQUITABLE<T> on out-of-the-box FITFIELD<T> specializations 
+    where T is bool, unsigned char, signed char, char, unsigned short, signed 
+    short, wchar_t, unsigned int, signed int, unsigned long, signed long, float,
+    double, CEEFIT::UfitINT64, CEEFIT::fitINT64, and CEEFIT::STRING.  
+
+    In fixtures that use native types for their fields, this change should yield
+    a preciptious decrease in run times of fit tests without affecting the 
+    outcome of the tests.  Making this change showed fitspec.exe ran 24 seconds
+    faster (on WinXP laptop running on batteries with a Release build on MSVC6,
+    run went from 1:16 to 0:52 after the change - 32% improvement in run time!)
+    This change emphasizes dynamic_cast-driven direct field comparions versus 
+    ToString()/IsEqual() comparisons for the majority of fields.  I find it 
+    interesting how much time all of the dynamic_cast's actually take!  I would
+    have liked to have seen a greater difference in run times when switching
+    from string comparisons to direct comparisons since less dynamic memory
+    management is involved in the direct comparison method.  (Just goes to show
+    how costly dynamic_cast can be.)
+
+    With this change, the CeeFIT build now semi-accurately approximates how the
+    Java build works and it is now safe to compare the run times of Java Fit's
+    FileRunner running the Fit Specification tests versus that of the CeeFIT's
+    fitspec.exe.  Here are the unscientific test results on WinXP laptop running
+    on batteries with Release builds of CeeFIT versus Java Fit running on 
+    JDK 1.4.2_10:
+
+      - Java 1.4.2_10 Client VM - 0:03:61
+      - Java 1.4.2_10 Server VM - 0:03:73
+      - MSVC6 Release Build - 0:20.45 (after a bit of profiling/tuning)
+      - MinGW GCC 3.4.5 Release Build - 0:38.95 (after a bit of profiling/
+        tuning)
+
+    Clearly, I have besmirched the good name of C++ with this pitiful defeat!
+    Note: these numbers are intentionally exaggerated by the fact that I'm not
+    running the tests on wall power and the laptop CPU is in power-save mode.
+    Had I plugged in, MSVC6's times would be something like 6 seconds, GCC
+    something like 11 and Java's floats around 1 second...  Disgrace and shame!
+
+    I ran a profiling/performance tuning session on the fitspec.exe.  Looking
+    at the profiling numbers, about 85% of the time is spent working in and
+    around CeeFIT's STRING implementation.  This is quite a bit higher than I
+    see in typical Java applications, which are often String-intensive 
+    applications themselves.  I think CeeFIT's numbers are totally blown out of
+    proportion by the slow C++ exception handling (which CeeFIT makes liberal
+    use of to be like Java), and the ramshackle STRING class implementation
+    made by yours truly (that was written to behave similarly to Java's String
+    class, but clearly not to be fast.)  Sigh, CeeFIT is a paragon of 
+    sloth!  :(
+
+  * Experimented with the Music Example to try to get it to pass 100%.  The
+    remaining issue was that double's that are parsed are not directly 
+    comparable to double's that are computed (minor accumulated error made
+    them sightly different floating point numbers.)  Since I had implemented
+    CELLEQUITABLE<T> for FITFIELD<double>, this comparison went from 
+    ToString/IsEqual to direct field value comparisons and was thus failing.
+    In order to make the comparisons pass, I created a MUSIC_DOUBLE class that
+    wraps a double value and does NOT implement CELLEQUITABLE<T>.  By not
+    implementing CELLEQUITABLE<T>, CeeFIT defaults to the ToString/IsEqual 
+    method of comparing MUSIC_DOUBLE fields, and the string representation of
+    MUSIC_DOUBLE reflects the style from the Java version, where there are 
+    minimum two digits after the decimal point - which allows it to compare 
+    exactly to the expected values in the HTML.
+
+    This serves as an example of where not extending CELLEQUITABLE<T> can be
+    advantageous for a custom FITFIELD<T> specialization.
+
+  * No longer claiming on the CeeFIT website that I will ship pre-built binaries
+    on the SourceForge downloads page.  (It's way too much trouble to get
+    binaries for various platforms together for every release, sorry.)
+
+  * Minor cleanup and content updates to the CeeFIT website overall. 
+
+Please visit the official CeeFIT website for The latest information and news
+about CeeFIT:
+
+	http://ceefit.woldrich.com
+
+Thank you for using CeeFIT.
+
+
+================================================================================
+
+
 Release notes:  CeeFIT version 1.1.3
 David Woldrich
 03/11/2006

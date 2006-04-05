@@ -26,7 +26,7 @@
 	<property file="build.properties"/>
 
       <!-- The name of the current version of CeeFIT -->	
-      <property name="product.name" value="CeeFIT-1.1.3"/>
+      <property name="product.name" value="CeeFIT-1.1.4"/>
       
 	<!-- Bring in the ant-contrib tasks -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -510,6 +510,9 @@
                   <include name="build.xml"/>
                   <include name="lib/**/*"/>
                   <exclude name="lib/**/classes/**/*"/>
+                  <exclude name="lib/**/*.jpx*"/>
+                  <exclude name="lib/**/.classpath"/>
+                  <exclude name="lib/**/.project"/>
                   <include name="src/**/*"/>
                   <exclude name="**/CVS/**/*"/>
                   <exclude name="**/.cvsignore"/>
