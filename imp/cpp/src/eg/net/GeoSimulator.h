@@ -105,14 +105,14 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public CEEFIT::FITFIELDBASE
 
     template<class U> inline FITFIELD< CEEFIT::DYNARRAY<int> >& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
-    FITFIELD< CEEFIT::DYNARRAY<int> >(CEEFIT::DYNARRAY<int>& aValue) 
+    FITFIELD< CEEFIT::DYNARRAY<int> >(CEEFIT::DYNARRAY<int>& rValue) 
     {
-      this->FIELDBASE::operator=(aValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
     }
 
     inline ceefit_init_spec FITFIELD< CEEFIT::DYNARRAY<int> >(void)

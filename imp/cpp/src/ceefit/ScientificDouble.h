@@ -100,14 +100,14 @@ template<> class FITFIELD<CEEFIT::SCIENTIFICDOUBLE> : public ::CEEFIT::FITFIELDB
 
     template<class U> inline FITFIELD<CEEFIT::SCIENTIFICDOUBLE>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<CEEFIT::SCIENTIFICDOUBLE>& operator=(const CEEFIT::SCIENTIFICDOUBLE& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }

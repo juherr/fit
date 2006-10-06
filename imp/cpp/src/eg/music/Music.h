@@ -88,6 +88,8 @@ namespace EG_MUSIC
 template<> class FITFIELD< EG_MUSIC::MUSIC > : public CEEFIT::FITFIELDBASE< EG_MUSIC::MUSIC >, public CEEFIT::CELLEQUITABLE< EG_MUSIC::MUSIC >
 {
   public:
+    typedef CEEFIT::FITFIELDBASE< EG_MUSIC::MUSIC > FIELDBASE;
+
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG_MUSIC::MUSIC& in) const
     {
       out = in.Dump();
@@ -124,7 +126,7 @@ template<> class FITFIELD< EG_MUSIC::MUSIC > : public CEEFIT::FITFIELDBASE< EG_M
 
     template<class U> inline FITFIELD< EG_MUSIC::MUSIC >& operator=(U& rValue)
     {
-      this->FITFIELDBASE< EG_MUSIC::MUSIC >::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);    /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -146,8 +148,6 @@ template<> class FITFIELD< EG_MUSIC::MUSIC > : public CEEFIT::FITFIELDBASE< EG_M
  * <p>Note how we do NOT implement CELLEQUITABLE here ... due to our double's fractional digits not being exactly equitable when taken 
  * from parsed representations versus calculated ones in C++, I've taken to comparing the STRING representations here by not implementing
  * CELLEQUITABLE.  This allows me to pass my time() test.</p>
- *
- * <p>Hopefully 
  */
 template<> class FITFIELD<EG_MUSIC::MUSIC_DOUBLE> : public CEEFIT::FITFIELDBASE<EG_MUSIC::MUSIC_DOUBLE>
 {
@@ -172,14 +172,14 @@ template<> class FITFIELD<EG_MUSIC::MUSIC_DOUBLE> : public CEEFIT::FITFIELDBASE<
 
     template<class U> inline FITFIELD<EG_MUSIC::MUSIC_DOUBLE>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<EG_MUSIC::MUSIC_DOUBLE>& operator=(EG_MUSIC::MUSIC_DOUBLE& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }

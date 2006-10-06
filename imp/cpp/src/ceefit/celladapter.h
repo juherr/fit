@@ -121,6 +121,16 @@ namespace CEEFIT
        * CeeFIT engine will convert both FITFIELD's to STRING's and compare the STRING's for equality instead.<p>
        */
       virtual bool ceefit_call_spec CellIsEqual(const CELLEQUITABLE<ANYTYPE>& otherCell) const = 0;
+
+      ceefit_init_spec CELLEQUITABLE() {}
+      virtual ceefit_dtor_spec ~CELLEQUITABLE() {}
+      
+      CELLEQUITABLE& ceefit_call_spec operator=(const CELLEQUITABLE& aCe) 
+      {
+        return(*this);
+      }
+
+      ceefit_init_spec CELLEQUITABLE(const CELLEQUITABLE& aCe) {}
   };
 };
 

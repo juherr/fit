@@ -85,14 +85,14 @@ template<> class FITFIELD<CEEFAT::MONEY> : public ::CEEFIT::FITFIELDBASE<CEEFAT:
 
     template<class U> inline FITFIELD<CEEFAT::MONEY>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<CEEFAT::MONEY>& operator=(const CEEFAT::MONEY& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }

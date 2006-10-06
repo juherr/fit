@@ -77,14 +77,14 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<int> > : public CEEFIT::FITFIELDBASE
 
     template<class U> inline FITFIELD< CEEFIT::DYNARRAY<int> >& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD< CEEFIT::DYNARRAY<int> >& operator=(const CEEFIT::DYNARRAY<int>& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -150,14 +150,14 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<bool> > : public CEEFIT::FITFIELDBAS
 
     template<class U> inline FITFIELD< CEEFIT::DYNARRAY<bool> >& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD< CEEFIT::DYNARRAY<bool> >& operator=(const CEEFIT::DYNARRAY<bool>& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -221,14 +221,14 @@ template<> class FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> > : public CEEFIT::F
 
     template<class U> inline FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD< CEEFIT::DYNARRAY<CEEFIT::STRING> >& operator=(const CEEFIT::DYNARRAY<CEEFIT::STRING>& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }

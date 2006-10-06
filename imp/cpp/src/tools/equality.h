@@ -89,7 +89,7 @@ namespace CEEFIT
     return(aValue == bValue);
   }
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || (1200 < _MSC_VER)  /* dw 05/30/06 - VC > 6.0 apparently also supports wchar_t as a type */
   inline bool IsEqual(const wchar_t aValue, const wchar_t bValue)
   {
     return(aValue == bValue);

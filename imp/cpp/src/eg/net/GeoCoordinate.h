@@ -56,6 +56,8 @@ namespace EG_NET
 template<> class FITFIELD< EG_NET::GEOCOORDINATE > : public CEEFIT::FITFIELDBASE< EG_NET::GEOCOORDINATE >
 {
   public:
+    typedef CEEFIT::FITFIELDBASE< EG_NET::GEOCOORDINATE > FIELDBASE;
+
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG_NET::GEOCOORDINATE& in) const
     {
       out = in.ToString();
@@ -83,7 +85,7 @@ template<> class FITFIELD< EG_NET::GEOCOORDINATE > : public CEEFIT::FITFIELDBASE
 
     template<class U> inline FITFIELD< EG_NET::GEOCOORDINATE >& operator=(U& rValue)
     {
-      this->FITFIELDBASE< EG_NET::GEOCOORDINATE >::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }

@@ -54,7 +54,7 @@ namespace CEEFIT
     return((int) (short&) aValue);
   }
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || (1200 < _MSC_VER)  /* dw 05/30/06 - VC > 6.0 apparently also supports wchar_t as a type */
   inline int GetHashCode(wchar_t aValue)
   {
     return((int) aValue);

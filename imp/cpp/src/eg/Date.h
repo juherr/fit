@@ -47,6 +47,8 @@ namespace EG
 template<> class FITFIELD< EG::DATE > : public CEEFIT::FITFIELDBASE< EG::DATE >, public CEEFIT::CELLEQUITABLE< EG::DATE >
 {
   public:
+    typedef CEEFIT::FITFIELDBASE< EG::DATE > FIELDBASE;
+
     inline void ceefit_call_spec ToString(CEEFIT::STRING& out, const EG::DATE& in) const
     {
       out = in.ToString();
@@ -82,7 +84,7 @@ template<> class FITFIELD< EG::DATE > : public CEEFIT::FITFIELDBASE< EG::DATE >,
 
     template<class U> inline FITFIELD< EG::DATE >& operator=(U& rValue)
     {
-      this->FITFIELDBASE< EG::DATE >::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);    /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }

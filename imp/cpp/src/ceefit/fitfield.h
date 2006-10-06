@@ -215,7 +215,7 @@ namespace CEEFIT
       };
 
     public:
-      template<class U> inline FITFIELDBASE<T>& operator=(U& rValue) { GetField() = RVAL<U>::Resolve(rValue); return(*this); }
+      template<class U> inline void ceefit_call_spec Assign(U& rValue) { GetField() = RVAL<U>::Resolve(rValue); }   /* dw 05/30/06, see operator= comment below */
 
       template<class U> inline T ceefit_call_spec operator+(U& rValue) { return(GetField() + RVAL<U>::Resolve(rValue)); }
       template<class U> inline T ceefit_call_spec operator-(U& rValue) { return(GetField() - RVAL<U>::Resolve(rValue)); }
@@ -258,6 +258,17 @@ namespace CEEFIT
 
     protected:
       ceefit_init_spec FITFIELDBASE<T>(FITFIELDBASE<T>&);  /**< not implemented, do not call */
+
+    private:
+      /** 
+       * dw 05/30/06 - Important change:  operator= with template parameters on the r-value is not working for all platforms.
+       * We were forced to privatize our operator= in this class and replace it with the Assign() method above.  FITFIELD 
+       * specializations You must 
+       * replace any references you have been making to FITFIELDBASE&lt;&gt;::operator= in your custom FITFIELD specializations 
+       * with FITFIELDBASE&lt;&gt;::Assign()
+       */
+      FITFIELDBASE<T>& ceefit_call_spec operator=(T& rValue);
+      FITFIELDBASE<T>& ceefit_call_spec operator=(FITFIELDBASE<T>& rValue);
   };
 };
 
@@ -417,14 +428,14 @@ template<> class FITFIELD<bool> : public CEEFIT::FITFIELDBASE<bool>, public CEEF
 
     template<class U> inline FITFIELD<bool>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<bool>& operator=(bool rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -476,14 +487,14 @@ template<> class FITFIELD<unsigned char> : public CEEFIT::FITFIELDBASE<unsigned 
 
     template<class U> inline FITFIELD<unsigned char>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<unsigned char>& operator=(unsigned char rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -535,14 +546,14 @@ template<> class FITFIELD<signed char> : public CEEFIT::FITFIELDBASE<signed char
 
     template<class U> inline FITFIELD<signed char>& operator=(U& rValue)
     {
-      this->FITFIELD::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<signed char>& operator=(signed char rValue)
     {
-      this->FITFIELD::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -595,14 +606,14 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>, public CEEF
 
     template<class U> inline FITFIELD<char>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<char>& operator=(char rValue)
     {
-      this->FITFIELD::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -657,14 +668,14 @@ template<> class FITFIELD<char> : public CEEFIT::FITFIELDBASE<char>, public CEEF
 
       template<class U> inline FITFIELD<unsigned short>& operator=(U& rValue)
       {
-        this->FIELDBASE::operator=(rValue);
+        this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
         return(*this);
       }
 
       FITFIELD<unsigned short>& operator=(unsigned short rValue)
       {
-        this->FIELDBASE::operator=(rValue);
+        this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
         return(*this);
       }
@@ -719,14 +730,14 @@ template<> class FITFIELD<signed short> : public CEEFIT::FITFIELDBASE<signed sho
 
     template<class U> inline FITFIELD<signed short>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<signed short>& operator=(signed short rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -777,14 +788,14 @@ template<> class FITFIELD<wchar_t> : public CEEFIT::FITFIELDBASE<wchar_t>, publi
 
     template<class U> inline FITFIELD<wchar_t>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<wchar_t>& operator=(wchar_t rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -835,14 +846,14 @@ template<> class FITFIELD<unsigned int> : public CEEFIT::FITFIELDBASE<unsigned i
 
     template<class U> inline FITFIELD<unsigned int>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<unsigned int>& operator=(unsigned int rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -893,14 +904,14 @@ template<> class FITFIELD<signed int> : public CEEFIT::FITFIELDBASE<signed int>,
 
     template<class U> inline FITFIELD<signed int>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<signed int>& operator=(signed int rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -951,14 +962,14 @@ template<> class FITFIELD<unsigned long> : public CEEFIT::FITFIELDBASE<unsigned 
 
     template<class U> inline FITFIELD<unsigned long>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<unsigned long>& operator=(unsigned long rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -1009,14 +1020,14 @@ template<> class FITFIELD<signed long> : public CEEFIT::FITFIELDBASE<signed long
 
     template<class U> inline FITFIELD<signed long>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<signed long>& operator=(signed long rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -1071,14 +1082,14 @@ template<> class FITFIELD< CEEFIT::UfitINT64 > : public CEEFIT::FITFIELDBASE< CE
 
     template<class U> inline FITFIELD< CEEFIT::UfitINT64 >& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD< CEEFIT::UfitINT64 >& operator=(CEEFIT::UfitINT64& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -1133,14 +1144,14 @@ template<> class FITFIELD< CEEFIT::fitINT64 > : public CEEFIT::FITFIELDBASE< CEE
 
     template<class U> inline FITFIELD< CEEFIT::fitINT64 >& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD< CEEFIT::fitINT64 >& operator=(CEEFIT::fitINT64& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -1195,14 +1206,14 @@ template<> class FITFIELD<float> : public CEEFIT::FITFIELDBASE<float>, public CE
 
     template<class U> inline FITFIELD<float>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<float>& operator=(float rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -1256,14 +1267,14 @@ template<> class FITFIELD<double> : public CEEFIT::FITFIELDBASE<double>, public 
 
     template<class U> inline FITFIELD<double>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<double>& operator=(double rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
@@ -1313,14 +1324,14 @@ template<> class FITFIELD< CEEFIT::STRING > : public CEEFIT::FITFIELDBASE< CEEFI
 
     template<class U> inline FITFIELD<CEEFIT::STRING>& operator=(U& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
 
     FITFIELD<CEEFIT::STRING>& operator=(const CEEFIT::STRING& rValue)
     {
-      this->FIELDBASE::operator=(rValue);
+      this->FIELDBASE::Assign(rValue);  /* dw 05/30/06 - operator= replaced with Assign */
 
       return(*this);
     }
