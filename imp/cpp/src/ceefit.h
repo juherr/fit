@@ -40,6 +40,14 @@
  * @author David Woldrich
  */
 
+// If you are building DLL's containing CeeFIT code, your fixtures MUST include tools/alloc.h prior to ceefit.h.  This should include tools/alloc.h for 
+// Windows users in the case that you haven't already.
+#ifdef _USRDLL
+# ifndef __TOOLS_ALLOC_H__
+#   include "tools/alloc.h"
+# endif
+#endif
+
 // This ceremonial good juju hand waving is dedicated to my homey:  Bill Gates ...
 #if (defined(_MSC_VER) && !defined(__BORLANDC__))
 # pragma inline_recursion(on)
@@ -142,11 +150,15 @@
 
 /**
  * <p>This function must be defined by the user, and must return a non-null alloc function</p>
+ * 
+ * <p>In CeeFIT DLL's this can return NULL (the EXE will provide our heap functions)</p>
  */
 extern ::CEEFITALLOCFUNC ceefit_call_spec GetCeeFitAllocFunc(void);
 
 /**
  * <p>This function must be defined by the user, and must return a non-null free function</p>
+ * 
+ * <p>In CeeFIT DLL's this can return NULL (the EXE will provide our heap functions)</p>
  */
 extern ::CEEFITFREEFUNC ceefit_call_spec GetCeeFitFreeFunc(void);
 
@@ -261,6 +273,20 @@ namespace CEEFIT
    * <p>Same as Run() above that returns RESULTS that takes WinMainW style command line (unicode string.)</p>
    */
   extern int ceefit_call_spec Run(const wchar_t* wideCmdLine, RESULTS& outResults, bool doReleaseStatics=true);
+
+  /**
+   * <p>Called from the main executable's runtime, communicates main program's heap access functions to a DLL and adds the DLL's custom FIXTURE classes
+   * to the main EXE's list of FIXTURE's.</p>
+   * 
+   * <p>This function takes a little explanation in order to use properly.  CeeFIT relies on static linking in order to get FIXTURE classes registered 
+   * into the system.  When FIXTURE classes are defined in DLL's, those FIXTURE's do not automatically register with CeeFIT, but they do register with
+   * lists that live in the 
+   *
+   * <p>To make this DLL-borne FIXTURES callable from your EXE, wrap a call to RegisterDll in a dllexport'ed function residing in your DLL.  Then, from 
+   * your exe, before calling the CEEFIT::Run() function, invoke your dllexport'ed CEEFIT::RegisterDll method.</p>
+   */
+  extern void ceefit_call_spec RegisterDll(SLINKLIST<FIXTUREFACTORY>& fixtureFactoryListFromExe, ::CEEFITALLOCFUNC allocFuncFromExe, ::CEEFITFREEFUNC freeFuncFromExe);
+
 };
 
 #endif // __CEEFIT_H__

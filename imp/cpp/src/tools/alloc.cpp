@@ -27,12 +27,26 @@
 # include <windows.h>
 #endif
 
+namespace CEEFIT 
+{
+  ::CEEFITALLOCFUNC OverriddenAllocFunc = null;     // useful for overriding the heap functions in a DLL with those of an exe
+  ::CEEFITFREEFUNC OverriddenFreeFunc = null;       // useful for overriding the heap functions in a DLL with those of an exe
+}
+
 extern "C++"
 {
 # if !(defined(_MSC_VER) || defined(__BORLANDC__))
     void* operator new(fit_size_t size) throw (std::bad_alloc)
     {
-      void* retVal = GetCeeFitAllocFunc()(size);
+      void* retVal = CEEFIT::null;      
+      if(CEEFIT::OverriddenAllocFunc != CEEFIT::null) 
+      {
+        retVal = CEEFIT::OverriddenAllocFunc(size);
+      }
+      else 
+      {
+        retVal = GetCeeFitAllocFunc()(size);
+      }
 
       if(retVal != 0) 
       {
@@ -46,13 +60,28 @@ extern "C++"
     {
       if(obj != CEEFIT::null)
       {
-        GetCeeFitFreeFunc()(obj);
+        if(CEEFIT::OverriddenFreeFunc != CEEFIT::null) 
+        {
+          CEEFIT::OverriddenFreeFunc(obj);
+        }
+        else 
+        {
+          GetCeeFitFreeFunc()(obj);
+        }
       }
     }
 
     void* operator new[](fit_size_t size) throw (std::bad_alloc)
     {
-      void* retVal = GetCeeFitAllocFunc()(size);
+      void* retVal = CEEFIT::null;      
+      if(CEEFIT::OverriddenAllocFunc != CEEFIT::null) 
+      {
+        retVal = CEEFIT::OverriddenAllocFunc(size);
+      }
+      else 
+      {
+        retVal = GetCeeFitAllocFunc()(size);
+      }
 
       if(retVal != 0) 
       {
@@ -66,7 +95,14 @@ extern "C++"
     {
       if(obj != CEEFIT::null)
       {
-        GetCeeFitFreeFunc()(obj);
+        if(CEEFIT::OverriddenFreeFunc != CEEFIT::null) 
+        {
+          CEEFIT::OverriddenFreeFunc(obj);
+        }
+        else 
+        {
+          GetCeeFitFreeFunc()(obj);
+        }
       }
     }
 # endif  

@@ -230,4 +230,20 @@ namespace CEEFIT
 
     return(Run(temp, outResults, doReleaseStatics));
   }
+
+  void ceefit_call_spec RegisterDll(SLINKLIST<FIXTUREFACTORY>& fixtureFactoryListFromExe, ::CEEFITALLOCFUNC allocFuncFromExe, ::CEEFITFREEFUNC freeFuncFromExe)
+  {
+    SLINKLIST<FIXTUREFACTORY>& dllFixtureFactoryList = RUNNER::GetFixtureFactoryList();
+
+    OverriddenAllocFunc = allocFuncFromExe;
+    OverriddenFreeFunc = freeFuncFromExe;
+
+    FIXTUREFACTORY* aDllFixtureFactory = null;
+    while((aDllFixtureFactory = dllFixtureFactoryList.GetHead()) != null) 
+    {      
+      // move each FIXTUREFACTORY from the DLL's FixtureFactory list to the EXE's
+      dllFixtureFactoryList.RemoveObject(aDllFixtureFactory);
+      fixtureFactoryListFromExe.AddTail(aDllFixtureFactory);
+    }
+  }
 };

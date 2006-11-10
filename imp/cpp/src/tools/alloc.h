@@ -55,6 +55,12 @@ extern ::CEEFITALLOCFUNC ceefit_call_spec GetCeeFitAllocFunc(void);
  */
 extern ::CEEFITFREEFUNC ceefit_call_spec GetCeeFitFreeFunc(void);
 
+namespace CEEFIT 
+{
+  extern ::CEEFITALLOCFUNC OverriddenAllocFunc;
+  extern ::CEEFITFREEFUNC OverriddenFreeFunc;
+};
+
 extern "C++"
 {
 # if !(defined(_MSC_VER) || defined(__BORLANDC__))
@@ -62,7 +68,15 @@ extern "C++"
 # else
     inline static void* ceefit_call_spec operator new(fit_size_t size)
     {
-      void* retVal = GetCeeFitAllocFunc()(size);
+      void* retVal = 0;      
+      if(CEEFIT::OverriddenAllocFunc != 0) 
+      {
+        retVal = CEEFIT::OverriddenAllocFunc(size);
+      }
+      else 
+      {
+        retVal = GetCeeFitAllocFunc()(size);
+      }
 
       if(retVal != 0) 
       {
@@ -80,7 +94,7 @@ extern "C++"
     {
       if(obj != 0)
       {
-      ::CEEFITFREEFUNC freeFunc = GetCeeFitFreeFunc();
+        ::CEEFITFREEFUNC freeFunc = ((CEEFIT::OverriddenFreeFunc != 0) ? CEEFIT::OverriddenFreeFunc : GetCeeFitFreeFunc());
 
         freeFunc(obj);
       }
@@ -92,7 +106,15 @@ extern "C++"
 # else
     inline static void* ceefit_call_spec operator new[](fit_size_t size)
     {
-      void* retVal = GetCeeFitAllocFunc()(size);
+      void* retVal = 0;      
+      if(CEEFIT::OverriddenAllocFunc != 0) 
+      {
+        retVal = CEEFIT::OverriddenAllocFunc(size);
+      }
+      else 
+      {
+        retVal = GetCeeFitAllocFunc()(size);
+      }
 
       if(retVal != 0) 
       {
@@ -110,7 +132,7 @@ extern "C++"
     {
       if(obj != 0)
       {
-      ::CEEFITFREEFUNC freeFunc = GetCeeFitFreeFunc();
+        ::CEEFITFREEFUNC freeFunc = ((CEEFIT::OverriddenFreeFunc != 0) ? CEEFIT::OverriddenFreeFunc : GetCeeFitFreeFunc());
 
         freeFunc(obj);
       }

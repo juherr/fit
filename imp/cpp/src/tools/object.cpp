@@ -44,14 +44,28 @@ namespace CEEFIT
 
   void* ceefit_call_spec OBJECT::operator new(fit_size_t numBytes)
   {
-    return(GetCeeFitAllocFunc()(numBytes));
+    if(OverriddenAllocFunc != null) 
+    {
+      return(OverriddenAllocFunc(numBytes));
+    }
+    else 
+    {
+      return(GetCeeFitAllocFunc()(numBytes));
+    }
   }
 
   void ceefit_call_spec OBJECT::operator delete(void* aObj)
   {
     if(aObj != null)
     {
-      GetCeeFitFreeFunc()(aObj);
+      if(OverriddenFreeFunc != null) 
+      {
+        OverriddenFreeFunc(aObj);
+      }
+      else 
+      {
+        GetCeeFitFreeFunc()(aObj);
+      }
     }
   }
 
