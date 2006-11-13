@@ -4,8 +4,8 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 PROJECT_NAME           = CeeFIT
-PROJECT_NUMBER         = 1.1.1
-OUTPUT_DIRECTORY       = C:/devproject/fit/imp/cpp/docs
+PROJECT_NUMBER         = 1.1.5
+OUTPUT_DIRECTORY       = d:/devproject/fit/imp/cpp/docs
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = YES
@@ -43,7 +43,7 @@ SUBGROUPING            = YES
 # Build related configuration options
 #---------------------------------------------------------------------------
 EXTRACT_ALL            = YES
-EXTRACT_PRIVATE        = NO
+EXTRACT_PRIVATE        = YES
 EXTRACT_STATIC         = YES
 EXTRACT_LOCAL_CLASSES  = YES
 EXTRACT_LOCAL_METHODS  = NO
@@ -81,14 +81,13 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = C:/devproject/fit/imp/cpp/src
+INPUT                  = 
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
                          *.cpp \
                          *.c++ \
                          *.d \
-                         *.java \
                          *.ii \
                          *.ixx \
                          *.ipp \
@@ -109,7 +108,7 @@ FILE_PATTERNS          = *.c \
                          *.mm \
                          *.dox
 RECURSIVE              = YES
-EXCLUDE                = 
+EXCLUDE                = D:/devproject/fit/imp/cpp/lib/libunicode-0.4
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 EXAMPLE_PATH           = 
