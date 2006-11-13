@@ -540,7 +540,7 @@
                   <include name="**/*"/>
               </tarfileset>
           </tar>
-          <gzip zipfile="${product.name}-src.tar.gz" src="${product.name}-src.tar"/>
+          <gzip zipfile="${product.name}-src.tgz" src="${product.name}-src.tar"/>
           <delete file="${product.name}-src.tar"/>
       </target>
 
