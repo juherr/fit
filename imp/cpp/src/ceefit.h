@@ -272,10 +272,11 @@ namespace CEEFIT
    * 
    * <p>This function takes a little explanation in order to use properly.  CeeFIT relies on static linking in order to get FIXTURE classes registered 
    * into the system.  When FIXTURE classes are defined in DLL's, the factories for those FIXTURE's do not automatically register with CeeFIT, but they 
-   * do register with a list that lives in the DLL.  RegisterDll transfers those autoregistered FIXTUREFACTORY's to the EXE so that they will be recognized.
+   * do register with a list that lives in the DLL.  RegisterDll transfers those autoregistered FIXTUREFACTORY's to the EXE so that they will be 
+   * recognized.</p>
    *
-   * <p>To make this DLL-borne FIXTURES callable from your EXE, wrap a call to RegisterDll in a dllexport'ed function residing in your DLL.  Then, from 
-   * your exe, before calling the CEEFIT::Run() function, invoke your dllexport'ed CEEFIT::RegisterDll method.</p>
+   * <p>To make DLL-borne FIXTURES callable from your EXE, wrap a call to RegisterDll in a dllexport'ed function residing in your DLL.  Then, from 
+   * your exe, and before calling the CEEFIT::Run() function, invoke your dllexport'ed function wrapper for RegisterDll.</p>
    *
    * @param fixtureFactoryListFromExe This must contain the result of a call, performed by the EXE, to RUNNER::GetFixtureFactoryList().
    * @param allocFuncFromExe This must contain the result of a call, performed by the EXE, to ::GetCeeFitAllocFunc().
