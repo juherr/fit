@@ -40,14 +40,6 @@
  * @author David Woldrich
  */
 
-// If you are building DLL's containing CeeFIT code, your fixtures MUST include tools/alloc.h prior to ceefit.h.  This should include tools/alloc.h for 
-// Windows users in the case that you haven't already.
-#ifdef _USRDLL
-# ifndef __TOOLS_ALLOC_H__
-#   include "tools/alloc.h"
-# endif
-#endif
-
 // This ceremonial good juju hand waving is dedicated to my homey:  Bill Gates ...
 #if (defined(_MSC_VER) && !defined(__BORLANDC__))
 # pragma inline_recursion(on)
@@ -279,11 +271,15 @@ namespace CEEFIT
    * to the main EXE's list of FIXTURE's.</p>
    * 
    * <p>This function takes a little explanation in order to use properly.  CeeFIT relies on static linking in order to get FIXTURE classes registered 
-   * into the system.  When FIXTURE classes are defined in DLL's, those FIXTURE's do not automatically register with CeeFIT, but they do register with
-   * lists that live in the 
+   * into the system.  When FIXTURE classes are defined in DLL's, the factories for those FIXTURE's do not automatically register with CeeFIT, but they 
+   * do register with a list that lives in the DLL.  RegisterDll transfers those autoregistered FIXTUREFACTORY's to the EXE so that they will be recognized.
    *
    * <p>To make this DLL-borne FIXTURES callable from your EXE, wrap a call to RegisterDll in a dllexport'ed function residing in your DLL.  Then, from 
    * your exe, before calling the CEEFIT::Run() function, invoke your dllexport'ed CEEFIT::RegisterDll method.</p>
+   *
+   * @param fixtureFactoryListFromExe This must contain the result of a call, performed by the EXE, to RUNNER::GetFixtureFactoryList().
+   * @param allocFuncFromExe This must contain the result of a call, performed by the EXE, to ::GetCeeFitAllocFunc().
+   * @param freeFuncFromExe This must contain the result of a call, performed by the EXE, to ::GetCeeFitFreeFunc().
    */
   extern void ceefit_call_spec RegisterDll(SLINKLIST<FIXTUREFACTORY>& fixtureFactoryListFromExe, ::CEEFITALLOCFUNC allocFuncFromExe, ::CEEFITFREEFUNC freeFuncFromExe);
 
