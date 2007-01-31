@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<project name="GuiRunner for Fit" default="normal" basedir=".">
+  <description>GuiRunner for Fit</description>
+
+  <!-- input -->  
+  <property name="source.dir" value="src" />
+  <property name="source-test.dir" value="test" />
+
+  <!-- output -->
+  <property name="output.dir" value="bin" />
+  <property name="output-test.dir" value="bin-test" />
+
+  <property name="jar.dir" value="jars" />
+  
+  <target name="dirs">
+    <mkdir dir="${output.dir}" />
+    <mkdir dir="${output-test.dir}" />
+    <mkdir dir="${jar.dir}" />
+  </target>
+  
+  <!-- build -->
+  <target name="build" depends="dirs" description="Build project">
+    <javac srcdir="${source.dir}" destdir="${output.dir}" debug="on" />
+    <copydir src="${source.dir}/fit/guirunner/resource"
+	     dest="${output.dir}/fit/guirunner/resource" />
+  </target>
+
+  <!-- build test classes -->
+  <target name="buildtests" depends="dirs, build" description="Test classes">
+    <javac srcdir="${source-test.dir}" destdir="${output-test.dir}" classpath="${output.dir}" debug="on"/>
+  </target>
+
+  <!-- test -->
+  <target name="tests" depends="build, buildtests" description="Test project">
+    <junit haltonfailure="true">
+      <classpath path="${output-test.dir}" />
+      <classpath path="${output.dir}" />
+      <batchtest fork="no">
+        <fileset dir="test">
+          <include name="**/*Test.java"/>
+        </fileset>
+      </batchtest>
+      <formatter type="brief" usefile="false" />
+    </junit>
+  </target>
+    
+
+  <!-- jars -->
+  <target name="jars" depends="build, tests">
+    <jar destfile="${jar.dir}/guirunner.jar" basedir="${output.dir}" manifest="MANIFEST.MF"/>
+  </target>
+
+  <!-- clean -->
+  <target name="clean" description="Delete generated files" >
+    <delete dir="${output.dir}" />
+    <delete dir="${output-test.dir}" />
+    <delete dir="${jar.dir}" />
+  </target>
+
+  <!-- normal -->
+  <target name="normal" depends="build, jars" description="Do everyday build and test" />
+
+</project>

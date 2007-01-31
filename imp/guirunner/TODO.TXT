@@ -1,0 +1,8 @@
+- Editing a configuration via gui
+- run the tests without a gui
+- summary line on the bottom of the jtable
+- display messages, if something goes wrong
+- support for animated gifs in the status-cell
+- menu (in order to make key assignments visible - F2, F3, F10, F11, F5)
+- about box, version number
+

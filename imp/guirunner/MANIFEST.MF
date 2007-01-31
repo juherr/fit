@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Main-Class: fit.GuiRunner
+Implementation-Title: GuiRunner for the FIT-Framework
+Implementation-Version: 0.01
+Implementation-Vendor: Martin Busik

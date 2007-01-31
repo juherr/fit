@@ -1,0 +1,4 @@
+Revision history for fit.GuiRunner
+
+0.01 2007-01-01 Martin Busik <martin.busik@busik.de>
+    - initial revision
