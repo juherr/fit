@@ -9,7 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class LayoutState {
+public class UserPreferences {
 
   public static final String KEY_FRAME_POS = "frame.pos";
 
@@ -20,16 +20,19 @@ public class LayoutState {
   public static final String KEY_TABLE_SIZE = "table.size";
 
   public static final String KEY_SCROLL_SIZE = "scroll.size";
+  // current configuration stored in user preferences
+  public static final String KEY_CURRENT_CONFIGURATION = "ConfigurationStorage.currentConfiguration";
 
   File configurationFile;
 
   Properties properties;
 
-  public LayoutState(String filename) {
+
+  public UserPreferences(String filename) {
     this(new File(filename));
   }
 
-  public LayoutState(File file) {
+  public UserPreferences(File file) {
     this.configurationFile = file;
   }
 

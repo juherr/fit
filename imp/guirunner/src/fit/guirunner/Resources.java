@@ -1,26 +1,30 @@
 package fit.guirunner;
 
-import java.util.Properties;
-
 import javax.swing.ActionMap;
+import javax.swing.JFrame;
 
 public class Resources {
 
   Configuration configuration;
-
   RunnerResourceBundle resource;
-
   ActionMap actionMap;
-
-  LayoutState userLayout; // size + position
-
-  public Resources(Configuration configuration, String resourceName, LayoutState userLayout) {
-    this.configuration = configuration;
+  UserPreferences userLayout; // size + position
+  GlobalLockCoordinator lockCoordinator;
+  // should be used for modal dialogs only
+  JFrame applicationFrame;
+  
+  public Resources(Configuration configuration, String resourceName, UserPreferences userLayout) {
     resource = new RunnerResourceBundle(resourceName);
     actionMap = new ActionMap();
+    lockCoordinator = new GlobalLockCoordinator();
     this.userLayout = userLayout;
+    setConfiguration(configuration);
   }
 
+  public void setConfiguration(Configuration c) {
+    this.configuration = c;
+    lockCoordinator.setHasConfiguration((configuration != null));
+  }
   public Configuration getConfiguration() {
     return configuration;
   }
@@ -33,7 +37,19 @@ public class Resources {
     return actionMap;
   }
 
-  public LayoutState getUserLayout() {
+  public UserPreferences getUserLayout() {
     return userLayout;
+  }
+
+  public GlobalLockCoordinator getLockCoordinator() {
+    return lockCoordinator;
+  }
+
+  public JFrame getApplicationFrame() {
+    return applicationFrame;
+  }
+
+  public void setApplicationFrame(JFrame applicationFrame) {
+    this.applicationFrame = applicationFrame;
   }
 }

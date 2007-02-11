@@ -19,10 +19,11 @@ public class ReloadAction extends AbstractAsyncAction {
   public ReloadAction(RunnerTableModel model, Resources resources) {
     this.model = model;
     this.resources = resources;
+    setLockCoordinator(resources.getLockCoordinator());
   }
 
   public void doActionPerformed(ActionEvent e) {
-    setEnabled(false);
+    getLockCoordinator().setReadingFilesystem(true);
     Configuration config = resources.getConfiguration();
     FileFind fileFind = new FileFind(config.getPattern());
     try {
@@ -40,7 +41,7 @@ public class ReloadAction extends AbstractAsyncAction {
       // TODO Gui-Message
       e1.printStackTrace();
     } finally {
-      setEnabled(true);
+      getLockCoordinator().setReadingFilesystem(false);
     }
   }
 
@@ -80,5 +81,9 @@ public class ReloadAction extends AbstractAsyncAction {
         return new RunnerEntry(inFile, outFile);
       }
     };
+  }
+
+  protected boolean isActionEnabled() {
+    return getLockCoordinator().canReadFilesystem();
   }
 }

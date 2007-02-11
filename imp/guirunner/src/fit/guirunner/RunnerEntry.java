@@ -18,17 +18,11 @@ public class RunnerEntry {
   public static final int RUNNING = 3;
 
   File inFile;
-
   File outFile;
-
   String runnerOutput;
-
   int right;
-
   int wrong;
-
   int ignored;
-
   int exceptions;
 
   int status;

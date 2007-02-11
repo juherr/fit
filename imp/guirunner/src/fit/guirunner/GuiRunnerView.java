@@ -37,7 +37,7 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
 
   ActionEvent dummyActionEvent;
 
-  LayoutState layoutState;
+  UserPreferences layoutState;
 
   public GuiRunnerView(TableModel model, Resources resources) {
     super(model);
@@ -46,19 +46,20 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
     this.resources = resources;
     this.layoutState = resources.getUserLayout();
     RunnerResourceBundle resource = resources.getResource();
-    runCurrentAction = new RunCurrentAction(this);
+    GlobalLockCoordinator lockCoordinator = resources.getLockCoordinator();
+    runCurrentAction = new RunCurrentAction(this,lockCoordinator,resources);
     runCurrentAction.configureFromResources(resource, RUN_CURRENT);
     resources.getActionMap().put(RUN_CURRENT, runCurrentAction);
 
-    openOutputAction = new OpenOutputFileAction(this);
+    openOutputAction = new OpenOutputFileAction(this,lockCoordinator,resources);
     openOutputAction.configureFromResources(resource, OPEN_OUTPUTFILE);
     resources.getActionMap().put(OPEN_OUTPUTFILE, openOutputAction);
 
-    editInputAction = new EditInputFileAction(this);
+    editInputAction = new EditInputFileAction(this,lockCoordinator,resources);
     editInputAction.configureFromResources(resource, EDIT_INPUTFILE);
     resources.getActionMap().put(EDIT_INPUTFILE, editInputAction);
 
-    showRunnerOutputAction = new ShowRunnerOutputAction(this);
+    showRunnerOutputAction = new ShowRunnerOutputAction(this,lockCoordinator);
     showRunnerOutputAction.configureFromResources(resource, SHOW_RUNNER_OUTPUT);
     resources.getActionMap().put(SHOW_RUNNER_OUTPUT, showRunnerOutputAction);
 
@@ -77,14 +78,6 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
     return menu;
   }
 
-  protected RunnerEntry getRunnerEntry() {
-    RunnerEntry re = null;
-    int r = getSelectedRow();
-    if (r >= 0) {
-      re = (RunnerEntry)getModel().getValueAt(r, RunnerTableModel.POS_ROW);
-    }
-    return re;
-  }
 
   public void storeLayout() {
     StringBuffer pers = new StringBuffer();
@@ -99,12 +92,12 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
       pers.append(viewWidth);
       sep = ",";
     }
-    layoutState.storeProperty(LayoutState.KEY_USERLAYOUT_TABLE_COLUMNS, pers.toString());
-    layoutState.storeSize(LayoutState.KEY_TABLE_SIZE, getSize());
+    layoutState.storeProperty(UserPreferences.KEY_USERLAYOUT_TABLE_COLUMNS, pers.toString());
+    layoutState.storeSize(UserPreferences.KEY_TABLE_SIZE, getSize());
   }
 
   public void loadLayout() {
-    String pers = layoutState.getProperty(LayoutState.KEY_USERLAYOUT_TABLE_COLUMNS);
+    String pers = layoutState.getProperty(UserPreferences.KEY_USERLAYOUT_TABLE_COLUMNS);
     TableColumnModel cm = getColumnModel();
     TableColumn viewToModel[] = new TableColumn[cm.getColumnCount()];
     int widthSum = 0;
@@ -129,7 +122,7 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
         for (i = 0; i < viewToModel.length; i++) {
           cm.addColumn(viewToModel[i]);
         }
-        Dimension d = layoutState.loadSize(LayoutState.KEY_TABLE_SIZE);
+        Dimension d = layoutState.loadSize(UserPreferences.KEY_TABLE_SIZE);
         if (d != null) {
           setSize(d);
         }
@@ -137,129 +130,6 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
     }
   }
 
-  class RunCurrentAction extends CurrentSelectionAction {
-    RunCurrentAction(JTable view) {
-      super(view);
-    }
-
-    public void doActionPerformed(ActionEvent e) {
-      try {
-        setEnabled(false);
-        RunnerEntry re = getRunnerEntry();
-        EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
-        ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir());
-        re.setRunning();
-        ((RunnerTableModel)getModel()).modifyStatus(re);
-        EnvironmentContext.createMissingDirectories(re.getOutFile());
-        execute.doExecute(re);
-        ((RunnerTableModel)getModel()).modifyEntry(re);
-
-      } catch (IOException e1) {
-        // TODO MessageService
-        e1.printStackTrace();
-      } finally {
-        setEnabled(true);
-      }
-    }
-  }
-
-  class EditInputFileAction extends CurrentSelectionAction {
-    EditInputFileAction(JTable view) {
-      super(view);
-    }
-
-    public void doActionPerformed(ActionEvent e) {
-      try {
-        setEnabled(false);
-        RunnerEntry re = getRunnerEntry();
-        EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
-        VariableExpansion strrep = new VariableExpansion("infile", re.getInFile().getAbsolutePath());
-        String cmd = strrep.replace(ctx.getEditCmd());
-        Runtime.getRuntime().exec(cmd);
-      } catch (IOException e1) {
-        // TODO MessageService
-        e1.printStackTrace();
-      } finally {
-        setEnabled(true);
-      }
-
-    }
-  }
-
-  class OpenOutputFileAction extends CurrentSelectionAction {
-    OpenOutputFileAction(JTable view) {
-      super(view);
-    }
-
-    public void doActionPerformed(ActionEvent e) {
-      try {
-        setEnabled(false);
-        RunnerEntry re = getRunnerEntry();
-        EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
-        VariableExpansion strrep = new VariableExpansion("outfile", re.getOutFile()
-            .getAbsolutePath());
-        String cmd = strrep.replace(ctx.getOpenCmd());
-        Runtime.getRuntime().exec(cmd);
-      } catch (IOException e1) {
-        // TODO MessageService
-        e1.printStackTrace();
-      } finally {
-        setEnabled(true);
-      }
-    }
-
-    public void valueChanged(ListSelectionEvent arg0) {
-      handleChanged();
-    }
-
-    public void tableChanged(TableModelEvent arg0) {
-      handleChanged();
-    }
-
-    public void handleChanged() {
-      int row = view.getSelectedRow();
-      boolean enabled = false;
-      if (row >= 0) {
-        RunnerEntry re = getRunnerEntry();
-        enabled = re.getOutFile().exists();
-      }
-      setEnabled(enabled);
-    }
-  }
-
-  class ShowRunnerOutputAction extends CurrentSelectionAction {
-    ShowRunnerOutputAction(JTable view) {
-      super(view);
-    }
-
-    public void doActionPerformed(ActionEvent e) {
-      RunnerEntry re = getRunnerEntry();
-      DetailDialog dlg = new DetailDialog(JOptionPane.getFrameForComponent(view), "output", re
-          .getRunnerOutput());
-      dlg.pack();
-      dlg.setLocationRelativeTo(view);
-      dlg.show();
-    }
-
-    public void valueChanged(ListSelectionEvent arg0) {
-      handleChanged();
-    }
-
-    public void tableChanged(TableModelEvent arg0) {
-      handleChanged();
-    }
-
-    private void handleChanged() {
-      int row = view.getSelectedRow();
-      boolean enabled = false;
-      if (row >= 0) {
-        RunnerEntry re = getRunnerEntry();
-        enabled = re.hasBeenRun();
-      }
-      setEnabled(enabled);
-    }
-
-  }
 
   public void mouseClicked(MouseEvent e) {
     if (SwingUtilities.isRightMouseButton(e)) {
@@ -305,7 +175,8 @@ abstract class CurrentSelectionAction extends AbstractAsyncAction implements Lis
     TableModelListener {
   JTable view;
 
-  CurrentSelectionAction(JTable view) {
+  CurrentSelectionAction(JTable view,GlobalLockCoordinator lockCoordinator) {
+    setLockCoordinator(lockCoordinator);
     view.getSelectionModel().addListSelectionListener(this);
     view.getModel().addTableModelListener(this);
     this.view = view;
@@ -318,5 +189,141 @@ abstract class CurrentSelectionAction extends AbstractAsyncAction implements Lis
   }
 
   public void tableChanged(TableModelEvent arg0) {
+  }
+  protected RunnerEntry getRunnerEntry() {
+    RunnerEntry re = null;
+    int r = view.getSelectedRow();
+    if (r >= 0) {
+      re = (RunnerEntry)view.getModel().getValueAt(r, RunnerTableModel.POS_ROW);
+    }
+    return re;
+  }
+}
+class ShowRunnerOutputAction extends CurrentSelectionAction {
+  ShowRunnerOutputAction(JTable view,GlobalLockCoordinator lockCoordinator) {
+    super(view,lockCoordinator);
+  }
+
+  public void doActionPerformed(ActionEvent e) {
+    RunnerEntry re = getRunnerEntry();
+    DetailDialog dlg = new DetailDialog(JOptionPane.getFrameForComponent(view), "output", re
+        .getRunnerOutput());
+    dlg.pack();
+    dlg.setLocationRelativeTo(view);
+    dlg.show();
+  }
+
+  public void valueChanged(ListSelectionEvent arg0) {
+    handleChanged();
+  }
+
+  public void tableChanged(TableModelEvent arg0) {
+    handleChanged();
+  }
+
+  private void handleChanged() {
+    int row = view.getSelectedRow();
+    boolean enabled = false;
+    if (row >= 0) {
+      RunnerEntry re = getRunnerEntry();
+      enabled = re.hasBeenRun();
+    }
+    setEnabled(enabled);
+  }
+}
+class OpenOutputFileAction extends CurrentSelectionAction {
+  Resources resources;
+  OpenOutputFileAction(JTable view,GlobalLockCoordinator lockCoordinator,Resources resources) {
+    super(view,lockCoordinator);
+    this.resources = resources;
+  }
+
+  public void doActionPerformed(ActionEvent e) {
+    try {
+      RunnerEntry re = getRunnerEntry();
+      EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
+      VariableExpansion strrep = new VariableExpansion("outfile", re.getOutFile()
+          .getAbsolutePath());
+      String cmd = strrep.replace(ctx.getOpenCmd());
+      Runtime.getRuntime().exec(cmd);
+    } catch (IOException e1) {
+      // TODO MessageService
+      e1.printStackTrace();
+    }
+  }
+
+  public void valueChanged(ListSelectionEvent arg0) {
+    handleChanged();
+  }
+
+  public void tableChanged(TableModelEvent arg0) {
+    handleChanged();
+  }
+
+  public void handleChanged() {
+    int row = view.getSelectedRow();
+    boolean enabled = false;
+    if (row >= 0) {
+      RunnerEntry re = getRunnerEntry();
+      enabled = re.getOutFile().exists();
+    }
+    setEnabled(enabled);
+  }
+  protected boolean isActionEnabled() {
+    return !getLockCoordinator().isRunnerIsRunning();
+  }
+}
+class RunCurrentAction extends CurrentSelectionAction {
+  Resources resources;
+  RunCurrentAction(JTable view,GlobalLockCoordinator lockCoordinator,Resources resources) {
+    super(view,lockCoordinator);
+    this.resources = resources;
+  }
+
+  public void doActionPerformed(ActionEvent e) {
+    try {
+      getLockCoordinator().setRunnerIsRunning(true);
+      RunnerEntry re = getRunnerEntry();
+      EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
+      ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir());
+      re.setRunning();
+      ((RunnerTableModel)view.getModel()).modifyStatus(re);
+      EnvironmentContext.createMissingDirectories(re.getOutFile());
+      execute.doExecute(re);
+      Thread.sleep(2000);
+      ((RunnerTableModel)view.getModel()).modifyEntry(re);
+
+    } catch (IOException e1) {
+      // TODO MessageService
+      e1.printStackTrace();
+    } catch (InterruptedException x) {
+      // TODO Auto-generated catch block
+      x.printStackTrace();
+    } finally {
+      getLockCoordinator().setRunnerIsRunning(false);
+    }
+  }
+  protected boolean isActionEnabled() {
+    return getLockCoordinator().canRun();
+  }
+}
+class EditInputFileAction extends CurrentSelectionAction {
+  Resources resources;
+  EditInputFileAction(JTable view,GlobalLockCoordinator lockCoordinator,Resources resources) {
+    super(view,lockCoordinator);
+    this.resources = resources;
+  }
+
+  public void doActionPerformed(ActionEvent e) {
+    try {
+      RunnerEntry re = getRunnerEntry();
+      EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
+      VariableExpansion strrep = new VariableExpansion("infile", re.getInFile().getAbsolutePath());
+      String cmd = strrep.replace(ctx.getEditCmd());
+      Runtime.getRuntime().exec(cmd);
+    } catch (IOException e1) {
+      // TODO MessageService
+      e1.printStackTrace();
+    }
   }
 }

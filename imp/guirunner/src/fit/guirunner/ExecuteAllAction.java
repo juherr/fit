@@ -16,11 +16,12 @@ public class ExecuteAllAction extends AbstractAsyncAction {
   public ExecuteAllAction(RunnerTableModel model, Resources resources) {
     this.model = model;
     this.resources = resources;
+    setLockCoordinator(resources.getLockCoordinator());
   }
 
   public void doActionPerformed(ActionEvent e) {
     try {
-      setEnabled(false);
+      getLockCoordinator().setRunnerIsRunning(true);
       EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
       ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir());
       List entries = model.getEntries();
@@ -35,7 +36,11 @@ public class ExecuteAllAction extends AbstractAsyncAction {
     } catch (IOException e1) {
       e1.printStackTrace();
     } finally {
-      setEnabled(true);
+      getLockCoordinator().setRunnerIsRunning(false);
     }
+  }
+
+  protected boolean isActionEnabled() {
+    return getLockCoordinator().canRun();
   }
 }

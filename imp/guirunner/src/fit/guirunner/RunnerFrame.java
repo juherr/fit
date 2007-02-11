@@ -2,6 +2,7 @@ package fit.guirunner;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -11,12 +12,13 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 public class RunnerFrame extends JFrame implements WindowListener {
-  LayoutState layoutState;
+  UserPreferences layoutState;
 
   GuiRunnerView view;
 
@@ -25,28 +27,32 @@ public class RunnerFrame extends JFrame implements WindowListener {
   public RunnerFrame(RunnerTableModel model, Resources resources) {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setDefaultLookAndFeelDecorated(true);
+    setTitle(resources.getResource().getResourceString("text.appname"));
+    resources.setApplicationFrame(this);
     view = new GuiRunnerView(model, resources);
     scroll = new JScrollPane(view);
     JToolBar toolbar = new RunnerToolbar(resources);
+    JMenuBar menubar = new RunnerMenu(resources);
+    setJMenuBar(menubar);
     getContentPane().setLayout(new BorderLayout());
     getContentPane().add(toolbar, BorderLayout.NORTH);
     getContentPane().add(scroll, BorderLayout.CENTER);
     layoutState = resources.getUserLayout();
-    Point ps = layoutState.loadPosition(LayoutState.KEY_FRAME_POS);
+    Point ps = layoutState.loadPosition(UserPreferences.KEY_FRAME_POS);
     if (ps != null) {
       setLocation(ps);
     }
-    Dimension d = layoutState.loadSize(LayoutState.KEY_SCROLL_SIZE);
+    Dimension d = layoutState.loadSize(UserPreferences.KEY_SCROLL_SIZE);
     if (d != null) {
       scroll.setSize(d);
     }
     addWindowListener(this);
-    setKeyMapping(view, resources.getActionMap());
+    setKeyMapping(menubar, resources.getActionMap());
   }
 
-  private void setKeyMapping(GuiRunnerView view, ActionMap actionMap) {
-    InputMap im = view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    ActionMap am = view.getActionMap();
+  private void setKeyMapping(JMenuBar menu, ActionMap actionMap) {
+    InputMap im = menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW );
+    ActionMap am = menu.getActionMap();
     Object[] keys = actionMap.keys();
     for (int i = 0; i < keys.length; i++) {
       Action a = actionMap.get(keys[i]);
@@ -65,8 +71,8 @@ public class RunnerFrame extends JFrame implements WindowListener {
   }
 
   public void windowClosing(WindowEvent arg0) {
-    layoutState.storePosition(LayoutState.KEY_FRAME_POS, getLocation());
-    layoutState.storeSize(LayoutState.KEY_SCROLL_SIZE, scroll.getSize());
+    layoutState.storePosition(UserPreferences.KEY_FRAME_POS, getLocation());
+    layoutState.storeSize(UserPreferences.KEY_SCROLL_SIZE, scroll.getSize());
     view.storeLayout();
   }
 
