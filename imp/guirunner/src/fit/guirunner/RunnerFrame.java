@@ -2,8 +2,8 @@ package fit.guirunner;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.MenuBar;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-public class RunnerFrame extends JFrame implements WindowListener {
+public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActions {
   UserPreferences layoutState;
 
   GuiRunnerView view;
@@ -29,6 +29,7 @@ public class RunnerFrame extends JFrame implements WindowListener {
     setDefaultLookAndFeelDecorated(true);
     setTitle(resources.getResource().getResourceString("text.appname"));
     resources.setApplicationFrame(this);
+    registerExitAction(resources);
     view = new GuiRunnerView(model, resources);
     scroll = new JScrollPane(view);
     JToolBar toolbar = new RunnerToolbar(resources);
@@ -37,6 +38,12 @@ public class RunnerFrame extends JFrame implements WindowListener {
     getContentPane().setLayout(new BorderLayout());
     getContentPane().add(toolbar, BorderLayout.NORTH);
     getContentPane().add(scroll, BorderLayout.CENTER);
+    restorePositionAndSize(resources);
+    addWindowListener(this);
+    setKeyMapping(menubar, resources.getActionMap());
+  }
+
+  private void restorePositionAndSize(Resources resources) {
     layoutState = resources.getUserLayout();
     Point ps = layoutState.loadPosition(UserPreferences.KEY_FRAME_POS);
     if (ps != null) {
@@ -46,12 +53,10 @@ public class RunnerFrame extends JFrame implements WindowListener {
     if (d != null) {
       scroll.setSize(d);
     }
-    addWindowListener(this);
-    setKeyMapping(menubar, resources.getActionMap());
   }
 
   private void setKeyMapping(JMenuBar menu, ActionMap actionMap) {
-    InputMap im = menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW );
+    InputMap im = menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     ActionMap am = menu.getActionMap();
     Object[] keys = actionMap.keys();
     for (int i = 0; i < keys.length; i++) {
@@ -86,5 +91,15 @@ public class RunnerFrame extends JFrame implements WindowListener {
   }
 
   public void windowOpened(WindowEvent arg0) {
+  }
+
+  private void registerExitAction(Resources resources) {
+    AbstractAsyncAction exitAction = new AbstractAsyncAction() {
+      public void doActionPerformed(ActionEvent e) {
+        dispose();
+      }
+    };
+    exitAction.configureFromResources(resources.getResource(), EXIT);
+    resources.getActionMap().put(EXIT, exitAction);
   }
 }

@@ -1,13 +1,14 @@
 package fit.guirunner;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class DetailDialog extends JDialog implements ActionListener {
@@ -24,13 +25,13 @@ public class DetailDialog extends JDialog implements ActionListener {
 
     JButton ok = new JButton("ok");
     ok.addActionListener(this);
-    getContentPane().add(ok, BorderLayout.SOUTH);
-  }
 
-  public Dimension getPreferredSize() {
-    return new Dimension(500, 300);
+    JPanel hlp = new JPanel();
+    hlp.setLayout(new FlowLayout(FlowLayout.CENTER));
+    hlp.add(ok);
+    
+    getContentPane().add(hlp, BorderLayout.SOUTH);
   }
-
   public void actionPerformed(ActionEvent arg0) {
     dispose();
   }

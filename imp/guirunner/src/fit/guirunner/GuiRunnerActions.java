@@ -11,7 +11,8 @@ public interface GuiRunnerActions {
   final String NEW_CONFIG="NEW_CONFIG";
   final String EDIT_CONFIG="EDIT_CONFIG";
   final String MRU_CONFIG= "MRU_CONFIG";
-
+  final String EXIT = "EXIT";
+  
   // test only
   final String APPEND_ENTRY = "APPEND_ENTRY";
 }

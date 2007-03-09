@@ -209,7 +209,7 @@ class ShowRunnerOutputAction extends CurrentSelectionAction {
     DetailDialog dlg = new DetailDialog(JOptionPane.getFrameForComponent(view), "output", re
         .getRunnerOutput());
     dlg.pack();
-    dlg.setLocationRelativeTo(view);
+    dlg.setLocationRelativeTo(JOptionPane.getFrameForComponent(view));
     dlg.show();
   }
 

@@ -35,6 +35,7 @@ public class AboutAction extends AbstractAsyncAction {
   public void doActionPerformed(ActionEvent e) {
     AboutDialog dlg = new AboutDialog(resources.getApplicationFrame());
     dlg.pack();
+    dlg.setLocationRelativeTo(resources.getApplicationFrame());
     dlg.show();
   }
 
@@ -60,7 +61,6 @@ class AboutDialog extends JDialog implements RunnerVersion {
   public AboutDialog(JFrame parent) {
     super(parent, true);
     setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    setLocationRelativeTo(parent);
     Container pane = getContentPane();
     pane.setLayout(new BorderLayout());
 

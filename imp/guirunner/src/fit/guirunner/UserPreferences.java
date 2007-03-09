@@ -34,9 +34,17 @@ public class UserPreferences {
 
   public UserPreferences(File file) {
     this.configurationFile = file;
+    if(file.canRead()) {
+      lazyLoad();
+    }
   }
 
   public String getProperty(String key) {
+    lazyLoad();
+    return properties.getProperty(key);
+  }
+
+  private void lazyLoad() {
     if (properties == null) {
       properties = new Properties();
       FileInputStream fis = null;
@@ -50,7 +58,6 @@ public class UserPreferences {
         e.printStackTrace();
       }
     }
-    return properties.getProperty(key);
   }
 
   public void storeProperty(String key, String value) {

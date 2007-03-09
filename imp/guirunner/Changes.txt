@@ -1,4 +1,14 @@
 Revision history for fit.GuiRunner
 
+003  2007-03-09 Martin Busik <martin.busik@busik.de>
+    - fixed: preference file gets overwritten during startup
+    - calls to setLocationRelativeTo() now after pack()
+      in order to get the position really centered
+    - L&F from JGoodies (www.jgoodies.com)
+
+002  2007-02-XX Martin Busik <martin.busik@busik.de>
+    - version number in about box
+    - dialog for configuration settings
+
 0.01 2007-01-01 Martin Busik <martin.busik@busik.de>
     - initial revision

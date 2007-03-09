@@ -104,8 +104,8 @@ public class ConfigurationStorage implements GuiRunnerActions {
       public void doActionPerformed(ActionEvent e) {
         EditConfigurationDialog dlg = new EditConfigurationDialog(resources, resources.getConfiguration());
         dlg.setTitle(currentConfigurationFile.getAbsolutePath());
-        dlg.setLocationRelativeTo(resources.getApplicationFrame());
         dlg.pack();
+        dlg.setLocationRelativeTo(resources.getApplicationFrame());
         dlg.show();
         if (dlg.getConfiguration() != null) {
           try {

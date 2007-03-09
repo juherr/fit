@@ -1,10 +1,16 @@
 package fit;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.PrintStream;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
+import com.jgoodies.looks.LookUtils;
+import com.jgoodies.looks.Options;
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
+import com.jgoodies.looks.plastic.theme.SkyBluer;
 
 import fit.guirunner.AbstractAsyncAction;
 import fit.guirunner.ConfigurationStorage;
@@ -22,7 +28,7 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
 
   public static final String RESOURCE = "fit.guirunner.resource.GuiRunner";
   public static final String DEFAULT_PREFERENCES_FILENAME = ".fit.GuiRunner.properties";
-  
+
   Resources resources;
   ConfigurationStorage configStorage;
 
@@ -70,11 +76,13 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
   }
 
   public static UserPreferences defaultPreferences() {
-    return new UserPreferences(System.getProperty("user.home") + File.pathSeparator
+    return new UserPreferences(System.getProperty("user.home") + File.separator
         + DEFAULT_PREFERENCES_FILENAME);
   }
 
   public void run() {
+    configureUI();
+
     RunnerTableModel model = new RunnerTableModel(resources.getResource());
 
     AbstractAsyncAction action;
@@ -87,7 +95,7 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
     action.configureFromResources(resources.getResource(), RUN_ALL);
     resources.getActionMap().put(RUN_ALL, action);
 
-    action = configStorage.getNewConfigurationAction( NEW_CONFIG);
+    action = configStorage.getNewConfigurationAction(NEW_CONFIG);
     resources.getActionMap().put(NEW_CONFIG, action);
 
     action = configStorage.getOpenConfigurationAction(OPEN_CONFIG);
@@ -138,6 +146,27 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
     return defaultPreferences().getProperty(UserPreferences.KEY_CURRENT_CONFIGURATION);
   }
 
+  /*
+   * JGoodies
+   */
+  private void configureUI() {
+    UIManager.put(Options.USE_SYSTEM_FONTS_APP_KEY, Boolean.TRUE);
+    Options.setDefaultIconSize(new Dimension(19, 19));
+
+    try {
+      if (LookUtils.IS_OS_WINDOWS_XP) {
+        PlasticXPLookAndFeel.setCurrentTheme(new SkyBluer());
+        UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
+      } else if (LookUtils.IS_OS_WINDOWS_2000) {
+        UIManager.setLookAndFeel(Options.getCrossPlatformLookAndFeelClassName());
+      } else {
+        UIManager.setLookAndFeel(Options.getSystemLookAndFeelClassName());
+      }
+    } catch (Exception e) {
+      System.err.println("Can't set look & feel:" + e);
+    }
+  }
+
 }
 
 class CommandLineParameters implements RunnerVersion {
@@ -160,6 +189,7 @@ class CommandLineParameters implements RunnerVersion {
         command = CMD_HELP;
       } else if ("-cli".equals(args[0])) {
         command = CMD_CLI_RUNNER;
+        confname = null;
         confIdx = 1;
       } else {
         confIdx = 0;
@@ -168,15 +198,19 @@ class CommandLineParameters implements RunnerVersion {
     if (confIdx >= 0 && confIdx < args.length) {
       confname = args[confIdx];
     }
-    if ((command == CMD_DEFAULT || command == CMD_CLI_RUNNER) && !(new File(confname).exists())) {
-        command = (command == CMD_CLI_RUNNER) ? CMD_HELP : CMD_ASK_USER;
+    if (command == CMD_CLI_RUNNER && confname == null || !(new File(confname).exists())) {
+      command = CMD_HELP;
+    }
+    if (command == CMD_DEFAULT  && !(new File(confname).exists())) {
+      command = CMD_ASK_USER;
     }
   }
 
   public void printUsageAndExit(PrintStream w) {
     w.println("GuiRunner [-h] [-cli] [confname]");
     w.println(" -h    help");
-    w.println(" -cli  no gui, just run and show summary");
+    w.println(" -cli  no gui, just run and show summary,");
+    w.println("       confname must be given");
     w.println(" confname filename of the configuration.");
     w.println(" (default: " + DEFAULT_CONFNAME + ")");
     w.println(" Version:  " + RUNNER_VERSION);
