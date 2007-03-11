@@ -118,7 +118,9 @@ public class ConfigurationStorage implements GuiRunnerActions {
           }
         }
       }
-
+      protected boolean isActionEnabled() {
+        return getLockCoordinator().isHasConfiguration();
+      }
     };
     a.configureFromResources(resources.getResource(), resourceKey);
     return a;
@@ -208,7 +210,6 @@ public class ConfigurationStorage implements GuiRunnerActions {
   }
 
   class OpenConfigurationAction extends AbstractAsyncAction {
-    Component parent = null;
     AbstractAsyncAction reloadAction = null;
     int newOrExisting;
 
@@ -216,12 +217,7 @@ public class ConfigurationStorage implements GuiRunnerActions {
         GlobalLockCoordinator lockCoordinator) {
       this.newOrExisting = newOrExisting;
       this.reloadAction = reloadAction;
-      setParent(parent);
       setLockCoordinator(lockCoordinator);
-    }
-
-    public void setParent(Component parent) {
-      this.parent = parent;
     }
 
     protected boolean isActionEnabled() {

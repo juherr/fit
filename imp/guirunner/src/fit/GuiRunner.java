@@ -103,19 +103,16 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
 
     action = configStorage.getEditConfigurationAction(EDIT_CONFIG);
     resources.getActionMap().put(EDIT_CONFIG, action);
+    action.setLockCoordinator(resources.getLockCoordinator());
 
     RunnerFrame frame = new RunnerFrame(model, resources);
 
     frame.pack();
     frame.show();
     // initial load
-    String initialAction = null;
     if (resources.getLockCoordinator().isHasConfiguration()) {
-      initialAction = REFRESH_ENTRIES;
-    } else {
-      initialAction = OPEN_CONFIG;
+      ((AbstractAsyncAction)resources.getActionMap().get(REFRESH_ENTRIES)).doActionPerformed(null);
     }
-    ((AbstractAsyncAction)resources.getActionMap().get(initialAction)).doActionPerformed(null);
   }
 
   /**
@@ -198,8 +195,10 @@ class CommandLineParameters implements RunnerVersion {
     if (confIdx >= 0 && confIdx < args.length) {
       confname = args[confIdx];
     }
-    if (command == CMD_CLI_RUNNER && confname == null || !(new File(confname).exists())) {
-      command = CMD_HELP;
+    if (command == CMD_CLI_RUNNER) {
+      if(confname == null || !(new File(confname).exists())) {
+        command = CMD_HELP;
+      }
     }
     if (command == CMD_DEFAULT  && !(new File(confname).exists())) {
       command = CMD_ASK_USER;

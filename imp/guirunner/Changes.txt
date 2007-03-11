@@ -1,5 +1,9 @@
 Revision history for fit.GuiRunner
 
+004  2007-03-11 Martin Busik <martin.busik@busik.de>
+    - fixed: wrong command line handling during first startup
+    - no action on first startup
+    
 003  2007-03-09 Martin Busik <martin.busik@busik.de>
     - fixed: preference file gets overwritten during startup
     - calls to setLocationRelativeTo() now after pack()
