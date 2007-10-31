@@ -52,7 +52,7 @@ public class ParseTest extends TestCase {
 
 	public void testParseException () {
 		try {
-			Parse p = new Parse("leader<table><tr><th>one</th><th>two</th><th>three</th></tr><tr><td>four</td></tr></table>trailer");
+			new Parse("leader<table><tr><th>one</th><th>two</th><th>three</th></tr><tr><td>four</td></tr></table>trailer");
 		} catch (java.text.ParseException e) {
 			assertEquals(17, e.getErrorOffset());
 			assertEquals("Can't find tag: td", e.getMessage());
