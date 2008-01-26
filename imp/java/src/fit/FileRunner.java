@@ -18,7 +18,11 @@ public class FileRunner {
     public static void main(String argv[]) {
     	try {
     		new FileRunner().run(argv);
-		} 
+		}
+		catch (CommandLineParseException e) {
+			System.err.println(e.getUserMessage());
+			System.exit(-1);
+		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 			System.exit(-1);
