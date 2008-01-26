@@ -77,6 +77,7 @@
   -->
   <target name="spec" depends="build" description="Run Fit specification">
     <java classname="fit.FileRunner" classpath="${class.dir}" fork="true" failonerror="true" >
+      <arg value="--encoding=cp1252"/>
       <arg value="${spec.dir}/index.html"/>
       <arg value="${spec-out.dir}/index.html"/>
     </java>

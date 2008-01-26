@@ -8,6 +8,8 @@ import java.util.*;
 
 public class FileRunner {
 
+	private static String encoding = System.getProperty("file.encoding");
+
     public String input;
     public Parse tables;
     public Fixture fixture = new Fixture();
@@ -23,8 +25,14 @@ public class FileRunner {
 		}
     }
 
-    public void run(String argv[]) throws IOException {
-        args(argv);
+    public void run(String argv[]) throws IOException, CommandLineParserException {
+		CommandLineParser parser = CommandLineParser.fileRunnerParser();
+		parser.parse(argv);
+		if (parser.isParameterSet(CommandLineParser.PARAMETER_ENCODING)) {
+			encoding = parser.getStringParameterValue(CommandLineParser.PARAMETER_ENCODING);
+		}
+		
+        args(parser.getArguments());
         process();
         exit();
     }
@@ -55,12 +63,12 @@ public class FileRunner {
         fixture.summary.put("input update", new Date(in.lastModified()));
         fixture.summary.put("output file", out.getAbsolutePath());
         input = read(in);
-        output = new PrintWriter(new BufferedWriter(new FileWriter(out)));
+        output = new PrintWriter(new OutputStreamWriter(new FileOutputStream(out), encoding));
     }
 
     protected String read(File input) throws IOException {
         char chars[] = new char[(int) (input.length())];
-        FileReader in = new FileReader(input);
+        Reader in = new InputStreamReader(new FileInputStream(input), encoding);
         in.read(chars);
         in.close();
         return new String(chars);

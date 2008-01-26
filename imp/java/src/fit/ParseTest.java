@@ -98,6 +98,7 @@ public class ParseTest extends TestCase {
 		assertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
 		assertEquals("&amp;&amp;", Parse.unescape("&amp;amp;&amp;amp;"));
 		assertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
+		assertEquals("\"\"''", Parse.unescape("\u201c\u201d\u2018\u2019"));
 	}
 
 	public void testWhitespaceIsCondensed() {
