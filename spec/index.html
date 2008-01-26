@@ -12,17 +12,16 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <link rel=File-List href="index_files/filelist.xml">
 <title>Fit Specification</title>
 <o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
- name="PlaceName"/>
-<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
  name="place"/>
 <o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
- name="PersonName"/>
+ name="PlaceName"/>
 <!--[if gte mso 9]><xml>
  <w:WordDocument>
   <w:View>Normal</w:View>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
   <w:Compatibility>
    <w:ApplyBreakingRules/>
-   <w:UseFELayout/>
   </w:Compatibility>
   <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
  </w:WordDocument>
@@ -40,34 +39,34 @@ st1\:*{behavior:url(#ieooui) }
 	panose-1:2 2 6 9 4 2 5 8 3 4;
 	mso-font-alt:"\FF2D\FF33 \660E\671D";
 	mso-font-charset:128;
-	mso-generic-font-family:modern;
+	mso-generic-font-family:roman;
+	mso-font-format:other;
 	mso-font-pitch:fixed;
-	mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
+	mso-font-signature:1 134676480 16 0 131072 0;}
 @font-face
 	{font-family:SimSun;
 	panose-1:2 1 6 0 3 1 1 1 1 1;
 	mso-font-alt:\5B8B\4F53;
 	mso-font-charset:134;
 	mso-generic-font-family:auto;
+	mso-font-format:other;
 	mso-font-pitch:variable;
-	mso-font-signature:3 135135232 16 0 262145 0;}
+	mso-font-signature:1 135135232 16 0 262144 0;}
 @font-face
 	{font-family:Mangal;
 	panose-1:0 0 4 0 0 0 0 0 0 0;
-	mso-font-charset:1;
+	mso-font-charset:0;
 	mso-generic-font-family:auto;
 	mso-font-pitch:variable;
-	mso-font-signature:32768 0 0 0 0 0;}
+	mso-font-signature:32771 0 0 0 1 0;}
 @font-face
 	{font-family:"\@SimSun";
-	panose-1:2 1 6 0 3 1 1 1 1 1;
 	mso-font-charset:134;
 	mso-generic-font-family:auto;
 	mso-font-pitch:variable;
 	mso-font-signature:3 135135232 16 0 262145 0;}
 @font-face
 	{font-family:"\@MS Mincho";
-	panose-1:2 2 6 9 4 2 5 8 3 4;
 	mso-font-charset:128;
 	mso-generic-font-family:modern;
 	mso-font-pitch:fixed;
@@ -135,6 +134,12 @@ pre
 	font-family:"Courier New";
 	mso-fareast-font-family:"MS Mincho";
 	mso-bidi-font-family:Mangal;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
 @page Section1
 	{size:8.5in 11.0in;
 	margin:1.0in 1.25in 1.0in 1.25in;
@@ -145,8 +150,8 @@ div.Section1
 	{page:Section1;}
  /* List Definitions */
  @list l0
-	{mso-list-id:159974944;
-	mso-list-template-ids:1628834028;}
+	{mso-list-id:399329831;
+	mso-list-template-ids:-109270726;}
 @list l0:level1
 	{mso-level-number-format:bullet;
 	mso-level-text:\F0B7;
@@ -202,8 +207,8 @@ div.Section1
 	mso-level-number-position:left;
 	text-indent:-.25in;}
 @list l2
-	{mso-list-id:988288170;
-	mso-list-template-ids:-1069646708;}
+	{mso-list-id:464855474;
+	mso-list-template-ids:-679561430;}
 @list l2:level1
 	{mso-level-number-format:bullet;
 	mso-level-text:\F0B7;
@@ -259,10 +264,21 @@ div.Section1
 	mso-level-number-position:left;
 	text-indent:-.25in;}
 @list l4
+	{mso-list-id:1123843100;
+	mso-list-template-ids:1082187668;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l5
 	{mso-list-id:1196504600;
 	mso-list-type:hybrid;
 	mso-list-template-ids:-1387920668 -863591280 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
-@list l4:level1
+@list l5:level1
 	{mso-level-start-at:151;
 	mso-level-number-format:bullet;
 	mso-level-text:\F0B7;
@@ -272,52 +288,41 @@ div.Section1
 	font-family:Symbol;
 	mso-fareast-font-family:SimSun;
 	mso-bidi-font-family:"Times New Roman";}
-@list l4:level2
+@list l5:level2
 	{mso-level-number-format:bullet;
 	mso-level-text:o;
 	mso-level-tab-stop:1.0in;
 	mso-level-number-position:left;
 	text-indent:-.25in;
 	font-family:"Courier New";}
-@list l4:level3
+@list l5:level3
 	{mso-level-tab-stop:1.5in;
 	mso-level-number-position:left;
 	text-indent:-.25in;}
-@list l4:level4
+@list l5:level4
 	{mso-level-tab-stop:2.0in;
 	mso-level-number-position:left;
 	text-indent:-.25in;}
-@list l4:level5
+@list l5:level5
 	{mso-level-tab-stop:2.5in;
 	mso-level-number-position:left;
 	text-indent:-.25in;}
-@list l4:level6
+@list l5:level6
 	{mso-level-tab-stop:3.0in;
 	mso-level-number-position:left;
 	text-indent:-.25in;}
-@list l4:level7
+@list l5:level7
 	{mso-level-tab-stop:3.5in;
 	mso-level-number-position:left;
 	text-indent:-.25in;}
-@list l4:level8
+@list l5:level8
 	{mso-level-tab-stop:4.0in;
 	mso-level-number-position:left;
 	text-indent:-.25in;}
-@list l4:level9
+@list l5:level9
 	{mso-level-tab-stop:4.5in;
 	mso-level-number-position:left;
 	text-indent:-.25in;}
-@list l5
-	{mso-list-id:1445467369;
-	mso-list-template-ids:-1510203438;}
-@list l5:level1
-	{mso-level-number-format:bullet;
-	mso-level-text:\F0B7;
-	mso-level-tab-stop:.5in;
-	mso-level-number-position:left;
-	text-indent:-.25in;
-	mso-ansi-font-size:10.0pt;
-	font-family:Symbol;}
 ol
 	{margin-bottom:0in;}
 ul
@@ -355,7 +360,7 @@ table.MsoTableGrid
 	font-family:"Times New Roman";}
 </style>
 <![endif]--><!--[if gte mso 9]><xml>
- <o:shapedefaults v:ext="edit" spidmax="12290"/>
+ <o:shapedefaults v:ext="edit" spidmax="15362"/>
 </xml><![endif]--><!--[if gte mso 9]><xml>
  <o:shapelayout v:ext="edit">
   <o:idmap v:ext="edit" data="1"/>
@@ -366,171 +371,59 @@ table.MsoTableGrid
 
 <div class=Section1>
 
-<h1><span style='mso-bidi-font-family:"Times New Roman"'>Fit Spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ation, v1.1+</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hanges<o:p></o:p></span></h1>
+<h1><span style='mso-bidi-font-family:"Times New Roman"'>Fit Specification,
+v1.1+changes<o:p></o:p></span></h1>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>&nbsp;<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>Fit is a tool for
-improving </span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ommuni</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ation between </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ustomers, programmers, and
-testers.&nbsp; It allows the </span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>ustomer to des</span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>ribe his or her requirements in a way that </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>an be </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>he</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ked against the a</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>tual program.<o:p></o:p></span></p>
+improving communication between customers, programmers, and testers.&nbsp; It
+allows the customer to describe his or her requirements in a way that can be
+checked against the actual program.<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>&nbsp;<o:p></o:p></span></p>
 
-<p><span style='mso-bidi-font-family:"Times New Roman"'>The te</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hnique Fit uses is </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>alled &quot;spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ation by example.&quot;&nbsp; It
-allows </span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ustomers to </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>reate a do</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ument with tables that des</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ribe spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'> examples of how the software
-should work.&nbsp; Fit looks at the do</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ument and </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>he</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ks to see if the software works
-the way the tables say it should.<o:p></o:p></span></p>
+<p><span style='mso-bidi-font-family:"Times New Roman"'>The technique Fit uses
+is called &quot;specification by example.&quot;&nbsp; It allows customers to
+create a document with tables that describe specific examples of how the
+software should work.&nbsp; Fit looks at the document and checks to see if the
+software works the way the tables say it should.<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>&nbsp;<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>Fit uses small
-programs, </span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>alled &quot;fixtures,&quot; to </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>onne</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>t tables to software.&nbsp;
-Programmers on the development team are responsible for </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>reating those fixtures.&nbsp;
-Customers are responsible for </span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>reating the tables.&nbsp; Testers work with both groups of
-people to help make sure that all situations are adequately </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>overed.&nbsp; The three groups
-work together, intera</span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>tively, to </span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>reate great software.<o:p></o:p></span></p>
+programs, called &quot;fixtures,&quot; to connect tables to software.&nbsp;
+Programmers on the development team are responsible for creating those
+fixtures.&nbsp; Customers are responsible for creating the tables.&nbsp;
+Testers work with both groups of people to help make sure that all situations
+are adequately covered.&nbsp; The three groups work together, interactively, to
+create great software.<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>&nbsp;<o:p></o:p></span></p>
 
-<p><span style='mso-bidi-font-family:"Times New Roman"'>This do</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ument, and the do</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>uments it referen</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>es, des</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ribes Fit using spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ation by example.&nbsp; It is,
-itself, an example of how to use Fit.<span style='mso-spacerun:yes'>  </span>If
-all the “pass” </span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ells in the table below are </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>olored green, then you </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>an be </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>onfident that your </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>opy of Fit meets this spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ation.<o:p></o:p></span></p>
+<p><span style='mso-bidi-font-family:"Times New Roman"'>This document, and the
+documents it references, describes Fit using specification by example.&nbsp; It
+is, itself, an example of how to use Fit.<span style='mso-spacerun:yes'> 
+</span>If all the “pass” cells in the table below are colored green, then you
+can be confident that your copy of Fit meets this specification.<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>Using Fit to test
-itself, as we do here, leads to </span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>ir</span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>ular logi</span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'> that </span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>an be unraveled more easily by the </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>omputer than by humans.<span
-style='mso-spacerun:yes'>  </span>To avoid a heada</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>he, ignore the fa</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>t that this do</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ument is written in HTML or that
-the tables use Fit fixtures.<span style='mso-spacerun:yes'>  </span>Instead,
-just think of it as a regular do</span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>ument--one that happens to be </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>olored green and red.<o:p></o:p></span></p>
+itself, as we do here, leads to circular logic that can be unraveled more
+easily by the computer than by humans.<span style='mso-spacerun:yes'> 
+</span>To avoid a headache, ignore the fact that this document is written in
+HTML or that the tables use Fit fixtures.<span style='mso-spacerun:yes'> 
+</span>Instead, just think of it as a regular document--one that happens to be
+colored green and red.<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
-<p><span style='mso-bidi-font-family:"Times New Roman"'>Fun</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>tional </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hanges to Fit that are new in
-this version of the spe</span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'> are <span style='background:yellow;mso-highlight:yellow'>highlighted
-yellow</span>.<span style='mso-spacerun:yes'>  </span>Layout, formatting, and
-other non-fun</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>tional </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hanges to the spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ation are not highlighted.<o:p></o:p></span></p>
+<p><span style='mso-bidi-font-family:"Times New Roman"'>Functional changes to <span
+class=GramE>Fit</span> that are new in this version of the spec are <span
+style='background:yellow;mso-highlight:yellow'>highlighted yellow</span>.<span
+style='mso-spacerun:yes'>  </span>Layout, formatting, and other non-functional
+changes to the specification are not highlighted.<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
@@ -550,14 +443,9 @@ these things:<o:p></o:p></span></p>
  <tr style='mso-yfti-irow:0'>
   <td valign=top style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman";color:silver'>fat.Referen</span><st1:PersonName><span
-   style='mso-bidi-font-family:"Times New Roman";color:silver'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman";color:silver'>eFixture<o:p></o:p></span></p>
-  </td>
-  <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
-  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
-  padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
+  <p><span class=SpellE><span style='mso-bidi-font-family:"Times New Roman";
+  color:silver'>fat.ReferenceFixture</span></span><span style='mso-bidi-font-family:
+  "Times New Roman";color:silver'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
@@ -574,18 +462,14 @@ these things:<o:p></o:p></span></p>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Des</span></b><st1:PersonName><b><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></b></st1:PersonName><b><span
-  style='mso-bidi-font-family:"Times New Roman"'>ription</span></b><span
+  <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Description</span></b><span
   style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Lo</span></b><st1:PersonName><b><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></b></st1:PersonName><b><span
-  style='mso-bidi-font-family:"Times New Roman"'>ation</span></b><span
+  <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Location</span></b><span
   style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
@@ -595,21 +479,12 @@ these things:<o:p></o:p></span></p>
   <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Result()</span></b><span
   style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
-  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
-  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
-  padding:0in 5.4pt 0in 5.4pt'>
-  <p><b><i style='mso-bidi-font-style:normal'><span style='mso-bidi-font-family:
-  "Times New Roman"'>Note<o:p></o:p></span></i></b></p>
-  </td>
  </tr>
  <tr style='mso-yfti-irow:2'>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman"'>Parse HTML do</span><st1:PersonName><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman"'>uments<o:p></o:p></span></p>
+  <p><span style='mso-bidi-font-family:"Times New Roman"'>Parse HTML documents<o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -623,20 +498,12 @@ these things:<o:p></o:p></span></p>
   padding:0in 5.4pt 0in 5.4pt'>
   <p><span style='mso-bidi-font-family:"Times New Roman"'>pass<o:p></o:p></span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
-  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
-  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
-  padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
-  </td>
  </tr>
  <tr style='mso-yfti-irow:3'>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman"'>Modify HTML do</span><st1:PersonName><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman"'>uments<o:p></o:p></span></p>
+  <p><span style='mso-bidi-font-family:"Times New Roman"'>Modify HTML documents<o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -651,19 +518,15 @@ these things:<o:p></o:p></span></p>
   padding:0in 5.4pt 0in 5.4pt'>
   <p><span style='mso-bidi-font-family:"Times New Roman"'>pass<o:p></o:p></span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
-  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
-  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
-  padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
-  </td>
  </tr>
  <tr style='mso-yfti-irow:4'>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
   <p><span style='mso-bidi-font-family:"Times New Roman"'>Interpret tables
-  using fixtures<span style='mso-tab-count:1'>     </span><o:p></o:p></span></p>
+  using fixtures<o:p></o:p></span></p>
+  <p><i style='mso-bidi-font-style:normal'><span style='mso-bidi-font-family:
+  "Times New Roman"'>(This part of the spec is incomplete.)<o:p></o:p></span></i></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -678,88 +541,47 @@ these things:<o:p></o:p></span></p>
   padding:0in 5.4pt 0in 5.4pt'>
   <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
-  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
-  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
-  padding:0in 5.4pt 0in 5.4pt'>
-  <p><i style='mso-bidi-font-style:normal'><span style='mso-bidi-font-family:
-  "Times New Roman"'>in</span></i><st1:PersonName><i style='mso-bidi-font-style:
-   normal'><span style='mso-bidi-font-family:"Times New Roman"'>c</span></i></st1:PersonName><i
-  style='mso-bidi-font-style:normal'><span style='mso-bidi-font-family:"Times New Roman"'>omplete<o:p></o:p></span></i></p>
-  </td>
  </tr>
  <tr style='mso-yfti-irow:5;mso-yfti-lastrow:yes'>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman"'>Provide a </span><st1:PersonName><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman"'>ommand-line interfa</span><st1:PersonName><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman"'>e<o:p></o:p></span></p>
+  <p><span style='mso-bidi-font-family:"Times New Roman";background:yellow;
+  mso-highlight:yellow'>Provide a user<span style='mso-spacerun:yes'> 
+  </span>interface</span><span style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman"'>li.html<o:p></o:p></span></p>
+  <p><span style='mso-bidi-font-family:"Times New Roman"'><a href="ui.html">ui.html</a><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
-  </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
-  border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
-  mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
-  padding:0in 5.4pt 0in 5.4pt'>
-  <p><i style='mso-bidi-font-style:normal'><span style='mso-bidi-font-family:
-  "Times New Roman"'>in</span></i><st1:PersonName><i style='mso-bidi-font-style:
-   normal'><span style='mso-bidi-font-family:"Times New Roman"'>c</span></i></st1:PersonName><i
-  style='mso-bidi-font-style:normal'><span style='mso-bidi-font-family:"Times New Roman"'>omplete<o:p></o:p></span></i></p>
+  <p><span style='mso-bidi-font-family:"Times New Roman"'>pass<o:p></o:p></span></p>
   </td>
  </tr>
 </table>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
-<p><span style='mso-bidi-font-family:"Times New Roman"'>Cli</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>k the links for details about
-how Fit does ea</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>h of these things.<span
-style='mso-spacerun:yes'>  </span>This spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ation is a work in progress and the
-“fixtures” and “</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ommand-line interfa</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>e” portion are in</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>omplete.<span
-style='mso-spacerun:yes'>  </span>Implementers: you may ignore these se</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>tions for now.<o:p></o:p></span></p>
+<p><span style='mso-bidi-font-family:"Times New Roman"'>Click the links for
+details about how Fit does each of these things.<span
+style='mso-spacerun:yes'>  </span>This specification is a work in progress and
+the “fixtures” and “command-line interface” portion are incomplete.<span
+style='mso-spacerun:yes'>  </span>Implementers: you may ignore these sections
+for now.<o:p></o:p></span></p>
 
 <div style='border:none;border-bottom:solid windowtext 1.0pt;padding:0in 0in 1.0pt 0in'>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>Fit is available for
-many programming languages.<span style='mso-spacerun:yes'>  </span>The se</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>tions above apply to all
-implementations of Fit.<span style='mso-spacerun:yes'>  </span>Extensions spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'> to this implementation of Fit
-are des</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ribed here:<o:p></o:p></span></p>
+many programming languages.<span style='mso-spacerun:yes'>  </span>The sections
+above apply to all implementations of Fit.<span style='mso-spacerun:yes'> 
+</span>Extensions specific to this implementation of Fit are described here:<o:p></o:p></span></p>
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
@@ -770,9 +592,9 @@ style='mso-bidi-font-family:"Times New Roman"'>ribed here:<o:p></o:p></span></p>
  <tr style='mso-yfti-irow:0'>
   <td valign=top style='border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman";color:silver'>fat.Referen</span><st1:PersonName><span
-   style='mso-bidi-font-family:"Times New Roman";color:silver'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman";color:silver'>eFixture<o:p></o:p></span></p>
+  <p><span class=SpellE><span style='mso-bidi-font-family:"Times New Roman";
+  color:silver'>fat.ReferenceFixture</span></span><span style='mso-bidi-font-family:
+  "Times New Roman";color:silver'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border:solid windowtext 1.0pt;border-left:none;
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
@@ -789,18 +611,14 @@ style='mso-bidi-font-family:"Times New Roman"'>ribed here:<o:p></o:p></span></p>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Des</span></b><st1:PersonName><b><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></b></st1:PersonName><b><span
-  style='mso-bidi-font-family:"Times New Roman"'>ription</span></b><span
+  <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Description</span></b><span
   style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
   mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Lo</span></b><st1:PersonName><b><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></b></st1:PersonName><b><span
-  style='mso-bidi-font-family:"Times New Roman"'>ation</span></b><span
+  <p><b><span style='mso-bidi-font-family:"Times New Roman"'>Location</span></b><span
   style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
@@ -815,11 +633,8 @@ style='mso-bidi-font-family:"Times New Roman"'>ribed here:<o:p></o:p></span></p>
   <td valign=top style='border:solid windowtext 1.0pt;border-top:none;
   mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;
   padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman"'>Implementation-spe</span><st1:PersonName><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
-   style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-  style='mso-bidi-font-family:"Times New Roman"'> extensions<o:p></o:p></span></p>
+  <p><span style='mso-bidi-font-family:"Times New Roman"'>Implementation-specific
+  extensions<o:p></o:p></span></p>
   </td>
   <td valign=top style='border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;
   border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;
@@ -844,46 +659,29 @@ style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></h2>
 
 <p class=MsoNormal><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
-<p class=MsoNormal><span style='mso-bidi-font-family:"Times New Roman"'>Known errors
-and omissions, to be fixed in a future version:<o:p></o:p></span></p>
+<p class=MsoNormal><span style='mso-bidi-font-family:"Times New Roman"'>Known
+errors and omissions, to be fixed in a future version:<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
 <ul style='margin-top:0in' type=disc>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
-     style='mso-bidi-font-family:"Times New Roman"'>The &lt;wiki&gt; tag is not
-     spe</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ified.<o:p></o:p></span></li>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bidi-font-family:"Times New Roman"'>The &lt;<span class=SpellE>wiki</span>&gt;
+     tag is not specified.<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
      style='mso-bidi-font-family:"Times New Roman"'>Parsing-related errors are
-     des</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ribed but the errors aren’t
-     spe</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ified.<o:p></o:p></span></li>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
-     style='mso-bidi-font-family:"Times New Roman"'>Nested tables are not spe</span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ified<o:p></o:p></span></li>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
+     described but the errors aren’t specified.<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bidi-font-family:"Times New Roman"'>Nested tables are not
+     specified<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
      style='mso-bidi-font-family:"Times New Roman"'>Argument list (next to
-     fixture name) is not spe</span><st1:PersonName><span style='mso-bidi-font-family:
-      "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-     "Times New Roman"'>ified.<o:p></o:p></span></li>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
-     style='mso-bidi-font-family:"Times New Roman"'>Parser </span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>an handle any XML heirar</span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>hy, but only &lt;table&gt;,
-     &lt;tr&gt;, &lt;td&gt; is spe</span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ified.<o:p></o:p></span></li>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
-     style='mso-bidi-font-family:"Times New Roman"'>Files are expe</span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ted to be CP1252, but this
-     is not spe</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ified.<o:p></o:p></span></li>
+     fixture name) is not specified.<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bidi-font-family:"Times New Roman"'>Parser can handle any XML <span
+     class=SpellE>heirarchy</span>, but only &lt;table&gt;, &lt;<span
+     class=SpellE><span class=GramE>tr</span></span>&gt;, &lt;td&gt; is
+     specified.<o:p></o:p></span></li>
 </ul>
 
 <h2><a name="_Toc90928257"><span style='mso-bidi-font-family:"Times New Roman"'>To
@@ -893,86 +691,68 @@ Do</span></a><span style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></s
 
 <p><span style='mso-bidi-font-family:"Times New Roman"'>Priorities for 1.2:<o:p></o:p></span></p>
 
-<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo3;
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l5 level1 lfo3;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>International
-</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hara</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ter support (Uni</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ode, CP1252, ASCII)<o:p></o:p></span></p>
+character support (Unicode, CP1252, ASCII)<o:p></o:p></span></p>
 
-<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo3;
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l5 level1 lfo3;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>International
 entity support<o:p></o:p></span></p>
 
-<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo3;
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l5 level1 lfo3;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>Spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ify Value Obje</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>t support<o:p></o:p></span></p>
+</span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>Specify
+Value Object support<o:p></o:p></span></p>
 
-<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo3;
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l5 level1 lfo3;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>Spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ify </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>lass+method lookup and resolve </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ross-platform namespa</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>e / </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>amel</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ase issues<o:p></o:p></span></p>
+</span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>Specify
+<span class=SpellE>class+method</span> lookup and resolve cross-platform
+namespace / <span class=SpellE>camelcase</span> issues<o:p></o:p></span></p>
 
-<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo3;
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l5 level1 lfo3;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>Spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ify nested table support and
-address defe</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>t reported by Bill Wake:<o:p></o:p></span></p>
+</span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>Specify
+nested table support and address defect reported by Bill Wake:<o:p></o:p></span></p>
 
-<pre><span style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>Parse p1 = new Parse(&quot;&lt;table&gt;&lt;tr&gt;&lt;td&gt;stuff plus&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&quot;);<o:p></o:p></span></pre><pre
-style='margin-left:45.8pt'><span style='mso-bidi-font-family:"Courier New"'>Parse p2 = new Parse(&quot;&lt;table&gt;&lt;tr&gt;&lt;td&gt;stuff<o:p></o:p></span></pre><pre><span
-style='mso-bidi-font-family:"Courier New"'>&lt;table&gt;&lt;tr&gt;&lt;td&gt;inner&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt; plus&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&quot;);<o:p></o:p></span></pre><pre><span
+<pre><span style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>Parse p1 = new <span
+class=GramE>Parse(</span>&quot;&lt;table&gt;&lt;<span class=SpellE>tr</span>&gt;&lt;td&gt;stuff plus&lt;/td&gt;&lt;/<span
+class=SpellE>tr</span>&gt;&lt;/table&gt;&quot;);<o:p></o:p></span></pre><pre
+style='margin-left:45.8pt'><span style='mso-bidi-font-family:"Courier New"'>Parse p2 = new <span
+class=GramE>Parse(</span>&quot;&lt;table&gt;&lt;<span class=SpellE>tr</span>&gt;&lt;td&gt;stuff<o:p></o:p></span></pre><pre><span
+style='mso-bidi-font-family:"Courier New"'>&lt;<span class=GramE>table</span>&gt;&lt;<span
+class=SpellE>tr</span>&gt;&lt;td&gt;inner&lt;/td&gt;&lt;/<span class=SpellE>tr</span>&gt;&lt;/table&gt; plus&lt;/td&gt;&lt;/<span
+class=SpellE>tr</span>&gt;&lt;/table&gt;&quot;);<o:p></o:p></span></pre><pre><span
 style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span><o:p></o:p></span></pre><pre><span
-style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>Parse </span><st1:PersonName><span
- style='mso-bidi-font-family:"Courier New"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Courier New"'>ell = p1.at(0,0,0);<o:p></o:p></span></pre><pre><span
-style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>assertFalse(</span><st1:PersonName><span
- style='mso-bidi-font-family:"Courier New"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Courier New"'>ell.body.equals(&quot;&quot;));<o:p></o:p></span></pre><pre><span
-style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>assertEquals(&quot;stuff plus&quot;, </span><st1:PersonName><span
- style='mso-bidi-font-family:"Courier New"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Courier New"'>ell.text());<o:p></o:p></span></pre><pre><span
-style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span><o:p></o:p></span></pre><pre><span
-style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>   </span><span style='mso-spacerun:yes'>     </span></span><st1:PersonName><span
- style='mso-bidi-font-family:"Courier New"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Courier New"'>ell = p2.at(0,0,0);<o:p></o:p></span></pre><pre><span
-style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>assertFalse(</span><st1:PersonName><span
- style='mso-bidi-font-family:"Courier New"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Courier New"'>ell.body.equals(&quot;&quot;));<span style='mso-spacerun:yes'>               </span>// FAILS HERE<o:p></o:p></span></pre><pre><span
-style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>assertEquals(&quot;stuff inner plus&quot;, </span><st1:PersonName><span
- style='mso-bidi-font-family:"Courier New"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Courier New"'>ell.text());<o:p></o:p></span></pre>
+style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>Parse cell = <span
+class=GramE>p1.at(</span>0,0,0);<o:p></o:p></span></pre><pre><span
+style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span><span
+class=SpellE><span class=GramE>assertFalse</span></span><span class=GramE>(</span><span
+class=SpellE>cell.body.equals</span>(&quot;&quot;));<o:p></o:p></span></pre><pre><span
+style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span><span
+class=SpellE><span class=GramE>assertEquals</span></span><span class=GramE>(</span>&quot;stuff plus&quot;, <span
+class=SpellE>cell.text</span>());<o:p></o:p></span></pre><pre><span
+style='mso-bidi-font-family:"Courier New"'> <span style='mso-spacerun:yes'>       </span><o:p></o:p></span></pre><pre><span
+style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span><span
+class=GramE>cell</span> = p2.at(0,0,0);<o:p></o:p></span></pre><pre><span
+style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span><span
+class=SpellE><span class=GramE>assertFalse</span></span><span class=GramE>(</span><span
+class=SpellE>cell.body.equals</span>(&quot;&quot;));<span style='mso-spacerun:yes'>               </span>// FAILS HERE<o:p></o:p></span></pre><pre><span
+style='mso-bidi-font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span><span
+class=SpellE><span class=GramE>assertEquals</span></span><span class=GramE>(</span>&quot;stuff inner plus&quot;, <span
+class=SpellE>cell.text</span>());<o:p></o:p></span></pre>
 
 <p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
 style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
@@ -980,34 +760,21 @@ style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 <p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
 style='mso-bidi-font-family:"Times New Roman"'>To look at in a future release:<o:p></o:p></span></p>
 
-<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo3;
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l5 level1 lfo3;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>Why
-is info text </span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>oming out with a line break when
-this spe</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'> is run?<span
-style='mso-spacerun:yes'>  </span>(Be</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ause Word </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>reates empty </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ells with this markup:
-“&lt;p&gt;&amp;nbsp;&lt;/p&gt;”.<span style='mso-spacerun:yes'>  </span>A</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>omodate this?)<o:p></o:p></span></p>
+is info text coming out with a line break when this spec is run?<span
+style='mso-spacerun:yes'>  </span>(Because Word creates empty cells with this
+markup: “&lt;p&gt;&amp;<span class=SpellE><span class=GramE>nbsp</span></span><span
+class=GramE>;</span>&lt;/p&gt;”.<span style='mso-spacerun:yes'>  </span><span
+class=SpellE>Accomodate</span> this?)<o:p></o:p></span></p>
 
 <ul style='margin-top:0in' type=disc>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
      style='mso-bidi-font-family:"Times New Roman"'>Possible bug: when a
-     variable </span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>olumn has a blank </span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ell (in a ColumnFixture),
+     variable column has a blank cell (in a <span class=SpellE>ColumnFixture</span>),
      the value is filled in but it isn’t shown in grey.<o:p></o:p></span></li>
 </ul>
 
@@ -1015,26 +782,24 @@ style='mso-bidi-font-family:"Times New Roman"'>omodate this?)<o:p></o:p></span><
 style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
 
 <p class=MsoNormal style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
-style='mso-bidi-font-family:"Times New Roman"'>Possible feature </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hanges:<o:p></o:p></span></p>
+style='mso-bidi-font-family:"Times New Roman"'>Possible feature changes:<o:p></o:p></span></p>
 
 <ul style='margin-top:0in' type=disc>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
-     style='mso-bidi-font-family:"Times New Roman"'>make fat.Referen</span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>eFixture a standard fit
-     fixture?<o:p></o:p></span></li>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
-     style='mso-bidi-font-family:"Times New Roman"'>Provide a way for
-     ColumnFixture to easily annotate a </span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>ell (in</span><st1:PersonName><span
-      style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-     style='mso-bidi-font-family:"Times New Roman"'>luding when it passes)<o:p></o:p></span></li>
- <li class=MsoNormal style='mso-list:l4 level1 lfo3;tab-stops:list .5in'><span
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
+     class=GramE><span style='mso-bidi-font-family:"Times New Roman"'>make</span></span><span
+     style='mso-bidi-font-family:"Times New Roman"'> <span class=SpellE>fat.ReferenceFixture</span>
+     a standard fit fixture?<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
+     style='mso-bidi-font-family:"Times New Roman"'>Provide a way for <span
+     class=SpellE>ColumnFixture</span> to easily annotate a cell (including
+     when it passes)<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
      style='mso-bidi-font-family:"Times New Roman"'>Data setup fixture, similar
-     to RowFixture?<o:p></o:p></span></li>
+     to <span class=SpellE>RowFixture</span>?<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-list:l5 level1 lfo3;tab-stops:list .5in'><span
+     class=SpellE><span style='mso-bidi-font-family:"Times New Roman"'>ColumnFixture</span></span><span
+     style='mso-bidi-font-family:"Times New Roman"'>: make any column without a
+     header a note field?<o:p></o:p></span></li>
 </ul>
 
 <p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
@@ -1055,9 +820,36 @@ mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Parsing:
 Clarified </span></b><span style='mso-bidi-font-family:"Times New Roman"'>handling
-of self-</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>losed tags like &lt;td
-/&gt;.<span style='mso-spacerun:yes'>  </span>(It’s an error.)<o:p></o:p></span></p>
+of self-closed tags like &lt;td /&gt;.<span style='mso-spacerun:yes'> 
+</span>(Self-closed tags trigger an error.)<o:p></o:p></span></p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>User
+Interface</span></b><b style='mso-bidi-font-weight:normal'><span
+style='mso-bidi-font-family:"Times New Roman"'>: Added</span></b><span
+style='mso-bidi-font-family:"Times New Roman"'> recommended command-line behavior.<o:p></o:p></span></p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>User
+Interface: Added</span></b><span style='mso-bidi-font-family:"Times New Roman";
+mso-bidi-font-weight:bold'> optional “--encoding” parameter for setting file
+encoding.</span><span style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
+tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
+mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>User
+Interface</span></b><span style='mso-bidi-font-family:"Times New Roman"'>: <b
+style='mso-bidi-font-weight:normal'>Added </b>requirement that non-standard
+features be disabled by default and clearly documented as breaking
+compatibility.<o:p></o:p></span></p>
 
 <p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
 style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
@@ -1070,10 +862,8 @@ tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>HTML
-to text: Added</span></b><span style='mso-bidi-font-family:"Times New Roman"'> support
-for </span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>lass attribute in MS Word
-&lt;p&gt; tag parsing<o:p></o:p></span></p>
+to text: Added</span></b><span style='mso-bidi-font-family:"Times New Roman"'>
+support for class attribute in MS Word &lt;p&gt; tag parsing<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
@@ -1089,20 +879,15 @@ mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Text
 to HTML: Changed </span></b><span style='mso-bidi-font-family:"Times New Roman"'>handling
-of “ba</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>kwards line feed”<o:p></o:p></span></p>
+of “backwards line feed”<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Fixture
-loading: Added </span></b><span style='mso-bidi-font-family:"Times New Roman"'>spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'> error messages when fixtures
-don’t load<o:p></o:p></span></p>
+loading: Added </span></b><span style='mso-bidi-font-family:"Times New Roman"'>specific
+error messages when fixtures don’t load<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
@@ -1110,9 +895,7 @@ mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Standard
 annotations: Changed </span></b><span style='mso-bidi-font-family:"Times New Roman"'>all
-HTML to put quotes around </span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>olor attributes<o:p></o:p></span></p>
+HTML to put quotes around color attributes<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
@@ -1120,9 +903,7 @@ mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Standard
 annotations: Changed </span></b><span style='mso-bidi-font-family:"Times New Roman"'>“error”
-and “info” annotations to </span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>onvert new text to HTML.<o:p></o:p></span></p>
+and “info” annotations to convert new text to HTML.<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
@@ -1130,9 +911,7 @@ mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Standard
 annotations: Changed</span></b><span style='mso-bidi-font-family:"Times New Roman"'>
-“wrong” and “error” annotations to strip mark-up from original </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ell.<o:p></o:p></span></p>
+“wrong” and “error” annotations to strip mark-up from original cell.<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
@@ -1149,22 +928,19 @@ mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Malformed
 HTML Parsing: Changed </span></b><span style='mso-bidi-font-family:"Times New Roman";
-mso-bidi-font-weight:bold'>un</span><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman";mso-bidi-font-weight:bold'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman";mso-bidi-font-weight:bold'>losed
-table, tr, and td tags to generate an error.</span><span style='mso-bidi-font-family:
-"Times New Roman"'><o:p></o:p></span></p>
+mso-bidi-font-weight:bold'>unclosed table, <span class=SpellE><span
+class=GramE>tr</span></span>, and td tags to generate an error.</span><span
+style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>ColumnFixture:
-Changed </span></b><span style='mso-bidi-font-family:"Times New Roman";
+</span></span></span><![endif]><span class=SpellE><b><span style='mso-bidi-font-family:
+"Times New Roman"'>ColumnFixture</span></b></span><b><span style='mso-bidi-font-family:
+"Times New Roman"'>: Changed </span></b><span style='mso-bidi-font-family:"Times New Roman";
 mso-bidi-font-weight:bold'>headers to allow multiple words.<span
-style='mso-spacerun:yes'>  </span>(not yet spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman";mso-bidi-font-weight:bold'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman";mso-bidi-font-weight:bold'>ified.)</span><span
+style='mso-spacerun:yes'>  </span>(<span class=GramE>not</span> yet specified.)</span><span
 style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
@@ -1174,9 +950,8 @@ style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'><span
 style='mso-bidi-font-family:"Times New Roman"'>Fixture loading: Added</span></b><span
 style='mso-bidi-font-family:"Times New Roman"'> argument list by fixture
-name.<span style='mso-spacerun:yes'>  </span>(not yet spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ified.)<o:p></o:p></span></p>
+name.<span style='mso-spacerun:yes'>  </span>(<span class=GramE>not</span> yet
+specified.)<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo7;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
@@ -1185,9 +960,7 @@ style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'><span
 style='mso-bidi-font-family:"Times New Roman"'>Parsing: Added</span></b><span
 style='mso-bidi-font-family:"Times New Roman"'> support for nested tables.<span
-style='mso-spacerun:yes'>  </span>(not yet spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ified.)<o:p></o:p></span></p>
+style='mso-spacerun:yes'>  </span>(<span class=GramE>not</span> yet specified.)<o:p></o:p></span></p>
 
 <p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
 style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
@@ -1200,20 +973,16 @@ tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Rewrite
-</span></b><span style='mso-bidi-font-family:"Times New Roman"'>of the spe</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>.<o:p></o:p></span></p>
+</span></b><span style='mso-bidi-font-family:"Times New Roman"'>of the spec.<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l3 level1 lfo9;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>HTML
-to text: Changed </span></b><span style='mso-bidi-font-family:"Times New Roman"'>&amp;nbsp;
-entity to </span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ombine with other leading and
-trailing whitespa</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>e.<o:p></o:p></span></p>
+to text: Changed </span></b><span style='mso-bidi-font-family:"Times New Roman"'>&amp;<span
+class=SpellE>nbsp</span>; entity to combine with other leading and trailing <span
+class=SpellE>whitespace</span>.<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l3 level1 lfo9;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
@@ -1221,62 +990,40 @@ mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>HTML
 to text: Changed </span></b><span style='mso-bidi-font-family:"Times New Roman"'>non-breaking
-spa</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>e </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hara</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ter to <i>not</i> </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ombine with other internal
-whitespa</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>e.<o:p></o:p></span></p>
+space character to <i>not</i> combine with other internal <span class=SpellE>whitespace</span>.<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l3 level1 lfo9;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>HTML
-to text: Added </span></b><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>onversion of &lt;br&gt; and &lt;p&gt; tags to line-feed </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hara</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ters.<o:p></o:p></span></p>
+to text: Added </span></b><span style='mso-bidi-font-family:"Times New Roman"'>conversion
+of &lt;<span class=SpellE>br</span>&gt; and &lt;p&gt; tags to line-feed
+characters.<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l3 level1 lfo9;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>HTML
-to text: Added </span></b><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>onversion of “smart quotes” to regular quotes.<o:p></o:p></span></p>
+to text: Added </span></b><span style='mso-bidi-font-family:"Times New Roman"'>conversion
+of “smart quotes” to regular quotes.<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l3 level1 lfo9;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Text
-to HTML: Added </span></b><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>onversion of line-feed </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>hara</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ters to &lt;br&gt; tags.<o:p></o:p></span></p>
+to HTML: Added </span></b><span style='mso-bidi-font-family:"Times New Roman"'>conversion
+of line-feed characters to &lt;<span class=SpellE>br</span>&gt; tags.<o:p></o:p></span></p>
 
 <p style='margin-left:.5in;text-indent:-.25in;mso-list:l3 level1 lfo9;
 tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b><span style='mso-bidi-font-family:"Times New Roman"'>Text
-to HTML: Added </span></b><st1:PersonName><span style='mso-bidi-font-family:
- "Times New Roman"'>c</span></st1:PersonName><span style='mso-bidi-font-family:
-"Times New Roman"'>onversion of adjoining spa</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>es to &amp;nbsp; entities.<o:p></o:p></span></p>
+to HTML: Added </span></b><span style='mso-bidi-font-family:"Times New Roman"'>conversion
+of adjoining spaces to &amp;<span class=SpellE>nbsp</span>; entities.<o:p></o:p></span></p>
 
 <p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
 style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
@@ -1289,17 +1036,10 @@ tab-stops:list .5in'><![if !supportLists]><span style='font-family:Symbol;
 mso-fareast-font-family:Symbol;mso-bidi-font-family:Symbol'><span
 style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><span style='mso-bidi-font-family:"Times New Roman"'>Experimental
-spe</span><st1:PersonName><span style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ifi</span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>ation </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>c</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'>reated by </span><st1:PersonName><span
- style='mso-bidi-font-family:"Times New Roman"'>Ward Cunningham</span></st1:PersonName><span
-style='mso-bidi-font-family:"Times New Roman"'> and </span><st1:place><st1:PersonName><st1:PlaceName><span
-   style='mso-bidi-font-family:"Times New Roman"'>Jim</span></st1:PlaceName><span
-  style='mso-bidi-font-family:"Times New Roman"'> </span><st1:PlaceName><span
-   style='mso-bidi-font-family:"Times New Roman"'>Shore</span></st1:PlaceName></st1:PersonName></st1:place><span
+specification created by Ward Cunningham and </span><st1:place><st1:PlaceName><span
+  style='mso-bidi-font-family:"Times New Roman"'>Jim</span></st1:PlaceName><span
+ style='mso-bidi-font-family:"Times New Roman"'> </span><st1:PlaceName><span
+  style='mso-bidi-font-family:"Times New Roman"'>Shore</span></st1:PlaceName></st1:place><span
 style='mso-bidi-font-family:"Times New Roman"'>.<o:p></o:p></span></p>
 
 <p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
@@ -1317,8 +1057,9 @@ style='mso-bidi-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></p>
  style='border-collapse:collapse;mso-padding-alt:0in 0in 0in 0in'>
  <tr style='mso-yfti-irow:0;mso-yfti-lastrow:yes'>
   <td valign=top style='padding:0in 5.4pt 0in 5.4pt'>
-  <p><span style='mso-bidi-font-family:"Times New Roman";color:silver'>fit.Summary</span><span
-  style='mso-bidi-font-family:"Times New Roman"'><o:p></o:p></span></p>
+  <p><span class=SpellE><span style='mso-bidi-font-family:"Times New Roman";
+  color:silver'>fit.Summary</span></span><span style='mso-bidi-font-family:
+  "Times New Roman"'><o:p></o:p></span></p>
   </td>
  </tr>
 </table>
