@@ -8,7 +8,7 @@ import java.util.*;
 
 public class FileRunner {
 
-	private static String encoding = System.getProperty("file.encoding");
+	private static String encoding;
 
     public String input;
     public Parse tables;
@@ -25,14 +25,13 @@ public class FileRunner {
 		}
     }
 
-    public void run(String argv[]) throws IOException, CommandLineParserException {
-		CommandLineParser parser = CommandLineParser.fileRunnerParser();
-		parser.parse(argv);
-		if (parser.isParameterSet(CommandLineParser.PARAMETER_ENCODING)) {
-			encoding = parser.getStringParameterValue(CommandLineParser.PARAMETER_ENCODING);
+    public void run(String argv[]) throws IOException, CommandLineParseException {
+		Parameters parameters = new Parameters(argv);
+		if (encoding == null || parameters.encodingSpecified()) {
+			encoding = parameters.encoding();
 		}
 		
-        args(parser.getArguments());
+        args(parameters.legacyArguments());
         process();
         exit();
     }
