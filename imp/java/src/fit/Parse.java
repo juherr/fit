@@ -1,6 +1,6 @@
 package fit;
 
-// Copyright (c) 2002 Cunningham & Cunningham, Inc.
+// Copyright (c) 2002, 2008 Cunningham & Cunningham, Inc.
 // Released under the terms of the GNU General Public License version 2 or later.
 
 import java.io.*;
@@ -153,7 +153,8 @@ public class Parse {
 
     public static String unescape(String s) {
     	s = s.replaceAll("<br />", "\n");
-		s = unescapeEntities(s);
+		s = unescapeNumericEntities(s);
+		s = unescapeCharacterEntities(s);
 		s = unescapeSmartQuotes(s);
         return s;
     }
@@ -166,13 +167,50 @@ public class Parse {
 		return s;
 	}
 
-	private static String unescapeEntities(String s) {
+	private static String unescapeCharacterEntities(String s) {
 		s = s.replaceAll("&lt;", "<");
 		s = s.replaceAll("&gt;", ">");
 		s = s.replaceAll("&nbsp;", " ");
 		s = s.replaceAll("&quot;", "\"");
 		s = s.replaceAll("&amp;", "&");
 		return s;
+	}
+	
+	private static String unescapeNumericEntities(String s) {
+		String result = "";
+		int lastStart = 0;
+		int startsAt = s.indexOf("&#");
+		int character;
+		while (startsAt >= 0) {
+			int endsAt = s.indexOf(';', startsAt);
+			if (endsAt < 0) {
+				startsAt = s.indexOf("&#", startsAt + 1);
+				continue;
+			}
+
+			try {
+				String entity = s.substring(startsAt + 2, endsAt);
+				if (entity.startsWith("x") || entity.startsWith("X")) {
+					character = Integer.parseInt(entity.substring(1), 16);
+				}
+				else {
+					character = Integer.parseInt(entity, 10);
+				}
+				if (character <= 0xFFFF) {
+					result += s.substring(lastStart, startsAt) + (char)character;			
+					lastStart = endsAt + 1;
+				}
+			}
+			catch (NumberFormatException e) {
+				// okay--we'll just loop around again
+			}
+			finally {
+				startsAt = s.indexOf("&#", endsAt);
+			}
+		}
+		result += s.substring(lastStart);
+
+		return result;
 	}
 
 	private static String normalizeLineBreaks(String s) {

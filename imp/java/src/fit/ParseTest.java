@@ -1,6 +1,6 @@
 package fit;
 
-//Copyright (c) 2002 Cunningham & Cunningham, Inc.
+//Copyright (c) 2002, 2008 Cunningham & Cunningham, Inc.
 //Released under the terms of the GNU General Public License version 2 or later.
 
 import junit.framework.TestCase;
@@ -92,10 +92,6 @@ public class ParseTest extends TestCase {
 		assertEquals("a\nb", Parse.htmlToText("a</p> <p yadda>b"));
 		assertEquals("a b", Parse.htmlToText("a</p> <pyadda>b"));
 	}
-	
-	public void testNumericEntities() throws Exception {
-		fail("foo");
-	}
 
 	public void testUnescape () {
 		assertEquals("a<b", Parse.unescape("a&lt;b"));
@@ -103,6 +99,21 @@ public class ParseTest extends TestCase {
 		assertEquals("&amp;&amp;", Parse.unescape("&amp;amp;&amp;amp;"));
 		assertEquals("a>b & b>c &&", Parse.unescape("a&gt;b&nbsp;&amp;&nbsp;b>c &&"));
 		assertEquals("\"\"''", Parse.unescape("\u201c\u201d\u2018\u2019"));
+		assertEquals("no-entity", Parse.unescape("no-entity"));
+	}
+	
+	public void testUnescapeNumericEntities() {
+		assertEquals("A", Parse.unescape("&#65;"));
+		assertEquals("A", Parse.unescape("&#x41;"));
+		assertEquals("A", Parse.unescape("&#X41;"));
+		assertEquals("!A!", Parse.unescape("!&#65;!"));
+		assertEquals("AB", Parse.unescape("&#65;&#66;"));
+		assertEquals("1A2B3", Parse.unescape("1&#65;2&#66;3"));
+		assertEquals("&#65", Parse.unescape("&#65"));
+		assertEquals("&#foo;", Parse.unescape("&#foo;"));
+		assertEquals("1&#foo;2", Parse.unescape("1&#foo;2"));
+		assertEquals("\uFFFF", Parse.unescape("&#65535;"));
+		assertEquals("&#65536;", Parse.unescape("&#65536;"));
 	}
 
 	public void testWhitespaceIsCondensed() {
