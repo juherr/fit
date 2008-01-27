@@ -92,6 +92,10 @@ public class ParseTest extends TestCase {
 		assertEquals("a\nb", Parse.htmlToText("a</p> <p yadda>b"));
 		assertEquals("a b", Parse.htmlToText("a</p> <pyadda>b"));
 	}
+	
+	public void testNumericEntities() throws Exception {
+		fail("foo");
+	}
 
 	public void testUnescape () {
 		assertEquals("a<b", Parse.unescape("a&lt;b"));
