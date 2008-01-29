@@ -34,18 +34,18 @@ public class ParametersTest extends TestCase {
 		assertParseWorked("in", "--encoding=foo", "out");
 		assertParseWorked("in", "out", "--encoding=foo");
 	}
-	
-	public void testDoubleDash() throws Exception {
-		Parameters p = new Parameters(new String[] {"--encoding=foo", "--", "in", "--encoding=foo"});
-		assertEquals("in", p.input());
-		assertEquals("--encoding=foo", p.output());
-		assertEquals("foo", p.encoding());
-	}
 
 	private void assertParseWorked(String parm1, String parm2, String parm3) throws CommandLineException {
 		Parameters p = new Parameters(new String[] {parm1, parm2, parm3});
 		assertEquals("in", p.input());
 		assertEquals("out", p.output());
+		assertEquals("foo", p.encoding());
+	}
+	
+	public void testDoubleDash() throws Exception {
+		Parameters p = new Parameters(new String[] {"--encoding=foo", "--", "in", "--encoding=foo"});
+		assertEquals("in", p.input());
+		assertEquals("--encoding=foo", p.output());
 		assertEquals("foo", p.encoding());
 	}
 

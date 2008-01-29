@@ -73,5 +73,4 @@ public class Parameters {
 
 		encoding = value;
 	}
-
 }

@@ -15,7 +15,7 @@ public class FileRunner {
     public Fixture fixture = new Fixture();
     public PrintWriter output;
 
-    public static void main(String argv[]) throws Exception {
+    public static void main(String argv[]) {
     	try {
     		new FileRunner().run(argv);
 		}
