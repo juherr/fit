@@ -9,21 +9,21 @@ import fit.*;
 public class CommandLineFixture extends ColumnFixture {
 	public String CommandLine;
 	
-	public String InputFile() throws CommandLineParseException {
+	public String InputFile() throws Exception {
 		return CommandLine().input();
 	}
 
-	public String OutputFile() throws CommandLineParseException {
+	public String OutputFile() throws Exception {
 		return CommandLine().output();
 	}
 
-	public String Encoding() throws CommandLineParseException {
+	public String Encoding() throws Exception {
 		Parameters p = CommandLine();
 		if (p.encodingSpecified()) return p.encoding();
 		else return "Implementation-specific";
 	}
 	
-	public Parameters CommandLine() throws CommandLineParseException {
+	public Parameters CommandLine() throws Exception {
 		String[] args = CommandLine.split(" ");
 		return new Parameters(args);
 	}

@@ -19,17 +19,13 @@ public class FileRunner {
     	try {
     		new FileRunner().run(argv);
 		}
-		catch (CommandLineParseException e) {
-			System.err.println(e.getUserMessage());
-			System.exit(-1);
-		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 			System.exit(-1);
 		}
     }
 
-    public void run(String argv[]) throws IOException, CommandLineParseException {
+    public void run(String argv[]) throws IOException, CommandLineException {
 		Parameters parameters = new Parameters(argv);
 		if (encoding == null || parameters.encodingSpecified()) {
 			encoding = parameters.encoding();

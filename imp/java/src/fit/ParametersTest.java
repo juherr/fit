@@ -29,43 +29,60 @@ public class ParametersTest extends TestCase {
 		assertEquals("encoding specified", true, new Parameters(new String[] {"in", "out", "--encoding=foo"}).encodingSpecified());
 	}	
 
-	public void testEncodingWorksInAnyPosition() throws Exception {
+	public void testOptionsWorkInAnyPosition() throws Exception {
 		assertParseWorked("--encoding=foo", "in", "out");
 		assertParseWorked("in", "--encoding=foo", "out");
 		assertParseWorked("in", "out", "--encoding=foo");
 	}
+	
+	public void testDoubleDash() throws Exception {
+		Parameters p = new Parameters(new String[] {"--encoding=foo", "--", "in", "--encoding=foo"});
+		assertEquals("in", p.input());
+		assertEquals("--encoding=foo", p.output());
+		assertEquals("foo", p.encoding());
+	}
 
-	private void assertParseWorked(String parm1, String parm2, String parm3) throws CommandLineParseException {
+	private void assertParseWorked(String parm1, String parm2, String parm3) throws CommandLineException {
 		Parameters p = new Parameters(new String[] {parm1, parm2, parm3});
 		assertEquals("in", p.input());
 		assertEquals("out", p.output());
 		assertEquals("foo", p.encoding());
 	}
 
-	public void testParameterErrorHandling() throws Exception {
-		assertException("missing input-file and output-file", new String[] {});
-		assertException("missing output-file", new String[] {"in"});
-		assertException("too many file parameters", new String[] {"in", "out", "quack"});
-		assertException("duplicated parameter: --encoding", new String[] {"in", "out", "--encoding=a", "--encoding=b"});
-		assertException("unrecognized parameter: --notparm", new String[] {"in", "out", "--encoding=a", "--notparm=b"});
-		assertException("unrecognized parameter: --notparm", new String[] {"in", "out", "--notparm=a", "--notparm=b"});
-	}
-
-	public void testEncodingParser() throws Exception {
+	public void testOptionParser() throws Exception {
 		assertEquals("foo", newParameters("--encoding=foo").encoding());
 		assertEquals("foo bar", newParameters("--encoding=foo bar").encoding());
 		assertEquals("foo=bar", newParameters("--encoding=foo=bar").encoding());
 		assertEquals("foo-bar", newParameters("--encoding=foo-bar").encoding());
 	}
 
-	public void testEncodingErrorHandling() throws Exception {
-		assertException("unrecognized parameter: -encoding=foo", "-encoding=foo");
-		assertException("unrecognized parameter: --notparm", "--notparm=blah");
-		assertException("unrecognized parameter: --notparm", "--notparm");
-		assertException("unrecognized parameter: -", "-");
-		assertException("unrecognized parameter: --", "--");
-		assertException("missing value: --encoding", "--encoding");
-		assertException("missing value: --encoding", "--encoding=");
+	public void testArgumentErrorHandling() throws Exception {
+		assertParseException("fit: missing input-file and output-file", new String[] {});
+		assertParseException("fit: missing output-file", new String[] {"in"});
+		assertParseException("fit: too many file parameters", new String[] {"in", "out", "quack"});
+		assertParseException("fit: --encoding: duplicated parameter", new String[] {"in", "out", "--encoding=a", "--encoding=b"});
+		assertParseException("fit: --notparm: unknown option", new String[] {"in", "out", "--encoding=a", "--notparm=b"});
+		assertParseException("fit: --notparm: unknown option", new String[] {"in", "out", "--notparm=a", "--notparm=b"});
+	}
+
+	public void testOptionErrorHandling() throws Exception {
+		assertParseException("fit: too many file parameters", "=foo");
+		assertParseException("fit: -encoding: unknown option", "-encoding=foo");
+		assertParseException("fit: --notparm: unknown option", "--notparm=blah");
+		assertParseException("fit: --notparm: unknown option", "--notparm");
+		assertParseException("fit: -: unknown option", "-");
+		assertParseException("fit: --encoding: missing value", "--encoding");
+		assertParseException("fit: --encoding: missing value", "--encoding=");
+	}
+	
+	public void testVersion() throws Exception {
+		try {
+			newParameters("--version");
+			fail("expected exception");
+		}
+		catch (CommandLineException e) {
+			assertEquals(Parameters.VERSION_TEXT, e.getMessage());
+		}
 	}
 	
 	public void testHelp() throws Exception {
@@ -73,24 +90,20 @@ public class ParametersTest extends TestCase {
 			newParameters("--help");
 			fail("expected exception");
 		}
-		catch (CommandLineParseException e) {
-			String expected =
-				"unrecognized parameter: --help\n" +
-				"usage: java fit.FileRunner input-file output-file --encoding=charset\n"
-			;
-			assertEquals(expected, e.getUserMessage());
+		catch (CommandLineException e) {
+			assertEquals(Parameters.HELP_TEXT, e.getMessage());
 		}
 	}
 	
-	private Parameters newParameters(String encoding) throws CommandLineParseException {
+	private Parameters newParameters(String encoding) throws CommandLineException {
 		return new Parameters(new String[] {"in", "out", encoding});
 	}
 
-	private void assertException(String expectedErrorMessage, String encodingParm) {
-		assertException(expectedErrorMessage, new String[] {"in", "out", encodingParm});
+	private void assertParseException(String expectedErrorMessage, String encodingParm) throws CommandLineException {
+		assertParseException(expectedErrorMessage, new String[] {"in", "out", encodingParm});
 	}
 
-	private void assertException(String expectedErrorMessage, String[] args) {
+	private void assertParseException(String expectedErrorMessage, String[] args) throws CommandLineException {
 		try {
 			Parameters p = new Parameters(args);
 			fail("expected exception");
