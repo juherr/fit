@@ -26,7 +26,7 @@ public class Parameters {
 		"There is NO WARRANTY, to the extent permitted by law.\n"
 	;
 	
-	private boolean parsingOptions = true;
+	private boolean shouldParseOptions = true;
 	private String input = null;
 	private String output = null;
 	private String encoding = null;
@@ -41,8 +41,8 @@ public class Parameters {
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
 			
-			if (arg.equals("--")) parsingOptions = false;
-			else if (arg.startsWith("-") && parsingOptions) parseOption(arg);
+			if (arg.equals("--")) shouldParseOptions = false;
+			else if (arg.startsWith("-") && shouldParseOptions) parseOption(arg);
 			else if (input == null) input = arg;
 			else if (output == null) output = arg;
 			else throw new CommandLineParseException("too many file parameters");

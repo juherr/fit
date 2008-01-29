@@ -15,9 +15,13 @@ public class FileRunner {
     public Fixture fixture = new Fixture();
     public PrintWriter output;
 
-    public static void main(String argv[]) {
+    public static void main(String argv[]) throws Exception {
     	try {
     		new FileRunner().run(argv);
+		}
+		catch (UnsupportedEncodingException e) {
+			System.err.println("fit: " + e.getMessage() + ": unsupported encoding");
+			System.exit(-1);
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
