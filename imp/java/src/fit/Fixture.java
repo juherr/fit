@@ -105,7 +105,7 @@ public class Fixture {
 	throws InstantiationException, IllegalAccessException {
 		String notFound = "The fixture \"" + fixtureName + "\" was not found.";
 		try {
-			return (Fixture)(Class.forName(fixtureName).newInstance());
+			return getFixtureInstanceOf(fixtureName);
 		}
 		catch (ClassCastException e) {
 			throw new RuntimeException("\"" + fixtureName + "\" was found, but it's not a fixture.", e);
@@ -289,5 +289,10 @@ public class Fixture {
     public String[] getArgs() {
         return args;
     }
+	
+	public Fixture getFixtureInstanceOf(String classname)
+	throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		return (Fixture)Thread.currentThread().getContextClassLoader().loadClass(classname).newInstance();
+	}
 
 }

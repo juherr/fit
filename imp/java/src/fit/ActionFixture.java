@@ -25,7 +25,7 @@ public class ActionFixture extends Fixture {
     // Actions //////////////////////////////////
 
     public void start() throws Exception {
-        actor = (Fixture)(Class.forName(cells.more.text()).newInstance());
+		actor = getFixtureInstanceOf(cells.more.text());
     }
 
     public void enter() throws Exception {
