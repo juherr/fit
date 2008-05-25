@@ -25,7 +25,6 @@ public class TableSortCoordinator extends MouseAdapter {
 		sortChanged = new PropertyChangeSupport(this);
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (!e.isConsumed()) {
 
@@ -107,7 +106,6 @@ public class TableSortCoordinator extends MouseAdapter {
 		return Math.abs(x-lastX) > columnWidth / 10;
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		lastX = e.getX();
 	}

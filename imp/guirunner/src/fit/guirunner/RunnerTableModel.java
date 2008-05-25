@@ -66,6 +66,7 @@ public class RunnerTableModel extends AbstractTableModel {
 	public List getEntries() {
 		return entries;
 	}
+
 	public RunnerEntry getEntry(int idx) {
 		return (RunnerEntry) entries.get(idx);
 	}
@@ -193,6 +194,7 @@ public class RunnerTableModel extends AbstractTableModel {
 		}
 		return result;
 	}
+
 	/** get a new compound comparator for columns and directions given in the map */
 	public Comparator getComparator(Map sortColumns) {
 		Comparator[] comparators = new Comparator[sortColumns.size()];
@@ -200,10 +202,11 @@ public class RunnerTableModel extends AbstractTableModel {
 		for (Iterator i = sortColumns.values().iterator(); i.hasNext();) {
 			SortingEntry se = (SortingEntry) i.next();
 			// Column-order is 1-based!
-			comparators[se.sortingPosition -1] = getComparator(se.getModelIndex());
-			ascendingOrder[se.sortingPosition -1] = se.getSortingDirection() == SortingEntry.ASC;
+			comparators[se.sortingPosition - 1] = getComparator(se
+					.getModelIndex());
+			ascendingOrder[se.sortingPosition - 1] = se.getSortingDirection() == SortingEntry.ASC;
 		}
-		return new RunnerEntriesComparator(comparators,ascendingOrder,this);
+		return new RunnerEntriesComparator(comparators, ascendingOrder, this);
 	}
 
 	public Comparator getComparator(int columnModelIndex) {
@@ -271,11 +274,17 @@ class IntegerAttributeComparator implements Comparator {
 			break;
 		}
 		if (v1 != null) {
-			result = v1.compareTo(v2);
-		} else if (v2 != null) {
-			result = 1;
+			if (v2 != null) {
+				result = v1.compareTo(v2);
+			} else {
+				result = 1;
+			}
 		} else {
-			result = 0;
+			if (v2 != null) {
+				result = -1;
+			} else {
+				result = 0;
+			}
 		}
 		return result;
 	}
@@ -305,11 +314,17 @@ class StringAttributeComparator implements Comparator {
 			break;
 		}
 		if (v1 != null) {
-			result = v1.compareTo(v2);
-		} else if (v2 != null) {
-			result = 1;
+			if (v2 != null) {
+				result = v1.compareTo(v2);
+			} else {
+				result = 1;
+			}
 		} else {
-			result = 0;
+			if (v2 != null) {
+				result = -1;
+			} else {
+				result = 0;
+			}
 		}
 		return result;
 	}

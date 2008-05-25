@@ -94,19 +94,18 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions,
 		DefaultTableCellRenderer elapsedRenderer = new DefaultTableCellRenderer();
 		elapsedRenderer
 				.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		getColumn(RunnerTableModel.POS_ELAPSED)
+		getColumn(new Integer(RunnerTableModel.POS_ELAPSED))
 				.setCellRenderer(elapsedRenderer);
 
-		getColumn(RunnerTableModel.POS_CORRECT).setCellRenderer(
+		getColumn(new Integer(RunnerTableModel.POS_CORRECT)).setCellRenderer(
 				new ColoredIntegerCellRenderer(Color.GREEN));
-		getColumn(RunnerTableModel.POS_WRONG).setCellRenderer(
+		getColumn(new Integer(RunnerTableModel.POS_WRONG)).setCellRenderer(
 				new ColoredIntegerCellRenderer(Color.RED));
-		getColumn(RunnerTableModel.POS_EXCEPTIONS).setCellRenderer(
+		getColumn(new Integer(RunnerTableModel.POS_EXCEPTIONS)).setCellRenderer(
 				new ColoredIntegerCellRenderer(Color.YELLOW));
 
 		tableSortCoordinator = new TableSortCoordinator(this);
 		getTableHeader().addMouseListener(tableSortCoordinator);
-		// getTableHeader().setUpdateTableInRealTime(true);
 	}
 
 	protected JPopupMenu kontextMenu(ActionMap am) {

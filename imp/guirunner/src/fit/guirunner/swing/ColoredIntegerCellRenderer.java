@@ -21,7 +21,6 @@ public class ColoredIntegerCellRenderer extends DefaultTableCellRenderer {
 		this.nonzeroColor = nonzeroColor;
 		setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 	}
-	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		Component theComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         if (isSelected) {
