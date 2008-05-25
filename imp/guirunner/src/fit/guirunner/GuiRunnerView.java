@@ -341,10 +341,10 @@ class RunCurrentAction extends CurrentSelectionAction {
 			ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx
 					.getInDir(), ctx.getInDir(), ctx.getOutDir());
 			re.setRunning();
-			((RunnerTableModel) view.getModel()).modifyStatus(re);
+			view.getModel().setValueAt(re, view.getSelectedRow(), RunnerTableModel.POS_STATUS);
 			execute.doExecute(re);
-			Thread.sleep(2000);
-			((RunnerTableModel) view.getModel()).modifyEntry(re);
+			Thread.sleep(1000);
+			view.getModel().setValueAt(re, view.getSelectedRow(), RunnerTableModel.POS_ROW);
 
 		} catch (IOException e1) {
 			// TODO MessageService

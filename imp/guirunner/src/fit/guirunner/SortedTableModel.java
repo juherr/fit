@@ -101,7 +101,8 @@ public class SortedTableModel extends AbstractTableModel implements TableModelLi
 		return theModel.isCellEditable(rowIndex, columnIndex);
 	}
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		theModel.setValueAt(aValue, rowIndex, columnIndex);
+		int idx = (isSorted) ? view2model[rowIndex].intValue() : rowIndex;
+		theModel.setValueAt(aValue, idx, columnIndex);
 	}
 }
 

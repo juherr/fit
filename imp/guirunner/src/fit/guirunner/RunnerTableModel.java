@@ -84,6 +84,19 @@ public class RunnerTableModel extends AbstractTableModel {
 		return getAttribute(entry, arg1);
 	}
 
+	public void setValueAt(Object value, int rowIndex, int columnIndex) {
+		switch (columnIndex) {
+		case POS_STATUS:
+			modifyStatus((RunnerEntry) value);
+			break;
+		case POS_ROW:
+			modifyEntry((RunnerEntry) value);
+			break;
+		default:
+			super.setValueAt(value, rowIndex, columnIndex);
+		}
+	}
+
 	public Class getColumnClass(int arg0) {
 		return columnClasses[arg0];
 	}
