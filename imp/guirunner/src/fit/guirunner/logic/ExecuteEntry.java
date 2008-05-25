@@ -17,6 +17,9 @@ public class ExecuteEntry {
 
   String commandLine;
   File workingDirectory;
+  File inDir;
+  File outDir;
+  
   boolean outputParsed = false;
   String right = null;
   String wrong = null;
@@ -24,22 +27,33 @@ public class ExecuteEntry {
   String exceptions = null;
   Pattern regexp;
 
-  public ExecuteEntry(String commandLine, File workingDirectory) {
+  public ExecuteEntry(String commandLine, File workingDirectory,File inDir, File outDir) {
     this.commandLine = commandLine;
     this.workingDirectory = workingDirectory;
+    this.inDir = inDir;
+    this.outDir = outDir;
     regexp = Pattern.compile("(\\d+) right, (\\d+) wrong, (\\d+) ignore[sd], (\\d+) exceptions");
 
   }
 
   public void doExecute(RunnerEntry re) {
+	  
+	File outFilename = generateOutputFilename(inDir,outDir,re.getInFile());
     StringBuffer cmdOutput = new StringBuffer();
     VariableExpansion strrep = new VariableExpansion("infile", re.getInFile().getAbsolutePath(),
-        "outfile", re.getOutFile().getAbsolutePath(),"infiledir",re.getInFile().getParentFile().getAbsolutePath());
+        "outfile", outFilename.getAbsolutePath(),"infiledir",re.getInFile().getParentFile().getAbsolutePath(),
+        "outdir",  outDir.getAbsolutePath());
+    	
     String cmdLine = strrep.replace(commandLine);
     cmdOutput.append(cmdLine).append("\n");
     outputParsed = false;
     long elapsed = System.currentTimeMillis();
     try {
+        File parentDir = outFilename.getParentFile();
+        if (!parentDir.isDirectory()) {
+          parentDir.mkdirs();
+        }
+    	
       Process p = Runtime.getRuntime().exec(cmdLine, null, workingDirectory);
       StreamToStringList stdout = new StreamToStringList(p.getInputStream());
       StreamToStringList stderr = new StreamToStringList(p.getErrorStream());
@@ -61,8 +75,10 @@ public class ExecuteEntry {
     if (outputParsed) {
       re.setParseableResult(cmdOutput.toString(), Integer.parseInt(right), Integer.parseInt(wrong),
           Integer.parseInt(ignored), Integer.parseInt(exceptions));
+      re.setLastOutFile(outFilename);
     } else {
       re.setUnparseableResult(cmdOutput.toString());
+      re.setLastOutFile(null);
     }
   }
 
@@ -81,6 +97,24 @@ public class ExecuteEntry {
         }
       }
     }
+  }
+
+/**
+   * Generates an output Filename. Such filename has the same relative path to the outDir as the
+   * inFile to inDir
+   * 
+   * @param inDir - canonical form of the input directory
+   * @param outDir - canonical form of the output directory
+   * @param inFile - canonical form of the input filename
+   * @return
+   */
+  public static File generateOutputFilename(File inDir, File outDir, File inFile) {
+    StringBuffer sb = new StringBuffer(outDir.getAbsolutePath().length()
+        + inFile.getAbsolutePath().length());
+    sb.append(outDir.getAbsolutePath());
+    sb.append(System.getProperties().getProperty("file.separator"));
+    sb.append(inFile.getAbsolutePath().substring(inDir.getAbsolutePath().length()));
+    return new File(sb.toString());
   }
 }
 class StreamToStringList extends Thread {

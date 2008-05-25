@@ -18,7 +18,11 @@ public class RunnerEntry {
   public static final int RUNNING = 3;
 
   File inFile;
-  File outFile;
+  /** last outFile for this entry. Valid only after being run */
+  // TODO
+  File lastOutFile;
+  /** path relative to input direcotry. For sorting purposes only */
+  String relativePath;
   String runnerOutput;
   int right;
   int wrong;
@@ -30,9 +34,9 @@ public class RunnerEntry {
   /** Elapsed time in millis during exececution of this entry */
   long elapsed;
 
-  public RunnerEntry(File file, File file2) {
+  public RunnerEntry(File file, String relativePath) {
     inFile = file;
-    outFile = file2;
+    this.relativePath = relativePath;
     status = NOT_RUNNED_YET;
   }
 
@@ -46,10 +50,6 @@ public class RunnerEntry {
 
   public File getInFile() {
     return inFile;
-  }
-
-  public File getOutFile() {
-    return outFile;
   }
 
   public String getRunnerOutput() {
@@ -107,9 +107,10 @@ public class RunnerEntry {
   }
 
   public String toString() {
-    return "RunnerEntry: infile=" + inFile.getAbsolutePath() + "\n" + "outfile="
-        + outFile.getAbsolutePath() + "\n" + "runnerOutput=" + runnerOutput + "\n" + "r/w/i/e ="
-        + right + " " + wrong + " " + ignored + " " + exceptions + "\n";
+    return "RunnerEntry: infile=" + inFile.getAbsolutePath() + "\n" +
+        "relativePath=" + relativePath + "\n" + 
+        "runnerOutput=" + runnerOutput + "\n" + "r/w/i/e =" +
+        right + " " + wrong + " " + ignored + " " + exceptions + "\n";
   }
 
   public Integer getIgnored() {
@@ -122,5 +123,27 @@ public class RunnerEntry {
 
   public void setElapsed(long elapsed) {
     this.elapsed = elapsed;
+  }
+
+public String getRelativePath() {
+	return relativePath;
+}
+
+public File getLastOutFile() {
+	return lastOutFile;
+}
+
+public void setLastOutFile(File outFile) {
+	this.lastOutFile = outFile;
+}
+
+Object getElapsedString() {
+    String result = null;
+    if (hasActualResults()) {
+      long s = getElapsed() / 1000L;
+      long ms = (getElapsed() % 1000L) / 100;
+      result = String.valueOf(s) + "." + ms;
+    }
+    return result;
   }
 }

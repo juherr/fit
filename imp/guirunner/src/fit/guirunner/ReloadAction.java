@@ -45,24 +45,12 @@ public class ReloadAction extends AbstractAsyncAction {
     }
   }
 
-  /**
-   * Generates an output Filename. Such filename has the same relative path to the outDir as the
-   * inFile to inDir
-   * 
-   * @param inDir - canonical form of the input directory
-   * @param outDir - canonical form of the output directory
-   * @param inFile - canonical form of the input filename
-   * @return
-   */
-  public static File generateOutputFilename(File inDir, File outDir, File inFile) {
-    StringBuffer sb = new StringBuffer(outDir.getAbsolutePath().length()
-        + inFile.getAbsolutePath().length());
-    sb.append(outDir.getAbsolutePath());
-    sb.append(System.getProperties().getProperty("file.separator"));
-    sb.append(inFile.getAbsolutePath().substring(inDir.getAbsolutePath().length()));
-    return new File(sb.toString());
+  public static String generateRelativePath(File inDir, File inFile) {
+	  String hlp = inFile.getParentFile().getAbsolutePath();
+	  int dirnameLen = inDir.getAbsolutePath().length();
+	  int startIdx = (dirnameLen == hlp.length()) ? dirnameLen : dirnameLen + 1; // +1 -> remove path separator, if subdirectory
+	  return hlp.substring(startIdx);
   }
-
   /**
    * creates a MapFunction which converts a File-Object into a RunnerEntry object according to a
    * given Configuration
@@ -73,12 +61,11 @@ public class ReloadAction extends AbstractAsyncAction {
    */
   public static MapFunction fileToRunnerEntry(EnvironmentContext ctx) throws IOException {
     final File inDir = ctx.getInDir();
-    final File outDir = ctx.getOutDir();
     return new MapFunction() {
       public Object f(Object current) {
         File inFile = (File)current;
-        File outFile = generateOutputFilename(inDir, outDir, inFile);
-        return new RunnerEntry(inFile, outFile);
+        String relativePath = generateRelativePath(inDir,inFile);
+        return new RunnerEntry(inFile, relativePath);
       }
     };
   }

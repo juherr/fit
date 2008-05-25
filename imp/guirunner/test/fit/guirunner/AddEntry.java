@@ -18,8 +18,7 @@ class AddEntryAction extends AbstractAsyncAction {
     setEnabled(false);
     Configuration config = resources.getConfiguration();
     RunnerEntry re = new RunnerEntry(new File(config.getInDir()
-        + System.getProperty("file.separator") + "test.html"), new File(config.getOutDir()
-        + System.getProperty("file.separator") + "test.html"));
+        + System.getProperty("file.separator") + "test.html"),  "aaa");
     model.addEntry(re);
     try {
       Thread.sleep(3000);

@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Comparator;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -30,7 +31,9 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     setTitle(resources.getResource().getResourceString("text.appname"));
     resources.setApplicationFrame(this);
     registerExitAction(resources);
-    view = new GuiRunnerView(model, resources);
+    SortedTableModel stm = new SortedTableModel(model);
+    view = new GuiRunnerView(stm, resources);
+    view.getTableSortCoordinator().addPropertyChangeListener(stm);
     scroll = new JScrollPane(view);
     JToolBar toolbar = new RunnerToolbar(resources);
     JMenuBar menubar = new RunnerMenu(resources);
@@ -102,4 +105,26 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     exitAction.configureFromResources(resources.getResource(), EXIT);
     resources.getActionMap().put(EXIT, exitAction);
   }
+}
+
+class RunnerEntriesComparator implements Comparator {
+    private Comparator[] columnComparators;
+    private boolean[] ascendingOrder;
+    private RunnerTableModel model;
+    
+	public RunnerEntriesComparator(Comparator[] columnComparators, boolean[] ascendingOrder, RunnerTableModel model) {
+    	this.columnComparators = columnComparators;
+    	this.ascendingOrder = ascendingOrder;
+    	this.model = model;
+    }
+	public int compare(Object idx1, Object idx2) {
+		int retval = 0;
+		RunnerEntry runnerEntry1 = model.getEntry(((Integer)idx1).intValue());
+		RunnerEntry runnerEntry2 = model.getEntry(((Integer)idx2).intValue());
+		for (int i=0;retval == 0 && i<columnComparators.length;i++) {
+			retval = columnComparators[i].compare(runnerEntry1, runnerEntry2);
+			retval = (ascendingOrder[i]) ? retval : -retval;
+		}
+		return retval;
+	}
 }

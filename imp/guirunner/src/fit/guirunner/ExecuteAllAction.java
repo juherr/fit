@@ -23,13 +23,12 @@ public class ExecuteAllAction extends AbstractAsyncAction {
     try {
       getLockCoordinator().setRunnerIsRunning(true);
       EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
-      ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir());
+      ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir(), ctx.getInDir(), ctx.getOutDir());
       List entries = model.getEntries();
       for (Iterator i = entries.iterator(); i.hasNext();) {
         RunnerEntry re = (RunnerEntry)i.next();
         re.setRunning();
         model.modifyStatus(re);
-        EnvironmentContext.createMissingDirectories(re.getOutFile());
         execute.doExecute(re);
         model.modifyEntry(re);
       }
