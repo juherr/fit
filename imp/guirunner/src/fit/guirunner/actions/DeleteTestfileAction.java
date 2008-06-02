@@ -9,6 +9,7 @@ import fit.guirunner.GlobalLockCoordinator;
 import fit.guirunner.Resources;
 import fit.guirunner.RunnerEntry;
 import fit.guirunner.RunnerTableModel;
+import fit.guirunner.logic.VariableExpansion;
 
 public class DeleteTestfileAction extends AbstractCurrentEntryAction {
 
@@ -33,7 +34,8 @@ public class DeleteTestfileAction extends AbstractCurrentEntryAction {
 
     String question = resources.getResource().getResourceString(KEY_QUESTION);
     String title = resources.getResource().getResourceString(KEY_TITLE);
-    question = question.replace("$1", re.getInFile().getAbsolutePath());
+    VariableExpansion ve = new VariableExpansion("file",re.getInFile().getAbsolutePath());
+    question = ve.replace(question);
 
     int result = JOptionPane.showConfirmDialog(view, question, title, JOptionPane.OK_CANCEL_OPTION,
         JOptionPane.INFORMATION_MESSAGE);

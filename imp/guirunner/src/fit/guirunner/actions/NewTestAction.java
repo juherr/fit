@@ -75,7 +75,7 @@ public class NewTestAction extends AbstractAsyncAction {
     template = ve.replace(template);
     PrintWriter output = new PrintWriter(new OutputStreamWriter(new FileOutputStream(newFile),
         TEMPLATE_ENCODING));
-    output.append(template);
+    output.write(template);
     output.close();
   }
 }

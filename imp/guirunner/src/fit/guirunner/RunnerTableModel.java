@@ -273,7 +273,7 @@ public class RunnerTableModel extends AbstractTableModel {
           public int compare(Object o1, Object o2) {
             Boolean v1 = ((RunnerEntry)o1).getMark();
             Boolean v2 = ((RunnerEntry)o2).getMark();
-            return v1.compareTo(v2);
+            return (v1.booleanValue() == v2.booleanValue() ? 0 : (v1.booleanValue() ? 1 : -1)); // java 1.4 has no compareTo for boolean... v1.compareTo(v2);
           }
 
         };
