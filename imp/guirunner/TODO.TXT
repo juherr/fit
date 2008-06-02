@@ -1,3 +1,8 @@
+- RunEntry - refactoring: Integer instead of int ?
+- disable sorting in view while running?
+- MRU configuration - menu
+- configuration save-as
+
 - summary line on the bottom of the jtable
 - display messages, if something goes wrong
 - support for animated gifs in the status-cell
