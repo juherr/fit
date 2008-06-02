@@ -3,6 +3,8 @@ package fit.guirunner;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import fit.guirunner.actions.AbstractAsyncAction;
+
 class AddEntryAction extends AbstractAsyncAction {
   RunnerTableModel model;
 
@@ -18,7 +20,7 @@ class AddEntryAction extends AbstractAsyncAction {
     setEnabled(false);
     Configuration config = resources.getConfiguration();
     RunnerEntry re = new RunnerEntry(new File(config.getInDir()
-        + System.getProperty("file.separator") + "test.html"),  "aaa");
+        + System.getProperty("file.separator") + "test.html"), "aaa");
     model.addEntry(re);
     try {
       Thread.sleep(3000);

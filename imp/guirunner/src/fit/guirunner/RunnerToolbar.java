@@ -9,30 +9,24 @@ import javax.swing.JToolBar;
 
 public class RunnerToolbar extends JToolBar implements GuiRunnerActions {
   public RunnerToolbar(Resources resources) {
-    JButton b;
     ActionMap am = resources.getActionMap();
     setLayout(new FlowLayout(FlowLayout.LEFT));
 
-    b = new JButton(am.get(REFRESH_ENTRIES));
-    add(b);
-    // b.setText(null);
-
+    add2(new JButton(am.get(REFRESH_ENTRIES)));
     add(new JSeparator(JSeparator.VERTICAL));
+    add2(new JButton(am.get(RUN_ALL)));
+    add2(new JButton(am.get(RUN_MARKED)));
+    add2(new JButton(am.get(RUN_CURRENT)));
+    add2(new JButton(am.get(STOP_TESTS)));
+    add2(new JButton(am.get(TERMINATE_TESTS)));
+    add(new JSeparator(JSeparator.VERTICAL));
+    add2(new JButton(am.get(EDIT_INPUTFILE)));
+    add2(new JButton(am.get(OPEN_OUTPUTFILE)));
+    add2(new JButton(am.get(SHOW_RUNNER_OUTPUT)));
+  }
 
-    b = new JButton(am.get(RUN_ALL));
-    add(b);
-
-    b = new JButton(am.get(RUN_CURRENT));
-    add(b);
-
-    b = new JButton(am.get(EDIT_INPUTFILE));
-    add(b);
-
-    b = new JButton(am.get(OPEN_OUTPUTFILE));
-    // b.setText(null);
-    add(b);
-
-    b = new JButton(am.get(SHOW_RUNNER_OUTPUT));
+  private void add2(JButton b) {
+    b.setText(null);
     add(b);
   }
 }

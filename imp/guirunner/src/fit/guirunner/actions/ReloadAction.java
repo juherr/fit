@@ -1,14 +1,19 @@
-package fit.guirunner;
+package fit.guirunner.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
+import fit.guirunner.Configuration;
+import fit.guirunner.EnvironmentContext;
+import fit.guirunner.Resources;
+import fit.guirunner.RunnerEntry;
+import fit.guirunner.RunnerTableModel;
 import fit.guirunner.logic.FileFind;
 import fit.guirunner.util.ListDiff;
-import fit.guirunner.util.ListToList;
-import fit.guirunner.util.MapFunction;
 
 public class ReloadAction extends AbstractAsyncAction {
 
@@ -28,9 +33,7 @@ public class ReloadAction extends AbstractAsyncAction {
     FileFind fileFind = new FileFind(config.getPattern());
     try {
       EnvironmentContext ctx = new EnvironmentContext(config);
-      MapFunction mapper = fileToRunnerEntry(ctx);
-      List files = fileFind.execute(ctx.getInDir());
-      List latest = ListToList.ListMapList(mapper, files);
+      List latest = files2entries(ctx, fileFind.execute(ctx.getInDir()));
       List previous = model.getEntries();
       ListDiff diff = new ListDiff(previous, latest);
       if (diff.hasDiffs()) {
@@ -45,29 +48,23 @@ public class ReloadAction extends AbstractAsyncAction {
     }
   }
 
-  public static String generateRelativePath(File inDir, File inFile) {
-	  String hlp = inFile.getParentFile().getAbsolutePath();
-	  int dirnameLen = inDir.getAbsolutePath().length();
-	  int startIdx = (dirnameLen == hlp.length()) ? dirnameLen : dirnameLen + 1; // +1 -> remove path separator, if subdirectory
-	  return hlp.substring(startIdx);
+  private List files2entries(EnvironmentContext ctx, List files) {
+    List result = new LinkedList();
+    for (Iterator i = files.iterator(); i.hasNext();) {
+      File inFile = (File)i.next();
+      String relativePath = generateRelativePath(ctx.getInDir(), inFile);
+      result.add(new RunnerEntry(inFile, relativePath));
+    }
+    return result;
   }
-  /**
-   * creates a MapFunction which converts a File-Object into a RunnerEntry object according to a
-   * given Configuration
-   * 
-   * @param config
-   * @return
-   * @throws IOException
-   */
-  public static MapFunction fileToRunnerEntry(EnvironmentContext ctx) throws IOException {
-    final File inDir = ctx.getInDir();
-    return new MapFunction() {
-      public Object f(Object current) {
-        File inFile = (File)current;
-        String relativePath = generateRelativePath(inDir,inFile);
-        return new RunnerEntry(inFile, relativePath);
-      }
-    };
+
+  public static String generateRelativePath(File inDir, File inFile) {
+    String hlp = inFile.getParentFile().getAbsolutePath();
+    int dirnameLen = inDir.getAbsolutePath().length();
+    int startIdx = (dirnameLen == hlp.length()) ? dirnameLen : dirnameLen + 1; // +1 -> remove path
+                                                                                // separator, if
+                                                                                // subdirectory
+    return hlp.substring(startIdx);
   }
 
   protected boolean isActionEnabled() {

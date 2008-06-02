@@ -1,4 +1,4 @@
-package fit.guirunner;
+package fit.guirunner.actions;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
@@ -9,6 +9,9 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
+import fit.guirunner.GlobalLockCoordinator;
+import fit.guirunner.RunnerResourceBundle;
 
 public abstract class AbstractAsyncAction extends AbstractAction implements PropertyChangeListener,
     Runnable {
@@ -54,6 +57,9 @@ public abstract class AbstractAsyncAction extends AbstractAction implements Prop
     }
     if ((value = resources.getResourceString("text." + key)) != null) {
       putValue(Action.NAME, value);
+    } else {
+      // while development
+      putValue(Action.NAME, key);
     }
     if ((value = resources.getResourceString("mnemonics." + key)) != null) {
       putValue(Action.MNEMONIC_KEY, new Integer(value));
@@ -111,7 +117,7 @@ public abstract class AbstractAsyncAction extends AbstractAction implements Prop
   }
 
   public void propertyChange(PropertyChangeEvent e) {
-      updateEnabled();
+    updateEnabled();
   }
 
   protected void setLocked(boolean b) {

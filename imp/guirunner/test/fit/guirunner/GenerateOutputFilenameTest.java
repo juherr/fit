@@ -2,9 +2,8 @@ package fit.guirunner;
 
 import java.io.File;
 
-import fit.guirunner.logic.ExecuteEntry;
-
 import junit.framework.TestCase;
+import fit.guirunner.logic.ExecuteEntry;
 
 public class GenerateOutputFilenameTest extends TestCase {
 

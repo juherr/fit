@@ -8,11 +8,16 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import fit.GuiRunner;
@@ -56,18 +61,6 @@ public class EditConfigurationDialog extends JDialog {
     init();
     config2fields(config);
     init_layout();
-    cancel.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent arg0) {
-        configuration = null;
-        dispose();
-      }
-    });
-    apply.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent arg0) {
-        configuration = fields2config();
-        dispose();
-      }
-    });
   }
 
   private Configuration fields2config() {
@@ -97,6 +90,28 @@ public class EditConfigurationDialog extends JDialog {
 
     cancel = new JButton(resource.getResourceString(KEY_CANCEL));
     apply = new JButton(resource.getResourceString(KEY_APPLY));
+
+    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    getRootPane().setDefaultButton(apply);
+
+    Action cancelAction = new AbstractAction() {
+      public void actionPerformed(ActionEvent arg0) {
+        configuration = null;
+        dispose();
+      }
+    };
+    cancel.addActionListener(cancelAction);
+    apply.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
+        configuration = fields2config();
+        dispose();
+      }
+    });
+
+    KeyStroke escKey = KeyStroke.getKeyStroke("ESCAPE");
+    InputMap im = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    im.put(escKey, "ESCAPE");
+    getRootPane().getActionMap().put("ESCAPE", cancelAction);
   }
 
   protected JLabel label(String key) {
@@ -167,7 +182,7 @@ public class EditConfigurationDialog extends JDialog {
 
       public void run() {
         dlg.pack();
-        dlg.show();
+        dlg.setVisible(true);
         if (dlg.getConfiguration() != null) {
           System.out.println("Approved: " + String.valueOf(dlg.getConfiguration()));
         }

@@ -16,18 +16,29 @@ import fit.guirunner.RunnerEntry;
 public class ExecuteEntry {
 
   String commandLine;
+
   File workingDirectory;
+
   File inDir;
+
   File outDir;
-  
+
   boolean outputParsed = false;
+
   String right = null;
+
   String wrong = null;
+
   String ignored = null;
+
   String exceptions = null;
+
   Pattern regexp;
 
-  public ExecuteEntry(String commandLine, File workingDirectory,File inDir, File outDir) {
+  private transient Process theTest;
+  private boolean killed;
+
+  public ExecuteEntry(String commandLine, File workingDirectory, File inDir, File outDir) {
     this.commandLine = commandLine;
     this.workingDirectory = workingDirectory;
     this.inDir = inDir;
@@ -37,30 +48,36 @@ public class ExecuteEntry {
   }
 
   public void doExecute(RunnerEntry re) {
-	  
-	File outFilename = generateOutputFilename(inDir,outDir,re.getInFile());
+
+    File outFilename = generateOutputFilename(inDir, outDir, re.getInFile());
     StringBuffer cmdOutput = new StringBuffer();
     VariableExpansion strrep = new VariableExpansion("infile", re.getInFile().getAbsolutePath(),
-        "outfile", outFilename.getAbsolutePath(),"infiledir",re.getInFile().getParentFile().getAbsolutePath(),
-        "outdir",  outDir.getAbsolutePath());
-    	
+        "outfile", outFilename.getAbsolutePath(), "infiledir", re.getInFile().getParentFile()
+            .getAbsolutePath(), "outdir", outDir.getAbsolutePath());
+
     String cmdLine = strrep.replace(commandLine);
     cmdOutput.append(cmdLine).append("\n");
     outputParsed = false;
     long elapsed = System.currentTimeMillis();
     try {
-        File parentDir = outFilename.getParentFile();
-        if (!parentDir.isDirectory()) {
-          parentDir.mkdirs();
-        }
-    	
-      Process p = Runtime.getRuntime().exec(cmdLine, null, workingDirectory);
-      StreamToStringList stdout = new StreamToStringList(p.getInputStream());
-      StreamToStringList stderr = new StreamToStringList(p.getErrorStream());
-      p.getOutputStream().close();
+      File parentDir = outFilename.getParentFile();
+      if (!parentDir.isDirectory()) {
+        parentDir.mkdirs();
+      }
+
+      synchronized (this) {
+        theTest = Runtime.getRuntime().exec(cmdLine, null, workingDirectory);
+        killed = false;
+      }
+      StreamToStringList stdout = new StreamToStringList(theTest.getInputStream());
+      StreamToStringList stderr = new StreamToStringList(theTest.getErrorStream());
+      theTest.getOutputStream().close();
       stdout.start();
       stderr.start();
-      p.waitFor();
+      theTest.waitFor();
+      synchronized (this) {
+        theTest = null;
+      }
       stderr.join();
       stdout.join();
       parseOutput(cmdOutput, stderr.getLines());
@@ -69,6 +86,11 @@ public class ExecuteEntry {
       cmdOutput.append(e.toString());
     } catch (InterruptedException e) {
       cmdOutput.append(e.toString());
+    }
+    synchronized (this) {
+      if (killed) {
+        cmdOutput.append("\n[fit.GuiRunner message: process was killed by User]\n");
+      }
     }
     elapsed = System.currentTimeMillis() - elapsed;
     re.setElapsed(elapsed);
@@ -79,6 +101,15 @@ public class ExecuteEntry {
     } else {
       re.setUnparseableResult(cmdOutput.toString());
       re.setLastOutFile(null);
+    }
+  }
+
+  public void killTest() {
+    synchronized (this) {
+      if (theTest != null) {
+        killed = true;
+        theTest.destroy();
+      }
     }
   }
 
@@ -99,7 +130,7 @@ public class ExecuteEntry {
     }
   }
 
-/**
+  /**
    * Generates an output Filename. Such filename has the same relative path to the outDir as the
    * inFile to inDir
    * 
@@ -117,24 +148,29 @@ public class ExecuteEntry {
     return new File(sb.toString());
   }
 }
+
 class StreamToStringList extends Thread {
   List lines;
+
   InputStream input;
+
   StreamToStringList(InputStream is) {
     this.input = is;
     lines = new LinkedList();
   }
+
   public void run() {
     BufferedReader reader = new BufferedReader(new InputStreamReader(input));
     String line;
     try {
-      while((line = reader.readLine()) != null) {
+      while ((line = reader.readLine()) != null) {
         lines.add(line);
       }
     } catch (IOException e) {
       lines.add("IOException in StreamToStringList: " + e.getMessage());
     }
   }
+
   public Iterator getLines() {
     return lines.iterator();
   }

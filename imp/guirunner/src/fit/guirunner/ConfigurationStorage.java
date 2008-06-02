@@ -1,20 +1,19 @@
 package fit.guirunner;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+
+import fit.guirunner.actions.AbstractAsyncAction;
 
 /**
  * Loading, Editing and creating of new Configurations. Management of the MRU-List of Configurations
@@ -45,13 +44,12 @@ public class ConfigurationStorage implements GuiRunnerActions {
   public static final String KEY_OPTION_MESSAGE = "text.option.message";
 
   Resources resources;
-  File currentConfigurationFile = null;
-  List mruList;
+
+  // List mruList;
 
   public ConfigurationStorage(Resources resources) {
     this.resources = resources;
-    currentConfigurationFile = null;
-    mruList = new ArrayList(MAX_MRU_ENTRIES + 1);
+    // mruList = new ArrayList(MAX_MRU_ENTRIES + 1);
   }
 
   public void setCurrentConfiguration(String filename) {
@@ -64,14 +62,9 @@ public class ConfigurationStorage implements GuiRunnerActions {
     Configuration c = null;
     try {
       c = load(configFile);
-      EnvironmentContext.setCurrentDirectory(configFile.getParentFile());
-      currentConfigurationFile = configFile;
+      c.setConfigurationName(configFile);
       resources.getUserLayout().storeProperty(UserPreferences.KEY_CURRENT_CONFIGURATION,
           configFile.getAbsolutePath());
-      // TODO: Add to mru list
-      if(resources.getApplicationFrame() != null) {
-        resources.getApplicationFrame().setTitle(configFile.getAbsolutePath());
-      }
     } catch (IOException x) {
       // TODO: MessageService
       x.printStackTrace();
@@ -80,46 +73,43 @@ public class ConfigurationStorage implements GuiRunnerActions {
   }
 
   public AbstractAsyncAction getOpenConfigurationAction(String resourceKey) {
-    AbstractAsyncAction reloadAction = (AbstractAsyncAction)resources.getActionMap().get(
-        REFRESH_ENTRIES);
-    AbstractAsyncAction openConfigAction = new OpenConfigurationAction(CMD_EXISTING, reloadAction,
-        resources.getLockCoordinator());
+    AbstractAsyncAction openConfigAction = new OpenConfigurationAction(CMD_EXISTING, resources
+        .getLockCoordinator());
     openConfigAction.configureFromResources(resources.getResource(), resourceKey);
     return openConfigAction;
   }
 
   public AbstractAsyncAction getNewConfigurationAction(String resourceKey) {
-    AbstractAsyncAction reloadAction = (AbstractAsyncAction)resources.getActionMap().get(
-        REFRESH_ENTRIES);
-    AbstractAsyncAction newConfigAction = new OpenConfigurationAction(CMD_NEW, 
-        reloadAction, resources.getLockCoordinator());
+    AbstractAsyncAction newConfigAction = new OpenConfigurationAction(CMD_NEW, resources
+        .getLockCoordinator());
     newConfigAction.configureFromResources(resources.getResource(), resourceKey);
     return newConfigAction;
   }
 
   public AbstractAsyncAction getEditConfigurationAction(String resourceKey) {
-    final AbstractAsyncAction reloadAction = (AbstractAsyncAction)resources.getActionMap().get(
-        REFRESH_ENTRIES);
     AbstractAsyncAction a = new AbstractAsyncAction() {
       public void doActionPerformed(ActionEvent e) {
-        EditConfigurationDialog dlg = new EditConfigurationDialog(resources, resources.getConfiguration());
-        dlg.setTitle(currentConfigurationFile.getAbsolutePath());
+        Configuration config = resources.getConfiguration();
+        File configFile = config.getConfigurationFile();
+        EditConfigurationDialog dlg = new EditConfigurationDialog(resources, config);
+        dlg.setTitle(configFile.getAbsolutePath());
         dlg.pack();
         dlg.setLocationRelativeTo(resources.getApplicationFrame());
-        dlg.show();
+        dlg.setVisible(true);
         if (dlg.getConfiguration() != null) {
           try {
-            save(dlg.getConfiguration(), currentConfigurationFile);
-            resources.setConfiguration(dlg.getConfiguration());
-            reloadAction.doActionPerformed(null);
+            Configuration newConfig = dlg.getConfiguration();
+            save(newConfig, configFile);
+            resources.setConfiguration(newConfig);
           } catch (IOException e1) {
             // TODO MessageService
             e1.printStackTrace();
           }
         }
       }
+
       protected boolean isActionEnabled() {
-        return getLockCoordinator().isHasConfiguration();
+        return getLockCoordinator().isHavingConfiguration();
       }
     };
     a.configureFromResources(resources.getResource(), resourceKey);
@@ -129,6 +119,8 @@ public class ConfigurationStorage implements GuiRunnerActions {
   protected File showOpenDialog(int a) {
     final int action = a;
     File choosen = null;
+    File configDir = resources.getConfiguration().getConfigurationDir();
+
     RunnerResourceBundle resource = resources.getResource();
     JFileChooser fd = new JFileChooser() {
       public void approveSelection() {
@@ -144,8 +136,8 @@ public class ConfigurationStorage implements GuiRunnerActions {
     fd.setDialogTitle(resource.getResourceString((action == CMD_NEW) ? KEY_FILEDIALOG_NEW
         : KEY_FILEDIALOG_EXISTING));
     fd.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    if (currentConfigurationFile != null) {
-      File wd = currentConfigurationFile.getAbsoluteFile().getParentFile();
+    if (configDir != null) {
+      File wd = configDir.getAbsoluteFile().getParentFile();
       fd.setCurrentDirectory(wd);
     }
     int result = fd.showOpenDialog(SwingUtilities.getRoot(resources.getApplicationFrame()));
@@ -183,8 +175,11 @@ public class ConfigurationStorage implements GuiRunnerActions {
     hlp.put(KEY_CMD_OPEN, c.getOpenCommand());
     hlp.put(KEY_CMD_EDIT, c.getEditCommand());
     FileOutputStream fos = new FileOutputStream(configfile);
-    hlp.store(fos, null);
-    fos.close();
+    try {
+      hlp.store(fos, null);
+    } finally {
+      fos.close();
+    }
   }
 
   private static void setProperty(Configuration c, Entry entry) {
@@ -210,13 +205,10 @@ public class ConfigurationStorage implements GuiRunnerActions {
   }
 
   class OpenConfigurationAction extends AbstractAsyncAction {
-    AbstractAsyncAction reloadAction = null;
     int newOrExisting;
 
-    OpenConfigurationAction(int newOrExisting, AbstractAsyncAction reloadAction,
-        GlobalLockCoordinator lockCoordinator) {
+    OpenConfigurationAction(int newOrExisting, GlobalLockCoordinator lockCoordinator) {
       this.newOrExisting = newOrExisting;
-      this.reloadAction = reloadAction;
       setLockCoordinator(lockCoordinator);
     }
 
@@ -235,7 +227,6 @@ public class ConfigurationStorage implements GuiRunnerActions {
             save(c, selected);
           }
           setCurrentConfiguration(selected);
-          reloadAction.doActionPerformed(null);
         } catch (IOException x) {
           // TODO MessageSerivce
           x.printStackTrace();

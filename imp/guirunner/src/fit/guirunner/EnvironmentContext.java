@@ -23,22 +23,21 @@ public class EnvironmentContext {
 
   File libDir;
 
-  static File currentDirectory = null;
-
   public EnvironmentContext(Configuration config) throws IOException {
-    inDir = makeAbs(config.getInDir());
-    outDir = makeAbs(config.getOutDir());
-    libDir = makeAbs(config.getLibDir());
+    File configDir = config.getConfigurationDir();
+    inDir = makeAbs(configDir, config.getInDir());
+    outDir = makeAbs(configDir, config.getOutDir());
+    libDir = makeAbs(configDir, config.getLibDir());
     VariableExpansion strrep = defaultExpansion(config);
     runnerCmd = strrep.replace(config.getRunnerCommand());
     openCmd = strrep.replace(config.getOpenCommand());
     editCmd = strrep.replace(config.getEditCommand());
   }
 
-  protected static File makeAbs(String afile) throws IOException {
+  protected static File makeAbs(File parent, String afile) throws IOException {
     File hlp = new File(afile);
-    if (!hlp.isAbsolute() && currentDirectory != null) {
-      hlp = new File(currentDirectory, afile);
+    if (!hlp.isAbsolute() && parent != null) {
+      hlp = new File(parent, afile);
     }
     return hlp.getCanonicalFile();
   }
@@ -48,13 +47,13 @@ public class EnvironmentContext {
     repl.put("indir", inDir.getAbsolutePath());
     repl.put("outdir", outDir.getAbsolutePath());
     repl.put("libdir", libDir.getAbsolutePath());
-    String cp = generateClasspath(config.getLibDir());
+    String cp = generateClasspath(config.getConfigurationDir(), config.getLibDir());
     repl.put("classpath", cp);
     return new VariableExpansion(repl);
   }
 
-  public static String generateClasspath(String libDir) throws IOException {
-    File libdir = makeAbs(libDir);
+  public static String generateClasspath(File parent, String libDir) throws IOException {
+    File libdir = makeAbs(parent, libDir);
     FileFind ff = new FileFind("*.jar");
     Iterator i = ff.execute(libdir).iterator();
     StringBuffer result = new StringBuffer();
@@ -97,9 +96,5 @@ public class EnvironmentContext {
 
   public String getOpenCmd() {
     return openCmd;
-  }
-
-  public static void setCurrentDirectory(File currentDirectory) {
-    EnvironmentContext.currentDirectory = currentDirectory;
   }
 }

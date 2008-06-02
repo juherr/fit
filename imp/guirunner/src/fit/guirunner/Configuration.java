@@ -1,5 +1,7 @@
 package fit.guirunner;
 
+import java.io.File;
+
 public class Configuration {
 
   String inDir;
@@ -9,6 +11,7 @@ public class Configuration {
   String runnerCommand;
   String openCommand;
   String editCommand;
+  transient File configurationFile;
 
   public Configuration() {
     this("in", "out", "lib");
@@ -29,8 +32,9 @@ public class Configuration {
     editCommand = "cmd /c start \"Start...\" winword /n \"${infile}\"";
     openCommand = "cmd /c start \"Start...\" \"${outfile}\"";
   }
+
   public Configuration(String inDir, String outDir, String libDir, String pattern,
-      String runnerCommand,String openCommand, String editCommand) {
+      String runnerCommand, String openCommand, String editCommand) {
     this.inDir = inDir;
     this.outDir = outDir;
     this.libDir = libDir;
@@ -39,7 +43,7 @@ public class Configuration {
     this.openCommand = openCommand;
     this.editCommand = editCommand;
   }
-  
+
   public String getInDir() {
     return inDir;
   }
@@ -67,6 +71,7 @@ public class Configuration {
   public String getOpenCommand() {
     return openCommand;
   }
+
   public String toString() {
     StringBuffer sb = new StringBuffer();
     sb.append("Configuration={\ninDir=").append(inDir).append("\n");
@@ -77,5 +82,21 @@ public class Configuration {
     sb.append("openCmd=").append(openCommand).append("\n");
     sb.append("editCmd=").append(editCommand).append("\n}\n");
     return sb.toString();
+  }
+
+  public String getConfigurationName() {
+    return (configurationFile != null) ? configurationFile.getName() : "";
+  }
+
+  public void setConfigurationName(File configurationFile) {
+    this.configurationFile = configurationFile;
+  }
+
+  public File getConfigurationFile() {
+    return configurationFile;
+  }
+
+  public File getConfigurationDir() {
+    return (getConfigurationFile() != null) ? getConfigurationFile().getParentFile() : null;
   }
 }

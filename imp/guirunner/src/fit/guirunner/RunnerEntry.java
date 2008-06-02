@@ -33,11 +33,14 @@ public class RunnerEntry {
 
   /** Elapsed time in millis during exececution of this entry */
   long elapsed;
+  /* marker for "run marked" */
+  transient Boolean mark;
 
   public RunnerEntry(File file, String relativePath) {
     inFile = file;
     this.relativePath = relativePath;
     status = NOT_RUNNED_YET;
+    mark = Boolean.FALSE;
   }
 
   public Integer getRight() {
@@ -90,6 +93,11 @@ public class RunnerEntry {
     status = RUNNING;
   }
 
+  /** if multiple entries are to be run, they get marked, so it is "visible" which are not yet runned */
+  public void setQueuedToRun() {
+    status = NOT_RUNNED_YET;
+  }
+
   /**
    * inFile is the key of a RunnerEntry
    */
@@ -107,10 +115,9 @@ public class RunnerEntry {
   }
 
   public String toString() {
-    return "RunnerEntry: infile=" + inFile.getAbsolutePath() + "\n" +
-        "relativePath=" + relativePath + "\n" + 
-        "runnerOutput=" + runnerOutput + "\n" + "r/w/i/e =" +
-        right + " " + wrong + " " + ignored + " " + exceptions + "\n";
+    return "RunnerEntry: infile=" + inFile.getAbsolutePath() + "\n" + "relativePath="
+        + relativePath + "\n" + "runnerOutput=" + runnerOutput + "\n" + "r/w/i/e =" + right + " "
+        + wrong + " " + ignored + " " + exceptions + "\n";
   }
 
   public Integer getIgnored() {
@@ -125,19 +132,19 @@ public class RunnerEntry {
     this.elapsed = elapsed;
   }
 
-public String getRelativePath() {
-	return relativePath;
-}
+  public String getRelativePath() {
+    return relativePath;
+  }
 
-public File getLastOutFile() {
-	return lastOutFile;
-}
+  public File getLastOutFile() {
+    return lastOutFile;
+  }
 
-public void setLastOutFile(File outFile) {
-	this.lastOutFile = outFile;
-}
+  public void setLastOutFile(File outFile) {
+    this.lastOutFile = outFile;
+  }
 
-Object getElapsedString() {
+  Object getElapsedString() {
     String result = null;
     if (hasActualResults()) {
       long s = getElapsed() / 1000L;
@@ -145,5 +152,13 @@ Object getElapsedString() {
       result = String.valueOf(s) + "." + ms;
     }
     return result;
+  }
+
+  public Boolean getMark() {
+    return mark;
+  }
+
+  public void setMark(Boolean mark) {
+    this.mark = mark;
   }
 }

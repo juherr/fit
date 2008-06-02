@@ -1,8 +1,12 @@
 package fit;
 
 import java.awt.Dimension;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -12,24 +16,30 @@ import com.jgoodies.looks.Options;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.SkyBluer;
 
-import fit.guirunner.AbstractAsyncAction;
+import fit.guirunner.Configuration;
 import fit.guirunner.ConfigurationStorage;
-import fit.guirunner.ExecuteAllAction;
+import fit.guirunner.EnvironmentContext;
+import fit.guirunner.GlobalLockCoordinator;
 import fit.guirunner.GuiRunnerActions;
+import fit.guirunner.Resources;
+import fit.guirunner.RunnerEntry;
+import fit.guirunner.RunnerFrame;
+import fit.guirunner.RunnerTableModel;
 import fit.guirunner.RunnerVersion;
 import fit.guirunner.Summary;
 import fit.guirunner.UserPreferences;
-import fit.guirunner.ReloadAction;
-import fit.guirunner.Resources;
-import fit.guirunner.RunnerFrame;
-import fit.guirunner.RunnerTableModel;
+import fit.guirunner.actions.AbstractAsyncAction;
+import fit.guirunner.actions.ReloadAction;
+import fit.guirunner.logic.ExecuteEntry;
 
 public class GuiRunner implements Runnable, GuiRunnerActions {
 
   public static final String RESOURCE = "fit.guirunner.resource.GuiRunner";
+
   public static final String DEFAULT_PREFERENCES_FILENAME = ".fit.GuiRunner.properties";
 
   Resources resources;
+
   ConfigurationStorage configStorage;
 
   GuiRunner() {
@@ -85,16 +95,14 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
 
     RunnerTableModel model = new RunnerTableModel(resources.getResource());
 
+    AbstractAsyncAction reloadAction;
+    reloadAction = new ReloadAction(model, resources);
+    reloadAction.configureFromResources(resources.getResource(), REFRESH_ENTRIES);
+    resources.getActionMap().put(REFRESH_ENTRIES, reloadAction);
+
+    new ReloadUponConfigurationChanged(resources.getLockCoordinator(), reloadAction);
+
     AbstractAsyncAction action;
-
-    action = new ReloadAction(model, resources);
-    action.configureFromResources(resources.getResource(), REFRESH_ENTRIES);
-    resources.getActionMap().put(REFRESH_ENTRIES, action);
-
-    action = new ExecuteAllAction(model, resources);
-    action.configureFromResources(resources.getResource(), RUN_ALL);
-    resources.getActionMap().put(RUN_ALL, action);
-
     action = configStorage.getNewConfigurationAction(NEW_CONFIG);
     resources.getActionMap().put(NEW_CONFIG, action);
 
@@ -108,10 +116,10 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
     RunnerFrame frame = new RunnerFrame(model, resources);
 
     frame.pack();
-    frame.show();
+    frame.setVisible(true);
     // initial load
-    if (resources.getLockCoordinator().isHasConfiguration()) {
-      ((AbstractAsyncAction)resources.getActionMap().get(REFRESH_ENTRIES)).doActionPerformed(null);
+    if (resources.getLockCoordinator().isHavingConfiguration()) {
+      reloadAction.doActionPerformed(null);
     }
   }
 
@@ -121,16 +129,26 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
   public int runCli() {
     RunnerTableModel model = new RunnerTableModel(resources.getResource());
     int retval = -1;
-    AbstractAsyncAction action;
-
-    action = new ReloadAction(model, resources);
+    AbstractAsyncAction action = new ReloadAction(model, resources);
     action.doActionPerformed(null);
-    action = new ExecuteAllAction(model, resources);
-    if (action.isEnabled() && model.getRowCount() > 0) {
-      action.doActionPerformed(null);
-      Summary summary = new Summary(model);
-      System.err.println(summary.toString());
-      retval = summary.getWrong().intValue() + summary.getExceptions().intValue();
+
+    if (model.getRowCount() > 0) {
+      EnvironmentContext ctx;
+      try {
+        ctx = new EnvironmentContext(resources.getConfiguration());
+        ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir(), ctx.getInDir(),
+            ctx.getOutDir());
+
+        for (Iterator i = model.getEntries().iterator(); i.hasNext();) {
+          RunnerEntry re = (RunnerEntry)i.next();
+          execute.doExecute(re);
+        }
+        Summary summary = new Summary(model);
+        System.err.println(summary.toString());
+        retval = summary.getWrong().intValue() + summary.getExceptions().intValue();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return retval;
   }
@@ -148,7 +166,7 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
    */
   private void configureUI() {
     UIManager.put(Options.USE_SYSTEM_FONTS_APP_KEY, Boolean.TRUE);
-    Options.setDefaultIconSize(new Dimension(19, 19));
+    Options.setDefaultIconSize(new Dimension(20, 20));
 
     try {
       if (LookUtils.IS_OS_WINDOWS_XP) {
@@ -168,12 +186,17 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
 
 class CommandLineParameters implements RunnerVersion {
   public static final int CMD_HELP = 0;
+
   public static final int CMD_DEFAULT = 1; // configuration file found
+
   public static final int CMD_CLI_RUNNER = 3; // no gui
+
   public static final int CMD_ASK_USER = 4; // none given
+
   public static final String DEFAULT_CONFNAME = "guirunner.conf";
 
   int command;
+
   String confname;
 
   CommandLineParameters(String[] args, String lastKnownConfiguration) {
@@ -196,11 +219,11 @@ class CommandLineParameters implements RunnerVersion {
       confname = args[confIdx];
     }
     if (command == CMD_CLI_RUNNER) {
-      if(confname == null || !(new File(confname).exists())) {
+      if (confname == null || !(new File(confname).exists())) {
         command = CMD_HELP;
       }
     }
-    if (command == CMD_DEFAULT  && !(new File(confname).exists())) {
+    if (command == CMD_DEFAULT && !(new File(confname).exists())) {
       command = CMD_ASK_USER;
     }
   }
@@ -214,7 +237,7 @@ class CommandLineParameters implements RunnerVersion {
     w.println(" (default: " + DEFAULT_CONFNAME + ")");
     w.println(" Version:  " + RUNNER_VERSION);
     w.println(" ID:       " + RUNNER_ID);
-    w.println(" (C) Martin Busik 2007. This Software is GPL.");
+    w.println(" (C) Martin Busik 2007, 2008 This Software is GPL.");
     System.exit(1);
   }
 
@@ -226,3 +249,24 @@ class CommandLineParameters implements RunnerVersion {
     return confname;
   }
 }
+
+class ReloadUponConfigurationChanged implements PropertyChangeListener {
+  AbstractAsyncAction reloadAction;
+
+  public ReloadUponConfigurationChanged(GlobalLockCoordinator lockCoordinator,
+      AbstractAsyncAction reloadAction) {
+    lockCoordinator.addPropertyChangeListener(GlobalLockCoordinator.HAS_CONFIGURATION_PROPERTY,
+        this);
+    this.reloadAction = reloadAction;
+  }
+
+  public void propertyChange(PropertyChangeEvent evt) {
+    if (GlobalLockCoordinator.HAS_CONFIGURATION_PROPERTY.equals(evt.getPropertyName())) {
+      Configuration c = (Configuration)evt.getNewValue();
+      if (c != null) {
+        reloadAction.doActionPerformed(null);
+      }
+    }
+  }
+
+};

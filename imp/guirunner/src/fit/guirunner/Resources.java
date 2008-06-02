@@ -5,14 +5,13 @@ import javax.swing.JFrame;
 
 public class Resources {
 
-  Configuration configuration;
   RunnerResourceBundle resource;
   ActionMap actionMap;
   UserPreferences userLayout; // size + position
   GlobalLockCoordinator lockCoordinator;
   // should be used for modal dialogs only
   JFrame applicationFrame;
-  
+
   public Resources(Configuration configuration, String resourceName, UserPreferences userLayout) {
     resource = new RunnerResourceBundle(resourceName);
     actionMap = new ActionMap();
@@ -22,11 +21,11 @@ public class Resources {
   }
 
   public void setConfiguration(Configuration c) {
-    this.configuration = c;
-    lockCoordinator.setHasConfiguration((configuration != null));
+    lockCoordinator.setNewConfiguration(c);
   }
+
   public Configuration getConfiguration() {
-    return configuration;
+    return lockCoordinator.getCurrentConfiguration();
   }
 
   public RunnerResourceBundle getResource() {

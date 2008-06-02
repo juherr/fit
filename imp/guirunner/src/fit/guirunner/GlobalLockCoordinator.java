@@ -5,20 +5,20 @@ import java.beans.PropertyChangeListener;
 import javax.swing.event.SwingPropertyChangeSupport;
 
 public class GlobalLockCoordinator {
-  boolean hasConfiguration;
-  boolean runnerIsRunning;
+  Configuration currentConfiguration;
+  Object activeRunner;
   boolean isReadingFilesystem;
-  
+
   public static final String HAS_CONFIGURATION_PROPERTY = "hasConfiguration";
   public static final String RUNNER_IS_RUNNING_PROPERTY = "runnerIsRunning";
   public static final String IS_READING_FILESYSTEM_PROPERTY = "isReadingFilesystem";
-  
+
   SwingPropertyChangeSupport changeSupport;
-  
+
   public GlobalLockCoordinator() {
     changeSupport = new SwingPropertyChangeSupport(this);
-    hasConfiguration = false;
-    runnerIsRunning = false;
+    currentConfiguration = null;
+    activeRunner = null;
     isReadingFilesystem = false;
   }
 
@@ -38,15 +38,15 @@ public class GlobalLockCoordinator {
     changeSupport.removePropertyChangeListener(arg0, arg1);
   }
 
-  public boolean isHasConfiguration() {
-    return hasConfiguration;
+  public boolean isHavingConfiguration() {
+    return currentConfiguration != null;
   }
 
-  public void setHasConfiguration(boolean hasConfiguration) {
-    if(this.hasConfiguration != hasConfiguration) {
-      boolean oldValue = this.hasConfiguration;
-      this.hasConfiguration = hasConfiguration;
-      changeSupport.firePropertyChange(HAS_CONFIGURATION_PROPERTY,oldValue,hasConfiguration);
+  public void setNewConfiguration(Configuration newConfiguration) {
+    if (this.currentConfiguration != newConfiguration) {
+      Object oldValue = this.currentConfiguration;
+      this.currentConfiguration = newConfiguration;
+      changeSupport.firePropertyChange(HAS_CONFIGURATION_PROPERTY, oldValue, newConfiguration);
     }
   }
 
@@ -55,29 +55,36 @@ public class GlobalLockCoordinator {
   }
 
   public void setReadingFilesystem(boolean isReadingFilesystem) {
-    if(this.isReadingFilesystem != isReadingFilesystem) {
+    if (this.isReadingFilesystem != isReadingFilesystem) {
       boolean oldValue = this.isReadingFilesystem;
       this.isReadingFilesystem = isReadingFilesystem;
-      changeSupport.firePropertyChange(IS_READING_FILESYSTEM_PROPERTY,oldValue,isReadingFilesystem);
+      changeSupport.firePropertyChange(IS_READING_FILESYSTEM_PROPERTY, oldValue,
+          isReadingFilesystem);
     }
   }
 
   public boolean isRunnerIsRunning() {
-    return runnerIsRunning;
+    return activeRunner != null;
   }
 
-  public void setRunnerIsRunning(boolean runnerIsRunning) {
-    if(this.runnerIsRunning != runnerIsRunning) {
-      boolean oldValue = this.runnerIsRunning;
-      this.runnerIsRunning = runnerIsRunning;
-      changeSupport.firePropertyChange(RUNNER_IS_RUNNING_PROPERTY,oldValue,runnerIsRunning);
+  public void setRunnerIsRunning(Object newRunner) {
+    if (this.activeRunner != newRunner) {
+      Object oldValue = this.activeRunner;
+      this.activeRunner = newRunner;
+      changeSupport.firePropertyChange(RUNNER_IS_RUNNING_PROPERTY, oldValue, newRunner);
     }
   }
+
   public boolean canRun() {
-    return hasConfiguration && !runnerIsRunning && !isReadingFilesystem;
+    return isHavingConfiguration() && !isRunnerIsRunning() && !isReadingFilesystem;
   }
+
   public boolean canReadFilesystem() {
-    return hasConfiguration && !runnerIsRunning && !isReadingFilesystem;
-    
+    return isHavingConfiguration() && !isRunnerIsRunning() && !isReadingFilesystem;
+
+  }
+
+  public Configuration getCurrentConfiguration() {
+    return (Configuration)currentConfiguration;
   }
 }

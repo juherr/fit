@@ -6,7 +6,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Comparator;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -18,8 +19,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import fit.guirunner.actions.AbstractAsyncAction;
+
 public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActions {
   UserPreferences layoutState;
+  String defaultTitle;
 
   GuiRunnerView view;
 
@@ -28,12 +32,10 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
   public RunnerFrame(RunnerTableModel model, Resources resources) {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setDefaultLookAndFeelDecorated(true);
-    setTitle(resources.getResource().getResourceString("text.appname"));
+    defaultTitle = resources.getResource().getResourceString("text.appname");
     resources.setApplicationFrame(this);
     registerExitAction(resources);
-    SortedTableModel stm = new SortedTableModel(model);
-    view = new GuiRunnerView(stm, resources);
-    view.getTableSortCoordinator().addPropertyChangeListener(stm);
+    view = new GuiRunnerView(model, resources);
     scroll = new JScrollPane(view);
     JToolBar toolbar = new RunnerToolbar(resources);
     JMenuBar menubar = new RunnerMenu(resources);
@@ -44,6 +46,26 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     restorePositionAndSize(resources);
     addWindowListener(this);
     setKeyMapping(menubar, resources.getActionMap());
+    resources.getLockCoordinator().addPropertyChangeListener(
+        GlobalLockCoordinator.HAS_CONFIGURATION_PROPERTY, getConfigurationListener());
+    updateTitle(resources.getLockCoordinator().getCurrentConfiguration());
+  }
+
+  private PropertyChangeListener getConfigurationListener() {
+    return new PropertyChangeListener() {
+      public void propertyChange(PropertyChangeEvent evt) {
+        updateTitle((Configuration)evt.getNewValue());
+      }
+
+    };
+  }
+
+  private void updateTitle(Configuration c) {
+    String newTitle = defaultTitle;
+    if (c != null && c.getConfigurationName() != null) {
+      newTitle = defaultTitle + " [" + c.getConfigurationName() + "]";
+    }
+    setTitle(newTitle);
   }
 
   private void restorePositionAndSize(Resources resources) {
@@ -54,7 +76,7 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     }
     Dimension d = layoutState.loadSize(UserPreferences.KEY_SCROLL_SIZE);
     if (d != null) {
-      scroll.setSize(d);
+      scroll.setPreferredSize(d);
     }
   }
 
@@ -105,26 +127,4 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     exitAction.configureFromResources(resources.getResource(), EXIT);
     resources.getActionMap().put(EXIT, exitAction);
   }
-}
-
-class RunnerEntriesComparator implements Comparator {
-    private Comparator[] columnComparators;
-    private boolean[] ascendingOrder;
-    private RunnerTableModel model;
-    
-	public RunnerEntriesComparator(Comparator[] columnComparators, boolean[] ascendingOrder, RunnerTableModel model) {
-    	this.columnComparators = columnComparators;
-    	this.ascendingOrder = ascendingOrder;
-    	this.model = model;
-    }
-	public int compare(Object idx1, Object idx2) {
-		int retval = 0;
-		RunnerEntry runnerEntry1 = model.getEntry(((Integer)idx1).intValue());
-		RunnerEntry runnerEntry2 = model.getEntry(((Integer)idx2).intValue());
-		for (int i=0;retval == 0 && i<columnComparators.length;i++) {
-			retval = columnComparators[i].compare(runnerEntry1, runnerEntry2);
-			retval = (ascendingOrder[i]) ? retval : -retval;
-		}
-		return retval;
-	}
 }

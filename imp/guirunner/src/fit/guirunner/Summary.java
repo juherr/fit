@@ -44,6 +44,7 @@ public class Summary implements TableModelListener {
   public Integer getWrong() {
     return getSummary().getWrong();
   }
+
   public String toString() {
     return getSummary().toString();
   }

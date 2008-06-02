@@ -1,5 +1,26 @@
 Revision history for fit.GuiRunner
 
+008  2008-06-01 Martin Busik <martin.busik@busik.de>
+    - quite a lot of new features and usability improvements
+    - Managing tests: create new test, delete test, rename/move test
+    - Running tests: run single, run marked, run all
+    - GuiRunner can be also used as a "directory runner" from
+      the command line (java -jar guirunner.jar -cli <confname>
+    - colored cells with correct, wrong and exceptions numers,
+      fit-like colors, if the numbers differ from 0
+    - sorting of the view allowed, accessible via click on the
+      row heading. Multi-Col sort possible (press CTRL while
+      clicking)
+    - "System information" MessageBox
+    - Default button set in all dialogs
+    - ESC key set for all dialogs
+    - new columns:
+        mark - for marking of rows ("run marked")
+        folder - relative path name to the test "input directory"
+    - elapsed-column right aligned
+    - code cleanup
+
+
 004  2007-03-11 Martin Busik <martin.busik@busik.de>
     - fixed: wrong command line handling during first startup
     - no action on first startup

@@ -1,34 +1,39 @@
-package fit.guirunner;
+package fit.guirunner.actions;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Locale;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 
 import fit.GuiRunner;
+import fit.guirunner.Resources;
+import fit.guirunner.RunnerResourceBundle;
+import fit.guirunner.RunnerVersion;
 import fit.guirunner.logic.VariableExpansion;
 
 public class AboutAction extends AbstractAsyncAction {
 
   Resources resources;
 
-  AboutAction(Resources res) {
+  public AboutAction(Resources res) {
     resources = res;
   }
 
@@ -36,7 +41,7 @@ public class AboutAction extends AbstractAsyncAction {
     AboutDialog dlg = new AboutDialog(resources.getApplicationFrame());
     dlg.pack();
     dlg.setLocationRelativeTo(resources.getApplicationFrame());
-    dlg.show();
+    dlg.setVisible(true);
   }
 
   // test
@@ -60,16 +65,20 @@ class AboutDialog extends JDialog implements RunnerVersion {
 
   public AboutDialog(JFrame parent) {
     super(parent, true);
+
+    Action closeAction = new AbstractAction() {
+      public void actionPerformed(ActionEvent arg0) {
+        dispose();
+      }
+    };
     setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     Container pane = getContentPane();
     pane.setLayout(new BorderLayout());
 
     JButton ok = new JButton("ok");
-    ok.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent arg0) {
-        dispose();
-      }
-    });
+    ok.addActionListener(closeAction);
+    getRootPane().setDefaultButton(ok);
+
     JPanel hlp = new JPanel();
     hlp.setLayout(new FlowLayout(FlowLayout.CENTER));
     hlp.add(ok);
@@ -93,51 +102,35 @@ class AboutDialog extends JDialog implements RunnerVersion {
 
     });
     info.setText(getAboutText());
-    pane.add(info, BorderLayout.NORTH);
+    pane.add(info, BorderLayout.CENTER);
+
+    // ESC + ENTER shall close the dialog
+    KeyStroke escKey = KeyStroke.getKeyStroke("ESCAPE");
+    InputMap im = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    im.put(escKey, "ESCAPE");
+    getRootPane().getActionMap().put("ESCAPE", closeAction);
+
+    // JEditorPane needs extra handling...
+    KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+    info.getInputMap().put(enterKey, closeAction);
+
   }
 
   private String getAboutText() {
     String defaultAboutString = "<html><body><b>fit.GuiRunner</b><p><a href=\"http://fit.c2.com\">fit.c2.com</a><br>written by Martin Busik<br>&copy; 2007</p></body></html>";
     String result;
     String language = Locale.getDefault().getLanguage();
-    result = readResourceFile(DEFAULT_RESOURCES + language + "_" + DEFAULT_ABOUT);
-    if(result == null) {
-      result = readResourceFile(DEFAULT_RESOURCES + DEFAULT_ABOUT);
+    result = RunnerResourceBundle.readResourceFile(DEFAULT_RESOURCES + language + "_"
+        + DEFAULT_ABOUT, RESOURCE_ENCODING);
+    if (result == null) {
+      result = RunnerResourceBundle.readResourceFile(DEFAULT_RESOURCES + DEFAULT_ABOUT,
+          RESOURCE_ENCODING);
     }
-    if(result == null) {
+    if (result == null) {
       result = defaultAboutString;
     }
-    VariableExpansion exp = new VariableExpansion("version",RUNNER_VERSION,"ID",RUNNER_ID);
+    VariableExpansion exp = new VariableExpansion("version", RUNNER_VERSION, "ID", RUNNER_ID);
     result = exp.replace(result);
-    return result;
-  }
-
-  /**
-   * 
-   * @param url
-   * @return
-   */
-  public static String readResourceFile(String name) {
-    String result = null;
-    try {
-      StringBuffer sb = new StringBuffer();
-      InputStream is;
-      is = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
-      if(is != null) {
-        InputStreamReader isr = new InputStreamReader(is, RESOURCE_ENCODING);
-        BufferedReader sr = new BufferedReader(isr);
-        String line;
-        while ((line = sr.readLine()) != null) {
-          sb.append(line).append("\n");
-        }
-        result = sb.toString();
-      } else {
-        // System.err.println("Resource not found: "+name);
-      }
-    } catch (IOException e) {
-      // TODO better handling
-      e.printStackTrace();
-    }
     return result;
   }
 }

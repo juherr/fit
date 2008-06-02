@@ -20,6 +20,7 @@ public class UserPreferences {
   public static final String KEY_TABLE_SIZE = "table.size";
 
   public static final String KEY_SCROLL_SIZE = "scroll.size";
+
   // current configuration stored in user preferences
   public static final String KEY_CURRENT_CONFIGURATION = "ConfigurationStorage.currentConfiguration";
 
@@ -27,14 +28,13 @@ public class UserPreferences {
 
   Properties properties;
 
-
   public UserPreferences(String filename) {
     this(new File(filename));
   }
 
   public UserPreferences(File file) {
     this.configurationFile = file;
-    if(file.canRead()) {
+    if (file.canRead()) {
       lazyLoad();
     }
   }
@@ -51,11 +51,18 @@ public class UserPreferences {
       try {
         fis = new FileInputStream(configurationFile);
         properties.load(fis);
-        fis.close();
       } catch (FileNotFoundException e) {
         e.printStackTrace();
       } catch (IOException e) {
         e.printStackTrace();
+      } finally {
+        if (fis != null) {
+          try {
+            fis.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
       }
     }
   }
@@ -65,15 +72,22 @@ public class UserPreferences {
       properties = new Properties();
     }
     properties.put(key, value);
-    FileOutputStream fos;
+    FileOutputStream fos = null;
     try {
       fos = new FileOutputStream(configurationFile);
       properties.store(fos, null);
-      fos.close();
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
+    } finally {
+      try {
+        if (fos != null) {
+          fos.close();
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
