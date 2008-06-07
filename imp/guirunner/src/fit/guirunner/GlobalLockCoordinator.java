@@ -4,14 +4,21 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.event.SwingPropertyChangeSupport;
 
+/**
+ * 
+ * @author busik
+ *
+ */
 public class GlobalLockCoordinator {
   Configuration currentConfiguration;
   Object activeRunner;
   boolean isReadingFilesystem;
+  boolean isViewOrderDirty;
 
   public static final String HAS_CONFIGURATION_PROPERTY = "hasConfiguration";
   public static final String RUNNER_IS_RUNNING_PROPERTY = "runnerIsRunning";
   public static final String IS_READING_FILESYSTEM_PROPERTY = "isReadingFilesystem";
+  public static final String IS_VIEW_ORDER_DIRTY_PROPERTY = "isViewOrderDirty";
 
   SwingPropertyChangeSupport changeSupport;
 
@@ -20,6 +27,7 @@ public class GlobalLockCoordinator {
     currentConfiguration = null;
     activeRunner = null;
     isReadingFilesystem = false;
+    isViewOrderDirty = false;
   }
 
   public void addPropertyChangeListener(PropertyChangeListener arg0) {
@@ -86,5 +94,18 @@ public class GlobalLockCoordinator {
 
   public Configuration getCurrentConfiguration() {
     return (Configuration)currentConfiguration;
+  }
+
+  public boolean isViewOrderDirty() {
+    return isViewOrderDirty;
+  }
+
+  public void setViewOrderDirty(boolean isViewOrderDirty) {
+    if (this.isViewOrderDirty != isViewOrderDirty) {
+      boolean oldValue = this.isViewOrderDirty;
+      this.isViewOrderDirty = isViewOrderDirty;
+      changeSupport.firePropertyChange(IS_VIEW_ORDER_DIRTY_PROPERTY, oldValue,
+          isViewOrderDirty);
+    }
   }
 }

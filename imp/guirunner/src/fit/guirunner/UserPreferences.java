@@ -9,6 +9,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * @author busik
+ */
 public class UserPreferences {
 
   public static final String KEY_FRAME_POS = "frame.pos";

@@ -17,9 +17,11 @@ public class RunnerMenu extends JMenuBar implements GuiRunnerActions {
     JMenu fileMenu = new JMenu(resource.getResourceString("text.FILE_MENU"));
     JMenu runMenu = new JMenu(resource.getResourceString("text.RUN_MENU"));
     JMenu helpMenu = new JMenu(resource.getResourceString("text.HELP_MENU"));
+    JMenu viewMenu = new JMenu(resource.getResourceString("text.VIEW_MENU"));
 
     add(fileMenu);
     add(runMenu);
+    add(viewMenu);
     add(helpMenu);
 
     fileMenu.add(new JMenuItem(am.get(NEW_CONFIG)));
@@ -49,6 +51,8 @@ public class RunnerMenu extends JMenuBar implements GuiRunnerActions {
     runMenu.add(new JMenuItem(am.get(STOP_TESTS)));
     runMenu.add(new JMenuItem(am.get(TERMINATE_TESTS)));
 
+    viewMenu.add(new JMenuItem(am.get(RESORT_VIEW)));
+    
     JMenuItem mi = new JMenuItem(new AboutAction(resources));
     mi.setText(resource.getResourceString("text.ABOUT_MENU"));
     helpMenu.add(mi);

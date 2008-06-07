@@ -1,16 +1,24 @@
 package fit.guirunner;
 
+/**
+ * @author busik
+ */
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ActionMap;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -20,6 +28,7 @@ import fit.guirunner.actions.EditInputFileAction;
 import fit.guirunner.actions.MoveOrRenameTestAction;
 import fit.guirunner.actions.NewTestAction;
 import fit.guirunner.actions.OpenOutputFileAction;
+import fit.guirunner.actions.ResortViewAction;
 import fit.guirunner.actions.RunAllAction;
 import fit.guirunner.actions.RunCurrentAction;
 import fit.guirunner.actions.RunMarkedAction;
@@ -27,6 +36,7 @@ import fit.guirunner.actions.ShowRunnerOutputAction;
 import fit.guirunner.actions.StopTestsAction;
 import fit.guirunner.actions.TerminateTestsAction;
 import fit.guirunner.swing.ColoredIntegerCellRenderer;
+import fit.guirunner.swing.ExtraBorderCellRenderer;
 import fit.guirunner.swing.TableSortCoordinator;
 
 public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseListener {
@@ -36,7 +46,7 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
   UserPreferences layoutState;
 
   public GuiRunnerView(RunnerTableModel model, Resources resources) {
-    SortedTableModel stm = new SortedTableModel(model);
+    SortedTableModel stm = new SortedTableModel(resources.getLockCoordinator(), model);
     setModel(stm);
 
     // explicitly set column identifier.
@@ -97,15 +107,23 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
     action.configureFromResources(resource, SHOW_RUNNER_OUTPUT);
     actionMap.put(SHOW_RUNNER_OUTPUT, action);
 
+    action = new ResortViewAction(lockCoordinator, stm);
+    action.configureFromResources(resource, RESORT_VIEW);
+    actionMap.put(RESORT_VIEW, action);
+
     popupMenu = kontextMenu(actionMap);
 
     dummyActionEvent = new ActionEvent(this, 0, "");
 
     // Cell renderers
-    DefaultTableCellRenderer elapsedRenderer = new DefaultTableCellRenderer();
-    elapsedRenderer.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-    getColumn(new Integer(RunnerTableModel.POS_ELAPSED)).setCellRenderer(elapsedRenderer);
+    getColumn(new Integer(RunnerTableModel.POS_ELAPSED)).setCellRenderer(new ExtraBorderCellRenderer(javax.swing.SwingConstants.RIGHT));
+    getColumn(new Integer(RunnerTableModel.POS_TIMESTAMP)).setCellRenderer(new ExtraBorderCellRenderer(javax.swing.SwingConstants.RIGHT));
+    getColumn(new Integer(RunnerTableModel.POS_IGNORED)).setCellRenderer(new ExtraBorderCellRenderer(javax.swing.SwingConstants.RIGHT));
 
+    getColumn(new Integer(RunnerTableModel.POS_NAME)).setCellRenderer(new ExtraBorderCellRenderer());
+    getColumn(new Integer(RunnerTableModel.POS_FOLDER)).setCellRenderer(new ExtraBorderCellRenderer());
+
+    
     getColumn(new Integer(RunnerTableModel.POS_CORRECT)).setCellRenderer(
         new ColoredIntegerCellRenderer(Color.GREEN));
     getColumn(new Integer(RunnerTableModel.POS_WRONG)).setCellRenderer(
@@ -117,12 +135,19 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
     getTableHeader().addMouseListener(tableSortCoordinator);
     tableSortCoordinator.addPropertyChangeListener(stm);
 
-    loadLayout();
+    getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+    if(!loadLayout()) {
+      initialLayout();
+    }
   }
 
   protected JPopupMenu kontextMenu(ActionMap am) {
     JPopupMenu menu = new JPopupMenu();
     menu.add(am.get(RUN_CURRENT));
+    menu.add(am.get(RUN_MARKED));
+    menu.add(am.get(RUN_ALL));
+    menu.addSeparator();
     menu.add(am.get(OPEN_OUTPUTFILE));
     menu.add(am.get(EDIT_INPUTFILE));
     menu.add(am.get(SHOW_RUNNER_OUTPUT));
@@ -150,11 +175,28 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
     layoutState.storeSize(UserPreferences.KEY_TABLE_SIZE, getSize());
   }
 
-  public void loadLayout() {
+  public void initialLayout() {
+    TableColumnModel cm = getColumnModel();
+    int factor = 1;
+    int sumWidth = 0;
+    for(int i = 0;i<getColumnCount();i++) {
+      switch(i) {
+        case RunnerTableModel.POS_NAME: factor = 5; break;
+        case RunnerTableModel.POS_FOLDER: factor = 2; break;
+        default:
+          factor = 1;
+      }
+      sumWidth += setDefaultColumnWidth(cm, i, factor);
+    }
+    this.setSize(new Dimension(sumWidth,(int)sumWidth/3));
+  }
+  /** returns true, if layout succ. restored */
+  public boolean loadLayout() {
+    boolean loaded = false;
     String pers = layoutState.getProperty(UserPreferences.KEY_USERLAYOUT_TABLE_COLUMNS);
     TableColumnModel cm = getColumnModel();
     TableColumn viewToModel[] = new TableColumn[cm.getColumnCount()];
-    int widthSum = 0;
+    
     if (pers != null) {
       String[] hlp = pers.split(",");
       if (hlp != null && hlp.length % 3 == 0 && hlp.length / 3 == cm.getColumnCount()) {
@@ -163,9 +205,6 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
           int idxModel = Integer.parseInt(hlp[i++]);
           int idxView = Integer.parseInt(hlp[i++]);
           int widthView = Integer.parseInt(hlp[i++]);
-          widthSum += widthView;
-          cm.getColumn(idxModel).setIdentifier(new Integer(idxModel));
-          cm.getColumn(idxModel).setWidth(widthView);
           cm.getColumn(idxModel).setPreferredWidth(widthView);
           viewToModel[idxView] = cm.getColumn(idxModel);
         }
@@ -180,8 +219,19 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
         if (d != null) {
           setSize(d);
         }
+        loaded = true;
       }
     }
+    return loaded;
+  }
+
+  private int setDefaultColumnWidth(TableColumnModel cm, int i, int factor) {
+    int w = 
+    getDefaultRenderer(String.class).getTableCellRendererComponent(this, getColumnName(i),
+        false, false, -1, i).getPreferredSize().width;
+    w = (w*factor*14) / 10;
+    cm.getColumn(i).setPreferredWidth(w);
+    return w;
   }
 
   public void mouseClicked(MouseEvent e) {
@@ -221,5 +271,43 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
   }
 
   public void mouseReleased(MouseEvent arg0) {
+  }
+}
+
+class MyTableHeaderRenderer extends JLabel implements TableCellRenderer {
+  public MyTableHeaderRenderer(String text) {
+    super(text);
+  }
+
+  // This method is called each time a column header
+  // using this renderer needs to be rendered.
+  public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+      boolean hasFocus, int rowIndex, int vColIndex) {
+    // 'value' is column header value of column 'vColIndex'
+    // rowIndex is always -1
+    // isSelected is always false
+    // hasFocus is always false
+
+    // Configure the component with the specified value
+    // setText(value.toString());
+
+    // Set tool tip if desired
+    // setToolTipText((String)value);
+
+    // Since the renderer is a component, return itself
+    return this;
+  }
+
+  // The following methods override the defaults for performance reasons
+  public void validate() {
+  }
+
+  public void revalidate() {
+  }
+
+  protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+  }
+
+  public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
   }
 }

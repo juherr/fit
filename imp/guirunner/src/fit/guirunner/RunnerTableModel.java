@@ -1,9 +1,10 @@
 package fit.guirunner;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,17 +16,18 @@ import javax.swing.table.AbstractTableModel;
 public class RunnerTableModel extends AbstractTableModel {
 
   public static final int POS_MARK = 0;
-  public static final int POS_NAME = 1;
-  public static final int POS_STATUS = 2;
-  public static final int POS_CORRECT = 3;
-  public static final int POS_WRONG = 4;
-  public static final int POS_IGNORED = 5;
-  public static final int POS_EXCEPTIONS = 6;
-  public static final int POS_ELAPSED = 7;
-  public static final int POS_FOLDER = 8;
-  public static final int COLUMN_COUNT = 9;
+  public static final int POS_FOLDER = 1;
+  public static final int POS_NAME = 2;
+  public static final int POS_STATUS = 3;
+  public static final int POS_CORRECT = 4;
+  public static final int POS_WRONG = 5;
+  public static final int POS_IGNORED = 6;
+  public static final int POS_EXCEPTIONS = 7;
+  public static final int POS_ELAPSED = 8;
+  public static final int POS_TIMESTAMP = 9;
+  public static final int COLUMN_COUNT = 10;
   // not visible columns
-  public static final int POS_ROW = 10; // returns the RunnerEntry object ==
+  public static final int POS_ROW = COLUMN_COUNT + 1; // returns the RunnerEntry object ==
   // the row
 
   List entries;
@@ -37,21 +39,22 @@ public class RunnerTableModel extends AbstractTableModel {
 
   List titles;
 
-  String[] defaultTitles = { "mark", "file name", "status", "right", "wrong", "ignored",
-      "exceptions", "elapsed", "folder" };
+  String[] defaultTitles = { "mark", "folder","file name", "status", "right", "wrong", "ignored",
+      "exceptions", "elapsed",  "last run" };
 
-  static final Class[] columnClasses = { Boolean.class, String.class, Icon.class, Integer.class,
+  static final Class[] columnClasses = { Boolean.class, String.class, String.class, Icon.class, Integer.class,
       Integer.class, Integer.class, Integer.class, String.class, String.class };
 
   Icon statusRunning;
 
   Icon statusUnparseable;
-
+  DateFormat dateFormat;
+  
   public RunnerTableModel(RunnerResourceBundle bundle) {
     entries = new ArrayList();
     entriesLookup = null;
     markedEntries = null;
-    titles = Arrays.asList(defaultTitles);
+    titles = loadTitles(bundle,defaultTitles);
     String value;
     if ((value = bundle.getResourceString("image.status.running")) != null) {
       statusRunning = bundle.getImage(value);
@@ -59,6 +62,17 @@ public class RunnerTableModel extends AbstractTableModel {
     if ((value = bundle.getResourceString("image.status.unparseable")) != null) {
       statusUnparseable = bundle.getImage(value);
     }
+    dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
+  }
+
+  private List loadTitles(RunnerResourceBundle bundle, String[] defaultTitles2) {
+    List titles = new ArrayList(defaultTitles2.length);
+    for(int i=0;i<defaultTitles2.length;i++) {
+      String key = "label.".concat(defaultTitles2[i]).replaceAll(" ", "_");
+      String localised = bundle.getResourceString(key);
+      titles.add((localised != null) ? localised : defaultTitles2[i]);
+    }
+    return titles;
   }
 
   public List getEntries() {
@@ -150,11 +164,25 @@ public class RunnerTableModel extends AbstractTableModel {
       case POS_FOLDER:
         result = entry.getRelativePath();
         break;
+      case POS_TIMESTAMP:
+        result = getTimestamp(entry);
+        break;
       case POS_ROW:
         result = entry;
         break;
       default:
         result = null;
+    }
+    return result;
+  }
+
+  private String getTimestamp(RunnerEntry entry) {
+    Date lastRun = entry.getLatRunTimestamp();
+    String result = "";
+    if (lastRun != null) {
+      synchronized (dateFormat) {
+        result = dateFormat.format(lastRun);
+      }
     }
     return result;
   }
@@ -273,7 +301,14 @@ public class RunnerTableModel extends AbstractTableModel {
           public int compare(Object o1, Object o2) {
             Boolean v1 = ((RunnerEntry)o1).getMark();
             Boolean v2 = ((RunnerEntry)o2).getMark();
-            return (v1.booleanValue() == v2.booleanValue() ? 0 : (v1.booleanValue() ? 1 : -1)); // java 1.4 has no compareTo for boolean... v1.compareTo(v2);
+            return (v1.booleanValue() == v2.booleanValue() ? 0 : (v1.booleanValue() ? 1 : -1)); // java
+            // 1.4
+            // has
+            // no
+            // compareTo
+            // for
+            // boolean...
+            // v1.compareTo(v2);
           }
 
         };
@@ -308,6 +343,9 @@ public class RunnerTableModel extends AbstractTableModel {
 
         };
         break;
+      case POS_TIMESTAMP:
+        result = new TimestampComarator(columnModelIndex);
+        break;
       default:
         result = new Comparator() {
           public int compare(Object o1, Object o2) {
@@ -340,6 +378,43 @@ public class RunnerTableModel extends AbstractTableModel {
   }
 
 }
+
+class TimestampComarator implements Comparator {
+  private int columnModelIndex;
+
+  public TimestampComarator(int columnModelIndex) {
+    this.columnModelIndex = columnModelIndex;
+  }
+
+  public int compare(Object o1, Object o2) {
+    int result;
+    RunnerEntry r1 = (RunnerEntry)o1;
+    RunnerEntry r2 = (RunnerEntry)o2;
+    Date v1 = null;
+    Date v2 = null;
+    switch (columnModelIndex) {
+      case RunnerTableModel.POS_TIMESTAMP:
+        v1 = r1.getLatRunTimestamp();
+        v2 = r2.getLatRunTimestamp();
+        break;
+    }
+    if (v1 != null) {
+      if (v2 != null) {
+        result = v1.compareTo(v2);
+      } else {
+        result = 1;
+      }
+    } else {
+      if (v2 != null) {
+        result = -1;
+      } else {
+        result = 0;
+      }
+    }
+    return result;
+  }
+}
+
 
 class IntegerAttributeComparator implements Comparator {
   private int columnModelIndex;

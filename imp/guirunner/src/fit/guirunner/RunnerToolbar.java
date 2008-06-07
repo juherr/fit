@@ -23,6 +23,8 @@ public class RunnerToolbar extends JToolBar implements GuiRunnerActions {
     add2(new JButton(am.get(EDIT_INPUTFILE)));
     add2(new JButton(am.get(OPEN_OUTPUTFILE)));
     add2(new JButton(am.get(SHOW_RUNNER_OUTPUT)));
+    add(new JSeparator(JSeparator.VERTICAL));
+    add(new JButton(am.get(RESORT_VIEW)));
   }
 
   private void add2(JButton b) {

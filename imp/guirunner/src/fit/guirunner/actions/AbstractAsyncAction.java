@@ -13,6 +13,11 @@ import javax.swing.SwingUtilities;
 import fit.guirunner.GlobalLockCoordinator;
 import fit.guirunner.RunnerResourceBundle;
 
+/**
+ * 
+ * @author busik
+ *
+ */
 public abstract class AbstractAsyncAction extends AbstractAction implements PropertyChangeListener,
     Runnable {
 

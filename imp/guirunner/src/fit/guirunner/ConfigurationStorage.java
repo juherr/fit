@@ -119,7 +119,10 @@ public class ConfigurationStorage implements GuiRunnerActions {
   protected File showOpenDialog(int a) {
     final int action = a;
     File choosen = null;
-    File configDir = resources.getConfiguration().getConfigurationDir();
+    File configDir = null;
+    if(resources.getConfiguration() != null) {
+      configDir = resources.getConfiguration().getConfigurationDir();
+    }
 
     RunnerResourceBundle resource = resources.getResource();
     JFileChooser fd = new JFileChooser() {

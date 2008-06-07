@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
@@ -30,7 +31,7 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
   JScrollPane scroll;
 
   public RunnerFrame(RunnerTableModel model, Resources resources) {
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(EXIT_ON_CLOSE); 
     setDefaultLookAndFeelDecorated(true);
     defaultTitle = resources.getResource().getResourceString("text.appname");
     resources.setApplicationFrame(this);
@@ -43,7 +44,7 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     getContentPane().setLayout(new BorderLayout());
     getContentPane().add(toolbar, BorderLayout.NORTH);
     getContentPane().add(scroll, BorderLayout.CENTER);
-    restorePositionAndSize(resources);
+    restorePositionAndSize(resources,view);
     addWindowListener(this);
     setKeyMapping(menubar, resources.getActionMap());
     resources.getLockCoordinator().addPropertyChangeListener(
@@ -68,7 +69,7 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     setTitle(newTitle);
   }
 
-  private void restorePositionAndSize(Resources resources) {
+  private void restorePositionAndSize(Resources resources,JTable view) {
     layoutState = resources.getUserLayout();
     Point ps = layoutState.loadPosition(UserPreferences.KEY_FRAME_POS);
     if (ps != null) {
@@ -77,6 +78,12 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     Dimension d = layoutState.loadSize(UserPreferences.KEY_SCROLL_SIZE);
     if (d != null) {
       scroll.setPreferredSize(d);
+    } else {
+      d = view.getSize();
+      if(d != null) {
+        scroll.setPreferredSize(d);
+      }
+      
     }
   }
 
@@ -121,7 +128,10 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
   private void registerExitAction(Resources resources) {
     AbstractAsyncAction exitAction = new AbstractAsyncAction() {
       public void doActionPerformed(ActionEvent e) {
-        dispose();
+        layoutState.storePosition(UserPreferences.KEY_FRAME_POS, getLocation());
+        layoutState.storeSize(UserPreferences.KEY_SCROLL_SIZE, scroll.getSize());
+        view.storeLayout();
+        System.exit(0);
       }
     };
     exitAction.configureFromResources(resources.getResource(), EXIT);

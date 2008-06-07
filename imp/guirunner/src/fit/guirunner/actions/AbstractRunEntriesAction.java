@@ -86,19 +86,18 @@ public abstract class AbstractRunEntriesAction extends AbstractAsyncAction imple
   }
 
   protected void run(List entries) throws IOException {
-    model.setQueuedToRun(entries);
+    // model.setQueuedToRun(entries);
 
     EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
     synchronized (this) {
       execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir(), ctx.getInDir(), ctx
           .getOutDir());
-
     }
     stopped = false;
     for (Iterator i = entries.iterator(); !stopped && i.hasNext();) {
       RunnerEntry re = (RunnerEntry)i.next();
       re.setRunning();
-      model.modifyStatus(re);
+      model.modifyEntry(re);
       execute.doExecute(re);
       model.modifyEntry(re);
     }
@@ -114,12 +113,10 @@ public abstract class AbstractRunEntriesAction extends AbstractAsyncAction imple
   }
 
   /* terminate the current test, abort futher tests */
-  public void killCurrentTest() {
-    synchronized (this) {
-      stopTests();
-      if (execute != null) {
-        execute.killTest();
-      }
+  synchronized public void killCurrentTest() {
+    stopTests();
+    if (execute != null) {
+      execute.killTest();
     }
   }
 }

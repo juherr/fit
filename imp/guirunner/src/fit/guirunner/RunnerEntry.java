@@ -1,6 +1,7 @@
 package fit.guirunner;
 
 import java.io.File;
+import java.util.Date;
 
 public class RunnerEntry {
   /** This entry has not been run yet */
@@ -35,6 +36,8 @@ public class RunnerEntry {
   long elapsed;
   /* marker for "run marked" */
   transient Boolean mark;
+  transient Date lastRunTimestamp;
+  
 
   public RunnerEntry(File file, String relativePath) {
     inFile = file;
@@ -160,5 +163,16 @@ public class RunnerEntry {
 
   public void setMark(Boolean mark) {
     this.mark = mark;
+  }
+
+  public Date getLatRunTimestamp() {
+    return lastRunTimestamp;
+  }
+
+  public void setLastRunTimestamp() {
+    this.lastRunTimestamp = new Date();
+  }
+  public void setLastRunTimestamp(Date latRunTimestamp) {
+    this.lastRunTimestamp = latRunTimestamp;
   }
 }

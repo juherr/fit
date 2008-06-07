@@ -1,7 +1,19 @@
 Revision history for fit.GuiRunner
 
+009  2008-06-06 Martin Busik <martin.busik@busik.de>
+    - if sorting is on, vies does not resort on every single
+      change, but the user has to press the "re-sort" button.
+      This seems to be better, than the immediate resort of
+      the 008 build, as selected entries cannot disappear of the 
+      visible part of the entries in view.
+    - new column "timestamp of last run"
+    - cell padding in the view
+    - column titles are localisable, currently localised for
+      german
+
 008  2008-06-01 Martin Busik <martin.busik@busik.de>
-    - quite a lot of new features and usability improvements
+    - quite a lot of new features and usability improvements,
+      thanks to the valuable feedback of Gerard Meszaros
     - Managing tests: create new test, delete test, rename/move test
     - Running tests: run single, run marked, run all
     - GuiRunner can be also used as a "directory runner" from

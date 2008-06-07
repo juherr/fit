@@ -94,6 +94,7 @@ public class ExecuteEntry {
     }
     elapsed = System.currentTimeMillis() - elapsed;
     re.setElapsed(elapsed);
+    re.setLastRunTimestamp();
     if (outputParsed) {
       re.setParseableResult(cmdOutput.toString(), Integer.parseInt(right), Integer.parseInt(wrong),
           Integer.parseInt(ignored), Integer.parseInt(exceptions));

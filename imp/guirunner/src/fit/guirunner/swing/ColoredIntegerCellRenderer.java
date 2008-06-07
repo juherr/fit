@@ -3,7 +3,11 @@ package fit.guirunner.swing;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -16,12 +20,14 @@ public class ColoredIntegerCellRenderer extends DefaultTableCellRenderer {
   private Color nonzeroColor;
   private Color selectedNonzeroColor;
   private static final Integer ZERO = new Integer(0);
+  private Border compoundBorder;
 
   public ColoredIntegerCellRenderer(Color nonzeroColor) {
     super();
     this.nonzeroColor = nonzeroColor;
     selectedNonzeroColor = nonzeroColor.brighter();
     setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+    compoundBorder = null;
   }
 
   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -32,14 +38,22 @@ public class ColoredIntegerCellRenderer extends DefaultTableCellRenderer {
     if (value != null && (value instanceof Integer)) {
       nzColor = !ZERO.equals(value);
     }
+    Color fg;
+    Color bg;
     if (isSelected) {
-      theComponent.setForeground(table.getSelectionForeground());
-      // theComponent.setBackground(table.getSelectionBackground());
-      theComponent.setBackground(nzColor ? selectedNonzeroColor : table.getSelectionBackground());
+      fg = nzColor ? table.getForeground(): table.getSelectionForeground();
+      bg = nzColor ? selectedNonzeroColor : table.getSelectionBackground();
     } else {
-      theComponent.setBackground(nzColor ? nonzeroColor : table.getBackground());
-      theComponent.setForeground(table.getForeground());
+      bg = nzColor ? nonzeroColor : table.getBackground();
+      fg = table.getForeground();
+        }
+    theComponent.setBackground(bg);
+    theComponent.setForeground(fg);
+    if(compoundBorder == null) {
+      compoundBorder = new CompoundBorder(new EmptyBorder(1,4,1,4),((JLabel)theComponent).getBorder())
+      ;
     }
+    ((JLabel)theComponent).setBorder(compoundBorder );
     return theComponent;
   }
 }

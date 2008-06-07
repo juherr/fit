@@ -1,5 +1,4 @@
 - RunEntry - refactoring: Integer instead of int ?
-- disable sorting in view while running?
 - MRU configuration - menu
 - configuration save-as
 

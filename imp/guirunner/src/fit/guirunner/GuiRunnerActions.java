@@ -13,8 +13,6 @@ public interface GuiRunnerActions {
   final String MRU_CONFIG = "MRU_CONFIG";
   final String EXIT = "EXIT";
   final String SYSTEM_INFO = "SYSTEM_INFO";
-
-  // TBD
   final String RUN_MARKED = "RUN_MARKED";
   final String STOP_TESTS = "STOP_TESTS";
   final String TERMINATE_TESTS = "TERMINATE_TESTS";
@@ -22,7 +20,8 @@ public interface GuiRunnerActions {
   final String DELETE_TEST = "DELETE_TEST";
   final String RENAME_TEST = "RENAME_TEST";
   final String MOVE_TEST = "MOVE_TEST";
-
+  final String RESORT_VIEW = "RESORT_VIEW";
+  
   // test only
   final String APPEND_ENTRY = "APPEND_ENTRY";
 }
