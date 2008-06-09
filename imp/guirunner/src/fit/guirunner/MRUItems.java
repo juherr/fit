@@ -22,7 +22,6 @@ public class MRUItems implements PropertyChangeListener {
   private static final int MRU_MAX_SIZE = 5;
   private JSeparator separatorBefore;
   private JMenuItem items[];
-  GlobalLockCoordinator lockCoordinator;
   Resources resources;
   // contains the mru configurations, precisely: filenames of
   // the mru configurations. Each filename ist in the list no
@@ -33,7 +32,6 @@ public class MRUItems implements PropertyChangeListener {
   private LinkedList mruConfigurations;
 
   public MRUItems(GlobalLockCoordinator lockCoordinator, Resources resources) {
-    this.lockCoordinator = lockCoordinator;
     this.resources = resources;
     mruConfigurations = new LinkedList();
     items = null; // delayed initialization
