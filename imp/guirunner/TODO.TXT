@@ -1,10 +1,8 @@
-- RunEntry - refactoring: Integer instead of int ?
-- MRU configuration - menu
-- configuration save-as
-
 - summary line on the bottom of the jtable
 - display messages, if something goes wrong
 - support for animated gifs in the status-cell
 - better support for creating configuration files
   - depending on the runner implementation - java, perl, python, .net
   - depending upon the os 
+  - configuration save-as
+

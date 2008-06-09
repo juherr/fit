@@ -54,14 +54,15 @@ class SummaryEntry extends RunnerEntry {
   SummaryEntry() {
     super(null, null); // inFile + outFile are never used...
     status = LAST_RUN_PARSEABLE;
+    setParseableResult("",0,0,0,0);
   }
 
   void add(RunnerEntry anEntry) {
     if (anEntry.hasActualResults()) {
-      right += anEntry.right;
-      wrong += anEntry.wrong;
-      ignored += anEntry.ignored;
-      exceptions += anEntry.exceptions;
+      right = new Integer(right.intValue() + anEntry.right.intValue());
+      wrong = new Integer(wrong.intValue() + anEntry.wrong.intValue());
+      ignored = new Integer(ignored.intValue() + anEntry.ignored.intValue());
+      exceptions = new Integer(exceptions.intValue() + anEntry.exceptions.intValue());
     }
   }
 

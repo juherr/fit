@@ -23,7 +23,7 @@ import javax.swing.KeyStroke;
 import fit.guirunner.actions.AbstractAsyncAction;
 
 public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActions {
-  UserPreferences layoutState;
+  Resources resources;
   String defaultTitle;
 
   GuiRunnerView view;
@@ -31,6 +31,7 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
   JScrollPane scroll;
 
   public RunnerFrame(RunnerTableModel model, Resources resources) {
+    this.resources = resources;
     setDefaultCloseOperation(EXIT_ON_CLOSE); 
     setDefaultLookAndFeelDecorated(true);
     defaultTitle = resources.getResource().getResourceString("text.appname");
@@ -44,7 +45,7 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     getContentPane().setLayout(new BorderLayout());
     getContentPane().add(toolbar, BorderLayout.NORTH);
     getContentPane().add(scroll, BorderLayout.CENTER);
-    restorePositionAndSize(resources,view);
+    restorePositionAndSize(view);
     addWindowListener(this);
     setKeyMapping(menubar, resources.getActionMap());
     resources.getLockCoordinator().addPropertyChangeListener(
@@ -69,8 +70,8 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
     setTitle(newTitle);
   }
 
-  private void restorePositionAndSize(Resources resources,JTable view) {
-    layoutState = resources.getUserLayout();
+  private void restorePositionAndSize(JTable view) {
+    UserPreferences layoutState = resources.getUserLayout();
     Point ps = layoutState.loadPosition(UserPreferences.KEY_FRAME_POS);
     if (ps != null) {
       setLocation(ps);
@@ -100,6 +101,13 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
       }
     }
   }
+  private void storePreferences() {
+    UserPreferences layoutState = resources.getUserLayout();
+    layoutState.storePosition(UserPreferences.KEY_FRAME_POS, getLocation());
+    layoutState.storeSize(UserPreferences.KEY_SCROLL_SIZE, scroll.getSize());
+    view.storeLayout();
+    resources.getMruItems().storePreferences();
+  }
 
   public void windowActivated(WindowEvent arg0) {
   }
@@ -108,9 +116,7 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
   }
 
   public void windowClosing(WindowEvent arg0) {
-    layoutState.storePosition(UserPreferences.KEY_FRAME_POS, getLocation());
-    layoutState.storeSize(UserPreferences.KEY_SCROLL_SIZE, scroll.getSize());
-    view.storeLayout();
+    storePreferences();
   }
 
   public void windowDeactivated(WindowEvent arg0) {
@@ -128,13 +134,12 @@ public class RunnerFrame extends JFrame implements WindowListener, GuiRunnerActi
   private void registerExitAction(Resources resources) {
     AbstractAsyncAction exitAction = new AbstractAsyncAction() {
       public void doActionPerformed(ActionEvent e) {
-        layoutState.storePosition(UserPreferences.KEY_FRAME_POS, getLocation());
-        layoutState.storeSize(UserPreferences.KEY_SCROLL_SIZE, scroll.getSize());
-        view.storeLayout();
+        storePreferences();
+        dispose();
         System.exit(0);
       }
     };
-    exitAction.configureFromResources(resources.getResource(), EXIT);
+    resources.getResource().configureActionFromResource(exitAction, EXIT);
     resources.getActionMap().put(EXIT, exitAction);
   }
 }

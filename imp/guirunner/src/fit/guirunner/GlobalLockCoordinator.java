@@ -51,7 +51,9 @@ public class GlobalLockCoordinator {
   }
 
   public void setNewConfiguration(Configuration newConfiguration) {
-    if (this.currentConfiguration != newConfiguration) {
+    // same file can still be a different configuration - if changed outside the system
+    if ((this.currentConfiguration == null && newConfiguration != null) ||
+        (this.currentConfiguration != null && !this.currentConfiguration.equals(newConfiguration))) {
       Object oldValue = this.currentConfiguration;
       this.currentConfiguration = newConfiguration;
       changeSupport.firePropertyChange(HAS_CONFIGURATION_PROPERTY, oldValue, newConfiguration);

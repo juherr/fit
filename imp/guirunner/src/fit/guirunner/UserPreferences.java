@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -24,6 +26,8 @@ public class UserPreferences {
 
   public static final String KEY_SCROLL_SIZE = "scroll.size";
 
+  public static final String KEY_MRU_PREFIX = "mru.";
+  
   // current configuration stored in user preferences
   public static final String KEY_CURRENT_CONFIGURATION = "ConfigurationStorage.currentConfiguration";
 
@@ -75,6 +79,29 @@ public class UserPreferences {
       properties = new Properties();
     }
     properties.put(key, value);
+    storeProperties();
+  }
+
+  /** updates UserPreferences with the given properties. 
+   * @param newProperties - properties to add / update
+   * @param propertiesToDelete - properties to delete
+   */
+  public void updateProperties(Properties newProperties, List propertiesToDelete) {
+    for(Iterator i = newProperties.keySet().iterator();i.hasNext();) {
+      Object key = i.next();
+      Object value = newProperties.get(key);
+      properties.put(key, value);
+    }
+    if(propertiesToDelete != null && propertiesToDelete.size() > 0) {
+      for(Iterator i = propertiesToDelete.iterator();i.hasNext();) {
+        properties.remove(i.next());
+      }
+    }
+    storeProperties();
+  }
+
+  
+  private void storeProperties() {
     FileOutputStream fos = null;
     try {
       fos = new FileOutputStream(configurationFile);

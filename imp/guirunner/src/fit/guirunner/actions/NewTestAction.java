@@ -73,6 +73,9 @@ public class NewTestAction extends AbstractAsyncAction {
     String template = RunnerResourceBundle.readResourceFile(TEMPLATE_NAME, TEMPLATE_ENCODING);
     VariableExpansion ve = new VariableExpansion("title", newFile.getName());
     template = ve.replace(template);
+    if(!newFile.getParentFile().exists()) {
+      newFile.getParentFile().mkdirs();
+    }
     PrintWriter output = new PrintWriter(new OutputStreamWriter(new FileOutputStream(newFile),
         TEMPLATE_ENCODING));
     output.write(template);

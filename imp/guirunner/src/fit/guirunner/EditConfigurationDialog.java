@@ -91,7 +91,7 @@ public class EditConfigurationDialog extends JDialog {
     cancel = new JButton(resource.getResourceString(KEY_CANCEL));
     apply = new JButton(resource.getResourceString(KEY_APPLY));
 
-    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     getRootPane().setDefaultButton(apply);
 
     Action cancelAction = new AbstractAction() {

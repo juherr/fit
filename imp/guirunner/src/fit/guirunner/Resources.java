@@ -11,6 +11,7 @@ public class Resources {
   GlobalLockCoordinator lockCoordinator;
   // should be used for modal dialogs only
   JFrame applicationFrame;
+  MRUItems mruItems;
 
   public Resources(Configuration configuration, String resourceName, UserPreferences userLayout) {
     resource = new RunnerResourceBundle(resourceName);
@@ -18,6 +19,7 @@ public class Resources {
     lockCoordinator = new GlobalLockCoordinator();
     this.userLayout = userLayout;
     setConfiguration(configuration);
+    mruItems = new MRUItems(lockCoordinator,this);
   }
 
   public void setConfiguration(Configuration c) {
@@ -50,5 +52,9 @@ public class Resources {
 
   public void setApplicationFrame(JFrame applicationFrame) {
     this.applicationFrame = applicationFrame;
+  }
+
+  public MRUItems getMruItems() {
+    return mruItems;
   }
 }

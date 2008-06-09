@@ -41,7 +41,12 @@ public class OpenOutputFileAction extends AbstractCurrentEntryAction {
   }
 
   public void tableChanged(TableModelEvent arg0) {
-    handleChanged();
+    // this action ma be informed before the view...
+    if(view.getRowCount() > 0) {
+      handleChanged();
+    } else {
+      setEnabled(false);
+    }
   }
 
   public void handleChanged() {
@@ -49,8 +54,12 @@ public class OpenOutputFileAction extends AbstractCurrentEntryAction {
     boolean enabled = false;
     if (row >= 0) {
       RunnerEntry re = getRunnerEntry();
-      enabled = re.hasBeenRun() && re.getLastOutFile() != null && re.getLastOutFile().exists();
+      enabled = isOutputFileAvailable(re);
     }
     setEnabled(enabled);
+  }
+
+  private boolean isOutputFileAvailable(RunnerEntry re) {
+    return re.hasBeenRun() && re.getLastOutFile() != null && re.getLastOutFile().exists();
   }
 }

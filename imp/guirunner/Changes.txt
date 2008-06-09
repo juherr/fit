@@ -1,5 +1,11 @@
 Revision history for fit.GuiRunner
 
+010  2008-06-XX
+    - Copy results to clipboard - the contents of the view is copied
+      to the clipboard. The format is suitable for pasting into
+      a spreadsheet application
+    - MRU List of configurations
+
 009  2008-06-06 Martin Busik <martin.busik@busik.de>
     - if sorting is on, vies does not resort on every single
       change, but the user has to press the "re-sort" button.

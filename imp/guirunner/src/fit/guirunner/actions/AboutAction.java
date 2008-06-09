@@ -71,7 +71,7 @@ class AboutDialog extends JDialog implements RunnerVersion {
         dispose();
       }
     };
-    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     Container pane = getContentPane();
     pane.setLayout(new BorderLayout());
 

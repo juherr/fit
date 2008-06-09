@@ -97,7 +97,7 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
 
     AbstractAsyncAction reloadAction;
     reloadAction = new ReloadAction(model, resources);
-    reloadAction.configureFromResources(resources.getResource(), REFRESH_ENTRIES);
+    resources.getResource().configureActionFromResource(reloadAction, REFRESH_ENTRIES);
     resources.getActionMap().put(REFRESH_ENTRIES, reloadAction);
 
     new ReloadUponConfigurationChanged(resources.getLockCoordinator(), reloadAction);

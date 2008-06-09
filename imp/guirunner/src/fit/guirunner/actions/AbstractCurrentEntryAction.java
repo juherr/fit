@@ -15,19 +15,19 @@ abstract public class AbstractCurrentEntryAction extends AbstractAsyncAction imp
   JTable view;
 
   AbstractCurrentEntryAction(JTable view, GlobalLockCoordinator lockCoordinator) {
+    this.view = view;
     setLockCoordinator(lockCoordinator);
     view.getSelectionModel().addListSelectionListener(this);
     view.getModel().addTableModelListener(this);
-    this.view = view;
     setEnabled(false);
   }
 
   public void valueChanged(ListSelectionEvent arg0) {
-    int row = view.getSelectedRow();
-    setEnabled((row >= 0) ? true : false);
+    setEnabled(!isModelEmpty() && isRowSected());
   }
 
   public void tableChanged(TableModelEvent arg0) {
+    setEnabled(!isModelEmpty() && isRowSected());
   }
 
   protected RunnerEntry getRunnerEntry() {
@@ -37,5 +37,15 @@ abstract public class AbstractCurrentEntryAction extends AbstractAsyncAction imp
       re = (RunnerEntry)view.getModel().getValueAt(r, RunnerTableModel.POS_ROW);
     }
     return re;
+  }
+
+  private boolean isRowSected() {
+    return view.getSelectedRow() >= 0;
+  }
+
+  // model change event can arrive here bevore the view gets notified and
+  // before the view gets the chance to remove the selection
+  private boolean isModelEmpty() {
+    return view.getModel().getRowCount() == 0;
   }
 }

@@ -5,9 +5,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import fit.guirunner.GlobalLockCoordinator;
@@ -49,29 +47,7 @@ public abstract class AbstractAsyncAction extends AbstractAction implements Prop
 
   public AbstractAsyncAction(RunnerResourceBundle resources, String key) {
     this();
-    configureFromResources(resources, key);
-  }
-
-  public void configureFromResources(RunnerResourceBundle resources, String key) {
-    String value;
-    if ((value = resources.getResourceString("tooltip." + key)) != null) {
-      putValue(Action.SHORT_DESCRIPTION, value);
-    }
-    if ((value = resources.getResourceString("image." + key)) != null) {
-      putValue(Action.SMALL_ICON, resources.getImage(value));
-    }
-    if ((value = resources.getResourceString("text." + key)) != null) {
-      putValue(Action.NAME, value);
-    } else {
-      // while development
-      putValue(Action.NAME, key);
-    }
-    if ((value = resources.getResourceString("mnemonics." + key)) != null) {
-      putValue(Action.MNEMONIC_KEY, new Integer(value));
-    }
-    if ((value = resources.getResourceString("accelerator." + key)) != null) {
-      putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(value));
-    }
+    resources.configureActionFromResource(this, key);
   }
 
   public void actionPerformed(ActionEvent arg0) {

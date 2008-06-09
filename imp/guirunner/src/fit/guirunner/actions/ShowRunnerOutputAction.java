@@ -30,7 +30,12 @@ public class ShowRunnerOutputAction extends AbstractCurrentEntryAction {
   }
 
   public void tableChanged(TableModelEvent arg0) {
-    handleChanged();
+    // this action ma be informed before the view...
+    if(view.getRowCount() > 0) {
+      handleChanged();
+    } else {
+      setEnabled(false);
+    }
   }
 
   private void handleChanged() {

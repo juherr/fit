@@ -15,6 +15,11 @@ import fit.guirunner.RunnerEntry;
 import fit.guirunner.RunnerTableModel;
 import fit.guirunner.logic.SimpleWildcardFilter;
 
+/**
+ * 
+ * @author busik
+ *
+ */
 public class MoveOrRenameTestAction extends AbstractCurrentEntryAction {
 
   public static final String KEY_TITLE = "title.RenameMoveTestfile";

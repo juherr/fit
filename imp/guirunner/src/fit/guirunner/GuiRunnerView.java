@@ -16,8 +16,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -29,6 +27,7 @@ import fit.guirunner.actions.MoveOrRenameTestAction;
 import fit.guirunner.actions.NewTestAction;
 import fit.guirunner.actions.OpenOutputFileAction;
 import fit.guirunner.actions.ResortViewAction;
+import fit.guirunner.actions.ResultsToClipboardAction;
 import fit.guirunner.actions.RunAllAction;
 import fit.guirunner.actions.RunCurrentAction;
 import fit.guirunner.actions.RunMarkedAction;
@@ -64,53 +63,56 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
     AbstractAsyncAction action;
 
     action = new RunCurrentAction(this, resources.getLockCoordinator(), resources, model);
-    action.configureFromResources(resource, RUN_CURRENT);
+    resource.configureActionFromResource(action, RUN_CURRENT);
     actionMap.put(RUN_CURRENT, action);
 
     action = new RunMarkedAction(this, resources.getLockCoordinator(), resources, model);
-    action.configureFromResources(resource, RUN_MARKED);
+    resource.configureActionFromResource(action, RUN_MARKED);
     actionMap.put(RUN_MARKED, action);
 
     action = new RunAllAction(this, resources.getLockCoordinator(), resources, model);
-    action.configureFromResources(resources.getResource(), RUN_ALL);
+    resources.getResource().configureActionFromResource(action, RUN_ALL);
     actionMap.put(RUN_ALL, action);
 
     action = new StopTestsAction(resources.getLockCoordinator());
-    action.configureFromResources(resources.getResource(), STOP_TESTS);
+    resources.getResource().configureActionFromResource(action, STOP_TESTS);
     actionMap.put(STOP_TESTS, action);
 
     action = new TerminateTestsAction(resources.getLockCoordinator());
-    action.configureFromResources(resources.getResource(), TERMINATE_TESTS);
+    resources.getResource().configureActionFromResource(action, TERMINATE_TESTS);
     actionMap.put(TERMINATE_TESTS, action);
 
     action = new DeleteTestfileAction(this, resources.getLockCoordinator(), resources, model);
-    action.configureFromResources(resources.getResource(), DELETE_TEST);
+    resources.getResource().configureActionFromResource(action, DELETE_TEST);
     actionMap.put(DELETE_TEST, action);
 
     action = new NewTestAction(resources.getLockCoordinator(), resources, model);
-    action.configureFromResources(resources.getResource(), NEW_TEST);
+    resources.getResource().configureActionFromResource(action, NEW_TEST);
     actionMap.put(NEW_TEST, action);
 
     action = new MoveOrRenameTestAction(this, resources.getLockCoordinator(), resources, model);
-    action.configureFromResources(resources.getResource(), MOVE_TEST);
+    resources.getResource().configureActionFromResource(action, MOVE_TEST);
     actionMap.put(MOVE_TEST, action);
 
     action = new OpenOutputFileAction(this, lockCoordinator, resources);
-    action.configureFromResources(resource, OPEN_OUTPUTFILE);
+    resource.configureActionFromResource(action, OPEN_OUTPUTFILE);
     actionMap.put(OPEN_OUTPUTFILE, action);
 
     action = new EditInputFileAction(this, lockCoordinator, resources);
-    action.configureFromResources(resource, EDIT_INPUTFILE);
+    resource.configureActionFromResource(action, EDIT_INPUTFILE);
     actionMap.put(EDIT_INPUTFILE, action);
 
     action = new ShowRunnerOutputAction(this, lockCoordinator);
-    action.configureFromResources(resource, SHOW_RUNNER_OUTPUT);
+    resource.configureActionFromResource(action, SHOW_RUNNER_OUTPUT);
     actionMap.put(SHOW_RUNNER_OUTPUT, action);
 
     action = new ResortViewAction(lockCoordinator, stm);
-    action.configureFromResources(resource, RESORT_VIEW);
+    resource.configureActionFromResource(action, RESORT_VIEW);
     actionMap.put(RESORT_VIEW, action);
 
+    action = new ResultsToClipboardAction(lockCoordinator,this);
+    resource.configureActionFromResource(action, COPY_RESULTS);
+    actionMap.put(COPY_RESULTS,action);
     popupMenu = kontextMenu(actionMap);
 
     dummyActionEvent = new ActionEvent(this, 0, "");
@@ -147,6 +149,8 @@ public class GuiRunnerView extends JTable implements GuiRunnerActions, MouseList
     menu.add(am.get(RUN_CURRENT));
     menu.add(am.get(RUN_MARKED));
     menu.add(am.get(RUN_ALL));
+    menu.addSeparator();
+    menu.add(am.get(COPY_RESULTS));
     menu.addSeparator();
     menu.add(am.get(OPEN_OUTPUTFILE));
     menu.add(am.get(EDIT_INPUTFILE));

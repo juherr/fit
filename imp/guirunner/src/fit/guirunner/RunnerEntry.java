@@ -20,15 +20,14 @@ public class RunnerEntry {
 
   File inFile;
   /** last outFile for this entry. Valid only after being run */
-  // TODO
   File lastOutFile;
   /** path relative to input direcotry. For sorting purposes only */
   String relativePath;
   String runnerOutput;
-  int right;
-  int wrong;
-  int ignored;
-  int exceptions;
+  Integer right;
+  Integer wrong;
+  Integer ignored;
+  Integer exceptions;
 
   int status;
 
@@ -43,15 +42,17 @@ public class RunnerEntry {
     inFile = file;
     this.relativePath = relativePath;
     status = NOT_RUNNED_YET;
+    statusChanged();
     mark = Boolean.FALSE;
   }
 
   public Integer getRight() {
-    return (hasActualResults()) ? new Integer(right) : null;
+    // hasActualResults;
+    return right;
   }
 
   public Integer getExceptions() {
-    return (hasActualResults()) ? new Integer(exceptions) : null;
+    return exceptions;
   }
 
   public File getInFile() {
@@ -67,7 +68,7 @@ public class RunnerEntry {
   }
 
   public Integer getWrong() {
-    return (hasActualResults()) ? new Integer(wrong) : null;
+    return wrong;
   }
 
   public boolean hasActualResults() {
@@ -81,24 +82,36 @@ public class RunnerEntry {
   public void setParseableResult(String output, int correct, int wrong, int ignored, int exceptions) {
     runnerOutput = output;
     status = LAST_RUN_PARSEABLE;
-    this.right = correct;
-    this.wrong = wrong;
-    this.ignored = ignored;
-    this.exceptions = exceptions;
+    statusChanged();
+    this.right = new Integer(correct);
+    this.wrong = new Integer(wrong);
+    this.ignored = new Integer(ignored);
+    this.exceptions = new Integer(exceptions);
   }
 
   public void setUnparseableResult(String output) {
     runnerOutput = output;
     status = LAST_RUN_SUSPICOUS;
+    statusChanged();
   }
 
   public void setRunning() {
     status = RUNNING;
+    statusChanged();
   }
 
   /** if multiple entries are to be run, they get marked, so it is "visible" which are not yet runned */
   public void setQueuedToRun() {
     status = NOT_RUNNED_YET;
+    statusChanged();
+  }
+  private void statusChanged() {
+    if(!hasActualResults()) {
+      right = null;
+      wrong = null;
+      ignored = null;
+      exceptions = null;
+    }
   }
 
   /**
@@ -124,7 +137,7 @@ public class RunnerEntry {
   }
 
   public Integer getIgnored() {
-    return (hasActualResults()) ? new Integer(ignored) : null;
+    return ignored;
   }
 
   public long getElapsed() {

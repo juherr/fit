@@ -10,7 +10,12 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+
+import fit.guirunner.actions.AbstractAsyncAction;
 
 public class RunnerResourceBundle {
 
@@ -43,6 +48,56 @@ public class RunnerResourceBundle {
     return resource.getLocale();
   }
 
+  public void configureActionFromResource(AbstractAsyncAction action, String key) {
+    String value;
+    if ((value = getResourceString("tooltip." + key)) != null) {
+      action.putValue(Action.SHORT_DESCRIPTION, value);
+    }
+    if ((value = getResourceString("image." + key)) != null) {
+      action.putValue(Action.SMALL_ICON, getImage(value));
+    }
+    if ((value = getResourceString("text." + key)) != null) {
+      action.putValue(Action.NAME, value);
+    } else {
+      // while development
+      action.putValue(Action.NAME, key);
+    }
+    if ((value = getResourceString("mnemonic." + key)) != null) {
+      if(Character.isDigit(value.charAt(0))) {
+        action.putValue(Action.MNEMONIC_KEY, new Integer(value));
+      } else {
+        action.putValue(Action.MNEMONIC_KEY, new Integer(value.charAt(0)));
+      }
+    }
+    if ((value = getResourceString("accelerator." + key)) != null) {
+      action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(value));
+    }
+  }
+
+  public void configureMenuItemFromResource(JMenuItem action, String key) {
+    String value;
+    if ((value = getResourceString("tooltip." + key)) != null) {
+      action.setToolTipText(value);
+    }
+    if ((value = getResourceString("image." + key)) != null) {
+      action.setIcon(getImage(value));
+    }
+    if ((value = getResourceString("text." + key)) != null) {
+      action.setText(value);
+    }
+    if ((value = getResourceString("mnemonic." + key)) != null && value.length() > 0) {
+      if(Character.isDigit(value.charAt(0))) {
+        action.setMnemonic(new Integer(value).intValue());
+      } else {
+        action.setMnemonic(value.charAt(0));
+      }
+    }
+    if ((value = getResourceString("accelerator." + key)) != null) {
+      action.setAccelerator(KeyStroke.getKeyStroke(value));
+    }
+  }
+
+  
   /**
    * @param url
    * @return

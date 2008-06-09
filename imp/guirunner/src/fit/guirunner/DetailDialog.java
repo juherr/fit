@@ -21,7 +21,7 @@ public class DetailDialog extends JDialog {
 
   public DetailDialog(Frame parent, String title, String text) {
     super(parent, true);
-    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
     Action closeAction = new AbstractAction() {
       public void actionPerformed(ActionEvent e) {

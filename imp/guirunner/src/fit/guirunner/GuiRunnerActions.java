@@ -21,6 +21,7 @@ public interface GuiRunnerActions {
   final String RENAME_TEST = "RENAME_TEST";
   final String MOVE_TEST = "MOVE_TEST";
   final String RESORT_VIEW = "RESORT_VIEW";
+  final String COPY_RESULTS = "COPY_RESULTS";
   
   // test only
   final String APPEND_ENTRY = "APPEND_ENTRY";
