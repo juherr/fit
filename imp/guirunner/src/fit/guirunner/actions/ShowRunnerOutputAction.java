@@ -30,11 +30,10 @@ public class ShowRunnerOutputAction extends AbstractCurrentEntryAction {
   }
 
   public void tableChanged(TableModelEvent arg0) {
-    // this action ma be informed before the view...
-    if(view.getRowCount() > 0) {
+    // only update events may have influence on showrunner output - insert/delete
+    // should modify the selection
+    if(arg0.getType() == TableModelEvent.UPDATE) {
       handleChanged();
-    } else {
-      setEnabled(false);
     }
   }
 
@@ -43,7 +42,7 @@ public class ShowRunnerOutputAction extends AbstractCurrentEntryAction {
     boolean enabled = false;
     if (row >= 0) {
       RunnerEntry re = getRunnerEntry();
-      enabled = re.hasBeenRun();
+      enabled = re != null && re.hasBeenRun();
     }
     setEnabled(enabled);
   }

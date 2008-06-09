@@ -41,6 +41,11 @@ public class VariableExpansion {
     this(key1, value1, key2, value2, key3, value3);
     map.put(key4, value4);
   }
+  public VariableExpansion(String key1, String value1, String key2, String value2, String key3,
+      String value3, String key4, String value4, String key5, String value5) {
+    this(key1, value1, key2, value2, key3, value3, key4, value4);
+    map.put(key5, value5);
+  }
 
   public String replace(String in) {
     StringBuffer result = new StringBuffer();

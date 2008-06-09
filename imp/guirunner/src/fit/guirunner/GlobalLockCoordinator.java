@@ -91,7 +91,9 @@ public class GlobalLockCoordinator {
 
   public boolean canReadFilesystem() {
     return isHavingConfiguration() && !isRunnerIsRunning() && !isReadingFilesystem;
-
+  }
+  public boolean canEditConfiguration() {
+    return isHavingConfiguration() && !isRunnerIsRunning() && !isReadingFilesystem;
   }
 
   public Configuration getCurrentConfiguration() {

@@ -34,6 +34,12 @@ public class EditConfigurationDialog extends JDialog {
   public static final String KEY_CANCEL = "cancel";
   public static final String KEY_APPLY = "apply";
   public static final String KEY_TITLE = "title.EditConfiguration";
+  public static final String KEY_RUNNER_WORKING_DIR = "label.runner.workingDir";
+
+  public static final String TOOLTIP_INDIR = "tooltip.indir";
+  public static final String TOOLTIP_OUTDIR = "tooltip.outdir";
+  public static final String TOOLTIP_LIBDIR = "tooltip.libdir";
+  public static final String TOOLTIP_RUNNER_WORKING_DIR = "tooltip.runner.workingDir";
 
   RunnerResourceBundle resource;
   /**
@@ -48,6 +54,7 @@ public class EditConfigurationDialog extends JDialog {
   JTextField runnerCommand;
   JTextField openCommand;
   JTextField editCommand;
+  JTextField runnerWorkingDir;
   JButton cancel;
   JButton apply;
   String dialogTitle;
@@ -65,7 +72,7 @@ public class EditConfigurationDialog extends JDialog {
 
   private Configuration fields2config() {
     return new Configuration(inDir.getText(), outDir.getText(), libDir.getText(),
-        pattern.getText(), runnerCommand.getText(), openCommand.getText(), editCommand.getText());
+        pattern.getText(), runnerCommand.getText(), openCommand.getText(), editCommand.getText(),runnerWorkingDir.getText());
   }
 
   private void config2fields(Configuration configuration) {
@@ -76,17 +83,24 @@ public class EditConfigurationDialog extends JDialog {
     runnerCommand.setText(configuration.getRunnerCommand());
     openCommand.setText(configuration.getOpenCommand());
     editCommand.setText(configuration.getEditCommand());
+    runnerWorkingDir.setText(configuration.getRunnerWorkingDir());
   }
 
   protected void init() {
     inDir = new JTextField(40);
     outDir = new JTextField(40);
     libDir = new JTextField(40);
+    runnerWorkingDir = new JTextField(40);
+    
+    inDir.setToolTipText(resource.getResourceString(TOOLTIP_INDIR));
+    outDir.setToolTipText(resource.getResourceString(TOOLTIP_OUTDIR));
+    libDir.setToolTipText(resource.getResourceString(TOOLTIP_LIBDIR));
+    runnerWorkingDir.setToolTipText(resource.getResourceString(TOOLTIP_RUNNER_WORKING_DIR));
 
     pattern = new JTextField(10);
-    runnerCommand = new JTextField(50);
-    openCommand = new JTextField(50);
-    editCommand = new JTextField(50);
+    runnerCommand = new JTextField(80);
+    openCommand = new JTextField(80);
+    editCommand = new JTextField(80);
 
     cancel = new JButton(resource.getResourceString(KEY_CANCEL));
     apply = new JButton(resource.getResourceString(KEY_APPLY));
@@ -157,7 +171,9 @@ public class EditConfigurationDialog extends JDialog {
     cp.add(outDir, fields);
     cp.add(label(KEY_LIBDIR), label);
     cp.add(libDir, fields);
-
+    cp.add(label(KEY_RUNNER_WORKING_DIR), label);
+    cp.add(runnerWorkingDir, fields);
+    
     cp.add(label(KEY_PATTERN), label);
     cp.add(pattern, fields);
     cp.add(label(KEY_RUNNER_COMMAND), label);

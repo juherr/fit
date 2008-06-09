@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -87,10 +88,9 @@ public class UserPreferences {
    * @param propertiesToDelete - properties to delete
    */
   public void updateProperties(Properties newProperties, List propertiesToDelete) {
-    for(Iterator i = newProperties.keySet().iterator();i.hasNext();) {
-      Object key = i.next();
-      Object value = newProperties.get(key);
-      properties.put(key, value);
+    for(Iterator i = newProperties.entrySet().iterator();i.hasNext();) {
+      Map.Entry me = (Map.Entry)i.next();
+      properties.put(me.getKey(), me.getValue());
     }
     if(propertiesToDelete != null && propertiesToDelete.size() > 0) {
       for(Iterator i = propertiesToDelete.iterator();i.hasNext();) {

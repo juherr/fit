@@ -5,6 +5,11 @@ Revision history for fit.GuiRunner
       to the clipboard. The format is suitable for pasting into
       a spreadsheet application
     - MRU List of configurations
+    - Configuration contains now a "runner working directory" setting.
+      This may be specified either as absolute path, or relative path
+      (relative to the configurtion file) or a variable reference,
+      e.g. ${infiledir} - directory of the input file.
+      Supported variables are: indir, outdir, infiledir, outfiledir
 
 009  2008-06-06 Martin Busik <martin.busik@busik.de>
     - if sorting is on, vies does not resort on every single

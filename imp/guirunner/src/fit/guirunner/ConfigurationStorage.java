@@ -30,7 +30,8 @@ public class ConfigurationStorage implements GuiRunnerActions {
   public static final String KEY_CMD_OPEN = "command.open";
   public static final String KEY_CMD_EDIT = "command.edit";
   public static final String KEY_PATTERN = "pattern";
-
+  public static final String KEY_RUNNER_WD = "runner.workingDir";
+  
   private static final int CMD_NEW = 1;
   private static final int CMD_EXISTING = 2;
 
@@ -101,6 +102,7 @@ public class ConfigurationStorage implements GuiRunnerActions {
           try {
             Configuration newConfig = dlg.getConfiguration();
             save(newConfig, configFile);
+            newConfig.setConfigurationName(configFile);
             resources.setConfiguration(newConfig);
           } catch (IOException e1) {
             // TODO MessageService
@@ -110,7 +112,7 @@ public class ConfigurationStorage implements GuiRunnerActions {
       }
 
       protected boolean isActionEnabled() {
-        return getLockCoordinator().isHavingConfiguration();
+        return getLockCoordinator().canEditConfiguration();
       }
     };
     resources.getResource().configureActionFromResource(a, resourceKey);
@@ -179,6 +181,7 @@ public class ConfigurationStorage implements GuiRunnerActions {
     hlp.put(KEY_CMD_RUNNER, c.getRunnerCommand());
     hlp.put(KEY_CMD_OPEN, c.getOpenCommand());
     hlp.put(KEY_CMD_EDIT, c.getEditCommand());
+    hlp.put(KEY_RUNNER_WD, c.getRunnerWorkingDir());
     FileOutputStream fos = new FileOutputStream(configfile);
     try {
       hlp.store(fos, null);
@@ -204,6 +207,8 @@ public class ConfigurationStorage implements GuiRunnerActions {
       c.openCommand = value;
     } else if (KEY_CMD_EDIT.equals(key)) {
       c.editCommand = value;
+    } else if (KEY_RUNNER_WD.equals(key)) {
+      c.runnerWorkingDir = value;
     } else {
       System.err.println("Configuration property " + key + " is not supported. Entry ignored");
     }

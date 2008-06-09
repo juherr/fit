@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
 
+import fit.guirunner.util.ListDiff;
+
 public class RunnerTableModel extends AbstractTableModel {
 
   public static final int POS_MARK = 0;
@@ -39,22 +41,22 @@ public class RunnerTableModel extends AbstractTableModel {
 
   List titles;
 
-  String[] defaultTitles = { "mark", "folder","file name", "status", "right", "wrong", "ignored",
-      "exceptions", "elapsed",  "last run" };
+  String[] defaultTitles = { "mark", "folder", "file name", "status", "right", "wrong", "ignored",
+      "exceptions", "elapsed", "last run" };
 
-  static final Class[] columnClasses = { Boolean.class, String.class, String.class, Icon.class, Integer.class,
-      Integer.class, Integer.class, Integer.class, String.class, String.class };
+  static final Class[] columnClasses = { Boolean.class, String.class, String.class, Icon.class,
+      Integer.class, Integer.class, Integer.class, Integer.class, String.class, String.class };
 
   Icon statusRunning;
 
   Icon statusUnparseable;
   DateFormat dateFormat;
-  
+
   public RunnerTableModel(RunnerResourceBundle bundle) {
     entries = new ArrayList();
     entriesLookup = null;
     markedEntries = null;
-    titles = loadTitles(bundle,defaultTitles);
+    titles = loadTitles(bundle, defaultTitles);
     String value;
     if ((value = bundle.getResourceString("image.status.running")) != null) {
       statusRunning = bundle.getImage(value);
@@ -67,7 +69,7 @@ public class RunnerTableModel extends AbstractTableModel {
 
   private List loadTitles(RunnerResourceBundle bundle, String[] defaultTitles2) {
     List titles = new ArrayList(defaultTitles2.length);
-    for(int i=0;i<defaultTitles2.length;i++) {
+    for (int i = 0; i < defaultTitles2.length; i++) {
       String key = "label.".concat(defaultTitles2[i]).replaceAll(" ", "_");
       String localised = bundle.getResourceString(key);
       titles.add((localised != null) ? localised : defaultTitles2[i]);
@@ -200,6 +202,7 @@ public class RunnerTableModel extends AbstractTableModel {
     return result;
   }
 
+  // 2008-06-09: unused
   public void removeAllEntries() {
     entries.clear();
     entriesLookup = null;
@@ -207,33 +210,29 @@ public class RunnerTableModel extends AbstractTableModel {
     fireTableDataChanged();
   }
 
+  // 2008-06-08: unused
   public void addEntries(Collection entries) {
     this.entries.addAll(entries);
     entriesLookup = null;
-    markedEntries = null;
+    // no change at marked entries
+    // markedEntries = null;
     fireTableDataChanged();
   }
 
+  // 2008-06-08: unused
   public void removeEntries(Collection entries) {
-    for (Iterator i = entries.iterator(); i.hasNext();) {
-      removeEntry1((RunnerEntry)i.next());
-    }
+    this.entries.removeAll(entries);
     entriesLookup = null;
     markedEntries = null;
     fireTableDataChanged();
   }
 
   public void removeEntry(RunnerEntry re) {
-    removeEntry1(re);
-    fireTableDataChanged();
-  }
-
-  private void removeEntry1(RunnerEntry re) {
-    int row = entryToRow(re);
-    entries.remove(row);
+    int idx = entryToRow(re);
+    this.entries.remove(re);
     entriesLookup = null;
     markedEntries = null;
-    fireTableRowsDeleted(row, row);
+    fireTableRowsDeleted(idx, idx);
   }
 
   public void addEntry(RunnerEntry entry) {
@@ -253,6 +252,7 @@ public class RunnerTableModel extends AbstractTableModel {
     fireTableCellUpdated(row, POS_STATUS);
   }
 
+  // 2008-06-09: unused
   public void setQueuedToRun(List entries) {
     // if more than 1/4 of the row changes, fire one single change event.
     boolean fireAllChanged = (4 * entries.size() > getRowCount()) ? true : false;
@@ -277,7 +277,12 @@ public class RunnerTableModel extends AbstractTableModel {
         entriesLookup.put(entries.get(i), new Integer(i));
       }
     }
-    return (entriesLookup.containsKey(entry)) ? ((Integer)entriesLookup.get(entry)).intValue() : -1;
+    int result = (entriesLookup.containsKey(entry)) ? ((Integer)entriesLookup.get(entry))
+        .intValue() : -1;
+    if (result < 0) {
+      throw new RuntimeException("inconsistent lookup");
+    }
+    return result;
   }
 
   /** get a new compound comparator for columns and directions given in the map */
@@ -286,7 +291,7 @@ public class RunnerTableModel extends AbstractTableModel {
     boolean[] ascendingOrder = new boolean[sortColumns.size()];
     for (Iterator i = sortColumns.values().iterator(); i.hasNext();) {
       SortingEntry se = (SortingEntry)i.next();
-      // Column-order is 1-based!
+      // Column-order is 1-based - due to display of the order-position in the view!
       comparators[se.sortingPosition - 1] = getComparator(se.getModelIndex());
       ascendingOrder[se.sortingPosition - 1] = se.getSortingDirection() == SortingEntry.ASC;
     }
@@ -377,6 +382,17 @@ public class RunnerTableModel extends AbstractTableModel {
     }
   }
 
+  public void setNewEntries(List latest) {
+    ListDiff diff = new ListDiff(entries, latest);
+    if (diff.hasDiffs()) {
+      entries.addAll(diff.getRightOnly());
+      entries.removeAll(diff.getLeftOnly());
+      markedEntries = null;
+      entriesLookup = null;
+      updateMarked();
+      fireTableDataChanged();
+    }
+  }
 }
 
 class TimestampComarator implements Comparator {
@@ -414,7 +430,6 @@ class TimestampComarator implements Comparator {
     return result;
   }
 }
-
 
 class IntegerAttributeComparator implements Comparator {
   private int columnModelIndex;

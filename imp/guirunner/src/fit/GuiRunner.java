@@ -136,7 +136,7 @@ public class GuiRunner implements Runnable, GuiRunnerActions {
       EnvironmentContext ctx;
       try {
         ctx = new EnvironmentContext(resources.getConfiguration());
-        ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir(), ctx.getInDir(),
+        ExecuteEntry execute = new ExecuteEntry(ctx.getRunnerCmd(),ctx.getWorkDirPattern(),ctx.getWorkingDir(),ctx.getInDir(),
             ctx.getOutDir());
 
         for (Iterator i = model.getEntries().iterator(); i.hasNext();) {

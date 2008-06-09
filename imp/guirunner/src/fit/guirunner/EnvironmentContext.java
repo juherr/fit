@@ -12,6 +12,7 @@ import fit.guirunner.logic.VariableExpansion;
 public class EnvironmentContext {
 
   String runnerCmd;
+  String runnerWorkingDirPattern; // if it contains variable reference
 
   String openCmd;
 
@@ -23,6 +24,9 @@ public class EnvironmentContext {
 
   File libDir;
 
+  File runnerWorkingDir;
+  
+
   public EnvironmentContext(Configuration config) throws IOException {
     File configDir = config.getConfigurationDir();
     inDir = makeAbs(configDir, config.getInDir());
@@ -32,6 +36,16 @@ public class EnvironmentContext {
     runnerCmd = strrep.replace(config.getRunnerCommand());
     openCmd = strrep.replace(config.getOpenCommand());
     editCmd = strrep.replace(config.getEditCommand());
+    
+    // RunnerWorkingDir may contain a dir or a variable reference
+    String wd = config.getRunnerWorkingDir();
+    if(wd != null && !"".equals(wd)) {
+      if(wd.indexOf('{') >= 0 && wd.indexOf('}') >= 0 && wd.indexOf('$') >= 0) {
+        runnerWorkingDirPattern = wd;
+      } else {
+        runnerWorkingDir = makeAbs(configDir,wd);
+      }
+    }
   }
 
   protected static File makeAbs(File parent, String afile) throws IOException {
@@ -96,5 +110,13 @@ public class EnvironmentContext {
 
   public String getOpenCmd() {
     return openCmd;
+  }
+
+  public String getWorkDirPattern() {
+    return runnerWorkingDirPattern;
+  }
+
+  public File getWorkingDir() {
+    return runnerWorkingDir;
   }
 }

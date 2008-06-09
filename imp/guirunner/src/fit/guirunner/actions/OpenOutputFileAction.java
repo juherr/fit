@@ -42,19 +42,19 @@ public class OpenOutputFileAction extends AbstractCurrentEntryAction {
 
   public void tableChanged(TableModelEvent arg0) {
     // this action ma be informed before the view...
-    if(view.getRowCount() > 0) {
+    if(arg0.getType() == TableModelEvent.UPDATE) {
       handleChanged();
-    } else {
-      setEnabled(false);
     }
   }
 
   public void handleChanged() {
     int row = view.getSelectedRow();
     boolean enabled = false;
-    if (row >= 0) {
+    // @see AbstractCurrentEntryAction.getRunnerEntry for explanation reg. getRowCount
+    //
+    if (row >= 0 && row < view.getRowCount()) {
       RunnerEntry re = getRunnerEntry();
-      enabled = isOutputFileAvailable(re);
+      enabled = re != null && isOutputFileAvailable(re);
     }
     setEnabled(enabled);
   }

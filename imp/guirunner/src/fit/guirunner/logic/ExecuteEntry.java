@@ -16,12 +16,13 @@ import fit.guirunner.RunnerEntry;
 public class ExecuteEntry {
 
   String commandLine;
-
-  File workingDirectory;
+  String workingDirectoryPattern;
 
   File inDir;
 
   File outDir;
+
+  File workingDirectory;
 
   boolean outputParsed = false;
 
@@ -38,8 +39,20 @@ public class ExecuteEntry {
   private transient Process theTest;
   private boolean killed;
 
-  public ExecuteEntry(String commandLine, File workingDirectory, File inDir, File outDir) {
+  /**
+   * either workingDirectoryPattern - can contain a variable expansion pattern, or working directory
+   * should be given
+   * 
+   * @param commandLine
+   * @param workingDirectoryPattern
+   * @param workingDirectory
+   * @param inDir
+   * @param outDir
+   */
+  public ExecuteEntry(String commandLine, String workingDirectoryPattern, File workingDirectory,
+      File inDir, File outDir) {
     this.commandLine = commandLine;
+    this.workingDirectoryPattern = workingDirectoryPattern;
     this.workingDirectory = workingDirectory;
     this.inDir = inDir;
     this.outDir = outDir;
@@ -53,7 +66,17 @@ public class ExecuteEntry {
     StringBuffer cmdOutput = new StringBuffer();
     VariableExpansion strrep = new VariableExpansion("infile", re.getInFile().getAbsolutePath(),
         "outfile", outFilename.getAbsolutePath(), "infiledir", re.getInFile().getParentFile()
-            .getAbsolutePath(), "outdir", outDir.getAbsolutePath());
+            .getAbsolutePath(), "outdir", outDir.getAbsolutePath(), "indir", inDir
+            .getAbsolutePath());
+
+    File testWorkingDir = workingDirectory;
+    if (workingDirectoryPattern != null && !"".equals(workingDirectoryPattern)) {
+      String wdName = strrep.replace(workingDirectoryPattern);
+      File testWd = new File(wdName);
+      if (testWd.isDirectory()) {
+        testWorkingDir = testWd;
+      }
+    }
 
     String cmdLine = strrep.replace(commandLine);
     cmdOutput.append(cmdLine).append("\n");
@@ -66,7 +89,7 @@ public class ExecuteEntry {
       }
 
       synchronized (this) {
-        theTest = Runtime.getRuntime().exec(cmdLine, null, workingDirectory);
+        theTest = Runtime.getRuntime().exec(cmdLine, null, testWorkingDir);
         killed = false;
       }
       StreamToStringList stdout = new StreamToStringList(theTest.getInputStream());

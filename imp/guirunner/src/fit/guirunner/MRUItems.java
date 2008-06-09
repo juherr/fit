@@ -23,6 +23,7 @@ public class MRUItems implements PropertyChangeListener {
   private JSeparator separatorBefore;
   private JMenuItem items[];
   Resources resources;
+  GlobalLockCoordinator lockCoordinator;
   // contains the mru configurations, precisely: filenames of
   // the mru configurations. Each filename ist in the list no
   // more than once
@@ -32,12 +33,12 @@ public class MRUItems implements PropertyChangeListener {
   private LinkedList mruConfigurations;
 
   public MRUItems(GlobalLockCoordinator lockCoordinator, Resources resources) {
+    this.lockCoordinator = lockCoordinator;
     this.resources = resources;
     mruConfigurations = new LinkedList();
     items = null; // delayed initialization
     loadPreferences();
-    lockCoordinator.addPropertyChangeListener(GlobalLockCoordinator.HAS_CONFIGURATION_PROPERTY,
-        this);
+    lockCoordinator.addPropertyChangeListener(this);
   }
 
   public int getMRUItemsSize() {
@@ -119,10 +120,23 @@ public class MRUItems implements PropertyChangeListener {
           updateItems();
         }
       }
+    } else {
+      // enable/disable visible items
+      if(items != null) {
+      boolean mruItemsEnabled = lockCoordinator.canReadFilesystem();
+      updateEnabledStatus(mruItemsEnabled);
+      }
     }
   }
 
-/*  
+private void updateEnabledStatus(boolean mruItemsEnabled) {
+  for (int i = 0; i < MRU_MAX_SIZE; i++) {
+    if(items[i].isVisible()) {
+      items[i].getAction().setEnabled(mruItemsEnabled);
+    }
+  }
+}
+  /*  
   private void debugXX(String msg) {
     System.out.println(msg);
     for (Iterator i = mruConfigurations.iterator(); i.hasNext();) {

@@ -7,6 +7,7 @@ public class Configuration {
   String inDir;
   String outDir;
   String libDir;
+  String runnerWorkingDir;
   String pattern;
   String runnerCommand;
   String openCommand;
@@ -34,7 +35,7 @@ public class Configuration {
   }
 
   public Configuration(String inDir, String outDir, String libDir, String pattern,
-      String runnerCommand, String openCommand, String editCommand) {
+      String runnerCommand, String openCommand, String editCommand, String runnerWorkingDir) {
     this.inDir = inDir;
     this.outDir = outDir;
     this.libDir = libDir;
@@ -42,6 +43,7 @@ public class Configuration {
     this.runnerCommand = runnerCommand;
     this.openCommand = openCommand;
     this.editCommand = editCommand;
+    this.runnerWorkingDir = runnerWorkingDir;
   }
 
   public String getInDir() {
@@ -80,7 +82,8 @@ public class Configuration {
     sb.append("pattern=").append(pattern).append("\n");
     sb.append("runnerCmd=").append(runnerCommand).append("\n");
     sb.append("openCmd=").append(openCommand).append("\n");
-    sb.append("editCmd=").append(editCommand).append("\n}\n");
+    sb.append("editCmd=").append(editCommand).append("\n");
+    sb.append("runnerWorkingDir=").append(runnerWorkingDir).append("\n}\n");
     return sb.toString();
   }
 
@@ -111,6 +114,7 @@ public class Configuration {
     result = PRIME * result + ((outDir == null) ? 0 : outDir.hashCode());
     result = PRIME * result + ((pattern == null) ? 0 : pattern.hashCode());
     result = PRIME * result + ((runnerCommand == null) ? 0 : runnerCommand.hashCode());
+    result = PRIME * result + ((runnerWorkingDir == null) ? 0 : runnerWorkingDir.hashCode());
     return result;
   }
 
@@ -143,6 +147,13 @@ public class Configuration {
     if (runnerCommand == null) {
       if (other.runnerCommand != null) return false;
     } else if (!runnerCommand.equals(other.runnerCommand)) return false;
+    if (runnerWorkingDir == null) {
+      if (other.runnerWorkingDir!= null) return false;
+    } else if (!runnerWorkingDir.equals(other.runnerWorkingDir)) return false;
     return true;
+  }
+
+  public String getRunnerWorkingDir() {
+    return runnerWorkingDir;
   }
 }

@@ -18,34 +18,35 @@ abstract public class AbstractCurrentEntryAction extends AbstractAsyncAction imp
     this.view = view;
     setLockCoordinator(lockCoordinator);
     view.getSelectionModel().addListSelectionListener(this);
+    // table model listener is needed in order to get notified about updates of 
+    // the current row
     view.getModel().addTableModelListener(this);
     setEnabled(false);
   }
 
   public void valueChanged(ListSelectionEvent arg0) {
-    setEnabled(!isModelEmpty() && isRowSected());
+    setEnabled(isRowSected());
   }
 
   public void tableChanged(TableModelEvent arg0) {
-    setEnabled(!isModelEmpty() && isRowSected());
+    // only update is relevant. insert/delete should change the current selection...
+    if(arg0.getType() == TableModelEvent.UPDATE) {
+      setEnabled(isRowSected());
+    }
   }
 
   protected RunnerEntry getRunnerEntry() {
     RunnerEntry re = null;
     int r = view.getSelectedRow();
-    if (r >= 0) {
+    // rowCount < getSelectedRow - when there arrives an model event, before view
+    // clears the selection
+    if (r >= 0 && r < view.getRowCount()) {
       re = (RunnerEntry)view.getModel().getValueAt(r, RunnerTableModel.POS_ROW);
     }
     return re;
   }
 
   private boolean isRowSected() {
-    return view.getSelectedRow() >= 0;
-  }
-
-  // model change event can arrive here bevore the view gets notified and
-  // before the view gets the chance to remove the selection
-  private boolean isModelEmpty() {
-    return view.getModel().getRowCount() == 0;
+    return view.getSelectedRow() >= 0 && view.getSelectedRow() < view.getRowCount();
   }
 }

@@ -13,7 +13,6 @@ import fit.guirunner.Resources;
 import fit.guirunner.RunnerEntry;
 import fit.guirunner.RunnerTableModel;
 import fit.guirunner.logic.FileFind;
-import fit.guirunner.util.ListDiff;
 
 public class ReloadAction extends AbstractAsyncAction {
 
@@ -34,12 +33,7 @@ public class ReloadAction extends AbstractAsyncAction {
     try {
       EnvironmentContext ctx = new EnvironmentContext(config);
       List latest = files2entries(ctx, fileFind.execute(ctx.getInDir()));
-      List previous = model.getEntries();
-      ListDiff diff = new ListDiff(previous, latest);
-      if (diff.hasDiffs()) {
-        model.addEntries(diff.getRightOnly());
-        model.removeEntries(diff.getLeftOnly());
-      }
+      model.setNewEntries(latest);
     } catch (IOException e1) {
       // TODO Gui-Message
       e1.printStackTrace();

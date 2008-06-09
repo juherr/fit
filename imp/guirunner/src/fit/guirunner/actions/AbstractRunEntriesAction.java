@@ -64,23 +64,6 @@ public abstract class AbstractRunEntriesAction extends AbstractAsyncAction imple
 
   protected abstract List getEntriesToRun();
 
-  /*
-   * currently unused protected void restoreSelectedEntries(List entries) { // order may have
-   * changed... Map lookup = new HashMap(entries.size()); for(Iterator
-   * i=entries.iterator();i.hasNext();) { lookup.put(i.next(), null); } ListSelectionModel lsm =
-   * view.getSelectionModel(); lsm.setValueIsAdjusting(true); lsm.clearSelection(); for (int i = 0;
-   * i < view.getRowCount(); i++) { RunnerEntry re = (RunnerEntry) view.getModel().getValueAt(i,
-   * RunnerTableModel.POS_ROW); if (lookup.containsKey(re)) { lsm.addSelectionInterval(i, i); } }
-   * lsm.setValueIsAdjusting(true); } protected List getSelectedEntries() { List entries = new
-   * LinkedList(); ListSelectionModel lsm = view.getSelectionModel(); if (!lsm.isSelectionEmpty()) {
-   * int minIndex = lsm.getMinSelectionIndex(); int maxIndex = lsm.getMaxSelectionIndex();
-   * System.out.println("lsm: " + minIndex + " " + maxIndex); for (int i = minIndex; i <= maxIndex;
-   * i++) { if (lsm.isSelectedIndex(i)) { // getValueAt is called on the Model, not on the view,
-   * since // POS_ROW is // not a column in the view... // model and view.getModel() are not the
-   * same - since sorted RunnerEntry re = (RunnerEntry) view.getModel().getValueAt(i,
-   * RunnerTableModel.POS_ROW); entries.add(re); } } lsm.clearSelection(); } return entries; }
-   */
-
   protected boolean isActionEnabled() {
     return getLockCoordinator().canRun();
   }
@@ -107,7 +90,7 @@ public abstract class AbstractRunEntriesAction extends AbstractAsyncAction imple
   private void newExecuteEntry() throws IOException {
     EnvironmentContext ctx = new EnvironmentContext(resources.getConfiguration());
     synchronized (this) {
-      execute = new ExecuteEntry(ctx.getRunnerCmd(), ctx.getInDir(), ctx.getInDir(), ctx
+      execute = new ExecuteEntry(ctx.getRunnerCmd(),ctx.getWorkDirPattern(),ctx.getWorkingDir(), ctx.getInDir(), ctx
           .getOutDir());
     }
   }
