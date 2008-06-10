@@ -1,6 +1,6 @@
 Revision history for fit.GuiRunner
 
-010  2008-06-XX
+010  2008-06-10
     - Copy results to clipboard - the contents of the view is copied
       to the clipboard. The format is suitable for pasting into
       a spreadsheet application

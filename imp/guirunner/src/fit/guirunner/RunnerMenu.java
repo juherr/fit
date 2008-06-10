@@ -58,9 +58,9 @@ public class RunnerMenu extends JMenuBar implements GuiRunnerActions {
     editMenu.addSeparator();
     editMenu.add(new JMenuItem(am.get(EDIT_INPUTFILE)));
     
-    runMenu.add(new JMenuItem(am.get(RUN_ALL)));
-    runMenu.add(new JMenuItem(am.get(RUN_MARKED)));
     runMenu.add(new JMenuItem(am.get(RUN_CURRENT)));
+    runMenu.add(new JMenuItem(am.get(RUN_MARKED)));
+    runMenu.add(new JMenuItem(am.get(RUN_ALL)));
     runMenu.add(new JMenuItem(am.get(SHOW_RUNNER_OUTPUT)));
     runMenu.addSeparator();
     runMenu.add(new JMenuItem(am.get(STOP_TESTS)));
