@@ -124,13 +124,21 @@ namespace CEEFIT
             // New 03/25/06 DW - Communicate results to caller before fileRunner is dereferenced
             if(fileRunner != null && fileRunner->Fixture != null && fileRunner->Fixture->CountsObj != null)
             {              
-              outResults.SetRight(fileRunner->Fixture->CountsObj->right);
-              outResults.SetWrong(fileRunner->Fixture->CountsObj->wrong);
-              outResults.SetIgnores(fileRunner->Fixture->CountsObj->ignores);
-              outResults.SetExceptions(fileRunner->Fixture->CountsObj->exceptions);
+              COUNTS& counts = *fileRunner->Fixture->CountsObj;
+
+              outResults.SetRight(counts.right);
+              outResults.SetWrong(counts.wrong);
+              outResults.SetIgnores(counts.ignores);
+              outResults.SetExceptions(counts.exceptions);
 
               STRING countsString(fileRunner->Fixture->Counts());
               outResults.SetCountsSummary(countsString.GetBuffer());
+
+              // New 12/02/08 - Forgot to set the response code for CEEFIT::Run when there were errors!
+              if ((counts.wrong + counts.exceptions) > 0) 
+              {
+                retVal = 2;
+              }
             }
 
             i += 2;   // the while loop increments i for a total of 3...

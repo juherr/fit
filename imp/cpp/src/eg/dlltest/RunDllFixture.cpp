@@ -63,6 +63,9 @@ int ceefit_call_spec main(int argc, char** argv)
   if((retVal = CEEFIT::Run(argc, argv, runResults)) > 0) 
   {
     printf("%S\n", runResults.GetCountsSummary());
+    printf("Exit code will be:  %i\n", retVal);
+
+    exitCode = retVal;
   }
   else 
   {
