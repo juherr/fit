@@ -1,3 +1,4 @@
+.project
 Debug
 output
 history.xml
@@ -7,4 +8,12 @@ fitspec.plg
 build.properties
 Release
 simple.plg
-Makefile.win
+Makefile.winbuild
+output
+fit.suobuild
+output
+*.iml
+*.ipr
+*.iws
+.idea
+.DS_Store
