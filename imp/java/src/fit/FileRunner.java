@@ -12,6 +12,7 @@ public class FileRunner {
     public Parse tables;
     public Fixture fixture = new Fixture();
     public PrintWriter output;
+    public String charset = "windows-1252";
 
     public static void main(String argv[]) {
     	try {
@@ -60,7 +61,7 @@ public class FileRunner {
 
     protected String read(File input) throws IOException {
         char chars[] = new char[(int) (input.length())];
-        FileReader in = new FileReader(input);
+        InputStreamReader in = new InputStreamReader(new FileInputStream(input), charset);
         in.read(chars);
         in.close();
         return new String(chars);

@@ -36,7 +36,8 @@
   ** build **
   -->
   <target name="build" depends="dirs" description="Build project">
-    <javac srcdir="${source.dir}" destdir="${class.dir}" classpath="${junit.jar}" />
+    <javac srcdir="${source.dir}" destdir="${class.dir}" classpath="${junit.jar}"
+            encoding="windows-1252" source="1.4" target="1.4" />
   </target>
 
   <!-- 
