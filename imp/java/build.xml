@@ -19,6 +19,7 @@
   <property name="examples-out.dir" value="${output.dir}/examples" />
   <property name="spec-out.dir" value="${output.dir}/spec" />
   <property name="release.dir" value="${output.dir}/release" />
+  <property name="javadoc.dir" value="${output.dir}/doc" />
   
   <!-- 
   ** dirs **
@@ -30,6 +31,7 @@
     <mkdir dir="${test.dir}" />
     <mkdir dir="${examples-out.dir}" />
     <mkdir dir="${spec-out.dir}" />
+    <mkdir dir="${javadoc.dir}" />
   </target>
   
   <!-- 
@@ -40,9 +42,20 @@
             encoding="windows-1252" source="1.4" target="1.4" />
   </target>
 
-  <!-- 
-  ** test **
+  <!--
+  ** javadoc **
   -->
+  <target name="javadoc" depends="dirs" description="generate documentation">
+    <javadoc sourcepath="${source.dir}" destdir="${javadoc.dir}" encoding="windows-1252">
+      <fileset dir="${source.dir}">
+        <include name="**/*.java" />
+      </fileset>
+    </javadoc>
+  </target>
+
+    <!--
+    ** test **
+    -->
   <target name="test" depends="build" description="Test project">
     <junit haltonfailure="true">
       <classpath path="${class.dir}" />
